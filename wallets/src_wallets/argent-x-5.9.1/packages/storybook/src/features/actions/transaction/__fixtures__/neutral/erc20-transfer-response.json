@@ -1,0 +1,28 @@
+{
+  "assessment": "neutral",
+  "reviews": [
+    {
+      "assessment": "neutral",
+      "assessmentDetails": {
+        "contract_address": "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7"
+      },
+      "activity": {
+        "value": {
+          "token": {
+            "address": "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18,
+            "unknown": false,
+            "type": "ERC20"
+          },
+          "amount": "1000000000000000000",
+          "usd": 1141.17,
+          "slippage": "equal"
+        },
+        "recipient": "2007141710004580612847837172790366058109710402280793820610123055421682225678",
+        "type": "transfer"
+      }
+    }
+  ]
+}

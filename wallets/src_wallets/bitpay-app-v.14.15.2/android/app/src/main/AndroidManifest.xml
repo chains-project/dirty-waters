@@ -1,0 +1,214 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="com.bitpay.wallet.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.bitpay.wallet.permission.C2D_MESSAGE" />
+
+    <application
+      android:name=".MainApplication"
+      android:label="@string/app_name"
+      android:icon="@mipmap/ic_launcher"
+      android:roundIcon="@mipmap/ic_launcher_round"
+      android:allowBackup="false"
+      android:theme="@style/AppTheme"
+      android:networkSecurityConfig="@xml/network_security_config"
+      android:requestLegacyExternalStorage="true">
+
+        <activity
+          android:name=".LaunchActivity"
+          android:exported="true">
+          <intent-filter>
+              <action android:name="android.intent.action.MAIN" />
+              <category android:name="android.intent.category.LAUNCHER" />
+          </intent-filter>
+        </activity>
+      
+       <receiver
+            android:name=".CustomBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.braze.push.intent.NOTIFICATION_OPENED" />
+                <action android:name="com.braze.push.intent.NOTIFICATION_RECEIVED" />
+                <action android:name="com.braze.push.intent.NOTIFICATION_DELETED" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.braze.push.BrazeFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- Used by Dosh Android SDK -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="GOOGLE_MAPS_API_KEY_REPLACE_ME" />
+
+        <meta-data
+            android:name="AllowedUrlPrefixes"
+            android:value="ALLOWED-URL-PREFIXES-REPLACE-ME" />
+
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="bitpay" />
+                <data android:scheme="bitcoin" />
+                <data android:scheme="bitcoincash" />
+                <data android:scheme="ethereum" />
+                <data android:scheme="matic" />
+                <data android:scheme="dogecoin" />
+                <data android:scheme="litecoin" />
+            </intent-filter>
+            <!-- Handle all BitPay OneLink URIs -->
+            <intent-filter
+                android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="bitpay.onelink.me" />
+            </intent-filter>
+            <!-- Handle universal links wrapped by SendGrid -->
+            <intent-filter
+                android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="clicks.bitpay.com"
+                    android:pathPrefix="/uni/" />
+            </intent-filter>
+            <!-- Handle universal links wrapped by SendGrid -->
+            <intent-filter
+                android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="email.bitpay.com"
+                    android:pathPrefix="/uni/" />
+            </intent-filter>
+            <!-- Handle universal links wrapped by SparkPost (sent from Braze) -->
+            <intent-filter
+                android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="clicks.bitpay.com"
+                    android:pathPrefix="/f/uni/" />
+            </intent-filter>
+            <intent-filter
+                android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="link.bitpay.com"
+                    android:pathPrefix="/i/" />
+            </intent-filter>
+            <intent-filter
+                android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="link.bitpay.com"
+                    android:pathPrefix="/wallet/wc" />
+            </intent-filter>
+            <intent-filter
+                android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="link.test.bitpay.com"
+                    android:pathPrefix="/i/" />
+            </intent-filter>
+            <intent-filter
+                android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="link.test.bitpay.com"
+                    android:pathPrefix="/wallet/wc" />
+            </intent-filter>
+            <intent-filter
+                android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="link.staging.bitpay.com"
+                    android:pathPrefix="/i/" />
+            </intent-filter>
+            <intent-filter
+                android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="link.staging.bitpay.com"
+                    android:pathPrefix="/wallet/wc" />
+            </intent-filter>
+        </activity>
+           <activity
+            android:name="com.zoontek.rnbootsplash.RNBootSplashActivity"
+            android:theme="@style/BootTheme"
+            android:launchMode="singleTask"></activity>
+    </application>
+</manifest>

@@ -1,0 +1,136 @@
+<resources>
+    <string name="drawer_menu_my_assets">My Assets</string>
+    <string name="faq">FAQ</string>
+    <string name="changePath">Change Derivation Path</string>
+    <string name="change_address_type">Change Address Type</string>
+    <string name="changePathText">Please select the derivation path for %s you want to use.</string>
+
+    <string name="change_path_sub_text">The first 3 accounts (addresses) are displayed for each path.</string>
+    <string name="eth_standard_path">This path is the most common one that many software wallets use to generate addresses. Some examples include MetaMask, Rabby, BitKeep &amp; Core Wallet.</string>
+
+    <string name="connect_wallets">Connect SoftWare Wallets</string>
+
+    <string-array name="watch_wallet_list_remove_wallet_mode">
+        <item>Keystone Companion App</item>
+        <item>MetaMask</item>
+        <item>OKX Wallet</item>
+        <item>Keplr</item>
+        <item>Safe</item>
+        <item>BitKeep</item>
+        <item>BlueWallet</item>
+        <item>Solflare Wallet</item>
+        <item>SubWallet</item>
+<!--        <item>Eternl</item>-->
+        <item>ArConnect</item>
+        <item>Petra Aptos Wallet</item>
+        <item>Fewcha Move Wallet</item>
+<!--        <item>Suiet</item>-->
+        <item>Sender Wallet</item>
+        <item>BlockWallet</item>
+        <item>Rabby</item>
+        <item>Core</item>
+        <item>Polkadot{.js}</item>
+        <item>XRP Toolkit</item>
+        <item>Zapper</item>
+        <item>Yearn Finance</item>
+        <item>SushiSwap</item>
+    </string-array>
+    <string-array name="watch_wallet_ids" translatable="false">
+        <item>keystone</item>
+        <item>metamask</item>
+        <item>okx</item>
+        <item>keplr</item>
+        <item>safe</item>
+        <item>bitkeep</item>
+        <item>bluewallet</item>
+        <item>solflare</item>
+        <item>subwallet</item>
+<!--        <item>eternl</item>-->
+        <item>arconnect</item>
+        <item>petra</item>
+        <item>fewcha</item>
+<!--        <item>suiet</item>-->
+        <item>sender</item>
+        <item>blockwallet</item>
+        <item>rabby</item>
+        <item>core</item>
+        <item>polkadotjs</item>
+        <item>xrp</item>
+        <item>zapper</item>
+        <item>yearn</item>
+        <item>sushiswap</item>
+    </string-array>
+    <string-array name="watch_wallet_summury_remove_wallet_mode">
+        <item>9 main chains including BTC, ETH, etc</item>
+        <item>ETH, AVAX, BNB, and other EVM tokens</item>
+        <item>ETH, AVAX, BNB, and other EVM tokens</item>
+        <item>Cosmos Eco</item>
+        <item>ETH, AVAX, BNB, and other EVM tokens</item>
+        <item>ETH, AVAX, BNB, and other EVM tokens</item>
+        <item>BTC</item>
+        <item>SOL and SPL tokens</item>
+        <item>DOT, KSM</item>
+<!--        <item>ADA</item>-->
+        <item>AR</item>
+        <item>APT and related token</item>
+        <item>APT, SUI and related tokens</item>
+<!--        <item>SUI and related tokens</item>-->
+        <item>NEAR and related token</item>
+        <item>ETH, AVAX, BNB, and other EVM tokens</item>
+        <item>ETH, AVAX, BNB, and other EVM tokens</item>
+        <item>AVAX, ETH, BTC </item>
+        <item>DOT, KSM</item>
+        <item>XRP Toolkit</item>
+        <item>DeFi</item>
+        <item>DeFi</item>
+        <item>DeFi</item>
+    </string-array>
+
+
+    <string name="connect_who">Connect %s</string>>
+
+    <string name="connect_info">Connection QR Code</string>>
+
+    <string name="scan_via_keystone">Scan the QR code via Keystone Companion App</string>
+    <string name="scan_via_software">Scan the QR code via your software wallet</string>
+    <string name="select_accounts">Select Accounts</string>
+    <string name="select_another_account">Select Another Account</string>
+
+
+    <string-array name="step_label_remove_wallet_mode">
+        <item>Web Authentication</item>
+        <item>Set Password</item>
+        <item>Firmware Upgrade</item>
+        <item>Create/Import Wallet</item>
+        <item>Connect Software Wallets</item>
+    </string-array>
+
+
+    <string name="xfp_not_match">Master fingerprint not match</string>
+
+    <string name="for_more">Tap here for more information</string>
+
+
+    <string-array name="faq_list_tittle">
+        <item>1. Why does the wallet not show any token balance?</item>
+        <item>2. What steps should I take if I misplace my Keystone?</item>
+        <item>3. What is the maximum number of wallets that can be managed simultaneously?</item>
+        <item>4. What is a passphrase?</item>
+        <item>5. What is Shamir Backup？</item>
+        <item>6. What are the different types of account for Bitcoin?</item>
+        <item>7. How do derivation paths work?</item>
+    </string-array>
+
+    <string-array name="faq_list_content">
+        <item>Keystone is a fully offline device thus it is not able to draw data off the blockchain to display your token balance. You\'ll have to sync it with a software wallet in order to view your token balance.</item>
+        <item>You have the ability to retrieve all of your funds by entering your seed phrase into any wallet that supports BIP39. We recommend that you immediately import your seed phrase into a new wallet and transfer your funds to a new address as soon as possible. Additionally, you can also seek assistance from the police. \n\nKeystone Pro users do not need to panic as the device has a built-in self-destruct mechanism that will activate once anyone attempts to physically hack the device. This feature is valid only for 2 years after the date of purchase.</item>
+        <item>Keystone has the capability of handling only a single wallet at any given time. Once you log out, the secure element will erase all data on the device, including your seed phrase.</item>
+        <item>A passphrase for a crypto wallet is a feature that is not mandatory but can be utilized along with your seed phrase to limit entry to your crypto wallet. Passphrases provide an added layer of security in case your seed phrase is compromised or if another individual gains entry to your hardware wallet.</item>
+        <item>The Shamir backup is a secure method to safeguard your recovery seed phrase. It divides the phrase into sections and establishes a minimum number of parts necessary to retrieve it. You have the ability to determine the number of parts required to recover the complete phrase.</item>
+        <item>Bitcoin uses various address formats such as Legacy, SegWit, and Native Segwit addresses for sending and receiving Bitcoin. Each format has its own advantages, such as reduced transaction costs or enhanced privacy.</item>
+        <item>A derivation path refers to a series of steps applied to create multiple crypto addresses from a single private key or seed phrase, enabling the establishment of multiple accounts or addresses within a single wallet.</item>
+    </string-array>
+
+    <string name="faq_link">https://keyst.one/t/faq</string>
+
+</resources>

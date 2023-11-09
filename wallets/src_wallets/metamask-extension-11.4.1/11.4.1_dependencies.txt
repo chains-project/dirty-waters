@@ -1,0 +1,3940 @@
+├─ @actions/core@npm:1.10.0
+│  ├─ Version: 1.10.0
+│  │
+│  └─ Dependencies
+│     ├─ @actions/http-client@npm:^2.0.1 → npm:2.1.0
+│     └─ uuid@npm:^8.3.2 → npm:8.3.2
+│
+├─ @actions/github@npm:5.1.1
+│  ├─ Version: 5.1.1
+│  │
+│  └─ Dependencies
+│     ├─ @actions/http-client@npm:^2.0.1 → npm:2.1.0
+│     ├─ @octokit/core@npm:^3.6.0 → npm:3.6.0
+│     ├─ @octokit/plugin-paginate-rest@npm:^2.17.0 → npm:2.21.3 [61d3d]
+│     └─ @octokit/plugin-rest-endpoint-methods@npm:^5.13.0 → npm:5.16.2 [61d3d]
+│
+├─ @babel/code-frame@npm:7.22.13
+│  ├─ Version: 7.22.13
+│  │
+│  └─ Dependencies
+│     ├─ @babel/highlight@npm:^7.22.13 → npm:7.22.20
+│     └─ chalk@npm:^2.4.2 → npm:2.4.2
+│
+├─ @babel/core@patch:@babel/core@npm%3A7.23.2#~/.yarn/patches/@babel-core-npm-7.23.2-b93f586907.patch::version=7.23.2&hash=a78815
+│  ├─ Version: 7.23.2
+│  │
+│  └─ Dependencies
+│     ├─ @ampproject/remapping@npm:^2.2.0 → npm:2.2.1
+│     ├─ @babel/code-frame@npm:^7.22.13 → npm:7.22.13
+│     ├─ @babel/generator@npm:^7.23.0 → npm:7.23.0
+│     ├─ @babel/helper-compilation-targets@npm:^7.22.15 → npm:7.22.15
+│     ├─ @babel/helpers@npm:^7.23.2 → npm:7.23.2
+│     ├─ @babel/parser@npm:^7.23.0 → npm:7.23.0
+│     ├─ @babel/template@npm:^7.22.15 → npm:7.22.15
+│     ├─ @babel/traverse@npm:^7.23.2 → npm:7.23.2
+│     ├─ @babel/types@npm:^7.23.0 → npm:7.23.0
+│     ├─ convert-source-map@npm:^2.0.0 → npm:2.0.0
+│     ├─ gensync@npm:^1.0.0-beta.2 → npm:1.0.0-beta.2
+│     ├─ json5@npm:^2.2.3 → npm:2.2.3
+│     ├─ semver@npm:^6.3.1 → npm:6.3.1
+│     ├─ @babel/helper-module-transforms@npm:^7.23.0 → npm:7.23.0 [57060]
+│     └─ debug@npm:^4.1.0 → npm:4.3.4 [4758f]
+│
+├─ @babel/eslint-parser@npm:7.22.15
+│  ├─ Instances: 1
+│  ├─ Version: 7.22.15
+│  │
+│  └─ Dependencies
+│     ├─ @nicolo-ribaudo/eslint-scope-5-internals@npm:5.1.1-v1 → npm:5.1.1-v1
+│     ├─ eslint-visitor-keys@npm:^2.1.0 → npm:2.1.0
+│     └─ semver@npm:^6.3.1 → npm:6.3.1
+│
+├─ @babel/eslint-plugin@npm:7.22.10
+│  ├─ Instances: 1
+│  ├─ Version: 7.22.10
+│  │
+│  └─ Dependencies
+│     └─ eslint-rule-composer@npm:^0.3.0 → npm:0.3.0
+│
+├─ @babel/preset-env@npm:7.23.2
+│  ├─ Instances: 1
+│  ├─ Version: 7.23.2
+│  │
+│  └─ Dependencies
+│     ├─ @babel/compat-data@npm:^7.23.2 → npm:7.23.2
+│     ├─ @babel/helper-compilation-targets@npm:^7.22.15 → npm:7.22.15
+│     ├─ @babel/helper-plugin-utils@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/helper-validator-option@npm:^7.22.15 → npm:7.22.15
+│     ├─ @babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression@npm:^7.22.15 → npm:7.22.15
+│     ├─ @babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining@npm:^7.22.15 → npm:7.22.15
+│     ├─ @babel/plugin-proposal-private-property-in-object@npm:7.21.0-placeholder-for-preset-env.2 → npm:7.21.0-placeholder-for-preset-env.2
+│     ├─ @babel/plugin-syntax-async-generators@npm:^7.8.4 → npm:7.8.4
+│     ├─ @babel/plugin-syntax-class-properties@npm:^7.12.13 → npm:7.12.13
+│     ├─ @babel/plugin-syntax-class-static-block@npm:^7.14.5 → npm:7.14.5
+│     ├─ @babel/plugin-syntax-dynamic-import@npm:^7.8.3 → npm:7.8.3
+│     ├─ @babel/plugin-syntax-export-namespace-from@npm:^7.8.3 → npm:7.8.3
+│     ├─ @babel/plugin-syntax-import-assertions@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-syntax-import-attributes@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-syntax-import-meta@npm:^7.10.4 → npm:7.10.4
+│     ├─ @babel/plugin-syntax-json-strings@npm:^7.8.3 → npm:7.8.3
+│     ├─ @babel/plugin-syntax-logical-assignment-operators@npm:^7.10.4 → npm:7.10.4
+│     ├─ @babel/plugin-syntax-nullish-coalescing-operator@npm:^7.8.3 → npm:7.8.3
+│     ├─ @babel/plugin-syntax-numeric-separator@npm:^7.10.4 → npm:7.10.4
+│     ├─ @babel/plugin-syntax-object-rest-spread@npm:^7.8.3 → npm:7.8.3
+│     ├─ @babel/plugin-syntax-optional-catch-binding@npm:^7.8.3 → npm:7.8.3
+│     ├─ @babel/plugin-syntax-optional-chaining@npm:^7.8.3 → npm:7.8.3
+│     ├─ @babel/plugin-syntax-private-property-in-object@npm:^7.14.5 → npm:7.14.5
+│     ├─ @babel/plugin-syntax-top-level-await@npm:^7.14.5 → npm:7.14.5
+│     ├─ @babel/plugin-syntax-unicode-sets-regex@npm:^7.18.6 → npm:7.18.6
+│     ├─ @babel/plugin-transform-arrow-functions@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-async-generator-functions@npm:^7.23.2 → npm:7.23.2
+│     ├─ @babel/plugin-transform-async-to-generator@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-block-scoped-functions@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-block-scoping@npm:^7.23.0 → npm:7.23.0
+│     ├─ @babel/plugin-transform-class-properties@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-class-static-block@npm:^7.22.11 → npm:7.22.11
+│     ├─ @babel/plugin-transform-classes@npm:^7.22.15 → npm:7.22.15
+│     ├─ @babel/plugin-transform-computed-properties@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-destructuring@npm:^7.23.0 → npm:7.23.0
+│     ├─ @babel/plugin-transform-dotall-regex@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-duplicate-keys@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-dynamic-import@npm:^7.22.11 → npm:7.22.11
+│     ├─ @babel/plugin-transform-exponentiation-operator@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-export-namespace-from@npm:^7.22.11 → npm:7.22.11
+│     ├─ @babel/plugin-transform-for-of@npm:^7.22.15 → npm:7.22.15
+│     ├─ @babel/plugin-transform-function-name@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-json-strings@npm:^7.22.11 → npm:7.22.11
+│     ├─ @babel/plugin-transform-literals@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-logical-assignment-operators@npm:^7.22.11 → npm:7.22.11
+│     ├─ @babel/plugin-transform-member-expression-literals@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-modules-amd@npm:^7.23.0 → npm:7.23.0
+│     ├─ @babel/plugin-transform-modules-commonjs@npm:^7.23.0 → npm:7.23.0
+│     ├─ @babel/plugin-transform-modules-systemjs@npm:^7.23.0 → npm:7.23.0
+│     ├─ @babel/plugin-transform-modules-umd@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-named-capturing-groups-regex@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-new-target@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-nullish-coalescing-operator@npm:^7.22.11 → npm:7.22.11
+│     ├─ @babel/plugin-transform-numeric-separator@npm:^7.22.11 → npm:7.22.11
+│     ├─ @babel/plugin-transform-object-rest-spread@npm:^7.22.15 → npm:7.22.15
+│     ├─ @babel/plugin-transform-object-super@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-optional-catch-binding@npm:^7.22.11 → npm:7.22.11
+│     ├─ @babel/plugin-transform-optional-chaining@npm:^7.23.0 → npm:7.23.0
+│     ├─ @babel/plugin-transform-parameters@npm:^7.22.15 → npm:7.22.15
+│     ├─ @babel/plugin-transform-private-methods@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-private-property-in-object@npm:^7.22.11 → npm:7.22.11
+│     ├─ @babel/plugin-transform-property-literals@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-regenerator@npm:^7.22.10 → npm:7.22.10
+│     ├─ @babel/plugin-transform-reserved-words@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-shorthand-properties@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-spread@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-sticky-regex@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-template-literals@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-typeof-symbol@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-unicode-escapes@npm:^7.22.10 → npm:7.22.10
+│     ├─ @babel/plugin-transform-unicode-property-regex@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-unicode-regex@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-unicode-sets-regex@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/preset-modules@npm:0.1.6-no-external-plugins → npm:0.1.6-no-external-plugins
+│     ├─ @babel/types@npm:^7.23.0 → npm:7.23.0
+│     ├─ babel-plugin-polyfill-corejs2@npm:^0.4.6 → npm:0.4.6
+│     ├─ babel-plugin-polyfill-corejs3@npm:^0.8.5 → npm:0.8.5
+│     ├─ babel-plugin-polyfill-regenerator@npm:^0.5.3 → npm:0.5.3
+│     ├─ core-js-compat@npm:^3.31.0 → npm:3.33.0
+│     └─ semver@npm:^6.3.1 → npm:6.3.1
+│
+├─ @babel/preset-react@npm:7.22.15
+│  ├─ Instances: 1
+│  ├─ Version: 7.22.15
+│  │
+│  └─ Dependencies
+│     ├─ @babel/helper-plugin-utils@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/helper-validator-option@npm:^7.22.15 → npm:7.22.15
+│     ├─ @babel/plugin-transform-react-display-name@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-react-jsx-development@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-react-jsx@npm:^7.22.15 → npm:7.22.15
+│     └─ @babel/plugin-transform-react-pure-annotations@npm:^7.22.5 → npm:7.22.5
+│
+├─ @babel/preset-typescript@npm:7.23.2
+│  ├─ Instances: 1
+│  ├─ Version: 7.23.2
+│  │
+│  └─ Dependencies
+│     ├─ @babel/helper-plugin-utils@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/helper-validator-option@npm:^7.22.15 → npm:7.22.15
+│     ├─ @babel/plugin-syntax-jsx@npm:^7.22.5 → npm:7.22.5
+│     ├─ @babel/plugin-transform-modules-commonjs@npm:^7.23.0 → npm:7.23.0
+│     └─ @babel/plugin-transform-typescript@npm:^7.22.15 → npm:7.22.15
+│
+├─ @babel/register@npm:7.22.15
+│  ├─ Instances: 1
+│  ├─ Version: 7.22.15
+│  │
+│  └─ Dependencies
+│     ├─ clone-deep@npm:^4.0.1 → npm:4.0.1
+│     ├─ find-cache-dir@npm:^2.0.0 → npm:2.1.0
+│     ├─ make-dir@npm:^2.1.0 → npm:2.1.0
+│     ├─ pirates@npm:^4.0.5 → npm:4.0.5
+│     └─ source-map-support@npm:^0.5.16 → npm:0.5.21
+│
+├─ @babel/runtime@patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch::version=7.23.2&hash=7df10d
+│  ├─ Version: 7.23.2
+│  │
+│  └─ Dependencies
+│     └─ regenerator-runtime@npm:^0.14.0 → npm:0.14.0
+│
+├─ @blockaid/ppom_release@npm:1.2.8
+│  └─ Version: 1.2.8
+│
+├─ @download/blockies@npm:1.0.3
+│  └─ Version: 1.0.3
+│
+├─ @ensdomains/content-hash@npm:2.5.6
+│  ├─ Version: 2.5.6
+│  │
+│  └─ Dependencies
+│     ├─ cids@npm:^1.1.5 → npm:1.1.7
+│     ├─ js-base64@npm:^3.6.0 → npm:3.6.1
+│     ├─ multicodec@npm:^2.1.0 → npm:2.1.3
+│     └─ multihashes@npm:^2.0.0 → npm:2.0.0
+│
+├─ @ethereumjs/common@npm:3.2.0
+│  ├─ Version: 3.2.0
+│  │
+│  └─ Dependencies
+│     ├─ @ethereumjs/util@npm:^8.1.0 → npm:8.1.0
+│     └─ crc-32@npm:^1.2.0 → npm:1.2.0
+│
+├─ @ethereumjs/tx@npm:4.2.0
+│  ├─ Version: 4.2.0
+│  │
+│  └─ Dependencies
+│     ├─ @ethereumjs/common@npm:^3.2.0 → npm:3.2.0
+│     ├─ @ethereumjs/rlp@npm:^4.0.1 → npm:4.0.1
+│     ├─ @ethereumjs/util@npm:^8.1.0 → npm:8.1.0
+│     └─ ethereum-cryptography@npm:^2.0.0 → npm:2.1.2
+│
+├─ @ethersproject/abi@npm:5.7.0
+│  ├─ Version: 5.7.0
+│  │
+│  └─ Dependencies
+│     ├─ @ethersproject/address@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/bignumber@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/bytes@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/constants@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/hash@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/keccak256@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/logger@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/properties@npm:^5.7.0 → npm:5.7.0
+│     └─ @ethersproject/strings@npm:^5.7.0 → npm:5.7.0
+│
+├─ @ethersproject/bignumber@npm:5.7.0
+│  ├─ Version: 5.7.0
+│  │
+│  └─ Dependencies
+│     ├─ @ethersproject/bytes@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/logger@npm:^5.7.0 → npm:5.7.0
+│     └─ bn.js@npm:^5.2.1 → npm:5.2.1
+│
+├─ @ethersproject/contracts@npm:5.7.0
+│  ├─ Version: 5.7.0
+│  │
+│  └─ Dependencies
+│     ├─ @ethersproject/abi@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/abstract-provider@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/abstract-signer@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/address@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/bignumber@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/bytes@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/constants@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/logger@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/properties@npm:^5.7.0 → npm:5.7.0
+│     └─ @ethersproject/transactions@npm:^5.7.0 → npm:5.7.0
+│
+├─ @ethersproject/hdnode@npm:5.7.0
+│  ├─ Version: 5.7.0
+│  │
+│  └─ Dependencies
+│     ├─ @ethersproject/abstract-signer@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/basex@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/bignumber@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/bytes@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/logger@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/pbkdf2@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/properties@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/sha2@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/signing-key@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/strings@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/transactions@npm:^5.7.0 → npm:5.7.0
+│     └─ @ethersproject/wordlists@npm:^5.7.0 → npm:5.7.0
+│
+├─ @ethersproject/providers@npm:5.7.2
+│  ├─ Version: 5.7.2
+│  │
+│  └─ Dependencies
+│     ├─ @ethersproject/abstract-provider@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/abstract-signer@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/address@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/base64@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/basex@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/bignumber@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/bytes@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/constants@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/hash@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/logger@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/networks@npm:^5.7.0 → npm:5.7.1
+│     ├─ @ethersproject/properties@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/random@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/rlp@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/sha2@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/strings@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/transactions@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/web@npm:^5.7.0 → npm:5.7.1
+│     ├─ bech32@npm:1.1.4 → npm:1.1.4
+│     └─ ws@npm:7.4.6 → npm:7.4.6 [88293]
+│
+├─ @fortawesome/fontawesome-free@patch:@fortawesome/fontawesome-free@npm%3A5.13.0#./.yarn/patches/@fortawesome-fontawesome-free-npm-5.13.0-f20fc0388d.patch::version=5.13.0&hash=5c51fe&locator=metamask-crx%40workspace%3A.
+│  └─ Version: 5.13.0
+│
+├─ @keystonehq/bc-ur-registry-eth@npm:0.19.1
+│  ├─ Version: 0.19.1
+│  │
+│  └─ Dependencies
+│     ├─ @ethereumjs/util@npm:^8.0.0 → npm:8.1.0
+│     ├─ @keystonehq/bc-ur-registry@npm:^0.6.0 → npm:0.6.0
+│     ├─ hdkey@npm:^2.0.1 → npm:2.0.1
+│     └─ uuid@npm:^8.3.2 → npm:8.3.2
+│
+├─ @keystonehq/metamask-airgapped-keyring@npm:0.13.1
+│  ├─ Version: 0.13.1
+│  │
+│  └─ Dependencies
+│     ├─ @ethereumjs/tx@npm:^4.0.2 → npm:4.2.0
+│     ├─ @keystonehq/base-eth-keyring@npm:^0.14.1 → npm:0.14.1
+│     ├─ @keystonehq/bc-ur-registry-eth@npm:^0.19.1 → npm:0.19.1
+│     ├─ @metamask/obs-store@npm:^7.0.0 → npm:7.0.0
+│     ├─ rlp@npm:^2.2.6 → npm:2.2.7
+│     └─ uuid@npm:^8.3.2 → npm:8.3.2
+│
+├─ @lavamoat/allow-scripts@npm:2.3.1
+│  ├─ Version: 2.3.1
+│  │
+│  ├─ Exported Binaries
+│  │  └─ allow-scripts
+│  │
+│  └─ Dependencies
+│     ├─ @lavamoat/aa@npm:^3.1.1 → npm:3.1.5
+│     ├─ @npmcli/run-script@npm:^6.0.0 → npm:6.0.2
+│     ├─ bin-links@npm:4.0.1 → npm:4.0.1
+│     ├─ npm-normalize-package-bin@npm:^3.0.0 → npm:3.0.1
+│     └─ yargs@npm:^16.2.0 → npm:16.2.0
+│
+├─ @lavamoat/lavapack@npm:5.4.1
+│  ├─ Version: 5.4.1
+│  │
+│  └─ Dependencies
+│     ├─ JSONStream@npm:^1.3.5 → npm:1.3.5
+│     ├─ combine-source-map@npm:^0.8.0 → npm:0.8.0
+│     ├─ convert-source-map@npm:^2.0.0 → npm:2.0.0
+│     ├─ json-stable-stringify@npm:^1.0.2 → npm:1.0.2
+│     ├─ lavamoat-core@patch:lavamoat-core@npm%3A14.4.1#~/.yarn/patches/lavamoat-core-npm-14.4.1-c4e8bbb016.patch → patch:lavamoat-core@npm%3A14.4.1#~/.yarn/patches/lavamoat-core-npm-14.4.1-c4e8bbb016.patch::version=14.4.1&hash=1822ab
+│     ├─ readable-stream@npm:^3.6.0 → npm:3.6.2
+│     ├─ through2@npm:^4.0.2 → npm:4.0.2
+│     └─ umd@npm:^3.0.3 → npm:3.0.3
+│
+├─ @lavamoat/snow@npm:1.5.0
+│  ├─ Version: 1.5.0
+│  │
+│  └─ Dependencies
+│     └─ is-cross-origin@npm:^1.0.1 → npm:1.0.1
+│
+├─ @material-ui/core@npm:4.11.0
+│  ├─ Instances: 1
+│  ├─ Version: 4.11.0
+│  │
+│  └─ Dependencies
+│     ├─ @babel/runtime@patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch → patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch::version=7.23.2&hash=7df10d
+│     ├─ @material-ui/styles@npm:^4.10.0 → npm:4.10.0
+│     ├─ @material-ui/system@npm:^4.9.14 → npm:4.9.14
+│     ├─ @material-ui/types@npm:^5.1.0 → npm:5.1.0
+│     ├─ @material-ui/utils@npm:^4.10.2 → npm:4.10.2
+│     ├─ @types/react-transition-group@npm:^4.2.0 → npm:4.4.6
+│     ├─ clsx@npm:^1.0.4 → npm:1.1.1
+│     ├─ hoist-non-react-statics@npm:^3.3.2 → npm:3.3.2
+│     ├─ popper.js@npm:1.16.1-lts → npm:1.16.1-lts
+│     ├─ prop-types@npm:^15.7.2 → npm:15.8.1
+│     ├─ react-is@npm:^16.8.0 → npm:16.13.1
+│     └─ react-transition-group@npm:^4.4.0 → npm:4.4.2
+│
+├─ @metamask-institutional/custody-controller@npm:0.2.15
+│  ├─ Version: 0.2.15
+│  │
+│  └─ Dependencies
+│     ├─ @ethereumjs/util@npm:^8.0.5 → npm:8.1.0
+│     ├─ @metamask-institutional/custody-keyring@npm:^1.0.4 → npm:1.0.4
+│     ├─ @metamask-institutional/sdk@npm:^0.1.20 → npm:0.1.20
+│     ├─ @metamask-institutional/types@npm:^1.0.3 → npm:1.0.3
+│     └─ @metamask/obs-store@npm:^8.0.0 → npm:8.1.0
+│
+├─ @metamask-institutional/custody-keyring@npm:1.0.4
+│  ├─ Version: 1.0.4
+│  │
+│  └─ Dependencies
+│     ├─ @ethereumjs/tx@npm:^4.1.1 → npm:4.2.0
+│     ├─ @ethereumjs/util@npm:^8.0.5 → npm:8.1.0
+│     ├─ @metamask-institutional/configuration-client@npm:^2.0.0 → npm:2.0.0
+│     ├─ @metamask-institutional/sdk@npm:^0.1.20 → npm:0.1.20
+│     ├─ @metamask-institutional/types@npm:^1.0.3 → npm:1.0.3
+│     ├─ @metamask/obs-store@npm:^8.0.0 → npm:8.1.0
+│     ├─ crypto@npm:^1.0.1 → npm:1.0.1
+│     └─ lodash.clonedeep@npm:^4.5.0 → npm:4.5.0
+│
+├─ @metamask-institutional/extension@npm:0.3.8
+│  ├─ Version: 0.3.8
+│  │
+│  └─ Dependencies
+│     ├─ @ethereumjs/util@npm:^8.0.5 → npm:8.1.0
+│     ├─ @metamask-institutional/custody-controller@npm:^0.2.15 → npm:0.2.15
+│     ├─ @metamask-institutional/custody-keyring@npm:^1.0.4 → npm:1.0.4
+│     ├─ @metamask-institutional/portfolio-dashboard@npm:^1.4.0 → npm:1.4.0
+│     ├─ @metamask-institutional/sdk@npm:^0.1.20 → npm:0.1.20
+│     ├─ @metamask-institutional/transaction-update@npm:^0.1.30 → npm:0.1.30
+│     ├─ @metamask-institutional/types@npm:^1.0.3 → npm:1.0.3
+│     ├─ jest-create-mock-instance@npm:^2.0.0 → npm:2.0.0
+│     └─ jest-fetch-mock@npm:3.0.3 → npm:3.0.3
+│
+├─ @metamask-institutional/institutional-features@npm:1.2.7
+│  ├─ Version: 1.2.7
+│  │
+│  └─ Dependencies
+│     ├─ @metamask-institutional/custody-keyring@npm:^1.0.4 → npm:1.0.4
+│     └─ @metamask/obs-store@npm:^8.0.0 → npm:8.1.0
+│
+├─ @metamask-institutional/portfolio-dashboard@npm:1.4.0
+│  └─ Version: 1.4.0
+│
+├─ @metamask-institutional/rpc-allowlist@npm:1.0.0
+│  └─ Version: 1.0.0
+│
+├─ @metamask-institutional/sdk@npm:0.1.20
+│  ├─ Version: 0.1.20
+│  │
+│  └─ Dependencies
+│     ├─ @metamask-institutional/simplecache@npm:^1.1.0 → npm:1.1.0
+│     ├─ @metamask-institutional/types@npm:^1.0.3 → npm:1.0.3
+│     ├─ @types/jsonwebtoken@npm:^9.0.1 → npm:9.0.2
+│     ├─ @types/node@npm:^20.4.2 → npm:20.8.2
+│     ├─ bignumber.js@npm:^9.1.1 → npm:9.1.1
+│     └─ jsonwebtoken@npm:^9.0.0 → npm:9.0.0
+│
+├─ @metamask-institutional/transaction-update@npm:0.1.30
+│  ├─ Version: 0.1.30
+│  │
+│  └─ Dependencies
+│     ├─ @metamask-institutional/custody-keyring@npm:^1.0.4 → npm:1.0.4
+│     ├─ @metamask-institutional/sdk@npm:^0.1.20 → npm:0.1.20
+│     ├─ @metamask-institutional/types@npm:^1.0.3 → npm:1.0.3
+│     ├─ @metamask-institutional/websocket-client@npm:^0.1.32 → npm:0.1.32
+│     ├─ @metamask/obs-store@npm:^8.0.0 → npm:8.1.0
+│     └─ ethereumjs-util@patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::locator=metamask-crx%40workspace%3A. → patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::version=7.1.5&hash=c1ed5b&locator=metamask-crx%40workspace%3A.
+│
+├─ @metamask/address-book-controller@npm:3.0.0
+│  ├─ Version: 3.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/base-controller@npm:^3.0.0 → npm:3.2.3
+│     ├─ @metamask/controller-utils@npm:^4.0.0 → npm:4.3.2
+│     └─ @metamask/utils@npm:^5.0.2 → npm:5.0.2
+│
+├─ @metamask/announcement-controller@npm:4.0.0
+│  ├─ Version: 4.0.0
+│  │
+│  └─ Dependencies
+│     └─ @metamask/base-controller@npm:^3.0.0 → npm:3.2.3
+│
+├─ @metamask/approval-controller@npm:3.4.0
+│  ├─ Version: 3.4.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/base-controller@npm:^3.0.0 → npm:3.2.3
+│     ├─ @metamask/utils@npm:^5.0.2 → npm:5.0.2
+│     ├─ eth-rpc-errors@npm:^4.0.2 → npm:4.0.3
+│     ├─ immer@npm:^9.0.6 → npm:9.0.6
+│     └─ nanoid@npm:^3.1.31 → npm:3.3.6
+│
+├─ @metamask/assets-controllers@patch:@metamask/assets-controllers@npm%3A13.0.0#~/.yarn/patches/@metamask-assets-controllers-npm-13.0.0-91c45127c5.patch::version=13.0.0&hash=5544c9
+│  ├─ Instances: 1
+│  ├─ Version: 13.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @ethersproject/address@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/bignumber@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/contracts@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/providers@npm:^5.7.0 → npm:5.7.2
+│     ├─ @metamask/abi-utils@npm:^2.0.2 → npm:2.0.2
+│     ├─ @metamask/approval-controller@npm:^3.4.0 → npm:3.4.0
+│     ├─ @metamask/base-controller@npm:^3.2.1 → npm:3.2.3
+│     ├─ @metamask/contract-metadata@npm:^2.3.1 → npm:2.3.1
+│     ├─ @metamask/controller-utils@npm:^5.0.0 → npm:5.0.2
+│     ├─ @metamask/eth-query@npm:^3.0.1 → npm:3.0.1
+│     ├─ @metamask/metamask-eth-abis@npm:3.0.0 → npm:3.0.0
+│     ├─ @metamask/network-controller@npm:^13.0.0 → npm:13.0.0
+│     ├─ @metamask/preferences-controller@npm:^4.4.1 → npm:4.4.3
+│     ├─ @metamask/rpc-errors@npm:^5.1.1 → npm:5.1.1
+│     ├─ @metamask/utils@npm:^6.2.0 → npm:6.2.0
+│     ├─ @types/uuid@npm:^8.3.0 → npm:8.3.0
+│     ├─ abort-controller@patch:abort-controller@npm%3A3.0.0#./.yarn/patches/abort-controller-npm-3.0.0-2f3a9a2bcb.patch::locator=metamask-crx%40workspace%3A. → patch:abort-controller@npm%3A3.0.0#./.yarn/patches/abort-controller-npm-3.0.0-2f3a9a2bcb.patch::version=3.0.0&hash=22c12d&locator=metamask-crx%40workspace%3A.
+│     ├─ async-mutex@npm:^0.2.6 → npm:0.2.6
+│     ├─ ethereumjs-util@patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::locator=metamask-crx%40workspace%3A. → patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::version=7.1.5&hash=c1ed5b&locator=metamask-crx%40workspace%3A.
+│     ├─ immer@npm:^9.0.6 → npm:9.0.6
+│     ├─ multiformats@npm:^9.5.2 → npm:9.5.2
+│     ├─ single-call-balance-checker-abi@npm:^1.0.0 → npm:1.0.0
+│     └─ uuid@npm:^8.3.2 → npm:8.3.2
+│
+├─ @metamask/auto-changelog@npm:2.6.1
+│  ├─ Version: 2.6.1
+│  │
+│  ├─ Exported Binaries
+│  │  └─ auto-changelog
+│  │
+│  └─ Dependencies
+│     ├─ diff@npm:^5.0.0 → npm:5.0.0
+│     ├─ execa@npm:^5.1.1 → npm:5.1.1
+│     ├─ semver@npm:^7.3.5 → npm:7.5.4
+│     └─ yargs@npm:^17.0.1 → npm:17.7.2
+│
+├─ @metamask/base-controller@npm:3.2.3
+│  ├─ Version: 3.2.3
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/utils@npm:^8.1.0 → npm:8.1.0
+│     └─ immer@npm:^9.0.6 → npm:9.0.6
+│
+├─ @metamask/browser-passworder@npm:4.1.0
+│  └─ Version: 4.1.0
+│
+├─ @metamask/contract-metadata@npm:2.3.1
+│  └─ Version: 2.3.1
+│
+├─ @metamask/controller-utils@npm:4.3.2
+│  ├─ Version: 4.3.2
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/eth-query@npm:^3.0.1 → npm:3.0.1
+│     ├─ @metamask/utils@npm:^6.2.0 → npm:6.2.0
+│     ├─ @spruceid/siwe-parser@npm:1.1.3 → npm:1.1.3
+│     ├─ eth-ens-namehash@npm:^2.0.8 → npm:2.0.8
+│     ├─ eth-rpc-errors@npm:^4.0.2 → npm:4.0.3
+│     ├─ ethereumjs-util@patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::locator=metamask-crx%40workspace%3A. → patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::version=7.1.5&hash=c1ed5b&locator=metamask-crx%40workspace%3A.
+│     ├─ ethjs-unit@npm:^0.1.6 → npm:0.1.6
+│     └─ fast-deep-equal@npm:^3.1.3 → npm:3.1.3
+│
+├─ @metamask/design-tokens@npm:1.12.0
+│  └─ Version: 1.12.0
+│
+├─ @metamask/desktop@npm:0.3.0
+│  ├─ Version: 0.3.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/obs-store@npm:^5.0.0 → npm:5.0.0
+│     ├─ eciesjs@npm:^0.3.15 → npm:0.3.16
+│     ├─ end-of-stream@npm:^1.4.4 → npm:1.4.4
+│     ├─ extension-port-stream@npm:^2.0.0 → npm:2.1.1
+│     ├─ loglevel@npm:^1.8.0 → npm:1.8.1
+│     ├─ obj-multiplex@npm:^1.0.0 → npm:1.0.0
+│     ├─ otpauth@npm:^8.0.3 → npm:8.0.3
+│     ├─ uuid@npm:^8.3.2 → npm:8.3.2
+│     ├─ webextension-polyfill@npm:^0.8.0 → npm:0.8.0
+│     └─ ws@npm:^7.4.6 → npm:7.5.9 [21bba]
+│
+├─ @metamask/eslint-config-jest@npm:9.0.0
+│  ├─ Instances: 1
+│  └─ Version: 9.0.0
+│
+├─ @metamask/eslint-config-mocha@npm:9.0.0
+│  ├─ Instances: 1
+│  └─ Version: 9.0.0
+│
+├─ @metamask/eslint-config-nodejs@npm:9.0.0
+│  ├─ Instances: 1
+│  └─ Version: 9.0.0
+│
+├─ @metamask/eslint-config-typescript@npm:9.0.1
+│  ├─ Instances: 1
+│  └─ Version: 9.0.1
+│
+├─ @metamask/eslint-config@npm:9.0.0
+│  ├─ Instances: 1
+│  └─ Version: 9.0.0
+│
+├─ @metamask/eth-json-rpc-middleware@npm:11.0.2
+│  ├─ Version: 11.0.2
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/eth-json-rpc-provider@npm:^1.0.0 → npm:1.0.0
+│     ├─ @metamask/eth-sig-util@npm:^6.0.0 → npm:6.0.0
+│     ├─ @metamask/utils@npm:^5.0.1 → npm:5.0.2
+│     ├─ clone@npm:^2.1.1 → npm:2.1.2
+│     ├─ eth-block-tracker@npm:^7.0.1 → npm:7.0.1
+│     ├─ eth-rpc-errors@npm:^4.0.3 → npm:4.0.3
+│     ├─ json-rpc-engine@npm:^6.1.0 → npm:6.1.0
+│     ├─ pify@npm:^3.0.0 → npm:3.0.0
+│     └─ safe-stable-stringify@npm:^2.3.2 → npm:2.4.3
+│
+├─ @metamask/eth-keyring-controller@patch:@metamask/eth-keyring-controller@npm%3A13.0.1#~/.yarn/patches/@metamask-eth-keyring-controller-npm-13.0.1-06ff83faad.patch::version=13.0.1&hash=6c75cf
+│  ├─ Version: 13.0.1
+│  │
+│  └─ Dependencies
+│     ├─ @ethereumjs/tx@npm:^4.2.0 → npm:4.2.0
+│     ├─ @metamask/browser-passworder@npm:^4.1.0 → npm:4.1.0
+│     ├─ @metamask/eth-hd-keyring@npm:^6.0.0 → npm:6.0.0
+│     ├─ @metamask/eth-sig-util@npm:^6.0.0 → npm:6.0.0
+│     ├─ @metamask/eth-simple-keyring@npm:^5.0.0 → npm:5.0.0
+│     ├─ @metamask/obs-store@npm:^8.1.0 → npm:8.1.0
+│     └─ @metamask/utils@npm:^8.1.0 → npm:8.1.0
+│
+├─ @metamask/eth-ledger-bridge-keyring@npm:0.15.0
+│  ├─ Version: 0.15.0
+│  │
+│  └─ Dependencies
+│     ├─ @ethereumjs/tx@npm:^4.1.1 → npm:4.2.0
+│     ├─ eth-sig-util@npm:^2.0.0 → npm:2.5.4
+│     ├─ ethereumjs-util@patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::locator=metamask-crx%40workspace%3A. → patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::version=7.1.5&hash=c1ed5b&locator=metamask-crx%40workspace%3A.
+│     └─ hdkey@npm:0.8.0 → npm:0.8.0
+│
+├─ @metamask/eth-snap-keyring@npm:1.0.0
+│  ├─ Version: 1.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @ethereumjs/tx@npm:^4.2.0 → npm:4.2.0
+│     ├─ @metamask/eth-sig-util@npm:^7.0.0 → npm:7.0.0
+│     ├─ @metamask/keyring-api@npm:^1.0.0 → npm:1.0.0
+│     ├─ @metamask/snaps-controllers@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/utils@npm:^8.1.0 → npm:8.1.0
+│     ├─ @types/uuid@npm:^9.0.1 → npm:9.0.2
+│     ├─ superstruct@npm:^1.0.3 → npm:1.0.3
+│     └─ uuid@npm:^9.0.0 → npm:9.0.0
+│
+├─ @metamask/eth-token-tracker@npm:4.0.0
+│  ├─ Version: 4.0.0
+│  │
+│  └─ Dependencies
+│     ├─ deep-equal@npm:^1.1.0 → npm:1.1.1
+│     ├─ eth-block-tracker@npm:^4.4.2 → npm:4.4.2
+│     ├─ ethjs-contract@npm:^0.2.1 → npm:0.2.3
+│     ├─ ethjs-query@npm:^0.3.7 → npm:0.3.8
+│     ├─ ethjs@npm:^0.3.6 → npm:0.3.9
+│     ├─ human-standard-token-abi@npm:^1.0.2 → npm:1.0.2
+│     └─ safe-event-emitter@npm:^1.0.1 → npm:1.0.1
+│
+├─ @metamask/eth-trezor-keyring@npm:1.1.0
+│  ├─ Version: 1.1.0
+│  │
+│  └─ Dependencies
+│     ├─ @ethereumjs/tx@npm:^4.0.0 → npm:4.2.0
+│     ├─ @ethereumjs/util@npm:^8.0.0 → npm:8.1.0
+│     ├─ @metamask/eth-sig-util@npm:^5.0.2 → npm:5.1.0
+│     ├─ @metamask/utils@npm:^4.0.0 → npm:4.0.0
+│     ├─ @trezor/connect-web@npm:^9.0.6 → npm:9.0.7
+│     ├─ hdkey@npm:0.8.0 → npm:0.8.0
+│     └─ @trezor/connect-plugin-ethereum@npm:^9.0.1 → npm:9.0.1 [521a3]
+│
+├─ @metamask/etherscan-link@npm:2.2.0
+│  └─ Version: 2.2.0
+│
+├─ @metamask/ethjs-query@npm:0.5.0
+│  ├─ Version: 0.5.0
+│  │
+│  └─ Dependencies
+│     ├─ babel-runtime@npm:^6.26.0 → npm:6.26.0
+│     ├─ ethjs-format@npm:0.2.7 → npm:0.2.7
+│     ├─ ethjs-rpc@npm:0.2.0 → npm:0.2.0
+│     └─ promise-to-callback@npm:^1.0.0 → npm:1.0.0
+│
+├─ @metamask/forwarder@npm:1.1.0
+│  └─ Version: 1.1.0
+│
+├─ @metamask/gas-fee-controller@npm:6.0.1
+│  ├─ Instances: 1
+│  ├─ Version: 6.0.1
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/base-controller@npm:^3.0.0 → npm:3.2.3
+│     ├─ @metamask/controller-utils@npm:^4.1.0 → npm:4.3.2
+│     ├─ @metamask/network-controller@npm:^10.3.0 → npm:10.3.1
+│     ├─ @metamask/utils@npm:^5.0.2 → npm:5.0.2
+│     ├─ @types/uuid@npm:^8.3.0 → npm:8.3.0
+│     ├─ babel-runtime@npm:^6.26.0 → npm:6.26.0
+│     ├─ eth-query@patch:eth-query@npm%3A2.1.2#./.yarn/patches/eth-query-npm-2.1.2-7c6adc825f.patch::locator=metamask-crx%40workspace%3A. → patch:eth-query@npm%3A2.1.2#./.yarn/patches/eth-query-npm-2.1.2-7c6adc825f.patch::version=2.1.2&hash=92d70f&locator=metamask-crx%40workspace%3A.
+│     ├─ ethereumjs-util@patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::locator=metamask-crx%40workspace%3A. → patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::version=7.1.5&hash=c1ed5b&locator=metamask-crx%40workspace%3A.
+│     ├─ ethjs-unit@npm:^0.1.6 → npm:0.1.6
+│     ├─ immer@npm:^9.0.6 → npm:9.0.6
+│     └─ uuid@npm:^8.3.2 → npm:8.3.2
+│
+├─ @metamask/jazzicon@npm:2.0.0
+│  ├─ Version: 2.0.0
+│  │
+│  └─ Dependencies
+│     ├─ color@npm:^0.11.3 → npm:0.11.4
+│     └─ mersenne-twister@npm:^1.1.0 → npm:1.1.0
+│
+├─ @metamask/key-tree@npm:9.0.0
+│  ├─ Version: 9.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/scure-bip39@npm:^2.1.0 → npm:2.1.0
+│     ├─ @metamask/utils@npm:^6.0.1 → npm:6.2.0
+│     ├─ @noble/ed25519@npm:^1.6.0 → npm:1.6.0
+│     ├─ @noble/hashes@npm:^1.0.0 → npm:1.3.2
+│     ├─ @noble/secp256k1@npm:^1.5.5 → npm:1.7.1
+│     └─ @scure/base@npm:^1.0.0 → npm:1.1.1
+│
+├─ @metamask/keyring-api@npm:1.0.0
+│  ├─ Version: 1.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/providers@npm:^13.0.0 → npm:13.1.0
+│     ├─ @metamask/rpc-methods@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/snaps-controllers@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/snaps-utils@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/utils@npm:^8.1.0 → npm:8.1.0
+│     ├─ @types/uuid@npm:^9.0.1 → npm:9.0.2
+│     ├─ superstruct@npm:^1.0.3 → npm:1.0.3
+│     └─ uuid@npm:^9.0.0 → npm:9.0.0
+│
+├─ @metamask/keyring-controller@npm:8.0.3
+│  ├─ Instances: 1
+│  ├─ Version: 8.0.3
+│  │
+│  └─ Dependencies
+│     ├─ @keystonehq/metamask-airgapped-keyring@npm:^0.13.1 → npm:0.13.1
+│     ├─ @metamask/base-controller@npm:^3.2.3 → npm:3.2.3
+│     ├─ @metamask/eth-keyring-controller@patch:@metamask/eth-keyring-controller@npm%3A13.0.1#~/.yarn/patches/@metamask-eth-keyring-controller-npm-13.0.1-06ff83faad.patch → patch:@metamask/eth-keyring-controller@npm%3A13.0.1#~/.yarn/patches/@metamask-eth-keyring-controller-npm-13.0.1-06ff83faad.patch::version=13.0.1&hash=6c75cf
+│     ├─ @metamask/message-manager@npm:^7.3.5 → npm:7.3.5
+│     ├─ @metamask/preferences-controller@npm:^4.4.3 → npm:4.4.3
+│     ├─ @metamask/utils@npm:^8.1.0 → npm:8.1.0
+│     ├─ async-mutex@npm:^0.2.6 → npm:0.2.6
+│     ├─ ethereumjs-util@patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::locator=metamask-crx%40workspace%3A. → patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::version=7.1.5&hash=c1ed5b&locator=metamask-crx%40workspace%3A.
+│     ├─ ethereumjs-wallet@npm:^1.0.1 → npm:1.0.2
+│     └─ immer@npm:^9.0.6 → npm:9.0.6
+│
+├─ @metamask/logging-controller@npm:1.0.1
+│  ├─ Version: 1.0.1
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/base-controller@npm:^3.2.1 → npm:3.2.3
+│     ├─ @metamask/controller-utils@npm:^4.3.2 → npm:4.3.2
+│     └─ uuid@npm:^8.3.2 → npm:8.3.2
+│
+├─ @metamask/logo@npm:3.1.2
+│  ├─ Version: 3.1.2
+│  │
+│  └─ Dependencies
+│     ├─ gl-mat4@npm:1.1.4 → npm:1.1.4
+│     └─ gl-vec3@npm:1.0.3 → npm:1.0.3
+│
+├─ @metamask/message-manager@npm:7.3.5
+│  ├─ Version: 7.3.5
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/base-controller@npm:^3.2.3 → npm:3.2.3
+│     ├─ @metamask/controller-utils@npm:^5.0.2 → npm:5.0.2
+│     ├─ @metamask/eth-sig-util@npm:^7.0.0 → npm:7.0.0
+│     ├─ @metamask/utils@npm:^8.1.0 → npm:8.1.0
+│     ├─ @types/uuid@npm:^8.3.0 → npm:8.3.0
+│     ├─ ethereumjs-util@patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::locator=metamask-crx%40workspace%3A. → patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::version=7.1.5&hash=c1ed5b&locator=metamask-crx%40workspace%3A.
+│     ├─ jsonschema@npm:^1.2.4 → npm:1.2.4
+│     └─ uuid@npm:^8.3.2 → npm:8.3.2
+│
+├─ @metamask/metamask-eth-abis@npm:3.0.0
+│  └─ Version: 3.0.0
+│
+├─ @metamask/name-controller@npm:3.0.0
+│  ├─ Version: 3.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/base-controller@npm:^3.2.2 → npm:3.2.3
+│     ├─ @metamask/utils@npm:^6.2.0 → npm:6.2.0
+│     ├─ async-mutex@npm:^0.2.6 → npm:0.2.6
+│     └─ immer@npm:^9.0.6 → npm:9.0.6
+│
+├─ @metamask/network-controller@npm:12.2.0
+│  ├─ Version: 12.2.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/base-controller@npm:^3.2.1 → npm:3.2.3
+│     ├─ @metamask/controller-utils@npm:^4.3.2 → npm:4.3.2
+│     ├─ @metamask/eth-json-rpc-infura@npm:^8.1.1 → npm:8.1.1
+│     ├─ @metamask/eth-json-rpc-middleware@npm:^11.0.2 → npm:11.0.2
+│     ├─ @metamask/eth-json-rpc-provider@npm:^1.0.0 → npm:1.0.0
+│     ├─ @metamask/eth-query@npm:^3.0.1 → npm:3.0.1
+│     ├─ @metamask/swappable-obj-proxy@npm:^2.1.0 → npm:2.1.0
+│     ├─ @metamask/utils@npm:^6.2.0 → npm:6.2.0
+│     ├─ async-mutex@npm:^0.2.6 → npm:0.2.6
+│     ├─ eth-block-tracker@npm:^7.0.1 → npm:7.0.1
+│     ├─ eth-rpc-errors@npm:^4.0.2 → npm:4.0.3
+│     ├─ immer@npm:^9.0.6 → npm:9.0.6
+│     ├─ json-rpc-engine@npm:^6.1.0 → npm:6.1.0
+│     └─ uuid@npm:^8.3.2 → npm:8.3.2
+│
+├─ @metamask/notification-controller@npm:3.0.0
+│  ├─ Version: 3.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/base-controller@npm:^3.0.0 → npm:3.2.3
+│     ├─ @metamask/utils@npm:^5.0.2 → npm:5.0.2
+│     ├─ immer@npm:^9.0.6 → npm:9.0.6
+│     └─ nanoid@npm:^3.1.31 → npm:3.3.6
+│
+├─ @metamask/obs-store@npm:8.1.0
+│  ├─ Version: 8.1.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/safe-event-emitter@npm:^2.0.0 → npm:2.0.0
+│     └─ through2@npm:^2.0.3 → npm:2.0.5
+│
+├─ @metamask/permission-controller@npm:4.1.2
+│  ├─ Instances: 1
+│  ├─ Version: 4.1.2
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/approval-controller@npm:^3.4.0 → npm:3.4.0
+│     ├─ @metamask/base-controller@npm:^3.2.2 → npm:3.2.3
+│     ├─ @metamask/controller-utils@npm:^5.0.1 → npm:5.0.2
+│     ├─ @metamask/utils@npm:^6.2.0 → npm:6.2.0
+│     ├─ @types/deep-freeze-strict@npm:^1.1.0 → npm:1.1.0
+│     ├─ deep-freeze-strict@npm:^1.1.1 → npm:1.1.1
+│     ├─ eth-rpc-errors@npm:^4.0.2 → npm:4.0.3
+│     ├─ immer@npm:^9.0.6 → npm:9.0.6
+│     ├─ json-rpc-engine@npm:^6.1.0 → npm:6.1.0
+│     └─ nanoid@npm:^3.1.31 → npm:3.3.6
+│
+├─ @metamask/phishing-controller@npm:6.0.0
+│  ├─ Version: 6.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/base-controller@npm:^3.2.0 → npm:3.2.3
+│     ├─ @metamask/controller-utils@npm:^4.3.0 → npm:4.3.2
+│     ├─ @types/punycode@npm:^2.1.0 → npm:2.1.0
+│     ├─ eth-phishing-detect@npm:^1.2.0 → npm:1.2.0
+│     └─ punycode@npm:^2.1.1 → npm:2.1.1
+│
+├─ @metamask/phishing-warning@npm:2.1.0
+│  ├─ Version: 2.1.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/design-tokens@npm:^1.6.0 → npm:1.12.0
+│     ├─ @metamask/post-message-stream@npm:^6.0.0 → npm:6.2.0
+│     ├─ @types/punycode@npm:^2.1.0 → npm:2.1.0
+│     ├─ eth-phishing-detect@npm:^1.2.0 → npm:1.2.0
+│     ├─ globalthis@npm:1.0.1 → npm:1.0.1
+│     ├─ obj-multiplex@npm:^1.0.0 → npm:1.0.0
+│     ├─ pump@npm:^3.0.0 → npm:3.0.0
+│     ├─ punycode@npm:^2.1.1 → npm:2.1.1
+│     └─ ses@npm:^0.18.1 → npm:0.18.8
+│
+├─ @metamask/post-message-stream@npm:6.2.0
+│  ├─ Version: 6.2.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/utils@npm:^5.0.0 → npm:5.0.2
+│     └─ readable-stream@npm:2.3.3 → npm:2.3.3
+│
+├─ @metamask/ppom-validator@npm:0.8.0
+│  ├─ Version: 0.8.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/base-controller@npm:^3.0.0 → npm:3.2.3
+│     ├─ @metamask/controller-utils@npm:^4.0.0 → npm:4.3.2
+│     ├─ await-semaphore@patch:await-semaphore@npm%3A0.1.3#./.yarn/patches/await-semaphore-npm-0.1.3-b7a0001fab.patch::locator=metamask-crx%40workspace%3A. → patch:await-semaphore@npm%3A0.1.3#./.yarn/patches/await-semaphore-npm-0.1.3-b7a0001fab.patch::version=0.1.3&hash=be888a&locator=metamask-crx%40workspace%3A.
+│     ├─ elliptic@npm:^6.5.4 → npm:6.5.4
+│     └─ json-rpc-random-id@npm:^1.0.1 → npm:1.0.1
+│
+├─ @metamask/providers@npm:13.1.0
+│  ├─ Version: 13.1.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/json-rpc-engine@npm:^7.1.1 → npm:7.1.1
+│     ├─ @metamask/object-multiplex@npm:^1.1.0 → npm:1.2.0
+│     ├─ @metamask/rpc-errors@npm:^6.0.0 → npm:6.0.0
+│     ├─ @metamask/safe-event-emitter@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/utils@npm:^8.1.0 → npm:8.1.0
+│     ├─ detect-browser@npm:^5.2.0 → npm:5.2.0
+│     ├─ extension-port-stream@npm:^2.1.1 → npm:2.1.1
+│     ├─ fast-deep-equal@npm:^3.1.3 → npm:3.1.3
+│     ├─ is-stream@npm:^2.0.0 → npm:2.0.0
+│     ├─ json-rpc-middleware-stream@npm:^4.2.1 → npm:4.2.1
+│     └─ webextension-polyfill@npm:^0.10.0 → npm:0.10.0
+│
+├─ @metamask/rate-limit-controller@npm:3.0.0
+│  ├─ Version: 3.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/base-controller@npm:^3.0.0 → npm:3.2.3
+│     ├─ eth-rpc-errors@npm:^4.0.2 → npm:4.0.3
+│     └─ immer@npm:^9.0.6 → npm:9.0.6
+│
+├─ @metamask/rpc-methods@npm:3.0.0
+│  ├─ Version: 3.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/key-tree@npm:^9.0.0 → npm:9.0.0
+│     ├─ @metamask/snaps-ui@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/snaps-utils@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/types@npm:^1.1.0 → npm:1.1.0
+│     ├─ @metamask/utils@npm:^8.1.0 → npm:8.1.0
+│     ├─ @noble/hashes@npm:^1.3.1 → npm:1.3.2
+│     ├─ eth-rpc-errors@npm:^4.0.3 → npm:4.0.3
+│     ├─ superstruct@npm:^1.0.3 → npm:1.0.3
+│     └─ @metamask/permission-controller@npm:^4.1.2 → npm:4.1.2 [34104]
+│
+├─ @metamask/safe-event-emitter@npm:2.0.0
+│  └─ Version: 2.0.0
+│
+├─ @metamask/scure-bip39@npm:2.1.0
+│  ├─ Version: 2.1.0
+│  │
+│  └─ Dependencies
+│     ├─ @noble/hashes@npm:~1.1.1 → npm:1.1.3
+│     └─ @scure/base@npm:~1.1.0 → npm:1.1.1
+│
+├─ @metamask/selected-network-controller@npm:1.0.0
+│  ├─ Instances: 1
+│  ├─ Version: 1.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/base-controller@npm:^3.2.1 → npm:3.2.3
+│     ├─ @metamask/network-controller@npm:^12.1.2 → npm:12.2.0
+│     └─ json-rpc-engine@npm:^6.1.0 → npm:6.1.0
+│
+├─ @metamask/signature-controller@patch:@metamask/signature-controller@npm%3A6.0.0#~/.yarn/patches/@metamask-signature-controller-npm-6.0.0-90e8e479a9.patch::version=6.0.0&hash=ae5433
+│  ├─ Instances: 1
+│  ├─ Version: 6.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/approval-controller@npm:^3.4.0 → npm:3.4.0
+│     ├─ @metamask/base-controller@npm:^3.2.1 → npm:3.2.3
+│     ├─ @metamask/controller-utils@npm:^4.3.2 → npm:4.3.2
+│     ├─ @metamask/message-manager@npm:^7.3.2 → npm:7.3.5
+│     ├─ @metamask/utils@npm:^6.2.0 → npm:6.2.0
+│     ├─ eth-rpc-errors@npm:^4.0.2 → npm:4.0.3
+│     ├─ ethereumjs-util@patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::locator=metamask-crx%40workspace%3A. → patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::version=7.1.5&hash=c1ed5b&locator=metamask-crx%40workspace%3A.
+│     ├─ immer@npm:^9.0.6 → npm:9.0.6
+│     └─ lodash@npm:^4.17.21 → npm:4.17.21
+│
+├─ @metamask/slip44@npm:3.1.0
+│  └─ Version: 3.1.0
+│
+├─ @metamask/smart-transactions-controller@npm:4.0.0
+│  ├─ Version: 4.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @ethersproject/bignumber@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/bytes@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/providers@npm:^5.7.0 → npm:5.7.2
+│     ├─ @metamask/base-controller@npm:^3.0.0 → npm:3.2.3
+│     ├─ @metamask/controller-utils@npm:^4.1.0 → npm:4.3.2
+│     ├─ @metamask/network-controller@npm:^10.3.0 → npm:10.3.1
+│     ├─ bignumber.js@npm:^9.0.1 → npm:9.1.1
+│     ├─ fast-json-patch@patch:fast-json-patch@npm%3A3.1.1#./.yarn/patches/fast-json-patch-npm-3.1.1-7e8bb70a45.patch::locator=metamask-crx%40workspace%3A. → patch:fast-json-patch@npm%3A3.1.1#./.yarn/patches/fast-json-patch-npm-3.1.1-7e8bb70a45.patch::version=3.1.1&hash=46c667&locator=metamask-crx%40workspace%3A.
+│     └─ lodash@npm:^4.17.21 → npm:4.17.21
+│
+├─ @metamask/snaps-controllers@npm:3.0.0
+│  ├─ Version: 3.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/approval-controller@npm:^3.4.0 → npm:3.4.0
+│     ├─ @metamask/base-controller@npm:^3.2.0 → npm:3.2.3
+│     ├─ @metamask/object-multiplex@npm:^1.2.0 → npm:1.2.0
+│     ├─ @metamask/post-message-stream@npm:^7.0.0 → npm:7.0.0
+│     ├─ @metamask/rpc-methods@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/snaps-execution-environments@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/snaps-registry@npm:^2.0.0 → npm:2.0.0
+│     ├─ @metamask/snaps-utils@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/utils@npm:^8.1.0 → npm:8.1.0
+│     ├─ @xstate/fsm@npm:^2.0.0 → npm:2.0.0
+│     ├─ concat-stream@npm:^2.0.0 → npm:2.0.0
+│     ├─ eth-rpc-errors@npm:^4.0.3 → npm:4.0.3
+│     ├─ gunzip-maybe@npm:^1.4.2 → npm:1.4.2
+│     ├─ immer@npm:^9.0.6 → npm:9.0.6
+│     ├─ json-rpc-engine@npm:^6.1.0 → npm:6.1.0
+│     ├─ json-rpc-middleware-stream@npm:^4.2.0 → npm:4.2.1
+│     ├─ nanoid@npm:^3.1.31 → npm:3.3.6
+│     ├─ readable-web-to-node-stream@npm:^3.0.2 → npm:3.0.2
+│     ├─ tar-stream@npm:^2.2.0 → npm:2.2.0
+│     └─ @metamask/permission-controller@npm:^4.1.2 → npm:4.1.2 [34104]
+│
+├─ @metamask/snaps-ui@npm:3.0.0
+│  ├─ Version: 3.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/utils@npm:^8.1.0 → npm:8.1.0
+│     ├─ is-svg@npm:^4.4.0 → npm:4.4.0
+│     └─ superstruct@npm:^1.0.3 → npm:1.0.3
+│
+├─ @metamask/snaps-utils@npm:3.0.0
+│  ├─ Version: 3.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @babel/core@patch:@babel/core@npm%3A7.23.2#~/.yarn/patches/@babel-core-npm-7.23.2-b93f586907.patch → patch:@babel/core@npm%3A7.23.2#~/.yarn/patches/@babel-core-npm-7.23.2-b93f586907.patch::version=7.23.2&hash=a78815
+│     ├─ @babel/types@npm:^7.18.7 → npm:7.23.0
+│     ├─ @metamask/base-controller@npm:^3.2.0 → npm:3.2.3
+│     ├─ @metamask/key-tree@npm:^9.0.0 → npm:9.0.0
+│     ├─ @metamask/snaps-registry@npm:^2.0.0 → npm:2.0.0
+│     ├─ @metamask/snaps-ui@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/utils@npm:^8.1.0 → npm:8.1.0
+│     ├─ @noble/hashes@npm:^1.3.1 → npm:1.3.2
+│     ├─ @scure/base@npm:^1.1.1 → npm:1.1.1
+│     ├─ chalk@npm:^4.1.2 → npm:4.1.2
+│     ├─ cron-parser@npm:^4.5.0 → npm:4.6.0
+│     ├─ eth-rpc-errors@npm:^4.0.3 → npm:4.0.3
+│     ├─ fast-deep-equal@npm:^3.1.3 → npm:3.1.3
+│     ├─ fast-json-stable-stringify@npm:^2.1.0 → npm:2.1.0
+│     ├─ is-svg@npm:^4.4.0 → npm:4.4.0
+│     ├─ rfdc@npm:^1.3.0 → npm:1.3.0
+│     ├─ semver@npm:^7.5.4 → npm:7.5.4
+│     ├─ ses@npm:^0.18.8 → npm:0.18.8
+│     ├─ superstruct@npm:^1.0.3 → npm:1.0.3
+│     ├─ validate-npm-package-name@npm:^5.0.0 → npm:5.0.0
+│     └─ @metamask/permission-controller@npm:^4.1.2 → npm:4.1.2 [34104]
+│
+├─ @metamask/test-dapp@npm:7.1.0
+│  └─ Version: 7.1.0
+│
+├─ @metamask/utils@npm:5.0.2
+│  ├─ Version: 5.0.2
+│  │
+│  └─ Dependencies
+│     ├─ @ethereumjs/tx@npm:^4.1.2 → npm:4.2.0
+│     ├─ @types/debug@npm:^4.1.7 → npm:4.1.7
+│     ├─ semver@npm:^7.3.8 → npm:7.5.4
+│     ├─ superstruct@npm:^1.0.3 → npm:1.0.3
+│     └─ debug@npm:^4.1.0 → npm:4.3.4 [4758f]
+│
+├─ @ngraveio/bc-ur@npm:1.1.6
+│  ├─ Version: 1.1.6
+│  │
+│  └─ Dependencies
+│     ├─ @apocentre/alias-sampling@npm:^0.5.3 → npm:0.5.3
+│     ├─ assert@npm:^2.0.0 → npm:2.0.0
+│     ├─ bignumber.js@npm:^9.0.1 → npm:9.1.1
+│     ├─ cbor-sync@npm:^1.0.4 → npm:1.0.4
+│     ├─ crc@npm:^3.8.0 → npm:3.8.0
+│     ├─ jsbi@npm:^3.1.5 → npm:3.2.5
+│     └─ sha.js@npm:^2.4.11 → npm:2.4.11
+│
+├─ @popperjs/core@npm:2.9.2
+│  └─ Version: 2.9.2
+│
+├─ @reduxjs/toolkit@patch:@reduxjs/toolkit@npm%3A1.6.2#./.yarn/patches/@reduxjs-toolkit-npm-1.6.2-67af09515f.patch::version=1.6.2&hash=a183e1&locator=metamask-crx%40workspace%3A.
+│  ├─ Instances: 1
+│  ├─ Version: 1.6.2
+│  │
+│  └─ Dependencies
+│     ├─ immer@npm:^9.0.6 → npm:9.0.6
+│     ├─ redux-thunk@npm:^2.3.0 → npm:2.3.0
+│     ├─ redux@npm:^4.1.0 → npm:4.2.1
+│     └─ reselect@npm:^4.0.0 → npm:4.1.8
+│
+├─ @segment/loosely-validate-event@npm:2.0.0
+│  ├─ Version: 2.0.0
+│  │
+│  └─ Dependencies
+│     ├─ component-type@npm:^1.2.1 → npm:1.2.1
+│     └─ join-component@npm:^1.1.0 → npm:1.1.0
+│
+├─ @sentry/browser@npm:7.53.0
+│  ├─ Version: 7.53.0
+│  │
+│  └─ Dependencies
+│     ├─ @sentry-internal/tracing@npm:7.53.0 → npm:7.53.0
+│     ├─ @sentry/core@npm:7.53.0 → npm:7.53.0
+│     ├─ @sentry/replay@npm:7.53.0 → npm:7.53.0
+│     ├─ @sentry/types@npm:7.53.0 → npm:7.53.0
+│     ├─ @sentry/utils@npm:7.53.0 → npm:7.53.0
+│     └─ tslib@npm:^1.9.3 → npm:1.14.1
+│
+├─ @sentry/cli@npm:2.19.4
+│  ├─ Version: 2.19.4
+│  │
+│  ├─ Exported Binaries
+│  │  └─ sentry-cli
+│  │
+│  └─ Dependencies
+│     ├─ https-proxy-agent@npm:^5.0.0 → npm:5.0.1
+│     ├─ progress@npm:^2.0.3 → npm:2.0.3
+│     ├─ proxy-from-env@npm:^1.1.0 → npm:1.1.0
+│     ├─ which@npm:^2.0.2 → npm:2.0.2
+│     └─ node-fetch@npm:^2.6.7 → npm:2.7.0 [25a5f]
+│
+├─ @sentry/integrations@npm:7.53.0
+│  ├─ Version: 7.53.0
+│  │
+│  └─ Dependencies
+│     ├─ @sentry/types@npm:7.53.0 → npm:7.53.0
+│     ├─ @sentry/utils@npm:7.53.0 → npm:7.53.0
+│     ├─ localforage@npm:^1.8.1 → npm:1.10.0
+│     └─ tslib@npm:^1.9.3 → npm:1.14.1
+│
+├─ @sentry/types@npm:7.53.0
+│  └─ Version: 7.53.0
+│
+├─ @sentry/utils@npm:7.53.0
+│  ├─ Version: 7.53.0
+│  │
+│  └─ Dependencies
+│     ├─ @sentry/types@npm:7.53.0 → npm:7.53.0
+│     └─ tslib@npm:^1.9.3 → npm:1.14.1
+│
+├─ @storybook/addon-a11y@npm:7.4.6
+│  ├─ Instances: 1
+│  ├─ Version: 7.4.6
+│  │
+│  └─ Dependencies
+│     ├─ @storybook/addon-highlight@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/channels@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/client-logger@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/components@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/core-events@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/global@npm:^5.0.0 → npm:5.0.0
+│     ├─ @storybook/manager-api@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/preview-api@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/theming@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/types@npm:7.4.6 → npm:7.4.6
+│     ├─ axe-core@npm:^4.2.0 → npm:4.3.3
+│     ├─ lodash@npm:^4.17.21 → npm:4.17.21
+│     └─ react-resize-detector@npm:^7.1.2 → npm:7.1.2
+│
+├─ @storybook/addon-actions@npm:7.4.6
+│  ├─ Instances: 1
+│  ├─ Version: 7.4.6
+│  │
+│  └─ Dependencies
+│     ├─ @storybook/client-logger@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/components@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/core-events@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/global@npm:^5.0.0 → npm:5.0.0
+│     ├─ @storybook/manager-api@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/preview-api@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/theming@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/types@npm:7.4.6 → npm:7.4.6
+│     ├─ dequal@npm:^2.0.2 → npm:2.0.3
+│     ├─ lodash@npm:^4.17.21 → npm:4.17.21
+│     ├─ polished@npm:^4.2.2 → npm:4.2.2
+│     ├─ prop-types@npm:^15.7.2 → npm:15.8.1
+│     ├─ react-inspector@npm:^6.0.0 → npm:6.0.2
+│     ├─ telejson@npm:^7.2.0 → npm:7.2.0
+│     ├─ ts-dedent@npm:^2.0.0 → npm:2.2.0
+│     └─ uuid@npm:^9.0.0 → npm:9.0.0
+│
+├─ @storybook/addon-essentials@npm:7.4.6
+│  ├─ Instances: 1
+│  ├─ Version: 7.4.6
+│  │
+│  └─ Dependencies
+│     ├─ @storybook/addon-actions@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/addon-backgrounds@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/addon-controls@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/addon-docs@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/addon-highlight@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/addon-measure@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/addon-outline@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/addon-toolbars@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/addon-viewport@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/core-common@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/manager-api@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/node-logger@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/preview-api@npm:7.4.6 → npm:7.4.6
+│     └─ ts-dedent@npm:^2.0.0 → npm:2.2.0
+│
+├─ @storybook/addon-knobs@npm:7.0.2
+│  ├─ Instances: 1
+│  ├─ Version: 7.0.2
+│  │
+│  └─ Dependencies
+│     ├─ copy-to-clipboard@npm:^3.3.3 → npm:3.3.3
+│     ├─ core-js@npm:^3.29.0 → npm:3.30.2
+│     ├─ escape-html@npm:^1.0.3 → npm:1.0.3
+│     ├─ fast-deep-equal@npm:^3.1.3 → npm:3.1.3
+│     ├─ global@npm:^4.4.0 → npm:4.4.0
+│     ├─ lodash@npm:^4.17.21 → npm:4.17.21
+│     ├─ prop-types@npm:^15.8.1 → npm:15.8.1
+│     ├─ qs@npm:^6.11.1 → npm:6.11.2
+│     ├─ react-colorful@npm:^5.6.1 → npm:5.6.1
+│     ├─ react-lifecycles-compat@npm:^3.0.4 → npm:3.0.4
+│     └─ react-select@npm:^5.7.0 → npm:5.7.3
+│
+├─ @storybook/addon-mdx-gfm@npm:7.4.6
+│  ├─ Version: 7.4.6
+│  │
+│  └─ Dependencies
+│     ├─ @storybook/node-logger@npm:7.4.6 → npm:7.4.6
+│     ├─ remark-gfm@npm:^3.0.1 → npm:3.0.1
+│     └─ ts-dedent@npm:^2.0.0 → npm:2.2.0
+│
+├─ @storybook/addons@npm:7.4.6
+│  ├─ Instances: 1
+│  ├─ Version: 7.4.6
+│  │
+│  └─ Dependencies
+│     ├─ @storybook/manager-api@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/preview-api@npm:7.4.6 → npm:7.4.6
+│     └─ @storybook/types@npm:7.4.6 → npm:7.4.6
+│
+├─ @storybook/api@npm:7.4.6
+│  ├─ Instances: 1
+│  ├─ Version: 7.4.6
+│  │
+│  └─ Dependencies
+│     ├─ @storybook/client-logger@npm:7.4.6 → npm:7.4.6
+│     └─ @storybook/manager-api@npm:7.4.6 → npm:7.4.6
+│
+├─ @storybook/client-api@npm:7.4.6
+│  ├─ Version: 7.4.6
+│  │
+│  └─ Dependencies
+│     ├─ @storybook/client-logger@npm:7.4.6 → npm:7.4.6
+│     └─ @storybook/preview-api@npm:7.4.6 → npm:7.4.6
+│
+├─ @storybook/components@npm:7.4.6
+│  ├─ Instances: 1
+│  ├─ Version: 7.4.6
+│  │
+│  └─ Dependencies
+│     ├─ @radix-ui/react-select@npm:^1.2.2 → npm:1.2.2
+│     ├─ @radix-ui/react-toolbar@npm:^1.0.4 → npm:1.0.4
+│     ├─ @storybook/client-logger@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/csf@npm:^0.1.0 → npm:0.1.0
+│     ├─ @storybook/global@npm:^5.0.0 → npm:5.0.0
+│     ├─ @storybook/theming@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/types@npm:7.4.6 → npm:7.4.6
+│     ├─ memoizerific@npm:^1.11.3 → npm:1.11.3
+│     ├─ use-resize-observer@npm:^9.1.0 → npm:9.1.0
+│     └─ util-deprecate@npm:^1.0.2 → npm:1.0.2
+│
+├─ @storybook/core-events@npm:7.4.6
+│  ├─ Version: 7.4.6
+│  │
+│  └─ Dependencies
+│     └─ ts-dedent@npm:^2.0.0 → npm:2.2.0
+│
+├─ @storybook/react-webpack5@npm:7.4.6
+│  ├─ Instances: 1
+│  ├─ Version: 7.4.6
+│  │
+│  └─ Dependencies
+│     ├─ @storybook/builder-webpack5@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/preset-react-webpack@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/react@npm:7.4.6 → npm:7.4.6
+│     └─ @types/node@npm:^16.0.0 → npm:16.18.34
+│
+├─ @storybook/react@npm:7.4.6
+│  ├─ Instances: 1
+│  ├─ Version: 7.4.6
+│  │
+│  └─ Dependencies
+│     ├─ @storybook/client-logger@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/core-client@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/docs-tools@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/global@npm:^5.0.0 → npm:5.0.0
+│     ├─ @storybook/preview-api@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/react-dom-shim@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/types@npm:7.4.6 → npm:7.4.6
+│     ├─ @types/escodegen@npm:^0.0.6 → npm:0.0.6
+│     ├─ @types/estree@npm:^0.0.51 → npm:0.0.51
+│     ├─ @types/node@npm:^16.0.0 → npm:16.18.34
+│     ├─ acorn-jsx@npm:^5.3.1 → npm:5.3.2
+│     ├─ acorn-walk@npm:^7.2.0 → npm:7.2.0
+│     ├─ acorn@patch:acorn@npm:7.4.1#.yarn/patches/acorn-npm-7.4.1-f450b4646c.patch::locator=metamask-crx%40workspace%3A. → patch:acorn@npm%3A7.4.1#.yarn/patches/acorn-npm-7.4.1-f450b4646c.patch::version=7.4.1&hash=b3c7b4&locator=metamask-crx%40workspace%3A.
+│     ├─ escodegen@npm:^2.1.0 → npm:2.1.0
+│     ├─ html-tags@npm:^3.1.0 → npm:3.1.0
+│     ├─ lodash@npm:^4.17.21 → npm:4.17.21
+│     ├─ prop-types@npm:^15.7.2 → npm:15.8.1
+│     ├─ react-element-to-jsx-string@npm:^15.0.0 → npm:15.0.0
+│     ├─ ts-dedent@npm:^2.0.0 → npm:2.2.0
+│     ├─ type-fest@npm:~2.19 → npm:2.19.0
+│     └─ util-deprecate@npm:^1.0.2 → npm:1.0.2
+│
+├─ @storybook/storybook-deployer@npm:2.8.16
+│  ├─ Version: 2.8.16
+│  │
+│  ├─ Exported Binaries
+│  │  ├─ storybook-to-aws-s3
+│  │  └─ storybook-to-ghpages
+│  │
+│  └─ Dependencies
+│     ├─ git-url-parse@npm:^13.1.0 → npm:13.1.0
+│     ├─ glob@npm:^7.1.3 → npm:7.2.3
+│     ├─ parse-repo@npm:^1.0.4 → npm:1.0.4
+│     ├─ shelljs@npm:^0.8.1 → npm:0.8.5
+│     └─ yargs@npm:^15.0.0 → npm:15.4.1
+│
+├─ @storybook/test-runner@npm:0.10.0
+│  ├─ Version: 0.10.0
+│  │
+│  ├─ Exported Binaries
+│  │  └─ test-storybook
+│  │
+│  └─ Dependencies
+│     ├─ @babel/core@patch:@babel/core@npm%3A7.23.2#~/.yarn/patches/@babel-core-npm-7.23.2-b93f586907.patch → patch:@babel/core@npm%3A7.23.2#~/.yarn/patches/@babel-core-npm-7.23.2-b93f586907.patch::version=7.23.2&hash=a78815
+│     ├─ @babel/generator@npm:^7.20.7 → npm:7.23.0
+│     ├─ @babel/template@npm:^7.20.7 → npm:7.22.15
+│     ├─ @babel/types@npm:^7.20.7 → npm:7.23.0
+│     ├─ @storybook/core-common@npm:^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0 → npm:7.4.6
+│     ├─ @storybook/csf-tools@npm:^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0 → npm:7.4.6
+│     ├─ @storybook/csf@npm:^0.1.0 → npm:0.1.0
+│     ├─ @storybook/preview-api@npm:^7.0.0-beta.0 || ^7.0.0-rc.0 || ^7.0.0 → npm:7.4.6
+│     ├─ can-bind-to-host@npm:^1.1.1 → npm:1.1.2
+│     ├─ commander@npm:^9.0.0 → npm:9.5.0
+│     ├─ expect-playwright@npm:^0.8.0 → npm:0.8.0
+│     ├─ glob@npm:^8.1.0 → npm:8.1.0
+│     ├─ jest-circus@npm:^28.0.0 → npm:28.1.3
+│     ├─ jest-environment-node@npm:^28.0.0 → npm:28.1.3
+│     ├─ jest-junit@npm:^14.0.0 → npm:14.0.1
+│     ├─ jest-runner@npm:^28.0.0 → npm:28.1.3
+│     ├─ jest-serializer-html@npm:^7.1.0 → npm:7.1.0
+│     ├─ playwright@npm:^1.14.0 → npm:1.29.2
+│     ├─ read-pkg-up@npm:^7.0.1 → npm:7.0.1
+│     ├─ regenerator-runtime@npm:^0.13.9 → npm:0.13.11
+│     ├─ semver@npm:^7.3.7 → npm:7.5.4
+│     ├─ tempy@npm:^1.0.1 → npm:1.0.1
+│     ├─ ts-dedent@npm:^2.0.0 → npm:2.2.0
+│     ├─ @babel/preset-env@npm:^7.20.2 → npm:7.23.2 [5ff60]
+│     ├─ @babel/preset-react@npm:^7.18.6 → npm:7.22.15 [5ff60]
+│     ├─ @babel/preset-typescript@npm:^7.18.6 → npm:7.23.2 [5ff60]
+│     ├─ jest-playwright-preset@npm:^2.0.0 → npm:2.0.0 [5ff60]
+│     ├─ jest-watch-typeahead@npm:^2.0.0 → npm:2.2.1 [5ff60]
+│     ├─ jest@npm:^28.0.0 → npm:28.1.3 [5ff60]
+│     └─ node-fetch@npm:^2.6.7 → npm:2.7.0 [25a5f]
+│
+├─ @storybook/theming@npm:7.4.6
+│  ├─ Instances: 1
+│  ├─ Version: 7.4.6
+│  │
+│  └─ Dependencies
+│     ├─ @emotion/use-insertion-effect-with-fallbacks@npm:^1.0.0 → npm:1.0.1
+│     ├─ @storybook/client-logger@npm:7.4.6 → npm:7.4.6
+│     ├─ @storybook/global@npm:^5.0.0 → npm:5.0.0
+│     └─ memoizerific@npm:^1.11.3 → npm:1.11.3
+│
+├─ @testing-library/jest-dom@npm:5.11.10
+│  ├─ Version: 5.11.10
+│  │
+│  └─ Dependencies
+│     ├─ @babel/runtime@patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch → patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch::version=7.23.2&hash=7df10d
+│     ├─ @types/testing-library__jest-dom@npm:^5.9.1 → npm:5.9.5
+│     ├─ aria-query@npm:^4.2.2 → npm:4.2.2
+│     ├─ chalk@npm:^3.0.0 → npm:3.0.0
+│     ├─ css.escape@npm:^1.5.1 → npm:1.5.1
+│     ├─ css@npm:^3.0.0 → npm:3.0.0
+│     ├─ lodash@npm:^4.17.15 → npm:4.17.21
+│     └─ redent@npm:^3.0.0 → npm:3.0.0
+│
+├─ @testing-library/react-hooks@npm:8.0.1
+│  ├─ Instances: 1
+│  ├─ Version: 8.0.1
+│  │
+│  └─ Dependencies
+│     ├─ @babel/runtime@patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch → patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch::version=7.23.2&hash=7df10d
+│     └─ react-error-boundary@npm:^3.1.0 → npm:3.1.4
+│
+├─ @testing-library/react@npm:10.4.8
+│  ├─ Instances: 1
+│  ├─ Version: 10.4.8
+│  │
+│  └─ Dependencies
+│     ├─ @babel/runtime@patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch → patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch::version=7.23.2&hash=7df10d
+│     └─ @testing-library/dom@npm:^7.17.1 → npm:7.22.2
+│
+├─ @testing-library/user-event@npm:14.4.3
+│  ├─ Instances: 1
+│  └─ Version: 14.4.3
+│
+├─ @truffle/codec@npm:0.14.12
+│  ├─ Version: 0.14.12
+│  │
+│  └─ Dependencies
+│     ├─ @truffle/abi-utils@npm:^0.3.6 → npm:0.3.6
+│     ├─ @truffle/compile-common@npm:^0.9.2 → npm:0.9.2
+│     ├─ big.js@npm:^6.0.3 → npm:6.2.1
+│     ├─ bn.js@npm:^5.2.1 → npm:5.2.1
+│     ├─ cbor@npm:^5.2.0 → npm:5.2.0
+│     ├─ lodash@npm:^4.17.21 → npm:4.17.21
+│     ├─ semver@npm:^7.5.4 → npm:7.5.4
+│     ├─ utf8@npm:^3.0.0 → npm:3.0.0
+│     ├─ web3-utils@npm:1.8.1 → npm:1.8.1
+│     └─ debug@npm:^4.1.0 → npm:4.3.4 [4758f]
+│
+├─ @truffle/decoder@npm:5.3.5
+│  ├─ Version: 5.3.5
+│  │
+│  └─ Dependencies
+│     ├─ @truffle/abi-utils@npm:^0.3.6 → npm:0.3.6
+│     ├─ @truffle/codec@npm:^0.14.12 → npm:0.14.12
+│     ├─ @truffle/compile-common@npm:^0.9.2 → npm:0.9.2
+│     ├─ @truffle/encoder@npm:^1.0.2 → npm:1.0.2
+│     ├─ @truffle/source-map-utils@npm:^1.3.104 → npm:1.3.104
+│     ├─ bn.js@npm:^5.2.1 → npm:5.2.1
+│     ├─ web3-utils@npm:1.8.1 → npm:1.8.1
+│     └─ debug@npm:^4.1.0 → npm:4.3.4 [4758f]
+│
+├─ @tsconfig/node16@npm:1.0.3
+│  └─ Version: 1.0.3
+│
+├─ @types/babelify@npm:7.3.7
+│  ├─ Version: 7.3.7
+│  │
+│  └─ Dependencies
+│     ├─ @types/babel-core@npm:* → npm:6.25.7
+│     └─ @types/node@npm:* → npm:20.8.2
+│
+├─ @types/browserify@npm:12.0.37
+│  ├─ Version: 12.0.37
+│  │
+│  └─ Dependencies
+│     ├─ @types/insert-module-globals@npm:* → npm:7.0.2
+│     └─ @types/node@npm:* → npm:20.8.2
+│
+├─ @types/currency-formatter@npm:1.5.1
+│  └─ Version: 1.5.1
+│
+├─ @types/end-of-stream@npm:1.4.1
+│  ├─ Version: 1.4.1
+│  │
+│  └─ Dependencies
+│     └─ @types/node@npm:* → npm:20.8.2
+│
+├─ @types/fs-extra@npm:9.0.13
+│  ├─ Version: 9.0.13
+│  │
+│  └─ Dependencies
+│     └─ @types/node@npm:* → npm:20.8.2
+│
+├─ @types/gulp-autoprefixer@npm:0.0.33
+│  ├─ Version: 0.0.33
+│  │
+│  └─ Dependencies
+│     └─ @types/node@npm:* → npm:20.8.2
+│
+├─ @types/gulp-sass@npm:5.0.0
+│  ├─ Version: 5.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @types/node-sass@npm:* → npm:4.11.3
+│     └─ @types/node@npm:* → npm:20.8.2
+│
+├─ @types/gulp-sourcemaps@npm:0.0.35
+│  ├─ Version: 0.0.35
+│  │
+│  └─ Dependencies
+│     ├─ @types/node@npm:* → npm:20.8.2
+│     └─ @types/vinyl@npm:* → npm:2.0.6
+│
+├─ @types/gulp@npm:4.0.9
+│  ├─ Version: 4.0.9
+│  │
+│  └─ Dependencies
+│     ├─ @types/undertaker@npm:* → npm:1.2.7
+│     ├─ @types/vinyl-fs@npm:* → npm:2.4.12
+│     └─ chokidar@npm:^3.3.1 → npm:3.5.3
+│
+├─ @types/jest@npm:29.1.2
+│  ├─ Version: 29.1.2
+│  │
+│  └─ Dependencies
+│     ├─ expect@npm:^29.0.0 → npm:29.6.2
+│     └─ pretty-format@npm:^29.0.0 → npm:29.6.2
+│
+├─ @types/madge@patch:@types/madge@npm%3A5.0.0#./.yarn/patches/@types-madge-npm-5.0.0-654566c2d2.patch::version=5.0.0&hash=dfcb37&locator=metamask-crx%40workspace%3A.
+│  ├─ Version: 5.0.0
+│  │
+│  └─ Dependencies
+│     └─ @types/node@npm:* → npm:20.8.2
+│
+├─ @types/node@npm:17.0.45
+│  └─ Version: 17.0.45
+│
+├─ @types/pify@npm:5.0.1
+│  └─ Version: 5.0.1
+│
+├─ @types/pump@npm:1.1.1
+│  ├─ Version: 1.1.1
+│  │
+│  └─ Dependencies
+│     └─ @types/node@npm:* → npm:20.8.2
+│
+├─ @types/react-dom@npm:17.0.11
+│  ├─ Version: 17.0.11
+│  │
+│  └─ Dependencies
+│     └─ @types/react@npm:^16.9.53 → npm:16.9.53
+│
+├─ @types/react-redux@npm:7.1.25
+│  ├─ Version: 7.1.25
+│  │
+│  └─ Dependencies
+│     ├─ @types/hoist-non-react-statics@npm:^3.3.0 → npm:3.3.1
+│     ├─ @types/react@npm:^16.9.53 → npm:16.9.53
+│     ├─ hoist-non-react-statics@npm:^3.3.0 → npm:3.3.2
+│     └─ redux@npm:^4.0.0 → npm:4.2.1
+│
+├─ @types/react-router-dom@npm:5.3.3
+│  ├─ Version: 5.3.3
+│  │
+│  └─ Dependencies
+│     ├─ @types/history@npm:^4.7.11 → npm:4.7.11
+│     ├─ @types/react-router@npm:* → npm:5.1.20
+│     └─ @types/react@npm:^16.9.53 → npm:16.9.53
+│
+├─ @types/react@npm:16.9.53
+│  ├─ Version: 16.9.53
+│  │
+│  └─ Dependencies
+│     ├─ @types/prop-types@npm:* → npm:15.7.3
+│     └─ csstype@npm:^3.0.2 → npm:3.0.11
+│
+├─ @types/remote-redux-devtools@npm:0.5.5
+│  ├─ Version: 0.5.5
+│  │
+│  └─ Dependencies
+│     └─ redux@npm:^4.0.0 → npm:4.2.1
+│
+├─ @types/sass@npm:1.43.1
+│  ├─ Version: 1.43.1
+│  │
+│  └─ Dependencies
+│     └─ @types/node@npm:* → npm:20.8.2
+│
+├─ @types/sinon@npm:10.0.13
+│  ├─ Version: 10.0.13
+│  │
+│  └─ Dependencies
+│     └─ @types/sinonjs__fake-timers@npm:* → npm:8.1.2
+│
+├─ @types/w3c-web-hid@npm:1.0.3
+│  └─ Version: 1.0.3
+│
+├─ @types/watchify@npm:3.11.1
+│  ├─ Version: 3.11.1
+│  │
+│  └─ Dependencies
+│     └─ @types/browserify@npm:* → npm:12.0.37
+│
+├─ @types/webextension-polyfill@npm:0.10.4
+│  └─ Version: 0.10.4
+│
+├─ @types/yargs@npm:17.0.8
+│  ├─ Version: 17.0.8
+│  │
+│  └─ Dependencies
+│     └─ @types/yargs-parser@npm:* → npm:15.0.0
+│
+├─ @typescript-eslint/eslint-plugin@npm:5.30.7
+│  ├─ Instances: 1
+│  ├─ Version: 5.30.7
+│  │
+│  └─ Dependencies
+│     ├─ @typescript-eslint/scope-manager@npm:5.30.7 → npm:5.30.7
+│     ├─ @typescript-eslint/type-utils@npm:5.30.7 → npm:5.30.7
+│     ├─ @typescript-eslint/utils@npm:5.30.7 → npm:5.30.7
+│     ├─ debug@npm:^4.3.4 → npm:4.3.4
+│     ├─ functional-red-black-tree@npm:^1.0.1 → npm:1.0.1
+│     ├─ ignore@npm:^5.2.0 → npm:5.2.0
+│     ├─ regexpp@npm:^3.2.0 → npm:3.2.0
+│     ├─ semver@npm:^7.3.7 → npm:7.5.4
+│     └─ tsutils@npm:^3.21.0 → npm:3.21.0
+│
+├─ @typescript-eslint/parser@npm:5.30.7
+│  ├─ Instances: 1
+│  ├─ Version: 5.30.7
+│  │
+│  └─ Dependencies
+│     ├─ @typescript-eslint/scope-manager@npm:5.30.7 → npm:5.30.7
+│     ├─ @typescript-eslint/types@npm:5.30.7 → npm:5.30.7
+│     ├─ @typescript-eslint/typescript-estree@npm:5.30.7 → npm:5.30.7
+│     └─ debug@npm:^4.3.4 → npm:4.3.4
+│
+├─ @whitespace/storybook-addon-html@npm:5.1.6
+│  ├─ Instances: 1
+│  └─ Version: 5.1.6
+│
+├─ @zxing/browser@npm:0.1.4
+│  ├─ Instances: 1
+│  ├─ Version: 0.1.4
+│  │
+│  └─ Dependencies
+│     └─ @zxing/text-encoding@npm:^0.9.0 → npm:0.9.0
+│
+├─ @zxing/library@npm:0.20.0
+│  ├─ Version: 0.20.0
+│  │
+│  └─ Dependencies
+│     ├─ @zxing/text-encoding@npm:~0.9.0 → npm:0.9.0
+│     └─ ts-custom-error@npm:^3.2.1 → npm:3.3.1
+│
+├─ addons-linter@npm:5.32.0
+│  ├─ Version: 5.32.0
+│  │
+│  ├─ Exported Binaries
+│  │  └─ addons-linter
+│  │
+│  └─ Dependencies
+│     ├─ @fluent/syntax@npm:0.19.0 → npm:0.19.0
+│     ├─ @mdn/browser-compat-data@npm:5.2.42 → npm:5.2.42
+│     ├─ addons-moz-compare@npm:1.3.0 → npm:1.3.0
+│     ├─ ajv@npm:8.12.0 → npm:8.12.0
+│     ├─ chalk@npm:4.1.2 → npm:4.1.2
+│     ├─ cheerio@npm:1.0.0-rc.12 → npm:1.0.0-rc.12
+│     ├─ columnify@npm:1.6.0 → npm:1.6.0
+│     ├─ common-tags@npm:1.8.2 → npm:1.8.2
+│     ├─ deepmerge@npm:4.3.1 → npm:4.3.1
+│     ├─ eslint-visitor-keys@npm:3.3.0 → npm:3.3.0
+│     ├─ eslint@patch:eslint@npm%3A8.36.0#./.yarn/patches/eslint-npm-8.36.0-f8482bce95.patch::locator=metamask-crx%40workspace%3A. → patch:eslint@npm%3A8.36.0#./.yarn/patches/eslint-npm-8.36.0-f8482bce95.patch::version=8.36.0&hash=b3ac63&locator=metamask-crx%40workspace%3A.
+│     ├─ espree@npm:9.5.0 → npm:9.5.0
+│     ├─ esprima@npm:4.0.1 → npm:4.0.1
+│     ├─ fast-json-patch@npm:3.1.1 → npm:3.1.1
+│     ├─ glob@npm:9.3.0 → npm:9.3.0
+│     ├─ image-size@npm:1.0.2 → npm:1.0.2
+│     ├─ is-mergeable-object@npm:1.1.1 → npm:1.1.1
+│     ├─ jed@npm:1.1.1 → npm:1.1.1
+│     ├─ json-merge-patch@npm:1.0.2 → npm:1.0.2
+│     ├─ os-locale@npm:5.0.0 → npm:5.0.0
+│     ├─ pino@npm:8.11.0 → npm:8.11.0
+│     ├─ postcss@npm:8.4.21 → npm:8.4.21
+│     ├─ relaxed-json@npm:1.0.3 → npm:1.0.3
+│     ├─ semver@npm:^7.5.4 → npm:7.5.4
+│     ├─ sha.js@npm:2.4.11 → npm:2.4.11
+│     ├─ source-map-support@npm:0.5.21 → npm:0.5.21
+│     ├─ tosource@npm:1.0.0 → npm:1.0.0
+│     ├─ upath@npm:2.0.1 → npm:2.0.1
+│     ├─ yargs@npm:17.7.1 → npm:17.7.1
+│     ├─ yauzl@npm:2.10.0 → npm:2.10.0
+│     ├─ addons-scanner-utils@npm:8.5.0 → npm:8.5.0 [3f556]
+│     └─ eslint-plugin-no-unsanitized@npm:4.0.2 → npm:4.0.2 [3f556]
+│
+├─ await-semaphore@patch:await-semaphore@npm%3A0.1.3#./.yarn/patches/await-semaphore-npm-0.1.3-b7a0001fab.patch::version=0.1.3&hash=be888a&locator=metamask-crx%40workspace%3A.
+│  └─ Version: 0.1.3
+│
+├─ babelify@npm:10.0.0
+│  ├─ Instances: 1
+│  └─ Version: 10.0.0
+│
+├─ base32-encode@npm:1.2.0
+│  ├─ Version: 1.2.0
+│  │
+│  └─ Dependencies
+│     └─ to-data-view@npm:^1.1.0 → npm:1.1.0
+│
+├─ base64-js@npm:1.5.1
+│  └─ Version: 1.5.1
+│
+├─ bify-module-groups@npm:2.0.0
+│  ├─ Version: 2.0.0
+│  │
+│  └─ Dependencies
+│     ├─ pump@npm:^3.0.0 → npm:3.0.0
+│     └─ through2@npm:^3.0.1 → npm:3.0.1
+│
+├─ bignumber.js@npm:4.1.0
+│  └─ Version: 4.1.0
+│
+├─ bn.js@npm:5.2.1
+│  └─ Version: 5.2.1
+│
+├─ bowser@npm:2.11.0
+│  └─ Version: 2.11.0
+│
+├─ brfs@npm:2.0.2
+│  ├─ Version: 2.0.2
+│  │
+│  ├─ Exported Binaries
+│  │  └─ brfs
+│  │
+│  └─ Dependencies
+│     ├─ quote-stream@npm:^1.0.1 → npm:1.0.2
+│     ├─ resolve@patch:resolve@npm%3A^1.1.5#optional!builtin<compat/resolve> → patch:resolve@npm%3A1.22.3#optional!builtin<compat/resolve>::version=1.22.3&hash=c3c19d
+│     ├─ static-module@npm:^3.0.2 → npm:3.0.4
+│     └─ through2@npm:^2.0.0 → npm:2.0.5
+│
+├─ browser-util-inspect@npm:0.2.0
+│  └─ Version: 0.2.0
+│
+├─ browserify@npm:17.0.0
+│  ├─ Version: 17.0.0
+│  │
+│  ├─ Exported Binaries
+│  │  └─ browserify
+│  │
+│  └─ Dependencies
+│     ├─ JSONStream@npm:^1.0.3 → npm:1.3.5
+│     ├─ assert@npm:^1.4.0 → npm:1.5.0
+│     ├─ browser-pack@npm:^6.0.1 → npm:6.1.0
+│     ├─ browser-resolve@npm:^2.0.0 → npm:2.0.0
+│     ├─ browserify-zlib@npm:~0.2.0 → npm:0.2.0
+│     ├─ buffer@npm:~5.2.1 → npm:5.2.1
+│     ├─ cached-path-relative@npm:^1.0.0 → npm:1.1.0
+│     ├─ concat-stream@npm:^1.6.0 → npm:1.6.2
+│     ├─ console-browserify@npm:^1.1.0 → npm:1.1.0
+│     ├─ constants-browserify@npm:~1.0.0 → npm:1.0.0
+│     ├─ crypto-browserify@npm:^3.0.0 → npm:3.12.0
+│     ├─ defined@npm:^1.0.0 → npm:1.0.0
+│     ├─ deps-sort@npm:^2.0.1 → npm:2.0.1
+│     ├─ domain-browser@npm:^1.2.0 → npm:1.2.0
+│     ├─ duplexer2@npm:~0.1.2 → npm:0.1.4
+│     ├─ events@npm:^3.0.0 → npm:3.3.0
+│     ├─ glob@npm:^7.1.0 → npm:7.2.3
+│     ├─ has@npm:^1.0.0 → npm:1.0.3
+│     ├─ htmlescape@npm:^1.1.0 → npm:1.1.1
+│     ├─ https-browserify@npm:^1.0.0 → npm:1.0.0
+│     ├─ inherits@npm:~2.0.1 → npm:2.0.4
+│     ├─ insert-module-globals@npm:^7.2.1 → npm:7.2.1
+│     ├─ labeled-stream-splicer@npm:^2.0.0 → npm:2.0.2
+│     ├─ mkdirp-classic@npm:^0.5.2 → npm:0.5.3
+│     ├─ module-deps@npm:^6.2.3 → npm:6.2.3
+│     ├─ os-browserify@npm:~0.3.0 → npm:0.3.0
+│     ├─ parents@npm:^1.0.1 → npm:1.0.1
+│     ├─ path-browserify@npm:^1.0.0 → npm:1.0.1
+│     ├─ process@npm:~0.11.0 → npm:0.11.10
+│     ├─ punycode@npm:^1.3.2 → npm:1.4.1
+│     ├─ querystring-es3@npm:~0.2.0 → npm:0.2.1
+│     ├─ read-only-stream@npm:^2.0.0 → npm:2.0.0
+│     ├─ readable-stream@npm:^2.0.2 → npm:2.3.7
+│     ├─ resolve@patch:resolve@npm%3A^1.1.4#optional!builtin<compat/resolve> → patch:resolve@npm%3A1.22.3#optional!builtin<compat/resolve>::version=1.22.3&hash=c3c19d
+│     ├─ shasum-object@npm:^1.0.0 → npm:1.0.0
+│     ├─ shell-quote@npm:^1.6.1 → npm:1.7.4
+│     ├─ stream-browserify@npm:^3.0.0 → npm:3.0.0
+│     ├─ stream-http@npm:^3.0.0 → npm:3.1.1
+│     ├─ string_decoder@npm:^1.1.1 → npm:1.3.0
+│     ├─ subarg@npm:^1.0.0 → npm:1.0.0
+│     ├─ syntax-error@npm:^1.1.1 → npm:1.4.0
+│     ├─ through2@npm:^2.0.0 → npm:2.0.5
+│     ├─ timers-browserify@npm:^1.0.1 → npm:1.4.2
+│     ├─ tty-browserify@npm:0.0.1 → npm:0.0.1
+│     ├─ url@npm:~0.11.0 → npm:0.11.3
+│     ├─ util@npm:~0.12.0 → npm:0.12.5
+│     ├─ vm-browserify@npm:^1.0.0 → npm:1.1.2
+│     └─ xtend@npm:^4.0.0 → npm:4.0.2
+│
+├─ chalk@npm:4.1.2
+│  ├─ Version: 4.1.2
+│  │
+│  └─ Dependencies
+│     ├─ ansi-styles@npm:^4.1.0 → npm:4.2.1
+│     └─ supports-color@npm:^7.1.0 → npm:7.1.0
+│
+├─ chokidar@npm:3.5.3
+│  ├─ Version: 3.5.3
+│  │
+│  └─ Dependencies
+│     ├─ anymatch@npm:~3.1.2 → npm:3.1.2
+│     ├─ braces@npm:~3.0.2 → npm:3.0.2
+│     ├─ fsevents@patch:fsevents@npm%3A~2.3.2#optional!builtin<compat/fsevents> → patch:fsevents@npm%3A2.3.2#optional!builtin<compat/fsevents>::version=2.3.2&hash=df0bf1
+│     ├─ glob-parent@npm:^6.0.2 → npm:6.0.2
+│     ├─ is-binary-path@npm:~2.1.0 → npm:2.1.0
+│     ├─ is-glob@npm:~4.0.1 → npm:4.0.3
+│     ├─ normalize-path@npm:~3.0.0 → npm:3.0.0
+│     └─ readdirp@npm:~3.6.0 → npm:3.6.0
+│
+├─ chromedriver@npm:116.0.0
+│  ├─ Version: 116.0.0
+│  │
+│  ├─ Exported Binaries
+│  │  └─ chromedriver
+│  │
+│  └─ Dependencies
+│     ├─ @testim/chrome-version@npm:^1.1.3 → npm:1.1.3
+│     ├─ axios@npm:^1.4.0 → npm:1.4.0
+│     ├─ compare-versions@npm:^6.0.0 → npm:6.1.0
+│     ├─ extract-zip@npm:^2.0.1 → npm:2.0.1
+│     ├─ https-proxy-agent@npm:^5.0.1 → npm:5.0.1
+│     ├─ proxy-from-env@npm:^1.1.0 → npm:1.1.0
+│     └─ tcp-port-used@npm:^1.0.1 → npm:1.0.1
+│
+├─ classnames@npm:2.2.6
+│  └─ Version: 2.2.6
+│
+├─ concurrently@npm:7.6.0
+│  ├─ Version: 7.6.0
+│  │
+│  ├─ Exported Binaries
+│  │  ├─ conc
+│  │  └─ concurrently
+│  │
+│  └─ Dependencies
+│     ├─ chalk@npm:^4.1.0 → npm:4.1.2
+│     ├─ date-fns@npm:^2.29.1 → npm:2.29.3
+│     ├─ lodash@npm:^4.17.21 → npm:4.17.21
+│     ├─ rxjs@npm:^7.0.0 → npm:7.8.0
+│     ├─ shell-quote@npm:^1.7.3 → npm:1.7.4
+│     ├─ spawn-command@npm:^0.0.2-1 → npm:0.0.2-1
+│     ├─ supports-color@npm:^8.1.0 → npm:8.1.1
+│     ├─ tree-kill@npm:^1.2.2 → npm:1.2.2
+│     └─ yargs@npm:^17.3.1 → npm:17.7.2
+│
+├─ copy-to-clipboard@npm:3.3.3
+│  ├─ Version: 3.3.3
+│  │
+│  └─ Dependencies
+│     └─ toggle-selection@npm:^1.0.6 → npm:1.0.6
+│
+├─ copy-webpack-plugin@npm:6.4.1
+│  ├─ Instances: 1
+│  ├─ Version: 6.4.1
+│  │
+│  └─ Dependencies
+│     ├─ cacache@npm:^15.0.5 → npm:15.3.0
+│     ├─ fast-glob@npm:^3.2.4 → npm:3.2.12
+│     ├─ find-cache-dir@npm:^3.3.1 → npm:3.3.2
+│     ├─ glob-parent@npm:^6.0.2 → npm:6.0.2
+│     ├─ globby@npm:^11.0.1 → npm:11.1.0
+│     ├─ loader-utils@npm:^2.0.0 → npm:2.0.4
+│     ├─ normalize-path@npm:^3.0.0 → npm:3.0.0
+│     ├─ p-limit@npm:^3.0.2 → npm:3.1.0
+│     ├─ schema-utils@npm:^3.0.0 → npm:3.1.2
+│     ├─ serialize-javascript@npm:^5.0.1 → npm:5.0.1
+│     └─ webpack-sources@npm:^1.4.3 → npm:1.4.3
+│
+├─ cross-spawn@npm:7.0.3
+│  ├─ Version: 7.0.3
+│  │
+│  └─ Dependencies
+│     ├─ path-key@npm:^3.1.0 → npm:3.1.1
+│     ├─ shebang-command@npm:^2.0.0 → npm:2.0.0
+│     └─ which@npm:^2.0.1 → npm:2.0.2
+│
+├─ css-loader@npm:2.1.1
+│  ├─ Instances: 1
+│  ├─ Version: 2.1.1
+│  │
+│  └─ Dependencies
+│     ├─ camelcase@npm:^5.2.0 → npm:5.3.1
+│     ├─ icss-utils@npm:^4.1.0 → npm:4.1.1
+│     ├─ loader-utils@npm:^1.2.3 → npm:1.4.2
+│     ├─ normalize-path@npm:^3.0.0 → npm:3.0.0
+│     ├─ postcss-modules-extract-imports@npm:^2.0.0 → npm:2.0.0
+│     ├─ postcss-modules-local-by-default@npm:^2.0.6 → npm:2.0.6
+│     ├─ postcss-modules-scope@npm:^2.1.0 → npm:2.2.0
+│     ├─ postcss-modules-values@npm:^2.0.0 → npm:2.0.0
+│     ├─ postcss-value-parser@npm:^3.3.0 → npm:3.3.1
+│     ├─ postcss@npm:^7.0.14 → npm:7.0.39
+│     └─ schema-utils@npm:^1.0.0 → npm:1.0.0
+│
+├─ css-to-xpath@npm:0.1.0
+│  ├─ Version: 0.1.0
+│  │
+│  └─ Dependencies
+│     ├─ bo-selector@npm:0.0.10 → npm:0.0.10
+│     └─ xpath-builder@npm:0.0.7 → npm:0.0.7
+│
+├─ csstype@npm:3.0.11
+│  └─ Version: 3.0.11
+│
+├─ currency-formatter@npm:1.4.2
+│  ├─ Version: 1.4.2
+│  │
+│  └─ Dependencies
+│     ├─ accounting@npm:^0.4.1 → npm:0.4.1
+│     ├─ locale-currency@npm:0.0.1 → npm:0.0.1
+│     └─ object-assign@npm:^4.1.1 → npm:4.1.1
+│
+├─ debounce-stream@npm:2.0.0
+│  ├─ Version: 2.0.0
+│  │
+│  └─ Dependencies
+│     ├─ debounce@npm:^1.0.0 → npm:1.1.0
+│     ├─ duplexer@npm:^0.1.1 → npm:0.1.2
+│     └─ through@npm:^2.3.6 → npm:2.3.8
+│
+├─ deep-freeze-strict@npm:1.1.1
+│  └─ Version: 1.1.1
+│
+├─ del@npm:6.1.1
+│  ├─ Version: 6.1.1
+│  │
+│  └─ Dependencies
+│     ├─ globby@npm:^11.0.1 → npm:11.1.0
+│     ├─ graceful-fs@npm:^4.2.4 → npm:4.2.11
+│     ├─ is-glob@npm:^4.0.1 → npm:4.0.3
+│     ├─ is-path-cwd@npm:^2.2.0 → npm:2.2.0
+│     ├─ is-path-inside@npm:^3.0.2 → npm:3.0.3
+│     ├─ p-map@npm:^4.0.0 → npm:4.0.0
+│     ├─ rimraf@npm:^3.0.2 → npm:3.0.2
+│     └─ slash@npm:^3.0.0 → npm:3.0.0
+│
+├─ depcheck@npm:1.4.3
+│  ├─ Version: 1.4.3
+│  │
+│  ├─ Exported Binaries
+│  │  └─ depcheck
+│  │
+│  └─ Dependencies
+│     ├─ @babel/parser@npm:7.16.4 → npm:7.16.4
+│     ├─ @babel/traverse@npm:^7.12.5 → npm:7.23.2
+│     ├─ camelcase@npm:^6.2.0 → npm:6.3.0
+│     ├─ cosmiconfig@npm:^7.0.0 → npm:7.0.1
+│     ├─ deps-regex@npm:^0.1.4 → npm:0.1.4
+│     ├─ ignore@npm:^5.1.8 → npm:5.2.0
+│     ├─ is-core-module@npm:^2.4.0 → npm:2.12.0
+│     ├─ js-yaml@npm:^3.14.0 → npm:3.14.1
+│     ├─ json5@npm:^2.1.3 → npm:2.2.3
+│     ├─ lodash@npm:^4.17.20 → npm:4.17.21
+│     ├─ minimatch@npm:^3.0.4 → npm:3.1.2
+│     ├─ multimatch@npm:^5.0.0 → npm:5.0.0
+│     ├─ please-upgrade-node@npm:^3.2.0 → npm:3.2.0
+│     ├─ query-ast@npm:^1.0.3 → npm:1.0.4
+│     ├─ readdirp@npm:^3.5.0 → npm:3.6.0
+│     ├─ require-package-name@npm:^2.0.1 → npm:2.0.1
+│     ├─ resolve@patch:resolve@npm%3A^1.18.1#optional!builtin<compat/resolve> → patch:resolve@npm%3A1.22.3#optional!builtin<compat/resolve>::version=1.22.3&hash=c3c19d
+│     ├─ sass@patch:sass@npm%3A1.35.2#./.yarn/patches/sass-npm-1.35.2-6df4e15d13.patch::locator=metamask-crx%40workspace%3A. → patch:sass@npm%3A1.35.2#./.yarn/patches/sass-npm-1.35.2-6df4e15d13.patch::version=1.35.2&hash=48ef45&locator=metamask-crx%40workspace%3A.
+│     ├─ scss-parser@npm:^1.0.4 → npm:1.0.5
+│     ├─ semver@npm:^7.3.2 → npm:7.5.4
+│     ├─ yargs@npm:^16.1.0 → npm:16.2.0
+│     ├─ @vue/compiler-sfc@npm:^3.0.5 → npm:3.1.4 [c87d7]
+│     └─ debug@npm:^4.1.0 → npm:4.3.4 [4758f]
+│
+├─ dependency-tree@npm:10.0.9
+│  ├─ Version: 10.0.9
+│  │
+│  ├─ Exported Binaries
+│  │  └─ dependency-tree
+│  │
+│  └─ Dependencies
+│     ├─ commander@npm:^10.0.1 → npm:10.0.1
+│     ├─ filing-cabinet@npm:^4.1.6 → npm:4.1.6
+│     ├─ precinct@npm:^11.0.5 → npm:11.0.5
+│     └─ typescript@patch:typescript@npm%3A^5.0.4#optional!builtin<compat/typescript> → patch:typescript@npm%3A5.1.3#optional!builtin<compat/typescript>::version=5.1.3&hash=5da071
+│
+├─ detect-port@npm:1.5.1
+│  ├─ Version: 1.5.1
+│  │
+│  ├─ Exported Binaries
+│  │  ├─ detect
+│  │  └─ detect-port
+│  │
+│  └─ Dependencies
+│     ├─ address@npm:^1.0.1 → npm:1.2.2
+│     └─ debug@npm:^4.1.0 → npm:4.3.4 [4758f]
+│
+├─ duplexify@npm:4.1.2
+│  ├─ Version: 4.1.2
+│  │
+│  └─ Dependencies
+│     ├─ end-of-stream@npm:^1.4.1 → npm:1.4.4
+│     ├─ inherits@npm:^2.0.3 → npm:2.0.4
+│     ├─ readable-stream@npm:^3.1.1 → npm:3.6.2
+│     └─ stream-shift@npm:^1.0.0 → npm:1.0.0
+│
+├─ end-of-stream@npm:1.4.4
+│  ├─ Version: 1.4.4
+│  │
+│  └─ Dependencies
+│     └─ once@npm:^1.4.0 → npm:1.4.0
+│
+├─ eslint-config-prettier@npm:8.5.0
+│  ├─ Instances: 1
+│  ├─ Version: 8.5.0
+│  │
+│  └─ Exported Binaries
+│     └─ eslint-config-prettier
+│
+├─ eslint-import-resolver-node@npm:0.3.6
+│  ├─ Version: 0.3.6
+│  │
+│  └─ Dependencies
+│     ├─ resolve@patch:resolve@npm%3A^1.20.0#optional!builtin<compat/resolve> → patch:resolve@npm%3A1.22.3#optional!builtin<compat/resolve>::version=1.22.3&hash=c3c19d
+│     └─ debug@npm:^3.2.7 → npm:3.2.7 [d9426]
+│
+├─ eslint-import-resolver-typescript@patch:eslint-import-resolver-typescript@npm%3A2.5.0#./.yarn/patches/eslint-import-resolver-typescript-npm-2.5.0-3b8adf0d03.patch::version=2.5.0&hash=46abe6&locator=metamask-crx%40workspace%3A.
+│  ├─ Instances: 1
+│  ├─ Version: 2.5.0
+│  │
+│  └─ Dependencies
+│     ├─ debug@npm:^4.3.1 → npm:4.3.4
+│     ├─ glob@npm:^7.1.7 → npm:7.2.3
+│     ├─ is-glob@npm:^4.0.1 → npm:4.0.3
+│     ├─ resolve@patch:resolve@npm%3A^1.20.0#optional!builtin<compat/resolve> → patch:resolve@npm%3A1.22.3#optional!builtin<compat/resolve>::version=1.22.3&hash=c3c19d
+│     └─ tsconfig-paths@npm:^3.9.0 → npm:3.14.2
+│
+├─ eslint-plugin-import@npm:2.26.0
+│  ├─ Instances: 1
+│  ├─ Version: 2.26.0
+│  │
+│  └─ Dependencies
+│     ├─ array-includes@npm:^3.1.4 → npm:3.1.6
+│     ├─ array.prototype.flat@npm:^1.2.5 → npm:1.3.1
+│     ├─ debug@npm:^2.6.9 → npm:2.6.9
+│     ├─ doctrine@npm:^2.1.0 → npm:2.1.0
+│     ├─ eslint-import-resolver-node@npm:^0.3.6 → npm:0.3.6
+│     ├─ eslint-module-utils@npm:^2.7.3 → npm:2.7.3
+│     ├─ has@npm:^1.0.3 → npm:1.0.3
+│     ├─ is-core-module@npm:^2.8.1 → npm:2.12.0
+│     ├─ is-glob@npm:^4.0.3 → npm:4.0.3
+│     ├─ minimatch@npm:^3.1.2 → npm:3.1.2
+│     ├─ object.values@patch:object.values@npm%3A1.1.5#./.yarn/patches/object.values-npm-1.1.5-f1de7f3742.patch::locator=metamask-crx%40workspace%3A. → patch:object.values@npm%3A1.1.5#./.yarn/patches/object.values-npm-1.1.5-f1de7f3742.patch::version=1.1.5&hash=b949cc&locator=metamask-crx%40workspace%3A.
+│     ├─ resolve@patch:resolve@npm%3A^1.22.0#optional!builtin<compat/resolve> → patch:resolve@npm%3A1.22.3#optional!builtin<compat/resolve>::version=1.22.3&hash=c3c19d
+│     └─ tsconfig-paths@npm:^3.14.1 → npm:3.14.2
+│
+├─ eslint-plugin-jest@npm:26.6.0
+│  ├─ Instances: 1
+│  ├─ Version: 26.6.0
+│  │
+│  └─ Dependencies
+│     └─ @typescript-eslint/utils@npm:^5.10.0 → npm:5.59.1
+│
+├─ eslint-plugin-jsdoc@npm:39.3.3
+│  ├─ Instances: 1
+│  ├─ Version: 39.3.3
+│  │
+│  └─ Dependencies
+│     ├─ @es-joy/jsdoccomment@npm:~0.31.0 → npm:0.31.0
+│     ├─ comment-parser@npm:1.3.1 → npm:1.3.1
+│     ├─ debug@npm:^4.3.4 → npm:4.3.4
+│     ├─ escape-string-regexp@npm:^4.0.0 → npm:4.0.0
+│     ├─ esquery@npm:^1.4.0 → npm:1.5.0
+│     ├─ semver@npm:^7.3.7 → npm:7.5.4
+│     └─ spdx-expression-parse@npm:^3.0.1 → npm:3.0.1
+│
+├─ eslint-plugin-mocha@npm:10.1.0
+│  ├─ Instances: 1
+│  ├─ Version: 10.1.0
+│  │
+│  └─ Dependencies
+│     ├─ eslint-utils@npm:^3.0.0 → npm:3.0.0
+│     └─ rambda@npm:^7.1.0 → npm:7.5.0
+│
+├─ eslint-plugin-node@npm:11.1.0
+│  ├─ Instances: 1
+│  ├─ Version: 11.1.0
+│  │
+│  └─ Dependencies
+│     ├─ eslint-plugin-es@npm:^3.0.0 → npm:3.0.1
+│     ├─ eslint-utils@npm:^2.0.0 → npm:2.1.0
+│     ├─ ignore@npm:^5.1.1 → npm:5.2.0
+│     ├─ minimatch@npm:^3.0.4 → npm:3.1.2
+│     ├─ resolve@patch:resolve@npm%3A^1.10.1#optional!builtin<compat/resolve> → patch:resolve@npm%3A1.22.3#optional!builtin<compat/resolve>::version=1.22.3&hash=c3c19d
+│     └─ semver@npm:^6.1.0 → npm:6.3.1
+│
+├─ eslint-plugin-prettier@npm:4.2.1
+│  ├─ Instances: 1
+│  ├─ Version: 4.2.1
+│  │
+│  └─ Dependencies
+│     └─ prettier-linter-helpers@npm:^1.0.0 → npm:1.0.0
+│
+├─ eslint-plugin-react-hooks@npm:4.6.0
+│  ├─ Instances: 1
+│  └─ Version: 4.6.0
+│
+├─ eslint-plugin-react@npm:7.30.1
+│  ├─ Instances: 1
+│  ├─ Version: 7.30.1
+│  │
+│  └─ Dependencies
+│     ├─ array-includes@npm:^3.1.5 → npm:3.1.6
+│     ├─ array.prototype.flatmap@npm:^1.3.0 → npm:1.3.1
+│     ├─ doctrine@npm:^2.1.0 → npm:2.1.0
+│     ├─ estraverse@npm:^5.3.0 → npm:5.3.0
+│     ├─ jsx-ast-utils@npm:^2.4.1 || ^3.0.0 → npm:3.3.2
+│     ├─ minimatch@npm:^3.1.2 → npm:3.1.2
+│     ├─ object.entries@npm:^1.1.5 → npm:1.1.6
+│     ├─ object.fromentries@npm:^2.0.5 → npm:2.0.6
+│     ├─ object.hasown@npm:^1.1.1 → npm:1.1.2
+│     ├─ object.values@patch:object.values@npm%3A1.1.5#./.yarn/patches/object.values-npm-1.1.5-f1de7f3742.patch::locator=metamask-crx%40workspace%3A. → patch:object.values@npm%3A1.1.5#./.yarn/patches/object.values-npm-1.1.5-f1de7f3742.patch::version=1.1.5&hash=b949cc&locator=metamask-crx%40workspace%3A.
+│     ├─ prop-types@npm:^15.8.1 → npm:15.8.1
+│     ├─ resolve@patch:resolve@npm%3A^2.0.0-next.3#optional!builtin<compat/resolve> → patch:resolve@npm%3A2.0.0-next.4#optional!builtin<compat/resolve>::version=2.0.0-next.4&hash=c3c19d
+│     ├─ semver@npm:^6.3.0 → npm:6.3.1
+│     └─ string.prototype.matchall@npm:^4.0.7 → npm:4.0.7
+│
+├─ eslint-plugin-storybook@npm:0.6.15
+│  ├─ Instances: 1
+│  ├─ Version: 0.6.15
+│  │
+│  └─ Dependencies
+│     ├─ @storybook/csf@npm:^0.0.1 → npm:0.0.1
+│     ├─ @typescript-eslint/utils@npm:^5.45.0 → npm:5.59.1
+│     ├─ requireindex@npm:^1.1.0 → npm:1.2.0
+│     └─ ts-dedent@npm:^2.2.0 → npm:2.2.0
+│
+├─ eslint@patch:eslint@npm%3A8.36.0#./.yarn/patches/eslint-npm-8.36.0-f8482bce95.patch::version=8.36.0&hash=b3ac63&locator=metamask-crx%40workspace%3A.
+│  ├─ Version: 8.36.0
+│  │
+│  ├─ Exported Binaries
+│  │  └─ eslint
+│  │
+│  └─ Dependencies
+│     ├─ @eslint-community/regexpp@npm:^4.4.0 → npm:4.5.0
+│     ├─ @eslint/eslintrc@patch:@eslint/eslintrc@npm%3A2.0.2#./.yarn/patches/@eslint-eslintrc-npm-2.0.2-d308674d86.patch::locator=metamask-crx%40workspace%3A. → patch:@eslint/eslintrc@npm%3A2.0.2#./.yarn/patches/@eslint-eslintrc-npm-2.0.2-d308674d86.patch::version=2.0.2&hash=c0def0&locator=metamask-crx%40workspace%3A.
+│     ├─ @eslint/js@npm:8.36.0 → npm:8.36.0
+│     ├─ @humanwhocodes/config-array@npm:^0.11.8 → npm:0.11.8
+│     ├─ @humanwhocodes/module-importer@npm:^1.0.1 → npm:1.0.1
+│     ├─ @nodelib/fs.walk@npm:^1.2.8 → npm:1.2.8
+│     ├─ ajv@npm:^6.10.0 → npm:6.12.6
+│     ├─ chalk@npm:^4.0.0 → npm:4.1.2
+│     ├─ cross-spawn@npm:^7.0.2 → npm:7.0.3
+│     ├─ doctrine@npm:^3.0.0 → npm:3.0.0
+│     ├─ escape-string-regexp@npm:^4.0.0 → npm:4.0.0
+│     ├─ eslint-scope@npm:^7.1.1 → npm:7.1.1
+│     ├─ eslint-visitor-keys@npm:^3.3.0 → npm:3.4.0
+│     ├─ espree@npm:^9.5.0 → npm:9.5.1
+│     ├─ esquery@npm:^1.4.2 → npm:1.5.0
+│     ├─ esutils@npm:^2.0.2 → npm:2.0.3
+│     ├─ fast-deep-equal@npm:^3.1.3 → npm:3.1.3
+│     ├─ file-entry-cache@npm:^6.0.1 → npm:6.0.1
+│     ├─ find-up@npm:^5.0.0 → npm:5.0.0
+│     ├─ glob-parent@npm:^6.0.2 → npm:6.0.2
+│     ├─ globals@npm:^13.19.0 → npm:13.20.0
+│     ├─ grapheme-splitter@npm:^1.0.4 → npm:1.0.4
+│     ├─ ignore@npm:^5.2.0 → npm:5.2.0
+│     ├─ import-fresh@npm:^3.0.0 → npm:3.2.1
+│     ├─ imurmurhash@npm:^0.1.4 → npm:0.1.4
+│     ├─ is-glob@npm:^4.0.0 → npm:4.0.3
+│     ├─ is-path-inside@npm:^3.0.3 → npm:3.0.3
+│     ├─ js-sdsl@npm:^4.1.4 → npm:4.4.0
+│     ├─ js-yaml@npm:^4.1.0 → npm:4.1.0
+│     ├─ json-stable-stringify-without-jsonify@npm:^1.0.1 → npm:1.0.1
+│     ├─ levn@npm:^0.4.1 → npm:0.4.1
+│     ├─ lodash.merge@npm:^4.6.2 → npm:4.6.2
+│     ├─ minimatch@npm:^3.1.2 → npm:3.1.2
+│     ├─ natural-compare@npm:^1.4.0 → npm:1.4.0
+│     ├─ optionator@npm:^0.9.1 → npm:0.9.1
+│     ├─ strip-ansi@npm:^6.0.1 → npm:6.0.1
+│     ├─ strip-json-comments@npm:^3.1.0 → npm:3.1.1
+│     ├─ text-table@npm:^0.2.0 → npm:0.2.0
+│     ├─ @eslint-community/eslint-utils@npm:^4.2.0 → npm:4.4.0 [abb91]
+│     └─ debug@npm:^4.1.0 → npm:4.3.4 [4758f]
+│
+├─ eth-ens-namehash@npm:2.0.8
+│  ├─ Version: 2.0.8
+│  │
+│  └─ Dependencies
+│     ├─ idna-uts46-hx@npm:^2.3.1 → npm:2.3.1
+│     └─ js-sha3@npm:^0.5.7 → npm:0.5.7
+│
+├─ eth-json-rpc-filters@npm:6.0.0
+│  ├─ Version: 6.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/safe-event-emitter@npm:^2.0.0 → npm:2.0.0
+│     ├─ async-mutex@npm:^0.2.6 → npm:0.2.6
+│     ├─ eth-query@patch:eth-query@npm%3A2.1.2#./.yarn/patches/eth-query-npm-2.1.2-7c6adc825f.patch::locator=metamask-crx%40workspace%3A. → patch:eth-query@npm%3A2.1.2#./.yarn/patches/eth-query-npm-2.1.2-7c6adc825f.patch::version=2.1.2&hash=92d70f&locator=metamask-crx%40workspace%3A.
+│     ├─ json-rpc-engine@npm:^6.1.0 → npm:6.1.0
+│     └─ pify@npm:^5.0.0 → npm:5.0.0
+│
+├─ eth-lattice-keyring@npm:0.12.4
+│  ├─ Version: 0.12.4
+│  │
+│  └─ Dependencies
+│     ├─ @ethereumjs/util@npm:^8.0.0 → npm:8.1.0
+│     ├─ @noble/secp256k1@npm:^1.7.0 → npm:1.7.1
+│     ├─ bn.js@npm:^5.2.1 → npm:5.2.1
+│     ├─ gridplus-sdk@npm:^2.5.1 → npm:2.5.1
+│     ├─ rlp@npm:^3.0.0 → npm:3.0.0
+│     └─ @ethereumjs/tx@npm:4.1.1 → npm:4.1.1 [b0e09]
+│
+├─ eth-method-registry@npm:2.0.0
+│  ├─ Version: 2.0.0
+│  │
+│  └─ Dependencies
+│     └─ ethjs@npm:^0.4.0 → npm:0.4.0
+│
+├─ eth-query@patch:eth-query@npm%3A2.1.2#./.yarn/patches/eth-query-npm-2.1.2-7c6adc825f.patch::version=2.1.2&hash=92d70f&locator=metamask-crx%40workspace%3A.
+│  ├─ Version: 2.1.2
+│  │
+│  └─ Dependencies
+│     ├─ json-rpc-random-id@npm:^1.0.0 → npm:1.0.1
+│     └─ xtend@npm:^4.0.1 → npm:4.0.2
+│
+├─ eth-rpc-errors@npm:4.0.3
+│  ├─ Version: 4.0.3
+│  │
+│  └─ Dependencies
+│     └─ fast-safe-stringify@npm:^2.0.6 → npm:2.1.1
+│
+├─ eth-sig-util@npm:3.0.1
+│  ├─ Version: 3.0.1
+│  │
+│  └─ Dependencies
+│     ├─ ethereumjs-abi@npm:^0.6.8 → npm:0.6.8
+│     ├─ ethereumjs-util@patch:ethereumjs-util@npm%3A5.2.1#./.yarn/patches/ethereumjs-util-npm-5.2.1-72b39f4e7e.patch::locator=metamask-crx%40workspace%3A. → patch:ethereumjs-util@npm%3A5.2.1#./.yarn/patches/ethereumjs-util-npm-5.2.1-72b39f4e7e.patch::version=5.2.1&hash=02cced&locator=metamask-crx%40workspace%3A.
+│     ├─ tweetnacl-util@npm:^0.15.0 → npm:0.15.1
+│     └─ tweetnacl@npm:^1.0.3 → npm:1.0.3
+│
+├─ ethereum-ens-network-map@npm:1.0.2
+│  └─ Version: 1.0.2
+│
+├─ ethereumjs-abi@npm:0.6.8
+│  ├─ Version: 0.6.8
+│  │
+│  └─ Dependencies
+│     ├─ bn.js@npm:^5.2.1 → npm:5.2.1
+│     └─ ethereumjs-util@npm:^6.0.0 → npm:6.2.1
+│
+├─ ethereumjs-util@patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::version=7.1.5&hash=c1ed5b&locator=metamask-crx%40workspace%3A.
+│  ├─ Version: 7.1.5
+│  │
+│  └─ Dependencies
+│     ├─ @types/bn.js@npm:^5.1.0 → npm:5.1.1
+│     ├─ bn.js@npm:^5.2.1 → npm:5.2.1
+│     ├─ create-hash@npm:^1.1.2 → npm:1.2.0
+│     ├─ ethereum-cryptography@npm:^0.1.3 → npm:0.1.3
+│     └─ rlp@npm:^2.2.4 → npm:2.2.7
+│
+├─ ethjs-contract@npm:0.2.3
+│  ├─ Version: 0.2.3
+│  │
+│  └─ Dependencies
+│     ├─ babel-runtime@npm:^6.26.0 → npm:6.26.0
+│     ├─ ethjs-abi@npm:0.2.0 → npm:0.2.0
+│     ├─ ethjs-filter@npm:0.1.8 → npm:0.1.8
+│     ├─ ethjs-util@npm:0.1.3 → npm:0.1.3
+│     └─ js-sha3@npm:0.5.5 → npm:0.5.5
+│
+├─ ethjs@npm:0.4.0
+│  ├─ Version: 0.4.0
+│  │
+│  └─ Dependencies
+│     ├─ bn.js@npm:^5.2.1 → npm:5.2.1
+│     ├─ ethjs-abi@npm:0.2.1 → npm:0.2.1
+│     ├─ ethjs-contract@npm:0.2.3 → npm:0.2.3
+│     ├─ ethjs-filter@npm:0.1.8 → npm:0.1.8
+│     ├─ ethjs-provider-http@npm:0.1.6 → npm:0.1.6
+│     ├─ ethjs-query@npm:0.3.8 → npm:0.3.8
+│     ├─ ethjs-unit@npm:0.1.6 → npm:0.1.6
+│     ├─ ethjs-util@npm:0.1.3 → npm:0.1.3
+│     ├─ js-sha3@npm:0.5.5 → npm:0.5.5
+│     └─ number-to-bn@npm:1.7.0 → npm:1.7.0
+│
+├─ extension-port-stream@npm:2.1.1
+│  ├─ Version: 2.1.1
+│  │
+│  └─ Dependencies
+│     └─ webextension-polyfill@npm:>=0.10.0 <1.0 → npm:0.10.0
+│
+├─ fake-indexeddb@npm:4.0.1
+│  ├─ Version: 4.0.1
+│  │
+│  └─ Dependencies
+│     └─ realistic-structured-clone@npm:^3.0.0 → npm:3.0.0
+│
+├─ fancy-log@npm:1.3.3
+│  ├─ Version: 1.3.3
+│  │
+│  └─ Dependencies
+│     ├─ ansi-gray@npm:^0.1.1 → npm:0.1.1
+│     ├─ color-support@npm:^1.1.3 → npm:1.1.3
+│     ├─ parse-node-version@npm:^1.0.0 → npm:1.0.1
+│     └─ time-stamp@npm:^1.0.0 → npm:1.1.0
+│
+├─ fast-glob@npm:3.2.12
+│  ├─ Version: 3.2.12
+│  │
+│  └─ Dependencies
+│     ├─ @nodelib/fs.stat@npm:^2.0.2 → npm:2.0.5
+│     ├─ @nodelib/fs.walk@npm:^1.2.3 → npm:1.2.8
+│     ├─ glob-parent@npm:^6.0.2 → npm:6.0.2
+│     ├─ merge2@npm:^1.3.0 → npm:1.4.1
+│     └─ micromatch@npm:^4.0.4 → npm:4.0.5
+│
+├─ fast-json-patch@patch:fast-json-patch@npm%3A3.1.1#./.yarn/patches/fast-json-patch-npm-3.1.1-7e8bb70a45.patch::version=3.1.1&hash=46c667&locator=metamask-crx%40workspace%3A.
+│  └─ Version: 3.1.1
+│
+├─ fs-extra@npm:8.1.0
+│  ├─ Version: 8.1.0
+│  │
+│  └─ Dependencies
+│     ├─ graceful-fs@npm:^4.2.0 → npm:4.2.11
+│     ├─ jsonfile@npm:^4.0.0 → npm:4.0.0
+│     └─ universalify@npm:^0.1.0 → npm:0.1.2
+│
+├─ fuse.js@npm:3.6.1
+│  └─ Version: 3.6.1
+│
+├─ ganache@npm:7.0.4
+│  ├─ Version: 7.0.4
+│  │
+│  ├─ Exported Binaries
+│  │  ├─ ganache
+│  │  └─ ganache-cli
+│  │
+│  └─ Dependencies
+│     ├─ @trufflesuite/bigint-buffer@npm:1.1.9 → npm:1.1.9
+│     ├─ bufferutil@npm:4.0.5 → npm:4.0.5
+│     ├─ emittery@npm:0.10.0 → npm:0.10.0
+│     ├─ keccak@npm:3.0.1 → npm:3.0.1
+│     ├─ leveldown@npm:6.1.0 → npm:6.1.0
+│     ├─ secp256k1@npm:4.0.2 → npm:4.0.2
+│     └─ utf-8-validate@npm:5.0.7 → npm:5.0.7
+│
+├─ geckodriver@npm:4.0.4
+│  ├─ Version: 4.0.4
+│  │
+│  ├─ Exported Binaries
+│  │  └─ geckodriver
+│  │
+│  └─ Dependencies
+│     ├─ @wdio/logger@npm:^8.6.6 → npm:8.11.0
+│     ├─ decamelize@npm:^6.0.0 → npm:6.0.0
+│     ├─ http-proxy-agent@npm:^7.0.0 → npm:7.0.0
+│     ├─ https-proxy-agent@npm:^7.0.0 → npm:7.0.0
+│     ├─ node-fetch@npm:^3.3.1 → npm:3.3.1
+│     ├─ tar-fs@npm:^2.1.1 → npm:2.1.1
+│     ├─ unzipper@npm:^0.10.14 → npm:0.10.14
+│     └─ which@npm:^3.0.1 → npm:3.0.1
+│
+├─ gh-pages@npm:5.0.0
+│  ├─ Version: 5.0.0
+│  │
+│  ├─ Exported Binaries
+│  │  ├─ gh-pages
+│  │  └─ gh-pages-clean
+│  │
+│  └─ Dependencies
+│     ├─ async@npm:^3.2.4 → npm:3.2.4
+│     ├─ commander@npm:^2.18.0 → npm:2.20.3
+│     ├─ email-addresses@npm:^5.0.0 → npm:5.0.0
+│     ├─ filenamify@npm:^4.3.0 → npm:4.3.0
+│     ├─ find-cache-dir@npm:^3.3.1 → npm:3.3.2
+│     ├─ fs-extra@npm:^8.1.0 → npm:8.1.0
+│     └─ globby@npm:^6.1.0 → npm:6.1.0
+│
+├─ globalthis@npm:1.0.1
+│  ├─ Version: 1.0.1
+│  │
+│  └─ Dependencies
+│     └─ define-properties@npm:^1.1.3 → npm:1.1.4
+│
+├─ globby@npm:11.1.0
+│  ├─ Version: 11.1.0
+│  │
+│  └─ Dependencies
+│     ├─ array-union@npm:^2.1.0 → npm:2.1.0
+│     ├─ dir-glob@npm:^3.0.1 → npm:3.0.1
+│     ├─ fast-glob@npm:^3.2.9 → npm:3.2.12
+│     ├─ ignore@npm:^5.2.0 → npm:5.2.0
+│     ├─ merge2@npm:^1.4.1 → npm:1.4.1
+│     └─ slash@npm:^3.0.0 → npm:3.0.0
+│
+├─ gulp-autoprefixer@npm:8.0.0
+│  ├─ Instances: 1
+│  ├─ Version: 8.0.0
+│  │
+│  └─ Dependencies
+│     ├─ autoprefixer@npm:^10.2.6 → npm:10.4.13
+│     ├─ fancy-log@npm:^1.3.3 → npm:1.3.3
+│     ├─ plugin-error@patch:plugin-error@npm%3A1.0.1#./.yarn/patches/plugin-error-npm-1.0.1-7d15e880d6.patch::locator=metamask-crx%40workspace%3A. → patch:plugin-error@npm%3A1.0.1#./.yarn/patches/plugin-error-npm-1.0.1-7d15e880d6.patch::version=1.0.1&hash=c8d29d&locator=metamask-crx%40workspace%3A.
+│     ├─ postcss@npm:^8.3.0 → npm:8.4.23
+│     ├─ through2@npm:^4.0.2 → npm:4.0.2
+│     └─ vinyl-sourcemaps-apply@npm:^0.2.1 → npm:0.2.1
+│
+├─ gulp-livereload@npm:4.0.0
+│  ├─ Version: 4.0.0
+│  │
+│  └─ Dependencies
+│     ├─ chalk@npm:^2.4.1 → npm:2.4.2
+│     ├─ event-stream@npm:^3.3.4 → npm:3.3.4
+│     ├─ fancy-log@npm:^1.3.2 → npm:1.3.3
+│     ├─ lodash.assign@npm:^4.2.0 → npm:4.2.0
+│     ├─ tiny-lr@npm:^1.1.1 → npm:1.1.1
+│     ├─ vinyl@npm:^2.2.0 → npm:2.2.1
+│     └─ debug@npm:^3.2.7 → npm:3.2.7 [d9426]
+│
+├─ gulp-rename@npm:2.0.0
+│  └─ Version: 2.0.0
+│
+├─ gulp-rtlcss@npm:1.4.0
+│  ├─ Version: 1.4.0
+│  │
+│  └─ Dependencies
+│     ├─ plugin-error@patch:plugin-error@npm%3A1.0.1#./.yarn/patches/plugin-error-npm-1.0.1-7d15e880d6.patch::locator=metamask-crx%40workspace%3A. → patch:plugin-error@npm%3A1.0.1#./.yarn/patches/plugin-error-npm-1.0.1-7d15e880d6.patch::version=1.0.1&hash=c8d29d&locator=metamask-crx%40workspace%3A.
+│     ├─ rtlcss@npm:^2.4.0 → npm:2.6.1
+│     ├─ through2@npm:^2.0.5 → npm:2.0.5
+│     └─ vinyl-sourcemaps-apply@npm:^0.2.1 → npm:0.2.1
+│
+├─ gulp-sass@npm:5.1.0
+│  ├─ Version: 5.1.0
+│  │
+│  └─ Dependencies
+│     ├─ lodash.clonedeep@npm:^4.5.0 → npm:4.5.0
+│     ├─ picocolors@npm:^1.0.0 → npm:1.0.0
+│     ├─ plugin-error@patch:plugin-error@npm%3A1.0.1#./.yarn/patches/plugin-error-npm-1.0.1-7d15e880d6.patch::locator=metamask-crx%40workspace%3A. → patch:plugin-error@npm%3A1.0.1#./.yarn/patches/plugin-error-npm-1.0.1-7d15e880d6.patch::version=1.0.1&hash=c8d29d&locator=metamask-crx%40workspace%3A.
+│     ├─ replace-ext@npm:^2.0.0 → npm:2.0.0
+│     ├─ strip-ansi@npm:^6.0.1 → npm:6.0.1
+│     └─ vinyl-sourcemaps-apply@npm:^0.2.1 → npm:0.2.1
+│
+├─ gulp-sort@npm:2.0.0
+│  ├─ Version: 2.0.0
+│  │
+│  └─ Dependencies
+│     └─ through2@npm:^2.0.1 → npm:2.0.5
+│
+├─ gulp-sourcemaps@patch:gulp-sourcemaps@npm%3A3.0.0#./.yarn/patches/gulp-sourcemaps-npm-3.0.0-1ae0fbef6d.patch::version=3.0.0&hash=38fce2&locator=metamask-crx%40workspace%3A.
+│  ├─ Version: 3.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @gulp-sourcemaps/identity-map@npm:^2.0.1 → npm:2.0.1
+│     ├─ @gulp-sourcemaps/map-sources@npm:^1.0.0 → npm:1.0.0
+│     ├─ acorn@npm:^6.4.1 → npm:6.4.2
+│     ├─ convert-source-map@patch:convert-source-map@npm%3A1.1.3#./.yarn/patches/convert-source-map-npm-1.1.3-7f1bfeabd4.patch::locator=metamask-crx%40workspace%3A. → patch:convert-source-map@npm%3A1.1.3#./.yarn/patches/convert-source-map-npm-1.1.3-7f1bfeabd4.patch::version=1.1.3&hash=6df1a7&locator=metamask-crx%40workspace%3A.
+│     ├─ css@npm:^3.0.0 → npm:3.0.0
+│     ├─ debug-fabulous@npm:^1.0.0 → npm:1.1.0
+│     ├─ detect-newline@npm:^2.0.0 → npm:2.1.0
+│     ├─ graceful-fs@npm:^4.0.0 → npm:4.2.11
+│     ├─ source-map@npm:^0.6.0 → npm:0.6.1
+│     ├─ strip-bom-string@npm:^1.0.0 → npm:1.0.0
+│     └─ through2@npm:^2.0.0 → npm:2.0.5
+│
+├─ gulp-stylelint@npm:13.0.0
+│  ├─ Instances: 1
+│  ├─ Version: 13.0.0
+│  │
+│  └─ Dependencies
+│     ├─ chalk@npm:^3.0.0 → npm:3.0.0
+│     ├─ fancy-log@npm:^1.3.3 → npm:1.3.3
+│     ├─ plugin-error@patch:plugin-error@npm%3A1.0.1#./.yarn/patches/plugin-error-npm-1.0.1-7d15e880d6.patch::locator=metamask-crx%40workspace%3A. → patch:plugin-error@npm%3A1.0.1#./.yarn/patches/plugin-error-npm-1.0.1-7d15e880d6.patch::version=1.0.1&hash=c8d29d&locator=metamask-crx%40workspace%3A.
+│     ├─ source-map@npm:^0.7.3 → npm:0.7.4
+│     ├─ strip-ansi@npm:^6.0.0 → npm:6.0.1
+│     └─ through2@npm:^3.0.1 → npm:3.0.1
+│
+├─ gulp-watch@npm:5.0.1
+│  ├─ Version: 5.0.1
+│  │
+│  └─ Dependencies
+│     ├─ ansi-colors@npm:1.1.0 → npm:1.1.0
+│     ├─ anymatch@npm:^1.3.0 → npm:1.3.2
+│     ├─ chokidar@npm:^2.0.0 → npm:2.1.8
+│     ├─ fancy-log@npm:1.3.2 → npm:1.3.2
+│     ├─ glob-parent@npm:^6.0.2 → npm:6.0.2
+│     ├─ object-assign@npm:^4.1.0 → npm:4.1.1
+│     ├─ path-is-absolute@npm:^1.0.1 → npm:1.0.1
+│     ├─ plugin-error@patch:plugin-error@npm%3A1.0.1#./.yarn/patches/plugin-error-npm-1.0.1-7d15e880d6.patch::locator=metamask-crx%40workspace%3A. → patch:plugin-error@npm%3A1.0.1#./.yarn/patches/plugin-error-npm-1.0.1-7d15e880d6.patch::version=1.0.1&hash=c8d29d&locator=metamask-crx%40workspace%3A.
+│     ├─ readable-stream@npm:^2.2.2 → npm:2.3.7
+│     ├─ slash@npm:^1.0.0 → npm:1.0.0
+│     ├─ vinyl-file@npm:^2.0.0 → npm:2.0.0
+│     └─ vinyl@npm:^2.1.0 → npm:2.2.1
+│
+├─ gulp-zip@npm:5.1.0
+│  ├─ Instances: 1
+│  ├─ Version: 5.1.0
+│  │
+│  └─ Dependencies
+│     ├─ get-stream@npm:^5.2.0 → npm:5.2.0
+│     ├─ plugin-error@patch:plugin-error@npm%3A1.0.1#./.yarn/patches/plugin-error-npm-1.0.1-7d15e880d6.patch::locator=metamask-crx%40workspace%3A. → patch:plugin-error@npm%3A1.0.1#./.yarn/patches/plugin-error-npm-1.0.1-7d15e880d6.patch::version=1.0.1&hash=c8d29d&locator=metamask-crx%40workspace%3A.
+│     ├─ through2@npm:^3.0.1 → npm:3.0.1
+│     ├─ vinyl@npm:^2.1.0 → npm:2.2.1
+│     └─ yazl@npm:^2.5.1 → npm:2.5.1
+│
+├─ gulp@npm:4.0.2
+│  ├─ Version: 4.0.2
+│  │
+│  ├─ Exported Binaries
+│  │  └─ gulp
+│  │
+│  └─ Dependencies
+│     ├─ glob-watcher@npm:^5.0.3 → npm:5.0.3
+│     ├─ gulp-cli@npm:^2.2.0 → npm:2.3.0
+│     ├─ undertaker@npm:^1.2.1 → npm:1.2.1
+│     └─ vinyl-fs@npm:^3.0.0 → npm:3.0.3
+│
+├─ history@npm:5.0.0
+│  ├─ Version: 5.0.0
+│  │
+│  └─ Dependencies
+│     └─ @babel/runtime@patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch → patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch::version=7.23.2&hash=7df10d
+│
+├─ human-standard-token-abi@npm:2.0.0
+│  └─ Version: 2.0.0
+│
+├─ husky@npm:8.0.3
+│  ├─ Version: 8.0.3
+│  │
+│  └─ Exported Binaries
+│     └─ husky
+│
+├─ immer@npm:9.0.6
+│  └─ Version: 9.0.6
+│
+├─ ini@npm:3.0.0
+│  └─ Version: 3.0.0
+│
+├─ is-retry-allowed@npm:2.2.0
+│  └─ Version: 2.2.0
+│
+├─ istanbul-lib-coverage@npm:3.2.0
+│  └─ Version: 3.2.0
+│
+├─ istanbul-lib-report@npm:3.0.0
+│  ├─ Version: 3.0.0
+│  │
+│  └─ Dependencies
+│     ├─ istanbul-lib-coverage@npm:^3.0.0 → npm:3.2.0
+│     ├─ make-dir@npm:^3.0.0 → npm:3.1.0
+│     └─ supports-color@npm:^7.1.0 → npm:7.1.0
+│
+├─ istanbul-reports@npm:3.1.5
+│  ├─ Version: 3.1.5
+│  │
+│  └─ Dependencies
+│     ├─ html-escaper@npm:^2.0.0 → npm:2.0.0
+│     └─ istanbul-lib-report@npm:^3.0.0 → npm:3.0.0
+│
+├─ jest-canvas-mock@npm:2.3.1
+│  ├─ Version: 2.3.1
+│  │
+│  └─ Dependencies
+│     ├─ cssfontparser@npm:^1.2.1 → npm:1.2.1
+│     └─ moo-color@npm:^1.0.2 → npm:1.0.2
+│
+├─ jest-environment-jsdom@npm:29.1.2
+│  ├─ Version: 29.1.2
+│  │
+│  └─ Dependencies
+│     ├─ @jest/environment@npm:^29.1.2 → npm:29.1.2
+│     ├─ @jest/fake-timers@npm:^29.1.2 → npm:29.1.2
+│     ├─ @jest/types@npm:^29.1.2 → npm:29.6.1
+│     ├─ @types/jsdom@npm:^20.0.0 → npm:20.0.0
+│     ├─ @types/node@npm:* → npm:20.8.2
+│     ├─ jest-mock@npm:^29.1.2 → npm:29.1.2
+│     ├─ jest-util@npm:^29.1.2 → npm:29.6.2
+│     └─ jsdom@npm:^20.0.0 → npm:20.0.3 [15ca4]
+│
+├─ jest-junit@npm:14.0.1
+│  ├─ Version: 14.0.1
+│  │
+│  └─ Dependencies
+│     ├─ mkdirp@npm:^1.0.4 → npm:1.0.4
+│     ├─ strip-ansi@npm:^6.0.1 → npm:6.0.1
+│     ├─ uuid@npm:^8.3.2 → npm:8.3.2
+│     └─ xml@npm:^1.0.1 → npm:1.0.1
+│
+├─ jest@npm:29.1.2
+│  ├─ Instances: 1
+│  ├─ Version: 29.1.2
+│  │
+│  ├─ Exported Binaries
+│  │  └─ jest
+│  │
+│  └─ Dependencies
+│     ├─ @jest/core@npm:^29.1.2 → npm:29.1.2
+│     ├─ @jest/types@npm:^29.1.2 → npm:29.6.1
+│     ├─ import-local@npm:^3.0.2 → npm:3.0.2
+│     └─ jest-cli@npm:^29.1.2 → npm:29.1.2
+│
+├─ js-yaml@npm:4.1.0
+│  ├─ Version: 4.1.0
+│  │
+│  ├─ Exported Binaries
+│  │  └─ js-yaml
+│  │
+│  └─ Dependencies
+│     └─ argparse@npm:^2.0.1 → npm:2.0.1
+│
+├─ jsdom@patch:jsdom@npm%3A16.7.0#./.yarn/patches/jsdom-npm-16.7.0-216c5c4bf9.patch::version=16.7.0&hash=e069ff&locator=metamask-crx%40workspace%3A.
+│  ├─ Instances: 1
+│  ├─ Version: 16.7.0
+│  │
+│  └─ Dependencies
+│     ├─ abab@npm:^2.0.5 → npm:2.0.6
+│     ├─ acorn-globals@npm:^6.0.0 → npm:6.0.0
+│     ├─ acorn@npm:^8.2.4 → npm:8.10.0
+│     ├─ cssom@npm:^0.4.4 → npm:0.4.4
+│     ├─ cssstyle@npm:^2.3.0 → npm:2.3.0
+│     ├─ data-urls@npm:^2.0.0 → npm:2.0.0
+│     ├─ decimal.js@npm:^10.2.1 → npm:10.4.3
+│     ├─ domexception@npm:^2.0.1 → npm:2.0.1
+│     ├─ escodegen@npm:^2.0.0 → npm:2.1.0
+│     ├─ form-data@npm:^3.0.0 → npm:3.0.1
+│     ├─ html-encoding-sniffer@npm:^2.0.1 → npm:2.0.1
+│     ├─ http-proxy-agent@npm:^4.0.1 → npm:4.0.1
+│     ├─ https-proxy-agent@npm:^5.0.0 → npm:5.0.1
+│     ├─ is-potential-custom-element-name@npm:^1.0.1 → npm:1.0.1
+│     ├─ nwsapi@npm:^2.2.0 → npm:2.2.7
+│     ├─ parse5@npm:6.0.1 → npm:6.0.1
+│     ├─ saxes@npm:^5.0.1 → npm:5.0.1
+│     ├─ symbol-tree@npm:^3.2.4 → npm:3.2.4
+│     ├─ tough-cookie@npm:^4.0.0 → npm:4.1.3
+│     ├─ w3c-hr-time@npm:^1.0.2 → npm:1.0.2
+│     ├─ w3c-xmlserializer@npm:^2.0.0 → npm:2.0.0
+│     ├─ webidl-conversions@npm:^6.1.0 → npm:6.1.0
+│     ├─ whatwg-encoding@npm:^1.0.5 → npm:1.0.5
+│     ├─ whatwg-mimetype@npm:^2.3.0 → npm:2.3.0
+│     ├─ whatwg-url@npm:^8.5.0 → npm:8.7.0
+│     ├─ ws@npm:^7.4.6 → npm:7.5.9
+│     └─ xml-name-validator@npm:^3.0.0 → npm:3.0.0
+│
+├─ json-rpc-engine@npm:6.1.0
+│  ├─ Version: 6.1.0
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/safe-event-emitter@npm:^2.0.0 → npm:2.0.0
+│     └─ eth-rpc-errors@npm:^4.0.2 → npm:4.0.3
+│
+├─ json-rpc-middleware-stream@npm:4.2.1
+│  ├─ Version: 4.2.1
+│  │
+│  └─ Dependencies
+│     ├─ @metamask/safe-event-emitter@npm:^2.0.0 → npm:2.0.0
+│     └─ readable-stream@npm:^2.3.3 → npm:2.3.7
+│
+├─ junit-report-merger@npm:4.0.0
+│  ├─ Version: 4.0.0
+│  │
+│  ├─ Exported Binaries
+│  │  ├─ jrm
+│  │  └─ junit-report-merger
+│  │
+│  └─ Dependencies
+│     ├─ commander@npm:~9.4.0 → npm:9.4.1
+│     ├─ fast-glob@npm:~3.2.11 → npm:3.2.12
+│     └─ xmlbuilder2@npm:~3.0.2 → npm:3.0.2
+│
+├─ koa@npm:2.11.0
+│  ├─ Version: 2.11.0
+│  │
+│  └─ Dependencies
+│     ├─ accepts@npm:^1.3.5 → npm:1.3.8
+│     ├─ cache-content-type@npm:^1.0.0 → npm:1.0.1
+│     ├─ content-disposition@npm:~0.5.2 → npm:0.5.4
+│     ├─ content-type@npm:^1.0.4 → npm:1.0.4
+│     ├─ cookies@npm:~0.8.0 → npm:0.8.0
+│     ├─ delegates@npm:^1.0.0 → npm:1.0.0
+│     ├─ depd@npm:^1.1.2 → npm:1.1.2
+│     ├─ destroy@npm:^1.0.4 → npm:1.2.0
+│     ├─ encodeurl@npm:^1.0.2 → npm:1.0.2
+│     ├─ error-inject@npm:^1.0.0 → npm:1.0.0
+│     ├─ escape-html@npm:^1.0.3 → npm:1.0.3
+│     ├─ fresh@npm:~0.5.2 → npm:0.5.2
+│     ├─ http-assert@npm:^1.3.0 → npm:1.4.1
+│     ├─ http-errors@npm:^1.6.3 → npm:1.8.1
+│     ├─ is-generator-function@npm:^1.0.7 → npm:1.0.10
+│     ├─ koa-compose@npm:^4.1.0 → npm:4.1.0
+│     ├─ koa-convert@npm:^1.2.0 → npm:1.2.0
+│     ├─ on-finished@npm:^2.3.0 → npm:2.4.1
+│     ├─ only@npm:~0.0.2 → npm:0.0.2
+│     ├─ parseurl@npm:^1.3.2 → npm:1.3.3
+│     ├─ statuses@npm:^1.5.0 → npm:1.5.0
+│     ├─ type-is@npm:^1.6.16 → npm:1.6.18
+│     ├─ vary@npm:^1.1.2 → npm:1.1.2
+│     └─ debug@npm:~3.1.0 → npm:3.1.0 [9c044]
+│
+├─ labeled-stream-splicer@npm:2.0.2
+│  ├─ Version: 2.0.2
+│  │
+│  └─ Dependencies
+│     ├─ inherits@npm:^2.0.1 → npm:2.0.4
+│     └─ stream-splicer@npm:^2.0.0 → npm:2.0.0
+│
+├─ lavamoat-browserify@npm:15.9.1
+│  ├─ Version: 15.9.1
+│  │
+│  └─ Dependencies
+│     ├─ @lavamoat/aa@npm:^3.1.5 → npm:3.1.5
+│     ├─ @lavamoat/lavapack@npm:^5.4.1 → npm:5.4.1
+│     ├─ browser-resolve@npm:^2.0.0 → npm:2.0.0
+│     ├─ concat-stream@npm:^2.0.0 → npm:2.0.0
+│     ├─ convert-source-map@npm:^1.9.0 → npm:1.9.0
+│     ├─ duplexify@npm:^4.1.1 → npm:4.1.2
+│     ├─ json-stable-stringify@npm:^1.0.1 → npm:1.0.2
+│     ├─ lavamoat-core@patch:lavamoat-core@npm%3A14.4.1#~/.yarn/patches/lavamoat-core-npm-14.4.1-c4e8bbb016.patch → patch:lavamoat-core@npm%3A14.4.1#~/.yarn/patches/lavamoat-core-npm-14.4.1-c4e8bbb016.patch::version=14.4.1&hash=1822ab
+│     ├─ pify@npm:^4.0.1 → npm:4.0.1
+│     ├─ readable-stream@npm:^3.6.0 → npm:3.6.2
+│     ├─ source-map@npm:^0.7.4 → npm:0.7.4
+│     └─ through2@npm:^3.0.0 → npm:3.0.1
+│
+├─ lavamoat-viz@npm:6.2.1
+│  ├─ Version: 6.2.1
+│  │
+│  ├─ Exported Binaries
+│  │  └─ lavamoat-viz
+│  │
+│  └─ Dependencies
+│     ├─ lavamoat-core@patch:lavamoat-core@npm%3A14.4.1#~/.yarn/patches/lavamoat-core-npm-14.4.1-c4e8bbb016.patch → patch:lavamoat-core@npm%3A14.4.1#~/.yarn/patches/lavamoat-core-npm-14.4.1-c4e8bbb016.patch::version=14.4.1&hash=1822ab
+│     ├─ ncp@npm:^2.0.0 → npm:2.0.0
+│     ├─ open@npm:^7.0.3 → npm:7.4.2
+│     ├─ pify@npm:^4.0.1 → npm:4.0.1
+│     ├─ serve-handler@npm:^6.1.5 → npm:6.1.5
+│     └─ yargs@npm:^16.0.0 → npm:16.2.0
+│
+├─ lavamoat@npm:7.3.1
+│  ├─ Version: 7.3.1
+│  │
+│  ├─ Exported Binaries
+│  │  ├─ lavamoat
+│  │  └─ lavamoat-run-command
+│  │
+│  └─ Dependencies
+│     ├─ @babel/code-frame@npm:^7.21.4 → npm:7.22.13
+│     ├─ @babel/highlight@npm:^7.18.6 → npm:7.22.20
+│     ├─ @lavamoat/aa@npm:^3.1.5 → npm:3.1.5
+│     ├─ bindings@npm:^1.5.0 → npm:1.5.0
+│     ├─ htmlescape@npm:^1.1.1 → npm:1.1.1
+│     ├─ json-stable-stringify@npm:^1.0.2 → npm:1.0.2
+│     ├─ lavamoat-core@patch:lavamoat-core@npm%3A14.4.1#~/.yarn/patches/lavamoat-core-npm-14.4.1-c4e8bbb016.patch → patch:lavamoat-core@npm%3A14.4.1#~/.yarn/patches/lavamoat-core-npm-14.4.1-c4e8bbb016.patch::version=14.4.1&hash=1822ab
+│     ├─ lavamoat-tofu@npm:^6.2.1 → npm:6.2.1
+│     ├─ node-gyp-build@npm:^4.6.0 → npm:4.6.0
+│     ├─ resolve@patch:resolve@npm%3A^1.22.3#optional!builtin<compat/resolve> → patch:resolve@npm%3A1.22.3#optional!builtin<compat/resolve>::version=1.22.3&hash=c3c19d
+│     └─ yargs@npm:^17.7.2 → npm:17.7.2
+│
+├─ localforage@npm:1.10.0
+│  ├─ Version: 1.10.0
+│  │
+│  └─ Dependencies
+│     └─ lie@npm:3.1.1 → npm:3.1.1
+│
+├─ lockfile-lint@npm:4.10.6
+│  ├─ Version: 4.10.6
+│  │
+│  ├─ Exported Binaries
+│  │  └─ lockfile-lint
+│  │
+│  └─ Dependencies
+│     ├─ cosmiconfig@npm:^7.0.1 → npm:7.0.1
+│     ├─ lockfile-lint-api@npm:^5.5.5 → npm:5.5.5
+│     ├─ yargs@npm:^16.0.0 → npm:16.2.0
+│     └─ debug@npm:^4.1.0 → npm:4.3.4 [4758f]
+│
+├─ lodash@npm:4.17.21
+│  └─ Version: 4.17.21
+│
+├─ loglevel@npm:1.8.1
+│  └─ Version: 1.8.1
+│
+├─ loose-envify@npm:1.4.0
+│  ├─ Version: 1.4.0
+│  │
+│  ├─ Exported Binaries
+│  │  └─ loose-envify
+│  │
+│  └─ Dependencies
+│     └─ js-tokens@npm:^3.0.0 || ^4.0.0 → npm:4.0.0
+│
+├─ luxon@patch:luxon@npm%3A3.2.1#./.yarn/patches/luxon-npm-3.2.1-56f8d97395.patch::version=3.2.1&hash=58f222&locator=metamask-crx%40workspace%3A.
+│  └─ Version: 3.2.1
+│
+├─ madge@npm:6.1.0
+│  ├─ Instances: 1
+│  ├─ Version: 6.1.0
+│  │
+│  ├─ Exported Binaries
+│  │  └─ madge
+│  │
+│  └─ Dependencies
+│     ├─ chalk@npm:^4.1.1 → npm:4.1.2
+│     ├─ commander@npm:^7.2.0 → npm:7.2.0
+│     ├─ commondir@npm:^1.0.1 → npm:1.0.1
+│     ├─ debug@npm:^4.3.1 → npm:4.3.4
+│     ├─ dependency-tree@npm:^9.0.0 → npm:9.0.0
+│     ├─ detective-amd@npm:^4.0.1 → npm:4.2.0
+│     ├─ detective-cjs@npm:^4.0.0 → npm:4.1.0
+│     ├─ detective-es6@npm:^3.0.0 → npm:3.0.1
+│     ├─ detective-less@npm:^1.0.2 → npm:1.0.2
+│     ├─ detective-postcss@npm:^6.1.0 → npm:6.1.3
+│     ├─ detective-sass@npm:^4.0.1 → npm:4.1.3
+│     ├─ detective-scss@npm:^3.0.0 → npm:3.1.1
+│     ├─ detective-stylus@npm:^2.0.1 → npm:2.0.1
+│     ├─ detective-typescript@npm:^9.0.0 → npm:9.1.1
+│     ├─ ora@npm:^5.4.1 → npm:5.4.1
+│     ├─ pluralize@npm:^8.0.0 → npm:8.0.0
+│     ├─ precinct@npm:^8.1.0 → npm:8.3.1
+│     ├─ pretty-ms@npm:^7.0.1 → npm:7.0.1
+│     ├─ rc@npm:^1.2.7 → npm:1.2.8
+│     ├─ stream-to-array@npm:^2.3.0 → npm:2.3.0
+│     ├─ ts-graphviz@npm:^1.5.0 → npm:1.7.0
+│     └─ walkdir@npm:^0.4.1 → npm:0.4.1
+│
+├─ metamask-crx@workspace:.
+│  ├─ Version: 11.4.1
+│  │
+│  └─ Dependencies
+│     ├─ @actions/core@npm:^1.10.0 → npm:1.10.0
+│     ├─ @actions/github@npm:^5.1.1 → npm:5.1.1
+│     ├─ @babel/code-frame@npm:^7.22.13 → npm:7.22.13
+│     ├─ @babel/core@patch:@babel/core@npm%3A7.23.2#~/.yarn/patches/@babel-core-npm-7.23.2-b93f586907.patch → patch:@babel/core@npm%3A7.23.2#~/.yarn/patches/@babel-core-npm-7.23.2-b93f586907.patch::version=7.23.2&hash=a78815
+│     ├─ @babel/runtime@patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch → patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch::version=7.23.2&hash=7df10d
+│     ├─ @blockaid/ppom_release@npm:^1.2.8 → npm:1.2.8
+│     ├─ @download/blockies@npm:^1.0.3 → npm:1.0.3
+│     ├─ @ensdomains/content-hash@npm:^2.5.6 → npm:2.5.6
+│     ├─ @ethereumjs/common@npm:^3.1.1 → npm:3.2.0
+│     ├─ @ethereumjs/tx@npm:^4.1.1 → npm:4.2.0
+│     ├─ @ethersproject/abi@npm:^5.6.4 → npm:5.7.0
+│     ├─ @ethersproject/bignumber@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/contracts@npm:^5.7.0 → npm:5.7.0
+│     ├─ @ethersproject/hdnode@npm:^5.6.2 → npm:5.7.0
+│     ├─ @ethersproject/providers@npm:^5.7.2 → npm:5.7.2
+│     ├─ @fortawesome/fontawesome-free@patch:@fortawesome/fontawesome-free@npm%3A5.13.0#./.yarn/patches/@fortawesome-fontawesome-free-npm-5.13.0-f20fc0388d.patch::locator=metamask-crx%40workspace%3A. → patch:@fortawesome/fontawesome-free@npm%3A5.13.0#./.yarn/patches/@fortawesome-fontawesome-free-npm-5.13.0-f20fc0388d.patch::version=5.13.0&hash=5c51fe&locator=metamask-crx%40workspace%3A.
+│     ├─ @keystonehq/bc-ur-registry-eth@npm:^0.19.1 → npm:0.19.1
+│     ├─ @keystonehq/metamask-airgapped-keyring@npm:^0.13.1 → npm:0.13.1
+│     ├─ @lavamoat/allow-scripts@npm:^2.3.1 → npm:2.3.1
+│     ├─ @lavamoat/lavapack@npm:^5.2.4 → npm:5.4.1
+│     ├─ @lavamoat/snow@npm:^1.5.0 → npm:1.5.0
+│     ├─ @metamask-institutional/custody-controller@npm:^0.2.15 → npm:0.2.15
+│     ├─ @metamask-institutional/custody-keyring@npm:^1.0.4 → npm:1.0.4
+│     ├─ @metamask-institutional/extension@npm:^0.3.8 → npm:0.3.8
+│     ├─ @metamask-institutional/institutional-features@npm:^1.2.7 → npm:1.2.7
+│     ├─ @metamask-institutional/portfolio-dashboard@npm:^1.4.0 → npm:1.4.0
+│     ├─ @metamask-institutional/rpc-allowlist@npm:^1.0.0 → npm:1.0.0
+│     ├─ @metamask-institutional/sdk@npm:^0.1.20 → npm:0.1.20
+│     ├─ @metamask-institutional/transaction-update@npm:^0.1.30 → npm:0.1.30
+│     ├─ @metamask/address-book-controller@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/announcement-controller@npm:^4.0.0 → npm:4.0.0
+│     ├─ @metamask/approval-controller@npm:^3.4.0 → npm:3.4.0
+│     ├─ @metamask/auto-changelog@npm:^2.1.0 → npm:2.6.1
+│     ├─ @metamask/base-controller@npm:^3.2.0 → npm:3.2.3
+│     ├─ @metamask/browser-passworder@npm:^4.1.0 → npm:4.1.0
+│     ├─ @metamask/contract-metadata@npm:^2.3.1 → npm:2.3.1
+│     ├─ @metamask/controller-utils@npm:^4.2.0 → npm:4.3.2
+│     ├─ @metamask/design-tokens@npm:^1.12.0 → npm:1.12.0
+│     ├─ @metamask/desktop@npm:^0.3.0 → npm:0.3.0
+│     ├─ @metamask/eth-json-rpc-middleware@npm:^11.0.0 → npm:11.0.2
+│     ├─ @metamask/eth-keyring-controller@patch:@metamask/eth-keyring-controller@npm%3A13.0.1#~/.yarn/patches/@metamask-eth-keyring-controller-npm-13.0.1-06ff83faad.patch → patch:@metamask/eth-keyring-controller@npm%3A13.0.1#~/.yarn/patches/@metamask-eth-keyring-controller-npm-13.0.1-06ff83faad.patch::version=13.0.1&hash=6c75cf
+│     ├─ @metamask/eth-ledger-bridge-keyring@npm:^0.15.0 → npm:0.15.0
+│     ├─ @metamask/eth-snap-keyring@npm:^1.0.0 → npm:1.0.0
+│     ├─ @metamask/eth-token-tracker@npm:^4.0.0 → npm:4.0.0
+│     ├─ @metamask/eth-trezor-keyring@npm:^1.1.0 → npm:1.1.0
+│     ├─ @metamask/etherscan-link@npm:^2.2.0 → npm:2.2.0
+│     ├─ @metamask/ethjs-query@npm:^0.5.0 → npm:0.5.0
+│     ├─ @metamask/forwarder@npm:^1.1.0 → npm:1.1.0
+│     ├─ @metamask/jazzicon@npm:^2.0.0 → npm:2.0.0
+│     ├─ @metamask/key-tree@npm:^9.0.0 → npm:9.0.0
+│     ├─ @metamask/keyring-api@npm:^1.0.0 → npm:1.0.0
+│     ├─ @metamask/logging-controller@npm:^1.0.1 → npm:1.0.1
+│     ├─ @metamask/logo@npm:^3.1.2 → npm:3.1.2
+│     ├─ @metamask/message-manager@npm:^7.3.0 → npm:7.3.5
+│     ├─ @metamask/metamask-eth-abis@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/name-controller@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/network-controller@npm:^12.2.0 → npm:12.2.0
+│     ├─ @metamask/notification-controller@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/obs-store@npm:^8.1.0 → npm:8.1.0
+│     ├─ @metamask/phishing-controller@npm:^6.0.0 → npm:6.0.0
+│     ├─ @metamask/phishing-warning@npm:^2.1.0 → npm:2.1.0
+│     ├─ @metamask/post-message-stream@npm:^6.2.0 → npm:6.2.0
+│     ├─ @metamask/ppom-validator@npm:^0.8.0 → npm:0.8.0
+│     ├─ @metamask/providers@npm:^13.1.0 → npm:13.1.0
+│     ├─ @metamask/rate-limit-controller@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/rpc-methods@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/safe-event-emitter@npm:^2.0.0 → npm:2.0.0
+│     ├─ @metamask/scure-bip39@npm:^2.0.3 → npm:2.1.0
+│     ├─ @metamask/slip44@npm:^3.1.0 → npm:3.1.0
+│     ├─ @metamask/smart-transactions-controller@npm:^4.0.0 → npm:4.0.0
+│     ├─ @metamask/snaps-controllers@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/snaps-ui@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/snaps-utils@npm:^3.0.0 → npm:3.0.0
+│     ├─ @metamask/test-dapp@npm:^7.1.0 → npm:7.1.0
+│     ├─ @metamask/utils@npm:^5.0.0 → npm:5.0.2
+│     ├─ @ngraveio/bc-ur@npm:^1.1.6 → npm:1.1.6
+│     ├─ @popperjs/core@npm:^2.4.0 → npm:2.9.2
+│     ├─ @segment/loosely-validate-event@npm:^2.0.0 → npm:2.0.0
+│     ├─ @sentry/browser@npm:^7.53.0 → npm:7.53.0
+│     ├─ @sentry/cli@npm:^2.19.4 → npm:2.19.4
+│     ├─ @sentry/integrations@npm:^7.53.0 → npm:7.53.0
+│     ├─ @sentry/types@npm:^7.53.0 → npm:7.53.0
+│     ├─ @sentry/utils@npm:^7.53.0 → npm:7.53.0
+│     ├─ @storybook/addon-mdx-gfm@npm:^7.4.6 → npm:7.4.6
+│     ├─ @storybook/client-api@npm:^7.4.6 → npm:7.4.6
+│     ├─ @storybook/core-events@npm:^7.4.6 → npm:7.4.6
+│     ├─ @storybook/storybook-deployer@npm:^2.8.16 → npm:2.8.16
+│     ├─ @storybook/test-runner@npm:^0.10.0 → npm:0.10.0
+│     ├─ @testing-library/jest-dom@npm:^5.11.10 → npm:5.11.10
+│     ├─ @truffle/codec@npm:^0.14.12 → npm:0.14.12
+│     ├─ @truffle/decoder@npm:^5.3.5 → npm:5.3.5
+│     ├─ @tsconfig/node16@npm:^1.0.3 → npm:1.0.3
+│     ├─ @types/babelify@npm:^7.3.7 → npm:7.3.7
+│     ├─ @types/browserify@npm:^12.0.37 → npm:12.0.37
+│     ├─ @types/currency-formatter@npm:^1.5.1 → npm:1.5.1
+│     ├─ @types/end-of-stream@npm:^1.4.1 → npm:1.4.1
+│     ├─ @types/fs-extra@npm:^9.0.13 → npm:9.0.13
+│     ├─ @types/gulp-autoprefixer@npm:^0.0.33 → npm:0.0.33
+│     ├─ @types/gulp-sass@npm:^5.0.0 → npm:5.0.0
+│     ├─ @types/gulp-sourcemaps@npm:^0.0.35 → npm:0.0.35
+│     ├─ @types/gulp@npm:^4.0.9 → npm:4.0.9
+│     ├─ @types/jest@npm:^29.1.2 → npm:29.1.2
+│     ├─ @types/madge@patch:@types/madge@npm%3A5.0.0#./.yarn/patches/@types-madge-npm-5.0.0-654566c2d2.patch::locator=metamask-crx%40workspace%3A. → patch:@types/madge@npm%3A5.0.0#./.yarn/patches/@types-madge-npm-5.0.0-654566c2d2.patch::version=5.0.0&hash=dfcb37&locator=metamask-crx%40workspace%3A.
+│     ├─ @types/node@npm:^17.0.21 → npm:17.0.45
+│     ├─ @types/pify@npm:^5.0.1 → npm:5.0.1
+│     ├─ @types/pump@npm:^1.1.1 → npm:1.1.1
+│     ├─ @types/react-dom@npm:^17.0.11 → npm:17.0.11
+│     ├─ @types/react-redux@npm:^7.1.25 → npm:7.1.25
+│     ├─ @types/react-router-dom@npm:^5.3.3 → npm:5.3.3
+│     ├─ @types/react@npm:^16.9.53 → npm:16.9.53
+│     ├─ @types/remote-redux-devtools@npm:^0.5.5 → npm:0.5.5
+│     ├─ @types/sass@npm:^1.43.1 → npm:1.43.1
+│     ├─ @types/sinon@npm:^10.0.13 → npm:10.0.13
+│     ├─ @types/w3c-web-hid@npm:^1.0.3 → npm:1.0.3
+│     ├─ @types/watchify@npm:^3.11.1 → npm:3.11.1
+│     ├─ @types/webextension-polyfill@npm:^0.10.4 → npm:0.10.4
+│     ├─ @types/yargs@npm:^17.0.8 → npm:17.0.8
+│     ├─ @zxing/library@npm:0.20.0 → npm:0.20.0
+│     ├─ addons-linter@npm:^5.2.0 → npm:5.32.0
+│     ├─ await-semaphore@patch:await-semaphore@npm%3A0.1.3#./.yarn/patches/await-semaphore-npm-0.1.3-b7a0001fab.patch::locator=metamask-crx%40workspace%3A. → patch:await-semaphore@npm%3A0.1.3#./.yarn/patches/await-semaphore-npm-0.1.3-b7a0001fab.patch::version=0.1.3&hash=be888a&locator=metamask-crx%40workspace%3A.
+│     ├─ base32-encode@npm:^1.2.0 → npm:1.2.0
+│     ├─ base64-js@npm:^1.5.1 → npm:1.5.1
+│     ├─ bify-module-groups@npm:^2.0.0 → npm:2.0.0
+│     ├─ bignumber.js@npm:^4.1.0 → npm:4.1.0
+│     ├─ bn.js@npm:^5.2.1 → npm:5.2.1
+│     ├─ bowser@npm:^2.11.0 → npm:2.11.0
+│     ├─ brfs@npm:^2.0.2 → npm:2.0.2
+│     ├─ browser-util-inspect@npm:^0.2.0 → npm:0.2.0
+│     ├─ browserify@npm:^17.0.0 → npm:17.0.0
+│     ├─ chalk@npm:^4.1.2 → npm:4.1.2
+│     ├─ chokidar@npm:^3.5.3 → npm:3.5.3
+│     ├─ chromedriver@npm:^116.0.0 → npm:116.0.0
+│     ├─ classnames@npm:^2.2.6 → npm:2.2.6
+│     ├─ concurrently@npm:^7.6.0 → npm:7.6.0
+│     ├─ copy-to-clipboard@npm:^3.3.3 → npm:3.3.3
+│     ├─ cross-spawn@npm:^7.0.3 → npm:7.0.3
+│     ├─ css-to-xpath@npm:^0.1.0 → npm:0.1.0
+│     ├─ csstype@npm:^3.0.11 → npm:3.0.11
+│     ├─ currency-formatter@npm:^1.4.2 → npm:1.4.2
+│     ├─ debounce-stream@npm:^2.0.0 → npm:2.0.0
+│     ├─ deep-freeze-strict@npm:1.1.1 → npm:1.1.1
+│     ├─ del@npm:^6.1.1 → npm:6.1.1
+│     ├─ depcheck@npm:^1.4.3 → npm:1.4.3
+│     ├─ dependency-tree@npm:^10.0.9 → npm:10.0.9
+│     ├─ detect-port@npm:^1.5.1 → npm:1.5.1
+│     ├─ duplexify@npm:^4.1.1 → npm:4.1.2
+│     ├─ end-of-stream@npm:^1.4.4 → npm:1.4.4
+│     ├─ eslint-import-resolver-node@npm:^0.3.4 → npm:0.3.6
+│     ├─ eslint@patch:eslint@npm%3A8.36.0#./.yarn/patches/eslint-npm-8.36.0-f8482bce95.patch::locator=metamask-crx%40workspace%3A. → patch:eslint@npm%3A8.36.0#./.yarn/patches/eslint-npm-8.36.0-f8482bce95.patch::version=8.36.0&hash=b3ac63&locator=metamask-crx%40workspace%3A.
+│     ├─ eth-ens-namehash@npm:^2.0.8 → npm:2.0.8
+│     ├─ eth-json-rpc-filters@npm:^6.0.0 → npm:6.0.0
+│     ├─ eth-lattice-keyring@npm:^0.12.4 → npm:0.12.4
+│     ├─ eth-method-registry@npm:^2.0.0 → npm:2.0.0
+│     ├─ eth-query@patch:eth-query@npm%3A2.1.2#./.yarn/patches/eth-query-npm-2.1.2-7c6adc825f.patch::locator=metamask-crx%40workspace%3A. → patch:eth-query@npm%3A2.1.2#./.yarn/patches/eth-query-npm-2.1.2-7c6adc825f.patch::version=2.1.2&hash=92d70f&locator=metamask-crx%40workspace%3A.
+│     ├─ eth-rpc-errors@npm:^4.0.2 → npm:4.0.3
+│     ├─ eth-sig-util@npm:^3.0.0 → npm:3.0.1
+│     ├─ ethereum-ens-network-map@npm:^1.0.2 → npm:1.0.2
+│     ├─ ethereumjs-abi@npm:^0.6.4 → npm:0.6.8
+│     ├─ ethereumjs-util@patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::locator=metamask-crx%40workspace%3A. → patch:ethereumjs-util@npm%3A7.1.5#./.yarn/patches/ethereumjs-util-npm-7.1.5-5bb4d00000.patch::version=7.1.5&hash=c1ed5b&locator=metamask-crx%40workspace%3A.
+│     ├─ ethjs-contract@npm:^0.2.3 → npm:0.2.3
+│     ├─ ethjs@npm:^0.4.0 → npm:0.4.0
+│     ├─ extension-port-stream@npm:^2.1.1 → npm:2.1.1
+│     ├─ fake-indexeddb@npm:^4.0.1 → npm:4.0.1
+│     ├─ fancy-log@npm:^1.3.3 → npm:1.3.3
+│     ├─ fast-glob@npm:^3.2.2 → npm:3.2.12
+│     ├─ fast-json-patch@patch:fast-json-patch@npm%3A3.1.1#./.yarn/patches/fast-json-patch-npm-3.1.1-7e8bb70a45.patch::locator=metamask-crx%40workspace%3A. → patch:fast-json-patch@npm%3A3.1.1#./.yarn/patches/fast-json-patch-npm-3.1.1-7e8bb70a45.patch::version=3.1.1&hash=46c667&locator=metamask-crx%40workspace%3A.
+│     ├─ fs-extra@npm:^8.1.0 → npm:8.1.0
+│     ├─ fuse.js@npm:^3.2.0 → npm:3.6.1
+│     ├─ ganache@npm:^v7.0.4 → npm:7.0.4
+│     ├─ geckodriver@npm:^4.0.4 → npm:4.0.4
+│     ├─ gh-pages@npm:^5.0.0 → npm:5.0.0
+│     ├─ globalthis@npm:1.0.1 → npm:1.0.1
+│     ├─ globby@npm:^11.0.4 → npm:11.1.0
+│     ├─ gulp-livereload@npm:4.0.0 → npm:4.0.0
+│     ├─ gulp-rename@npm:^2.0.0 → npm:2.0.0
+│     ├─ gulp-rtlcss@npm:^1.4.0 → npm:1.4.0
+│     ├─ gulp-sass@npm:^5.1.0 → npm:5.1.0
+│     ├─ gulp-sort@npm:^2.0.0 → npm:2.0.0
+│     ├─ gulp-sourcemaps@patch:gulp-sourcemaps@npm%3A3.0.0#./.yarn/patches/gulp-sourcemaps-npm-3.0.0-1ae0fbef6d.patch::locator=metamask-crx%40workspace%3A. → patch:gulp-sourcemaps@npm%3A3.0.0#./.yarn/patches/gulp-sourcemaps-npm-3.0.0-1ae0fbef6d.patch::version=3.0.0&hash=38fce2&locator=metamask-crx%40workspace%3A.
+│     ├─ gulp-watch@npm:^5.0.1 → npm:5.0.1
+│     ├─ gulp@npm:^4.0.2 → npm:4.0.2
+│     ├─ history@npm:^5.0.0 → npm:5.0.0
+│     ├─ human-standard-token-abi@npm:^2.0.0 → npm:2.0.0
+│     ├─ husky@npm:^8.0.3 → npm:8.0.3
+│     ├─ immer@npm:^9.0.6 → npm:9.0.6
+│     ├─ ini@npm:^3.0.0 → npm:3.0.0
+│     ├─ is-retry-allowed@npm:^2.2.0 → npm:2.2.0
+│     ├─ istanbul-lib-coverage@npm:^3.2.0 → npm:3.2.0
+│     ├─ istanbul-lib-report@npm:^3.0.0 → npm:3.0.0
+│     ├─ istanbul-reports@npm:^3.1.5 → npm:3.1.5
+│     ├─ jest-canvas-mock@npm:^2.3.1 → npm:2.3.1
+│     ├─ jest-environment-jsdom@npm:^29.1.2 → npm:29.1.2
+│     ├─ jest-junit@npm:^14.0.1 → npm:14.0.1
+│     ├─ js-yaml@npm:^4.1.0 → npm:4.1.0
+│     ├─ json-rpc-engine@npm:^6.1.0 → npm:6.1.0
+│     ├─ json-rpc-middleware-stream@npm:^4.2.1 → npm:4.2.1
+│     ├─ junit-report-merger@npm:^4.0.0 → npm:4.0.0
+│     ├─ koa@npm:^2.7.0 → npm:2.11.0
+│     ├─ labeled-stream-splicer@npm:^2.0.2 → npm:2.0.2
+│     ├─ lavamoat-browserify@npm:^15.7.4 → npm:15.9.1
+│     ├─ lavamoat-viz@npm:^6.0.11 → npm:6.2.1
+│     ├─ lavamoat@npm:^7.1.2 → npm:7.3.1
+│     ├─ localforage@npm:^1.9.0 → npm:1.10.0
+│     ├─ lockfile-lint@npm:^4.10.6 → npm:4.10.6
+│     ├─ lodash@npm:^4.17.21 → npm:4.17.21
+│     ├─ loglevel@npm:^1.8.1 → npm:1.8.1
+│     ├─ loose-envify@npm:^1.4.0 → npm:1.4.0
+│     ├─ luxon@patch:luxon@npm%3A3.2.1#./.yarn/patches/luxon-npm-3.2.1-56f8d97395.patch::locator=metamask-crx%40workspace%3A. → patch:luxon@npm%3A3.2.1#./.yarn/patches/luxon-npm-3.2.1-56f8d97395.patch::version=3.2.1&hash=58f222&locator=metamask-crx%40workspace%3A.
+│     ├─ mocha@npm:^9.2.2 → npm:9.2.2
+│     ├─ mockttp@npm:^2.6.0 → npm:2.7.0
+│     ├─ nanoid@npm:^2.1.6 → npm:2.1.11
+│     ├─ nock@npm:^13.2.9 → npm:13.2.9
+│     ├─ nonce-tracker@npm:^1.0.0 → npm:1.0.1
+│     ├─ nyc@npm:^15.0.0 → npm:15.1.0
+│     ├─ obj-multiplex@npm:^1.0.0 → npm:1.0.0
+│     ├─ pify@npm:^5.0.0 → npm:5.0.0
+│     ├─ playwright@npm:^1.29.2 → npm:1.29.2
+│     ├─ polyfill-crypto.getrandomvalues@npm:^1.0.0 → npm:1.0.0
+│     ├─ prettier@npm:^2.7.1 → npm:2.8.8
+│     ├─ promise-to-callback@npm:^1.0.0 → npm:1.0.0
+│     ├─ prop-types@npm:^15.6.1 → npm:15.8.1
+│     ├─ proxyquire@npm:^2.1.3 → npm:2.1.3
+│     ├─ pump@npm:^3.0.0 → npm:3.0.0
+│     ├─ pumpify@npm:^2.0.1 → npm:2.0.1
+│     ├─ punycode@npm:^2.1.1 → npm:2.1.1
+│     ├─ qrcode-generator@npm:1.4.1 → npm:1.4.1
+│     ├─ randomcolor@npm:^0.5.4 → npm:0.5.4
+│     ├─ react-devtools@npm:^4.11.0 → npm:4.27.6
+│     ├─ react-responsive-carousel@npm:^3.2.21 → npm:3.2.21
+│     ├─ react-tippy@npm:^1.2.2 → npm:1.2.2
+│     ├─ react@npm:^16.12.0 → npm:16.14.0
+│     ├─ read-installed@npm:^4.0.3 → npm:4.0.3
+│     ├─ readable-stream@npm:^2.3.3 → npm:2.3.7
+│     ├─ redux-mock-store@npm:^1.5.4 → npm:1.5.4
+│     ├─ redux@npm:^4.0.5 → npm:4.2.1
+│     ├─ remote-redux-devtools@npm:^0.5.16 → npm:0.5.16
+│     ├─ remove-trailing-slash@npm:^0.1.1 → npm:0.1.1
+│     ├─ reselect@npm:^3.0.1 → npm:3.0.1
+│     ├─ resolve-url-loader@npm:^3.1.5 → npm:3.1.5
+│     ├─ sass@patch:sass@npm%3A1.35.2#./.yarn/patches/sass-npm-1.35.2-6df4e15d13.patch::locator=metamask-crx%40workspace%3A. → patch:sass@npm%3A1.35.2#./.yarn/patches/sass-npm-1.35.2-6df4e15d13.patch::version=1.35.2&hash=48ef45&locator=metamask-crx%40workspace%3A.
+│     ├─ selenium-webdriver@npm:^4.9.0 → npm:4.9.0
+│     ├─ semver@npm:^7.5.4 → npm:7.5.4
+│     ├─ serve-handler@npm:^6.1.2 → npm:6.1.5
+│     ├─ ses@npm:^0.18.8 → npm:0.18.8
+│     ├─ single-call-balance-checker-abi@npm:^1.0.0 → npm:1.0.0
+│     ├─ sinon@npm:^9.0.0 → npm:9.0.0
+│     ├─ source-map-explorer@npm:^2.4.2 → npm:2.5.3
+│     ├─ source-map@npm:^0.7.2 → npm:0.7.4
+│     ├─ squirrelly@patch:squirrelly@npm%3A9.0.0#./.yarn/patches/squirrelly-npm-9.0.0-3cf710c7bb.patch::locator=metamask-crx%40workspace%3A. → patch:squirrelly@npm%3A9.0.0#./.yarn/patches/squirrelly-npm-9.0.0-3cf710c7bb.patch::version=9.0.0&hash=bf49f6&locator=metamask-crx%40workspace%3A.
+│     ├─ storybook@npm:^7.4.6 → npm:7.4.6
+│     ├─ stream-browserify@npm:^3.0.0 → npm:3.0.0
+│     ├─ string.prototype.matchall@npm:^4.0.2 → npm:4.0.7
+│     ├─ style-loader@npm:^0.21.0 → npm:0.21.0
+│     ├─ stylelint@patch:stylelint@npm%3A13.6.1#./.yarn/patches/stylelint-npm-13.6.1-47aaddf62b.patch::locator=metamask-crx%40workspace%3A. → patch:stylelint@npm%3A13.6.1#./.yarn/patches/stylelint-npm-13.6.1-47aaddf62b.patch::version=13.6.1&hash=273c78&locator=metamask-crx%40workspace%3A.
+│     ├─ superstruct@npm:^1.0.3 → npm:1.0.3
+│     ├─ terser@npm:^5.7.0 → npm:5.17.4
+│     ├─ through2@npm:^4.0.2 → npm:4.0.2
+│     ├─ ttest@npm:^2.1.1 → npm:2.1.1
+│     ├─ typescript@patch:typescript@npm%3A~4.5.0#optional!builtin<compat/typescript> → patch:typescript@npm%3A4.5.5#optional!builtin<compat/typescript>::version=4.5.5&hash=bcec9a
+│     ├─ unicode-confusables@npm:^0.1.1 → npm:0.1.1
+│     ├─ uuid@npm:^8.3.2 → npm:8.3.2
+│     ├─ vinyl-buffer@npm:^1.0.1 → npm:1.0.1
+│     ├─ vinyl-source-stream@npm:^2.0.0 → npm:2.0.0
+│     ├─ vinyl-sourcemaps-apply@npm:^0.2.1 → npm:0.2.1
+│     ├─ vinyl@npm:^2.2.1 → npm:2.2.1
+│     ├─ wait-on@npm:^7.0.1 → npm:7.0.1
+│     ├─ watchify@patch:watchify@npm%3A4.0.0#./.yarn/patches/watchify-npm-4.0.0-4fd965dd49.patch::locator=metamask-crx%40workspace%3A. → patch:watchify@npm%3A4.0.0#./.yarn/patches/watchify-npm-4.0.0-4fd965dd49.patch::version=4.0.0&hash=475851&locator=metamask-crx%40workspace%3A.
+│     ├─ web3-stream-provider@npm:^4.0.0 → npm:4.0.0
+│     ├─ webextension-polyfill@npm:^0.8.0 → npm:0.8.0
+│     ├─ yargs@npm:^17.0.1 → npm:17.7.2
+│     ├─ zxcvbn@patch:zxcvbn@npm%3A4.4.2#./.yarn/patches/zxcvbn-npm-4.4.2-6527983856.patch::locator=metamask-crx%40workspace%3A. → patch:zxcvbn@npm%3A4.4.2#./.yarn/patches/zxcvbn-npm-4.4.2-6527983856.patch::version=4.4.2&hash=e3565a&locator=metamask-crx%40workspace%3A.
+│     ├─ @babel/eslint-parser@npm:^7.22.15 → npm:7.22.15 [15918]
+│     ├─ @babel/eslint-plugin@npm:^7.22.10 → npm:7.22.10 [15918]
+│     ├─ @babel/preset-env@npm:^7.20.2 → npm:7.23.2 [5ff60]
+│     ├─ @babel/preset-react@npm:^7.18.6 → npm:7.22.15 [5ff60]
+│     ├─ @babel/preset-typescript@npm:^7.18.6 → npm:7.23.2 [5ff60]
+│     ├─ @babel/register@npm:^7.13.16 → npm:7.22.15 [5d852]
+│     ├─ @material-ui/core@npm:^4.11.0 → npm:4.11.0 [15918]
+│     ├─ @metamask/assets-controllers@patch:@metamask/assets-controllers@npm%3A13.0.0#~/.yarn/patches/@metamask-assets-controllers-npm-13.0.0-91c45127c5.patch → patch:@metamask/assets-controllers@npm%3A13.0.0#~/.yarn/patches/@metamask-assets-controllers-npm-13.0.0-91c45127c5.patch::version=13.0.0&hash=5544c9 [15918]
+│     ├─ @metamask/eslint-config-jest@npm:^9.0.0 → npm:9.0.0 [15918]
+│     ├─ @metamask/eslint-config-mocha@npm:^9.0.0 → npm:9.0.0 [15918]
+│     ├─ @metamask/eslint-config-nodejs@npm:^9.0.0 → npm:9.0.0 [15918]
+│     ├─ @metamask/eslint-config-typescript@npm:^9.0.1 → npm:9.0.1 [15918]
+│     ├─ @metamask/eslint-config@npm:^9.0.0 → npm:9.0.0 [15918]
+│     ├─ @metamask/gas-fee-controller@npm:^6.0.1 → npm:6.0.1 [15918]
+│     ├─ @metamask/keyring-controller@npm:^8.0.3 → npm:8.0.3 [15918]
+│     ├─ @metamask/permission-controller@npm:^4.1.2 → npm:4.1.2 [34104]
+│     ├─ @metamask/selected-network-controller@npm:^1.0.0 → npm:1.0.0 [15918]
+│     ├─ @metamask/signature-controller@patch:@metamask/signature-controller@npm%3A6.0.0#~/.yarn/patches/@metamask-signature-controller-npm-6.0.0-90e8e479a9.patch → patch:@metamask/signature-controller@npm%3A6.0.0#~/.yarn/patches/@metamask-signature-controller-npm-6.0.0-90e8e479a9.patch::version=6.0.0&hash=ae5433 [15918]
+│     ├─ @reduxjs/toolkit@patch:@reduxjs/toolkit@npm%3A1.6.2#./.yarn/patches/@reduxjs-toolkit-npm-1.6.2-67af09515f.patch::locator=metamask-crx%40workspace%3A. → patch:@reduxjs/toolkit@npm%3A1.6.2#./.yarn/patches/@reduxjs-toolkit-npm-1.6.2-67af09515f.patch::version=1.6.2&hash=a183e1&locator=metamask-crx%40workspace%3A. [15918]
+│     ├─ @storybook/addon-a11y@npm:^7.4.6 → npm:7.4.6 [15918]
+│     ├─ @storybook/addon-actions@npm:^7.4.6 → npm:7.4.6 [15918]
+│     ├─ @storybook/addon-essentials@npm:^7.4.6 → npm:7.4.6 [15918]
+│     ├─ @storybook/addon-knobs@npm:^7.0.2 → npm:7.0.2 [15918]
+│     ├─ @storybook/addons@npm:^7.4.6 → npm:7.4.6 [15918]
+│     ├─ @storybook/api@npm:^7.4.6 → npm:7.4.6 [15918]
+│     ├─ @storybook/components@npm:^7.4.6 → npm:7.4.6 [15918]
+│     ├─ @storybook/react-webpack5@npm:^7.4.6 → npm:7.4.6 [15918]
+│     ├─ @storybook/react@npm:^7.4.6 → npm:7.4.6 [15918]
+│     ├─ @storybook/theming@npm:^7.4.6 → npm:7.4.6 [15918]
+│     ├─ @testing-library/react-hooks@npm:^8.0.1 → npm:8.0.1 [15918]
+│     ├─ @testing-library/react@npm:^10.4.8 → npm:10.4.8 [15918]
+│     ├─ @testing-library/user-event@npm:^14.4.3 → npm:14.4.3 [15918]
+│     ├─ @typescript-eslint/eslint-plugin@npm:^5.30.7 → npm:5.30.7 [15918]
+│     ├─ @typescript-eslint/parser@npm:^5.30.7 → npm:5.30.7 [15918]
+│     ├─ @whitespace/storybook-addon-html@npm:^5.1.6 → npm:5.1.6 [15918]
+│     ├─ @zxing/browser@npm:^0.1.3 → npm:0.1.4 [15918]
+│     ├─ babelify@npm:^10.0.0 → npm:10.0.0 [15918]
+│     ├─ copy-webpack-plugin@npm:^6.0.3 → npm:6.4.1 [15918]
+│     ├─ css-loader@npm:^2.1.1 → npm:2.1.1 [15918]
+│     ├─ eslint-config-prettier@npm:^8.5.0 → npm:8.5.0 [15918]
+│     ├─ eslint-import-resolver-typescript@patch:eslint-import-resolver-typescript@npm%3A2.5.0#./.yarn/patches/eslint-import-resolver-typescript-npm-2.5.0-3b8adf0d03.patch::locator=metamask-crx%40workspace%3A. → patch:eslint-import-resolver-typescript@npm%3A2.5.0#./.yarn/patches/eslint-import-resolver-typescript-npm-2.5.0-3b8adf0d03.patch::version=2.5.0&hash=46abe6&locator=metamask-crx%40workspace%3A. [15918]
+│     ├─ eslint-plugin-import@npm:^2.22.1 → npm:2.26.0 [15918]
+│     ├─ eslint-plugin-jest@npm:^26.6.0 → npm:26.6.0 [15918]
+│     ├─ eslint-plugin-jsdoc@npm:^39.3.3 → npm:39.3.3 [15918]
+│     ├─ eslint-plugin-mocha@npm:^10.1.0 → npm:10.1.0 [15918]
+│     ├─ eslint-plugin-node@npm:^11.1.0 → npm:11.1.0 [15918]
+│     ├─ eslint-plugin-prettier@npm:^4.2.1 → npm:4.2.1 [15918]
+│     ├─ eslint-plugin-react-hooks@npm:^4.2.0 → npm:4.6.0 [15918]
+│     ├─ eslint-plugin-react@npm:^7.23.1 → npm:7.30.1 [15918]
+│     ├─ eslint-plugin-storybook@npm:^0.6.15 → npm:0.6.15 [15918]
+│     ├─ gulp-autoprefixer@npm:^8.0.0 → npm:8.0.0 [15918]
+│     ├─ gulp-stylelint@npm:^13.0.0 → npm:13.0.0 [15918]
+│     ├─ gulp-zip@npm:^5.1.0 → npm:5.1.0 [15918]
+│     ├─ jest@npm:^29.1.2 → npm:29.1.2 [15918]
+│     ├─ jsdom@patch:jsdom@npm%3A16.7.0#./.yarn/patches/jsdom-npm-16.7.0-216c5c4bf9.patch::locator=metamask-crx%40workspace%3A. → patch:jsdom@npm%3A16.7.0#./.yarn/patches/jsdom-npm-16.7.0-216c5c4bf9.patch::version=16.7.0&hash=e069ff&locator=metamask-crx%40workspace%3A. [15918]
+│     ├─ madge@npm:^6.1.0 → npm:6.1.0 [15918]
+│     ├─ node-fetch@npm:^2.6.7 → npm:2.7.0 [25a5f]
+│     ├─ prettier-plugin-sort-json@npm:^1.0.0 → npm:1.0.0 [15918]
+│     ├─ qrcode.react@npm:^1.0.1 → npm:1.0.1 [15918]
+│     ├─ react-dom@npm:^16.12.0 → npm:16.12.0 [15918]
+│     ├─ react-focus-lock@npm:^2.9.4 → npm:2.9.4 [15918]
+│     ├─ react-idle-timer@npm:^4.2.5 → npm:4.2.5 [15918]
+│     ├─ react-inspector@npm:^6.0.2 → npm:6.0.2 [15918]
+│     ├─ react-markdown@npm:^6.0.3 → npm:6.0.3 [15918]
+│     ├─ react-popper@npm:^2.2.3 → npm:2.2.4 [15918]
+│     ├─ react-redux@npm:^7.2.0 → npm:7.2.0 [15918]
+│     ├─ react-router-dom@npm:^5.1.2 → npm:5.1.2 [15918]
+│     ├─ react-simple-file-input@npm:^2.0.0 → npm:2.0.1 [15918]
+│     ├─ react-syntax-highlighter@npm:^15.5.0 → npm:15.5.0 [15918]
+│     ├─ react-toggle-button@npm:^2.2.0 → npm:2.2.0 [15918]
+│     ├─ react-transition-group@npm:^1.2.1 → npm:1.2.1 [15918]
+│     ├─ redux-thunk@npm:^2.3.0 → npm:2.3.0 [15918]
+│     ├─ sass-loader@npm:^10.1.1 → npm:10.1.1 [15918]
+│     ├─ storybook-dark-mode@npm:^3.0.1 → npm:3.0.1 [15918]
+│     ├─ ts-node@npm:^10.5.0 → npm:10.5.0 [15918]
+│     └─ webpack@npm:^5.75.0 → npm:5.82.1 [15918]
+│
+├─ mocha@npm:9.2.2
+│  ├─ Version: 9.2.2
+│  │
+│  ├─ Exported Binaries
+│  │  ├─ _mocha
+│  │  └─ mocha
+│  │
+│  └─ Dependencies
+│     ├─ @ungap/promise-all-settled@npm:1.1.2 → npm:1.1.2
+│     ├─ ansi-colors@npm:4.1.1 → npm:4.1.1
+│     ├─ browser-stdout@npm:1.3.1 → npm:1.3.1
+│     ├─ chokidar@npm:3.5.3 → npm:3.5.3
+│     ├─ diff@npm:5.0.0 → npm:5.0.0
+│     ├─ escape-string-regexp@npm:4.0.0 → npm:4.0.0
+│     ├─ find-up@npm:5.0.0 → npm:5.0.0
+│     ├─ glob@npm:7.2.0 → npm:7.2.0
+│     ├─ growl@npm:1.10.5 → npm:1.10.5
+│     ├─ he@npm:1.2.0 → npm:1.2.0
+│     ├─ js-yaml@npm:4.1.0 → npm:4.1.0
+│     ├─ log-symbols@npm:4.1.0 → npm:4.1.0
+│     ├─ minimatch@npm:4.2.1 → npm:4.2.1
+│     ├─ ms@npm:2.1.3 → npm:2.1.3
+│     ├─ nanoid@npm:3.3.1 → npm:3.3.1
+│     ├─ serialize-javascript@npm:6.0.0 → npm:6.0.0
+│     ├─ strip-json-comments@npm:3.1.1 → npm:3.1.1
+│     ├─ supports-color@npm:8.1.1 → npm:8.1.1
+│     ├─ which@npm:2.0.2 → npm:2.0.2
+│     ├─ workerpool@npm:6.2.0 → npm:6.2.0
+│     ├─ yargs-parser@npm:20.2.4 → npm:20.2.4
+│     ├─ yargs-unparser@npm:2.0.0 → npm:2.0.0
+│     ├─ yargs@npm:16.2.0 → npm:16.2.0
+│     └─ debug@npm:4.3.3 → npm:4.3.3 [f7735]
+│
+├─ mockttp@npm:2.7.0
+│  ├─ Version: 2.7.0
+│  │
+│  ├─ Exported Binaries
+│  │  └─ mockttp
+│  │
+│  └─ Dependencies
+│     ├─ @httptoolkit/httpolyglot@npm:^2.0.1 → npm:2.1.1
+│     ├─ @httptoolkit/proxy-agent@npm:^5.0.1-socks-lookup-fix.0 → npm:5.0.1-socks-lookup-fix.0
+│     ├─ @httptoolkit/websocket-stream@npm:^6.0.0 → npm:6.0.1
+│     ├─ @types/cors@npm:^2.8.6 → npm:2.8.12
+│     ├─ @types/node@npm:* → npm:20.8.2
+│     ├─ base64-arraybuffer@npm:^0.1.5 → npm:0.1.5
+│     ├─ body-parser@npm:^1.15.2 → npm:1.20.1
+│     ├─ cacheable-lookup@npm:^6.0.0 → npm:6.0.4
+│     ├─ common-tags@npm:^1.8.0 → npm:1.8.2
+│     ├─ connect@npm:^3.7.0 → npm:3.7.0
+│     ├─ cors-gate@npm:^1.1.3 → npm:1.1.3
+│     ├─ cors@npm:^2.8.4 → npm:2.8.5
+│     ├─ express@npm:^4.14.0 → npm:4.18.2
+│     ├─ fetch-ponyfill@npm:^7.1.0 → npm:7.1.0
+│     ├─ graphql@npm:^14.0.2 || ^15.5 → npm:15.8.0
+│     ├─ http-encoding@npm:^1.5.0 → npm:1.5.0
+│     ├─ http2-wrapper@npm:2.0.5 → npm:2.0.5
+│     ├─ lodash@npm:^4.16.4 → npm:4.17.21
+│     ├─ native-duplexpair@npm:^1.0.0 → npm:1.0.0
+│     ├─ node-forge@npm:^1.2.1 → npm:1.3.0
+│     ├─ performance-now@npm:^2.1.0 → npm:2.1.0
+│     ├─ portfinder@npm:^1.0.23 → npm:1.0.32
+│     ├─ typed-error@npm:^3.0.2 → npm:3.2.1
+│     ├─ uuid@npm:^8.3.2 → npm:8.3.2
+│     ├─ @graphql-tools/schema@npm:^7.1.5 → npm:7.1.5 [f6e3b]
+│     ├─ @httptoolkit/subscriptions-transport-ws@npm:^0.9.19 → npm:0.9.19 [f6e3b]
+│     ├─ express-graphql@npm:^0.11.0 → npm:0.11.0 [f6e3b]
+│     ├─ graphql-subscriptions@npm:^1.1.0 → npm:1.2.1 [f6e3b]
+│     ├─ graphql-tag@npm:^2.12.6 → npm:2.12.6 [f6e3b]
+│     └─ ws@npm:^7.4.6 → npm:7.5.9 [21bba]
+│
+├─ nanoid@npm:2.1.11
+│  └─ Version: 2.1.11
+│
+├─ nock@npm:13.2.9
+│  ├─ Version: 13.2.9
+│  │
+│  └─ Dependencies
+│     ├─ json-stringify-safe@npm:^5.0.1 → npm:5.0.1
+│     ├─ lodash@npm:^4.17.21 → npm:4.17.21
+│     ├─ propagate@npm:^2.0.0 → npm:2.0.1
+│     └─ debug@npm:^4.1.0 → npm:4.3.4 [4758f]
+│
+├─ node-fetch@npm:2.7.0
+│  ├─ Instances: 1
+│  ├─ Version: 2.7.0
+│  │
+│  └─ Dependencies
+│     └─ whatwg-url@npm:^5.0.0 → npm:5.0.0
+│
+├─ nonce-tracker@npm:1.0.1
+│  ├─ Version: 1.0.1
+│  │
+│  └─ Dependencies
+│     ├─ assert@npm:^1.4.1 → npm:1.5.0
+│     ├─ await-semaphore@patch:await-semaphore@npm%3A0.1.3#./.yarn/patches/await-semaphore-npm-0.1.3-b7a0001fab.patch::locator=metamask-crx%40workspace%3A. → patch:await-semaphore@npm%3A0.1.3#./.yarn/patches/await-semaphore-npm-0.1.3-b7a0001fab.patch::version=0.1.3&hash=be888a&locator=metamask-crx%40workspace%3A.
+│     └─ ethjs-query@npm:^0.3.8 → npm:0.3.8
+│
+├─ nyc@npm:15.1.0
+│  ├─ Version: 15.1.0
+│  │
+│  ├─ Exported Binaries
+│  │  └─ nyc
+│  │
+│  └─ Dependencies
+│     ├─ @istanbuljs/load-nyc-config@npm:^1.0.0 → npm:1.0.0
+│     ├─ @istanbuljs/schema@npm:^0.1.2 → npm:0.1.3
+│     ├─ caching-transform@npm:^4.0.0 → npm:4.0.0
+│     ├─ convert-source-map@patch:convert-source-map@npm%3A1.1.3#./.yarn/patches/convert-source-map-npm-1.1.3-7f1bfeabd4.patch::locator=metamask-crx%40workspace%3A. → patch:convert-source-map@npm%3A1.1.3#./.yarn/patches/convert-source-map-npm-1.1.3-7f1bfeabd4.patch::version=1.1.3&hash=6df1a7&locator=metamask-crx%40workspace%3A.
+│     ├─ decamelize@npm:^1.2.0 → npm:1.2.0
+│     ├─ find-cache-dir@npm:^3.2.0 → npm:3.3.2
+│     ├─ find-up@npm:^4.1.0 → npm:4.1.0
+│     ├─ foreground-child@npm:^2.0.0 → npm:2.0.0
+│     ├─ get-package-type@npm:^0.1.0 → npm:0.1.0
+│     ├─ glob@npm:^7.1.6 → npm:7.2.3
+│     ├─ istanbul-lib-coverage@npm:^3.0.0 → npm:3.2.0
+│     ├─ istanbul-lib-hook@npm:^3.0.0 → npm:3.0.0
+│     ├─ istanbul-lib-instrument@npm:^4.0.0 → npm:4.0.3
+│     ├─ istanbul-lib-processinfo@npm:^2.0.2 → npm:2.0.2
+│     ├─ istanbul-lib-report@npm:^3.0.0 → npm:3.0.0
+│     ├─ istanbul-lib-source-maps@npm:^4.0.0 → npm:4.0.0
+│     ├─ istanbul-reports@npm:^3.0.2 → npm:3.1.5
+│     ├─ make-dir@npm:^3.0.0 → npm:3.1.0
+│     ├─ node-preload@npm:^0.2.1 → npm:0.2.1
+│     ├─ p-map@npm:^3.0.0 → npm:3.0.0
+│     ├─ process-on-spawn@npm:^1.0.0 → npm:1.0.0
+│     ├─ resolve-from@npm:^5.0.0 → npm:5.0.0
+│     ├─ rimraf@npm:^3.0.0 → npm:3.0.2
+│     ├─ signal-exit@npm:^3.0.2 → npm:3.0.7
+│     ├─ spawn-wrap@npm:^2.0.0 → npm:2.0.0
+│     ├─ test-exclude@npm:^6.0.0 → npm:6.0.0
+│     └─ yargs@npm:^15.0.2 → npm:15.4.1
+│
+├─ obj-multiplex@npm:1.0.0
+│  ├─ Version: 1.0.0
+│  │
+│  └─ Dependencies
+│     ├─ end-of-stream@npm:^1.4.0 → npm:1.4.4
+│     ├─ once@npm:^1.4.0 → npm:1.4.0
+│     └─ readable-stream@npm:^2.3.3 → npm:2.3.7
+│
+├─ pify@npm:5.0.0
+│  └─ Version: 5.0.0
+│
+├─ playwright@npm:1.29.2
+│  ├─ Version: 1.29.2
+│  │
+│  ├─ Exported Binaries
+│  │  └─ playwright
+│  │
+│  └─ Dependencies
+│     └─ playwright-core@npm:1.29.2 → npm:1.29.2
+│
+├─ polyfill-crypto.getrandomvalues@npm:1.0.0
+│  ├─ Version: 1.0.0
+│  │
+│  └─ Dependencies
+│     └─ mersenne-twister@npm:^1.0.1 → npm:1.1.0
+│
+├─ prettier-plugin-sort-json@npm:1.0.0
+│  ├─ Instances: 1
+│  ├─ Version: 1.0.0
+│  │
+│  └─ Dependencies
+│     └─ @types/prettier@npm:^2.7.2 → npm:2.7.2
+│
+├─ prettier@npm:2.8.8
+│  ├─ Version: 2.8.8
+│  │
+│  └─ Exported Binaries
+│     └─ prettier
+│
+├─ promise-to-callback@npm:1.0.0
+│  ├─ Version: 1.0.0
+│  │
+│  └─ Dependencies
+│     ├─ is-fn@npm:^1.0.0 → npm:1.0.0
+│     └─ set-immediate-shim@npm:^1.0.1 → npm:1.0.1
+│
+├─ prop-types@npm:15.8.1
+│  ├─ Version: 15.8.1
+│  │
+│  └─ Dependencies
+│     ├─ loose-envify@npm:^1.4.0 → npm:1.4.0
+│     ├─ object-assign@npm:^4.1.1 → npm:4.1.1
+│     └─ react-is@npm:^16.13.1 → npm:16.13.1
+│
+├─ proxyquire@npm:2.1.3
+│  ├─ Version: 2.1.3
+│  │
+│  └─ Dependencies
+│     ├─ fill-keys@npm:^1.0.2 → npm:1.0.2
+│     ├─ module-not-found-error@npm:^1.0.1 → npm:1.0.1
+│     └─ resolve@patch:resolve@npm%3A^1.11.1#optional!builtin<compat/resolve> → patch:resolve@npm%3A1.22.3#optional!builtin<compat/resolve>::version=1.22.3&hash=c3c19d
+│
+├─ pump@npm:3.0.0
+│  ├─ Version: 3.0.0
+│  │
+│  └─ Dependencies
+│     ├─ end-of-stream@npm:^1.1.0 → npm:1.4.4
+│     └─ once@npm:^1.3.1 → npm:1.4.0
+│
+├─ pumpify@npm:2.0.1
+│  ├─ Version: 2.0.1
+│  │
+│  └─ Dependencies
+│     ├─ duplexify@npm:^4.1.1 → npm:4.1.2
+│     ├─ inherits@npm:^2.0.3 → npm:2.0.4
+│     └─ pump@npm:^3.0.0 → npm:3.0.0
+│
+├─ punycode@npm:2.1.1
+│  └─ Version: 2.1.1
+│
+├─ qrcode-generator@npm:1.4.1
+│  └─ Version: 1.4.1
+│
+├─ qrcode.react@npm:1.0.1
+│  ├─ Instances: 1
+│  ├─ Version: 1.0.1
+│  │
+│  └─ Dependencies
+│     ├─ loose-envify@npm:^1.4.0 → npm:1.4.0
+│     ├─ prop-types@npm:^15.6.0 → npm:15.8.1
+│     └─ qr.js@npm:0.0.0 → npm:0.0.0
+│
+├─ randomcolor@npm:0.5.4
+│  └─ Version: 0.5.4
+│
+├─ react-devtools@npm:4.27.6
+│  ├─ Version: 4.27.6
+│  │
+│  ├─ Exported Binaries
+│  │  └─ react-devtools
+│  │
+│  └─ Dependencies
+│     ├─ cross-spawn@npm:^5.0.1 → npm:5.1.0
+│     ├─ electron@npm:^23.1.2 → npm:23.3.0
+│     ├─ ip@npm:^1.1.4 → npm:1.1.5
+│     ├─ minimist@npm:^1.2.3 → npm:1.2.8
+│     ├─ react-devtools-core@npm:4.27.6 → npm:4.27.6
+│     └─ update-notifier@npm:^2.1.0 → npm:2.5.0
+│
+├─ react-dom@npm:16.12.0
+│  ├─ Instances: 1
+│  ├─ Version: 16.12.0
+│  │
+│  └─ Dependencies
+│     ├─ loose-envify@npm:^1.1.0 → npm:1.4.0
+│     ├─ object-assign@npm:^4.1.1 → npm:4.1.1
+│     ├─ prop-types@npm:^15.6.2 → npm:15.8.1
+│     └─ scheduler@npm:^0.18.0 → npm:0.18.0
+│
+├─ react-focus-lock@npm:2.9.4
+│  ├─ Instances: 1
+│  ├─ Version: 2.9.4
+│  │
+│  └─ Dependencies
+│     ├─ @babel/runtime@patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch → patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch::version=7.23.2&hash=7df10d
+│     ├─ focus-lock@npm:^0.11.6 → npm:0.11.6
+│     ├─ prop-types@npm:^15.6.2 → npm:15.8.1
+│     ├─ react-clientside-effect@npm:^1.2.6 → npm:1.2.6
+│     ├─ use-callback-ref@npm:^1.3.0 → npm:1.3.0
+│     └─ use-sidecar@npm:^1.1.2 → npm:1.1.2
+│
+├─ react-idle-timer@npm:4.2.5
+│  ├─ Instances: 1
+│  └─ Version: 4.2.5
+│
+├─ react-inspector@npm:6.0.2
+│  ├─ Instances: 1
+│  └─ Version: 6.0.2
+│
+├─ react-markdown@npm:6.0.3
+│  ├─ Instances: 1
+│  ├─ Version: 6.0.3
+│  │
+│  └─ Dependencies
+│     ├─ @types/hast@npm:^2.0.0 → npm:2.3.1
+│     ├─ @types/unist@npm:^2.0.3 → npm:2.0.6
+│     ├─ comma-separated-tokens@npm:^1.0.0 → npm:1.0.7
+│     ├─ prop-types@npm:^15.7.2 → npm:15.8.1
+│     ├─ property-information@npm:^5.3.0 → npm:5.6.0
+│     ├─ react-is@npm:^17.0.0 → npm:17.0.2
+│     ├─ remark-parse@npm:^9.0.0 → npm:9.0.0
+│     ├─ remark-rehype@npm:^8.0.0 → npm:8.1.0
+│     ├─ space-separated-tokens@npm:^1.1.0 → npm:1.1.5
+│     ├─ style-to-object@npm:^0.3.0 → npm:0.3.0
+│     ├─ unified@npm:^9.0.0 → npm:9.2.0
+│     ├─ unist-util-visit@npm:^2.0.0 → npm:2.0.3
+│     └─ vfile@npm:^4.0.0 → npm:4.0.1
+│
+├─ react-popper@npm:2.2.4
+│  ├─ Instances: 1
+│  ├─ Version: 2.2.4
+│  │
+│  └─ Dependencies
+│     ├─ react-fast-compare@npm:^3.0.1 → npm:3.2.0
+│     └─ warning@npm:^4.0.2 → npm:4.0.3
+│
+├─ react-redux@npm:7.2.0
+│  ├─ Instances: 1
+│  ├─ Version: 7.2.0
+│  │
+│  └─ Dependencies
+│     ├─ @babel/runtime@patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch → patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch::version=7.23.2&hash=7df10d
+│     ├─ hoist-non-react-statics@npm:^3.3.0 → npm:3.3.2
+│     ├─ loose-envify@npm:^1.4.0 → npm:1.4.0
+│     ├─ prop-types@npm:^15.7.2 → npm:15.8.1
+│     └─ react-is@npm:^16.9.0 → npm:16.13.1
+│
+├─ react-responsive-carousel@npm:3.2.21
+│  ├─ Version: 3.2.21
+│  │
+│  └─ Dependencies
+│     ├─ classnames@npm:^2.2.5 → npm:2.2.6
+│     ├─ prop-types@npm:^15.5.8 → npm:15.8.1
+│     └─ react-easy-swipe@npm:^0.0.21 → npm:0.0.21
+│
+├─ react-router-dom@npm:5.1.2
+│  ├─ Instances: 1
+│  ├─ Version: 5.1.2
+│  │
+│  └─ Dependencies
+│     ├─ @babel/runtime@patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch → patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch::version=7.23.2&hash=7df10d
+│     ├─ history@npm:^4.9.0 → npm:4.10.1
+│     ├─ loose-envify@npm:^1.3.1 → npm:1.4.0
+│     ├─ prop-types@npm:^15.6.2 → npm:15.8.1
+│     ├─ react-router@npm:5.1.2 → npm:5.1.2
+│     ├─ tiny-invariant@npm:^1.0.2 → npm:1.3.1
+│     └─ tiny-warning@npm:^1.0.0 → npm:1.0.3
+│
+├─ react-simple-file-input@npm:2.0.1
+│  ├─ Instances: 1
+│  ├─ Version: 2.0.1
+│  │
+│  └─ Dependencies
+│     └─ prop-types@npm:^15.5.7 → npm:15.8.1
+│
+├─ react-syntax-highlighter@npm:15.5.0
+│  ├─ Instances: 1
+│  ├─ Version: 15.5.0
+│  │
+│  └─ Dependencies
+│     ├─ @babel/runtime@patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch → patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch::version=7.23.2&hash=7df10d
+│     ├─ highlight.js@npm:^10.4.1 → npm:10.7.3
+│     ├─ lowlight@npm:^1.17.0 → npm:1.20.0
+│     ├─ prismjs@npm:^1.27.0 → npm:1.29.0
+│     └─ refractor@npm:^3.6.0 → npm:3.6.0
+│
+├─ react-tippy@npm:1.2.2
+│  ├─ Version: 1.2.2
+│  │
+│  └─ Dependencies
+│     └─ popper.js@npm:^1.11.1 → npm:1.15.0
+│
+├─ react-toggle-button@npm:2.2.0
+│  ├─ Instances: 1
+│  ├─ Version: 2.2.0
+│  │
+│  └─ Dependencies
+│     ├─ prop-types@npm:^15.6.0 → npm:15.8.1
+│     └─ react-motion@npm:^0.5.2 → npm:0.5.2
+│
+├─ react-transition-group@npm:1.2.1
+│  ├─ Instances: 1
+│  ├─ Version: 1.2.1
+│  │
+│  └─ Dependencies
+│     ├─ chain-function@npm:^1.0.0 → npm:1.0.1
+│     ├─ dom-helpers@npm:^3.2.0 → npm:3.4.0
+│     ├─ loose-envify@npm:^1.3.1 → npm:1.4.0
+│     ├─ prop-types@npm:^15.5.6 → npm:15.8.1
+│     └─ warning@npm:^3.0.0 → npm:3.0.0
+│
+├─ react@npm:16.14.0
+│  ├─ Version: 16.14.0
+│  │
+│  └─ Dependencies
+│     ├─ loose-envify@npm:^1.1.0 → npm:1.4.0
+│     ├─ object-assign@npm:^4.1.1 → npm:4.1.1
+│     └─ prop-types@npm:^15.6.2 → npm:15.8.1
+│
+├─ read-installed@npm:4.0.3
+│  ├─ Version: 4.0.3
+│  │
+│  └─ Dependencies
+│     ├─ debuglog@npm:^1.0.1 → npm:1.0.1
+│     ├─ graceful-fs@npm:^4.1.2 → npm:4.2.11
+│     ├─ read-package-json@npm:^2.0.0 → npm:2.1.2
+│     ├─ readdir-scoped-modules@npm:^1.0.0 → npm:1.1.0
+│     ├─ semver@npm:2 || 3 || 4 || 5 → npm:5.7.2
+│     ├─ slide@npm:~1.1.3 → npm:1.1.6
+│     └─ util-extend@npm:^1.0.1 → npm:1.0.3
+│
+├─ readable-stream@npm:2.3.7
+│  ├─ Version: 2.3.7
+│  │
+│  └─ Dependencies
+│     ├─ core-util-is@npm:~1.0.0 → npm:1.0.2
+│     ├─ inherits@npm:~2.0.3 → npm:2.0.4
+│     ├─ isarray@npm:~1.0.0 → npm:1.0.0
+│     ├─ process-nextick-args@npm:~2.0.0 → npm:2.0.1
+│     ├─ safe-buffer@npm:~5.1.1 → npm:5.1.2
+│     ├─ string_decoder@npm:~1.1.1 → npm:1.1.1
+│     └─ util-deprecate@npm:~1.0.1 → npm:1.0.2
+│
+├─ redux-mock-store@npm:1.5.4
+│  ├─ Version: 1.5.4
+│  │
+│  └─ Dependencies
+│     └─ lodash.isplainobject@npm:^4.0.6 → npm:4.0.6
+│
+├─ redux-thunk@npm:2.3.0
+│  ├─ Instances: 1
+│  └─ Version: 2.3.0
+│
+├─ redux@npm:4.2.1
+│  ├─ Version: 4.2.1
+│  │
+│  └─ Dependencies
+│     └─ @babel/runtime@patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch → patch:@babel/runtime@npm%3A7.23.2#~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch::version=7.23.2&hash=7df10d
+│
+├─ remote-redux-devtools@npm:0.5.16
+│  ├─ Version: 0.5.16
+│  │
+│  └─ Dependencies
+│     ├─ jsan@npm:^3.1.13 → npm:3.1.14
+│     ├─ querystring@npm:^0.2.0 → npm:0.2.1
+│     ├─ redux-devtools-core@npm:^0.2.1 → npm:0.2.1
+│     ├─ rn-host-detect@npm:^1.1.5 → npm:1.2.0
+│     ├─ socketcluster-client@npm:^14.2.1 → npm:14.3.2
+│     └─ redux-devtools-instrument@npm:^1.9.4 → npm:1.10.0 [d6d65]
+│
+├─ remove-trailing-slash@npm:0.1.1
+│  └─ Version: 0.1.1
+│
+├─ reselect@npm:3.0.1
+│  └─ Version: 3.0.1
+│
+├─ resolve-url-loader@npm:3.1.5
+│  ├─ Version: 3.1.5
+│  │
+│  └─ Dependencies
+│     ├─ adjust-sourcemap-loader@npm:3.0.0 → npm:3.0.0
+│     ├─ camelcase@npm:5.3.1 → npm:5.3.1
+│     ├─ compose-function@npm:3.0.3 → npm:3.0.3
+│     ├─ convert-source-map@patch:convert-source-map@npm%3A1.1.3#./.yarn/patches/convert-source-map-npm-1.1.3-7f1bfeabd4.patch::locator=metamask-crx%40workspace%3A. → patch:convert-source-map@npm%3A1.1.3#./.yarn/patches/convert-source-map-npm-1.1.3-7f1bfeabd4.patch::version=1.1.3&hash=6df1a7&locator=metamask-crx%40workspace%3A.
+│     ├─ es6-iterator@npm:2.0.3 → npm:2.0.3
+│     ├─ loader-utils@npm:^1.2.3 → npm:1.4.2
+│     ├─ postcss@npm:7.0.36 → npm:7.0.36
+│     ├─ rework-visit@npm:1.0.0 → npm:1.0.0
+│     ├─ rework@npm:1.0.1 → npm:1.0.1
+│     └─ source-map@npm:0.6.1 → npm:0.6.1
+│
+├─ sass-loader@npm:10.1.1
+│  ├─ Instances: 1
+│  ├─ Version: 10.1.1
+│  │
+│  └─ Dependencies
+│     ├─ klona@npm:^2.0.4 → npm:2.0.4
+│     ├─ loader-utils@npm:^2.0.0 → npm:2.0.4
+│     ├─ neo-async@npm:^2.6.2 → npm:2.6.2
+│     ├─ schema-utils@npm:^3.0.0 → npm:3.1.2
+│     └─ semver@npm:^7.3.2 → npm:7.5.4
+│
+├─ sass@patch:sass@npm%3A1.35.2#./.yarn/patches/sass-npm-1.35.2-6df4e15d13.patch::version=1.35.2&hash=48ef45&locator=metamask-crx%40workspace%3A.
+│  ├─ Version: 1.35.2
+│  │
+│  ├─ Exported Binaries
+│  │  └─ sass
+│  │
+│  └─ Dependencies
+│     └─ chokidar@npm:>=3.0.0 <4.0.0 → npm:3.5.3
+│
+├─ selenium-webdriver@npm:4.9.0
+│  ├─ Version: 4.9.0
+│  │
+│  └─ Dependencies
+│     ├─ jszip@npm:^3.10.1 → npm:3.10.1
+│     ├─ tmp@npm:^0.2.1 → npm:0.2.1
+│     └─ ws@npm:^8.11.0 → npm:8.13.0 [45a83]
+│
+├─ semver@npm:7.5.4
+│  ├─ Version: 7.5.4
+│  │
+│  ├─ Exported Binaries
+│  │  └─ semver
+│  │
+│  └─ Dependencies
+│     └─ lru-cache@npm:^6.0.0 → npm:6.0.0
+│
+├─ serve-handler@npm:6.1.5
+│  ├─ Version: 6.1.5
+│  │
+│  └─ Dependencies
+│     ├─ bytes@npm:3.0.0 → npm:3.0.0
+│     ├─ content-disposition@npm:0.5.2 → npm:0.5.2
+│     ├─ fast-url-parser@npm:1.1.3 → npm:1.1.3
+│     ├─ mime-types@npm:2.1.18 → npm:2.1.18
+│     ├─ minimatch@npm:3.1.2 → npm:3.1.2
+│     ├─ path-is-inside@npm:1.0.2 → npm:1.0.2
+│     ├─ path-to-regexp@npm:2.2.1 → npm:2.2.1
+│     └─ range-parser@npm:1.2.0 → npm:1.2.0
+│
+├─ ses@npm:0.18.8
+│  ├─ Version: 0.18.8
+│  │
+│  └─ Dependencies
+│     └─ @endo/env-options@npm:^0.1.4 → npm:0.1.4
+│
+├─ single-call-balance-checker-abi@npm:1.0.0
+│  └─ Version: 1.0.0
+│
+├─ sinon@npm:9.0.0
+│  ├─ Version: 9.0.0
+│  │
+│  └─ Dependencies
+│     ├─ @sinonjs/commons@npm:^1.7.0 → npm:1.7.0
+│     ├─ @sinonjs/fake-timers@npm:^6.0.0 → npm:6.0.1
+│     ├─ @sinonjs/formatio@npm:^5.0.0 → npm:5.0.1
+│     ├─ @sinonjs/samsam@npm:^5.0.1 → npm:5.0.2
+│     ├─ diff@npm:^4.0.2 → npm:4.0.2
+│     ├─ nise@npm:^4.0.1 → npm:4.0.2
+│     └─ supports-color@npm:^7.1.0 → npm:7.1.0
+│
+├─ source-map-explorer@npm:2.5.3
+│  ├─ Version: 2.5.3
+│  │
+│  ├─ Exported Binaries
+│  │  ├─ sme
+│  │  └─ source-map-explorer
+│  │
+│  └─ Dependencies
+│     ├─ btoa@npm:^1.2.1 → npm:1.2.1
+│     ├─ chalk@npm:^4.1.0 → npm:4.1.2
+│     ├─ convert-source-map@patch:convert-source-map@npm%3A1.1.3#./.yarn/patches/convert-source-map-npm-1.1.3-7f1bfeabd4.patch::locator=metamask-crx%40workspace%3A. → patch:convert-source-map@npm%3A1.1.3#./.yarn/patches/convert-source-map-npm-1.1.3-7f1bfeabd4.patch::version=1.1.3&hash=6df1a7&locator=metamask-crx%40workspace%3A.
+│     ├─ ejs@npm:^3.1.5 → npm:3.1.9
+│     ├─ escape-html@npm:^1.0.3 → npm:1.0.3
+│     ├─ glob@npm:^7.1.6 → npm:7.2.3
+│     ├─ gzip-size@npm:^6.0.0 → npm:6.0.0
+│     ├─ lodash@npm:^4.17.20 → npm:4.17.21
+│     ├─ open@npm:^7.3.1 → npm:7.4.2
+│     ├─ source-map@npm:^0.7.4 → npm:0.7.4
+│     ├─ temp@npm:^0.9.4 → npm:0.9.4
+│     └─ yargs@npm:^16.2.0 → npm:16.2.0
+│
+├─ source-map@npm:0.7.4
+│  └─ Version: 0.7.4
+│
+├─ squirrelly@patch:squirrelly@npm%3A9.0.0#./.yarn/patches/squirrelly-npm-9.0.0-3cf710c7bb.patch::version=9.0.0&hash=bf49f6&locator=metamask-crx%40workspace%3A.
+│  └─ Version: 9.0.0
+│
+├─ storybook-dark-mode@npm:3.0.1
+│  ├─ Instances: 1
+│  ├─ Version: 3.0.1
+│  │
+│  └─ Dependencies
+│     ├─ @storybook/addons@npm:^7.0.0 → npm:7.4.6
+│     ├─ @storybook/api@npm:^7.0.0 → npm:7.4.6
+│     ├─ @storybook/components@npm:^7.0.0 → npm:7.4.6
+│     ├─ @storybook/core-events@npm:^7.0.0 → npm:7.4.6
+│     ├─ @storybook/global@npm:^5.0.0 → npm:5.0.0
+│     ├─ @storybook/theming@npm:^7.0.0 → npm:7.4.6
+│     ├─ fast-deep-equal@npm:^3.1.3 → npm:3.1.3
+│     └─ memoizerific@npm:^1.11.3 → npm:1.11.3
+│
+├─ storybook@npm:7.4.6
+│  ├─ Version: 7.4.6
+│  │
+│  ├─ Exported Binaries
+│  │  ├─ sb
+│  │  └─ storybook
+│  │
+│  └─ Dependencies
+│     └─ @storybook/cli@npm:7.4.6 → npm:7.4.6
+│
+├─ stream-browserify@npm:3.0.0
+│  ├─ Version: 3.0.0
+│  │
+│  └─ Dependencies
+│     ├─ inherits@npm:~2.0.4 → npm:2.0.4
+│     └─ readable-stream@npm:^3.5.0 → npm:3.6.2
+│
+├─ string.prototype.matchall@npm:4.0.7
+│  ├─ Version: 4.0.7
+│  │
+│  └─ Dependencies
+│     ├─ call-bind@npm:^1.0.2 → npm:1.0.2
+│     ├─ define-properties@npm:^1.1.3 → npm:1.1.4
+│     ├─ es-abstract@npm:^1.19.1 → npm:1.21.2
+│     ├─ get-intrinsic@npm:^1.1.1 → npm:1.2.1
+│     ├─ has-symbols@npm:^1.0.3 → npm:1.0.3
+│     ├─ internal-slot@npm:^1.0.3 → npm:1.0.5
+│     ├─ regexp.prototype.flags@npm:^1.4.1 → npm:1.4.3
+│     └─ side-channel@npm:^1.0.4 → npm:1.0.4
+│
+├─ style-loader@npm:0.21.0
+│  ├─ Version: 0.21.0
+│  │
+│  └─ Dependencies
+│     ├─ loader-utils@npm:^1.1.0 → npm:1.4.2
+│     └─ schema-utils@npm:^0.4.5 → npm:0.4.5 [2f394]
+│
+├─ stylelint@patch:stylelint@npm%3A13.6.1#./.yarn/patches/stylelint-npm-13.6.1-47aaddf62b.patch::version=13.6.1&hash=273c78&locator=metamask-crx%40workspace%3A.
+│  ├─ Version: 13.6.1
+│  │
+│  ├─ Exported Binaries
+│  │  └─ stylelint
+│  │
+│  └─ Dependencies
+│     ├─ autoprefixer@npm:^9.8.0 → npm:9.8.8
+│     ├─ balanced-match@npm:^1.0.0 → npm:1.0.2
+│     ├─ chalk@npm:^4.1.0 → npm:4.1.2
+│     ├─ cosmiconfig@npm:^6.0.0 → npm:6.0.0
+│     ├─ execall@npm:^2.0.0 → npm:2.0.0
+│     ├─ file-entry-cache@npm:^5.0.1 → npm:5.0.1
+│     ├─ get-stdin@npm:^8.0.0 → npm:8.0.0
+│     ├─ global-modules@npm:^2.0.0 → npm:2.0.0
+│     ├─ globby@npm:^11.0.1 → npm:11.1.0
+│     ├─ globjoin@npm:^0.1.4 → npm:0.1.4
+│     ├─ html-tags@npm:^3.1.0 → npm:3.1.0
+│     ├─ ignore@npm:^5.1.8 → npm:5.2.0
+│     ├─ import-lazy@npm:^4.0.0 → npm:4.0.0
+│     ├─ imurmurhash@npm:^0.1.4 → npm:0.1.4
+│     ├─ known-css-properties@npm:^0.19.0 → npm:0.19.0
+│     ├─ leven@npm:^3.1.0 → npm:3.1.0
+│     ├─ lodash@npm:^4.17.15 → npm:4.17.21
+│     ├─ log-symbols@npm:^4.0.0 → npm:4.1.0
+│     ├─ mathml-tag-names@npm:^2.1.3 → npm:2.1.3
+│     ├─ meow@npm:^7.0.1 → npm:7.1.1
+│     ├─ micromatch@npm:^4.0.2 → npm:4.0.5
+│     ├─ normalize-selector@npm:^0.2.0 → npm:0.2.0
+│     ├─ postcss-less@npm:^3.1.4 → npm:3.1.4
+│     ├─ postcss-media-query-parser@npm:^0.2.3 → npm:0.2.3
+│     ├─ postcss-reporter@npm:^6.0.1 → npm:6.0.1
+│     ├─ postcss-resolve-nested-selector@npm:^0.1.1 → npm:0.1.1
+│     ├─ postcss-safe-parser@npm:^4.0.2 → npm:4.0.2
+│     ├─ postcss-sass@npm:^0.4.4 → npm:0.4.4
+│     ├─ postcss-scss@npm:^2.1.1 → npm:2.1.1
+│     ├─ postcss-selector-parser@npm:^6.0.2 → npm:6.0.6
+│     ├─ postcss-value-parser@npm:^4.1.0 → npm:4.2.0
+│     ├─ postcss@npm:^7.0.32 → npm:7.0.39
+│     ├─ resolve-from@npm:^5.0.0 → npm:5.0.0
+│     ├─ slash@npm:^3.0.0 → npm:3.0.0
+│     ├─ specificity@npm:^0.4.1 → npm:0.4.1
+│     ├─ string-width@npm:^4.2.0 → npm:4.2.3
+│     ├─ strip-ansi@npm:^6.0.0 → npm:6.0.1
+│     ├─ style-search@npm:^0.1.0 → npm:0.1.0
+│     ├─ sugarss@npm:^2.0.0 → npm:2.0.0
+│     ├─ svg-tags@npm:^1.0.0 → npm:1.0.0
+│     ├─ table@npm:^5.4.6 → npm:5.4.6
+│     ├─ v8-compile-cache@npm:^2.1.1 → npm:2.1.1
+│     ├─ write-file-atomic@npm:^3.0.3 → npm:3.0.3
+│     ├─ @stylelint/postcss-css-in-js@npm:^0.37.1 → npm:0.37.2 [afd1b]
+│     ├─ @stylelint/postcss-markdown@npm:^0.36.1 → npm:0.36.1 [afd1b]
+│     ├─ debug@npm:^4.1.0 → npm:4.3.4 [4758f]
+│     ├─ postcss-html@npm:^0.36.0 → npm:0.36.0 [afd1b]
+│     └─ postcss-syntax@npm:^0.36.2 → npm:0.36.2 [afd1b]
+│
+├─ superstruct@npm:1.0.3
+│  └─ Version: 1.0.3
+│
+├─ terser@npm:5.17.4
+│  ├─ Version: 5.17.4
+│  │
+│  ├─ Exported Binaries
+│  │  └─ terser
+│  │
+│  └─ Dependencies
+│     ├─ @jridgewell/source-map@npm:^0.3.2 → npm:0.3.2
+│     ├─ acorn@npm:^8.5.0 → npm:8.10.0
+│     ├─ commander@npm:^2.20.0 → npm:2.20.3
+│     └─ source-map-support@npm:~0.5.20 → npm:0.5.21
+│
+├─ through2@npm:4.0.2
+│  ├─ Version: 4.0.2
+│  │
+│  └─ Dependencies
+│     └─ readable-stream@npm:3 → npm:3.6.2
+│
+├─ ts-node@npm:10.5.0
+│  ├─ Instances: 1
+│  ├─ Version: 10.5.0
+│  │
+│  ├─ Exported Binaries
+│  │  ├─ ts-node
+│  │  ├─ ts-node-cwd
+│  │  ├─ ts-node-script
+│  │  ├─ ts-node-transpile-only
+│  │  └─ ts-script
+│  │
+│  └─ Dependencies
+│     ├─ @cspotcode/source-map-support@npm:0.7.0 → npm:0.7.0
+│     ├─ @tsconfig/node10@npm:^1.0.7 → npm:1.0.8
+│     ├─ @tsconfig/node12@npm:^1.0.7 → npm:1.0.9
+│     ├─ @tsconfig/node14@npm:^1.0.0 → npm:1.0.3
+│     ├─ @tsconfig/node16@npm:^1.0.2 → npm:1.0.3
+│     ├─ acorn-walk@npm:^8.1.1 → npm:8.2.0
+│     ├─ acorn@npm:^8.4.1 → npm:8.10.0
+│     ├─ arg@npm:^4.1.0 → npm:4.1.3
+│     ├─ create-require@npm:^1.1.0 → npm:1.1.1
+│     ├─ diff@npm:^4.0.1 → npm:4.0.2
+│     ├─ make-error@npm:^1.1.1 → npm:1.3.6
+│     ├─ v8-compile-cache-lib@npm:^3.0.0 → npm:3.0.0
+│     └─ yn@npm:3.1.1 → npm:3.1.1
+│
+├─ ttest@npm:2.1.1
+│  ├─ Version: 2.1.1
+│  │
+│  └─ Dependencies
+│     ├─ distributions@npm:^2.1.0 → npm:2.1.0
+│     └─ summary@npm:0.3.x → npm:0.3.2
+│
+├─ typescript@patch:typescript@npm%3A4.5.5#optional!builtin<compat/typescript>::version=4.5.5&hash=bcec9a
+│  ├─ Version: 4.5.5
+│  │
+│  └─ Exported Binaries
+│     ├─ tsc
+│     └─ tsserver
+│
+├─ unicode-confusables@npm:0.1.1
+│  └─ Version: 0.1.1
+│
+├─ uuid@npm:8.3.2
+│  ├─ Version: 8.3.2
+│  │
+│  └─ Exported Binaries
+│     └─ uuid
+│
+├─ vinyl-buffer@npm:1.0.1
+│  ├─ Version: 1.0.1
+│  │
+│  └─ Dependencies
+│     ├─ bl@npm:^1.2.1 → npm:1.2.3
+│     └─ through2@npm:^2.0.3 → npm:2.0.5
+│
+├─ vinyl-source-stream@npm:2.0.0
+│  ├─ Version: 2.0.0
+│  │
+│  └─ Dependencies
+│     ├─ through2@npm:^2.0.3 → npm:2.0.5
+│     └─ vinyl@npm:^2.1.0 → npm:2.2.1
+│
+├─ vinyl-sourcemaps-apply@npm:0.2.1
+│  ├─ Version: 0.2.1
+│  │
+│  └─ Dependencies
+│     └─ source-map@npm:^0.5.1 → npm:0.5.7
+│
+├─ vinyl@npm:2.2.1
+│  ├─ Version: 2.2.1
+│  │
+│  └─ Dependencies
+│     ├─ clone-buffer@npm:^1.0.0 → npm:1.0.0
+│     ├─ clone-stats@npm:^1.0.0 → npm:1.0.0
+│     ├─ clone@npm:^2.1.1 → npm:2.1.2
+│     ├─ cloneable-readable@npm:^1.0.0 → npm:1.0.0
+│     ├─ remove-trailing-separator@npm:^1.0.1 → npm:1.1.0
+│     └─ replace-ext@npm:^1.0.0 → npm:1.0.0
+│
+├─ wait-on@npm:7.0.1
+│  ├─ Version: 7.0.1
+│  │
+│  ├─ Exported Binaries
+│  │  └─ wait-on
+│  │
+│  └─ Dependencies
+│     ├─ axios@npm:^0.27.2 → npm:0.27.2
+│     ├─ joi@npm:^17.7.0 → npm:17.7.0
+│     ├─ lodash@npm:^4.17.21 → npm:4.17.21
+│     ├─ minimist@npm:^1.2.7 → npm:1.2.8
+│     └─ rxjs@npm:^7.8.0 → npm:7.8.0
+│
+├─ watchify@patch:watchify@npm%3A4.0.0#./.yarn/patches/watchify-npm-4.0.0-4fd965dd49.patch::version=4.0.0&hash=475851&locator=metamask-crx%40workspace%3A.
+│  ├─ Version: 4.0.0
+│  │
+│  ├─ Exported Binaries
+│  │  └─ watchify
+│  │
+│  └─ Dependencies
+│     ├─ anymatch@npm:^3.1.0 → npm:3.1.2
+│     ├─ browserify@npm:^17.0.0 → npm:17.0.0
+│     ├─ chokidar@npm:^3.4.0 → npm:3.5.3
+│     ├─ defined@npm:^1.0.0 → npm:1.0.0
+│     ├─ outpipe@npm:^1.1.0 → npm:1.1.1
+│     ├─ through2@npm:^4.0.2 → npm:4.0.2
+│     └─ xtend@npm:^4.0.2 → npm:4.0.2
+│
+├─ web3-stream-provider@npm:4.0.0
+│  ├─ Version: 4.0.0
+│  │
+│  └─ Dependencies
+│     ├─ readable-stream@npm:^2.0.5 → npm:2.3.7
+│     └─ uuid@npm:^3.3.3 → npm:3.4.0
+│
+├─ webextension-polyfill@npm:0.8.0
+│  └─ Version: 0.8.0
+│
+├─ webpack@npm:5.82.1
+│  ├─ Instances: 1
+│  ├─ Version: 5.82.1
+│  │
+│  ├─ Exported Binaries
+│  │  └─ webpack
+│  │
+│  └─ Dependencies
+│     ├─ @types/eslint-scope@npm:^3.7.3 → npm:3.7.4
+│     ├─ @types/estree@npm:^1.0.0 → npm:1.0.1
+│     ├─ @webassemblyjs/ast@npm:^1.11.5 → npm:1.11.6
+│     ├─ @webassemblyjs/wasm-edit@npm:^1.11.5 → npm:1.11.6
+│     ├─ @webassemblyjs/wasm-parser@npm:^1.11.5 → npm:1.11.6
+│     ├─ acorn-import-assertions@npm:^1.7.6 → npm:1.8.0
+│     ├─ acorn@npm:^8.7.1 → npm:8.10.0
+│     ├─ browserslist@npm:^4.14.5 → npm:4.22.1
+│     ├─ chrome-trace-event@npm:^1.0.2 → npm:1.0.2
+│     ├─ enhanced-resolve@npm:^5.14.0 → npm:5.15.0
+│     ├─ es-module-lexer@npm:^1.2.1 → npm:1.2.1
+│     ├─ eslint-scope@npm:5.1.1 → npm:5.1.1
+│     ├─ events@npm:^3.2.0 → npm:3.3.0
+│     ├─ glob-to-regexp@npm:^0.4.1 → npm:0.4.1
+│     ├─ graceful-fs@npm:^4.2.9 → npm:4.2.11
+│     ├─ json-parse-even-better-errors@npm:^2.3.1 → npm:2.3.1
+│     ├─ loader-runner@npm:^4.2.0 → npm:4.3.0
+│     ├─ mime-types@npm:^2.1.27 → npm:2.1.35
+│     ├─ neo-async@npm:^2.6.2 → npm:2.6.2
+│     ├─ schema-utils@npm:^3.1.2 → npm:3.1.2
+│     ├─ tapable@npm:^2.1.1 → npm:2.2.1
+│     ├─ terser-webpack-plugin@npm:^5.3.7 → npm:5.3.8
+│     ├─ watchpack@npm:^2.4.0 → npm:2.4.0
+│     └─ webpack-sources@npm:^3.2.3 → npm:3.2.3
+│
+├─ yargs@npm:17.7.2
+│  ├─ Version: 17.7.2
+│  │
+│  └─ Dependencies
+│     ├─ cliui@npm:^8.0.1 → npm:8.0.1
+│     ├─ escalade@npm:^3.1.1 → npm:3.1.1
+│     ├─ get-caller-file@npm:^2.0.5 → npm:2.0.5
+│     ├─ require-directory@npm:^2.1.1 → npm:2.1.1
+│     ├─ string-width@npm:^4.2.3 → npm:4.2.3
+│     ├─ y18n@npm:^5.0.5 → npm:5.0.5
+│     └─ yargs-parser@npm:^21.1.1 → npm:21.1.1
+│
+└─ zxcvbn@patch:zxcvbn@npm%3A4.4.2#./.yarn/patches/zxcvbn-npm-4.4.2-6527983856.patch::version=4.4.2&hash=e3565a&locator=metamask-crx%40workspace%3A.
+   └─ Version: 4.4.2

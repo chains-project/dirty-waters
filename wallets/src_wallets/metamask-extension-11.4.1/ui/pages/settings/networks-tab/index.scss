@@ -1,0 +1,256 @@
+@use "design-system";
+
+.networks-tab {
+  &__imageclose {
+    cursor: pointer;
+    color: var(--color-icon-default);
+  }
+
+  &__content {
+    &--with-networks-list-popup-footer {
+      // padding-bottom required to offset content from fixed footer: &__networks-list-popup-footer
+      padding-bottom: 80px;
+      // isolation contains stacking context(z-index) of &__networks-list-popup-footer
+      isolation: isolate;
+    }
+
+    @include screen-sm-min {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    &__icon-check {
+      max-width: 24px;
+      flex: 0 0 24px;
+    }
+
+    &__custom-image {
+      border: 1px solid var(--color-border-muted);
+    }
+
+    &__icon-with-fallback {
+      display: flex;
+      align-items: center;
+      padding: 0;
+      max-width: 24px;
+      flex: 0 0 24px;
+      color: var(--color-text-alternative);
+
+      @each $variant, $color in design-system.$color-map {
+        &--color-#{$variant} {
+          background: var($color);
+          color: var(--color-primary-inverse); // TODO: design-tokens needs network colors
+        }
+      }
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+
+    @include screen-sm-min {
+      margin-inline-end: 16px;
+      margin-bottom: 24px;
+    }
+  }
+
+  &__subheader {
+    display: none;
+
+    @include screen-sm-min {
+      @include H4;
+
+      padding: 16px 4px;
+      border-bottom: 1px solid var(--color-border-default);
+      height: 72px;
+      align-items: center;
+      display: flex;
+      gap: 8px;
+      flex-flow: row nowrap;
+    }
+  }
+
+  &__sub-header-text {
+    @include H4;
+
+    color: var(--color-text-muted);
+  }
+
+  &__network-form {
+    padding: 16px 24px;
+
+    @include screen-sm-min {
+      padding: 16px;
+    }
+
+    .page-container__footer {
+      border-top: none;
+
+      footer {
+        padding: 10px 0;
+      }
+    }
+  }
+
+  &__networks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 24px;
+
+    @include screen-sm-min {
+      padding: 16px;
+      min-width: 160px; // Allow network form to take priority in the grid on resize
+      border-right: 1px solid var(--color-border-muted);
+    }
+
+    &__custom-search-network {
+      @include H6;
+
+      @include screen-sm-min {
+        @include Paragraph;
+      }
+    }
+  }
+
+  &__networks-list-popup-footer {
+    display: flex;
+    justify-content: center;
+    padding: 16px 24px;
+    border-top: 1px solid var(--color-border-default);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--color-background-default);
+
+    @include screen-sm-min {
+      display: none;
+    }
+  }
+
+  &__add-network-header-button-wrapper {
+    justify-content: center;
+
+    .button {
+      width: 138px;
+      padding: 10px;
+    }
+
+    @include screen-sm-max {
+      display: none;
+    }
+  }
+
+  &__networks-list--selection {
+    @include screen-sm-max {
+      display: none;
+    }
+  }
+
+  &__networks-list-item {
+    display: flex;
+    gap: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  &__networks-list-name {
+    @include Paragraph;
+
+    margin-left: 8px;
+    color: var(--color-text-alternative);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    flex-grow: 1;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    svg {
+      margin-inline-start: 15px;
+      padding-top: 3px;
+    }
+
+    @include screen-sm-max {
+      color: var(--color-text-default);
+    }
+  }
+
+  &__networks-list-name--selected {
+    font-weight: bold;
+    color: var(--color-text-default);
+
+    @include screen-sm-max {
+      font-weight: normal;
+      color: var(--color-text-default);
+    }
+  }
+
+  &__networks-list-name--disabled {
+    color: var(--color-text-muted);
+
+    @include screen-sm-max {
+      color: var(--color-text-default);
+    }
+  }
+
+  &__network-form-footer {
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 12px 0;
+
+    .btn--rounded {
+      white-space: nowrap;
+    }
+
+    .btn-secondary {
+      margin-left: auto;
+    }
+
+    .btn-primary {
+      margin-left: 16px;
+    }
+
+    .btn-danger {
+      margin-right: 16px;
+    }
+  }
+
+  &__add-network-form {
+    padding: 16px 24px;
+    grid-column: span 2; // spread both columns of grid layout
+
+    @include screen-sm-min {
+      max-width: 400px; // but only expand to 400px
+      padding: 16px;
+    }
+
+    &__alert {
+      margin-top: 0;
+    }
+  }
+
+  &__restrict-height {
+    max-height: 578px;
+    overflow-y: auto;
+  }
+
+  &__add-network-form-footer {
+    display: flex;
+    flex-flow: row;
+    padding: 12px 0;
+    width: 60%;
+
+    .btn-secondary {
+      margin-right: 0.5rem;
+    }
+
+    .btn-primary {
+      margin-left: 0.5rem;
+    }
+  }
+}

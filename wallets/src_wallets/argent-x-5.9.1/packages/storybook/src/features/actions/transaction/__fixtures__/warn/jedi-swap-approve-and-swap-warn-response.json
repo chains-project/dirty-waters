@@ -1,0 +1,69 @@
+{
+  "assessment": "warn",
+  "reason": "amount_mismatch_too_low",
+  "reviews": [
+    {
+      "assessment": "neutral",
+      "assessmentDetails": {
+        "contract_address": "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7"
+      },
+      "activity": {
+        "value": {
+          "token": {
+            "address": "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18,
+            "unknown": false,
+            "type": "ERC20"
+          },
+          "amount": "100000000000000",
+          "usd": 0.16,
+          "slippage": "equal"
+        },
+        "spender": "0x012b063b60553c91ed237d8905dff412fba830c5716b17821063176c6c073341",
+        "type": "approve"
+      }
+    },
+    {
+      "assessment": "warn",
+      "assessmentReason": "amount_mismatch_too_low",
+      "assessmentDetails": {
+        "contract_address": "0x012b063b60553c91ed237d8905dff412fba830c5716b17821063176c6c073341"
+      },
+      "activity": {
+        "dapp": {
+          "address": "0x012b063b60553c91ed237d8905dff412fba830c5716b17821063176c6c073341",
+          "name": "JediSwap"
+        },
+        "src": {
+          "token": {
+            "address": "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+            "name": "Ether",
+            "symbol": "ETH",
+            "decimals": 18,
+            "unknown": false,
+            "type": "ERC20"
+          },
+          "amount": "100000000000000",
+          "usd": 0.16,
+          "slippage": "equal"
+        },
+        "dst": {
+          "token": {
+            "address": "0x03e85bfbb8e2a42b7bead9e88e9a1b19dbccf661471061807292120462396ec9",
+            "name": "DAI",
+            "symbol": "DAI",
+            "decimals": 18,
+            "unknown": false,
+            "type": "ERC20"
+          },
+          "amount": "24506366549288989",
+          "usd": 0.02,
+          "slippage": "at_least"
+        },
+        "type": "swap"
+      }
+    }
+  ]
+}

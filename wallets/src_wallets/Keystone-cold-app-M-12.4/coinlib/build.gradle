@@ -1,0 +1,94 @@
+/*
+ * Copyright (c) 2021 Keystone
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * in the file COPYING.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+
+    sourceSets {
+        test {
+            resources.srcDirs += ['src/test/resources']
+        }
+        androidTest {
+            resources.srcDirs += ['src/androidTest/resources']
+        }
+    }
+
+}
+
+dependencies {
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'com.esaulpaugh:headlong:5.3.0'
+    implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'com.github.sealedtx:bitcoin-cash-converter:1.0'
+    implementation('org.bitcoinj:bitcoinj-core:0.15.10') {
+        exclude group: 'com.squareup.okhttp3'
+    }
+    implementation('org.web3j:core:4.8.7-android') {
+        exclude group: 'com.squareup.okhttp3'
+        exclude group: 'org.bouncycastle'
+    }
+    implementation 'com.madgag.spongycastle:core:1.58.0.0@jar'
+    implementation 'com.eclipsesource.j2v8:j2v8:6.2.0@aar'
+    implementation 'com.google.guava:guava:27.1-android'
+    dependencies {
+        implementation(group: "com.networknt", name: "json-schema-validator", version: "1.0.43");
+    }
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.json:json:20180813'
+    implementation group: 'de.sfuhrm', name: 'saphir-hash-core', version: '3.0.5'
+    testImplementation 'org.slf4j:slf4j-nop:1.7.25'
+}
+configurations.all {
+    resolutionStrategy {
+        // java.lang.RuntimeException: Failed to transform '/User/.../bcprov-jdk15on-1.68.jar' using Jetifier.Reason: IllegalArgumentException, message: Unsupported class file major version 59.
+        // Solve the above problems introduced by web3j 4.8.7
+        force 'org.bouncycastle:bcprov-jdk15to18:1.68'
+    }
+}
+
