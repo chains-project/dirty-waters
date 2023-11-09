@@ -1,0 +1,23 @@
+#### Metamask
+
+"docs": "https://docs.metamask.io/",
+"gh": "https://github.com/MetaMask",
+"site": "https://metamask.io/",
+"tag": ("Extension","Android","iOS"),
+"deps_manage_too": "yarn",
+
+
+
+Extension
+- To Find dependencies
+yarn install
+yarn info -R
+
+
+Mobile
+yarn list
+
+
+
+
+
