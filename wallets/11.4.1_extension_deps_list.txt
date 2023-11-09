@@ -722,7 +722,6 @@
 @zxing/library
 @zxing/text-encoding
 JSONStream
-Version:
 abab
 abbrev
 abort-controller@patch:abort-controller
