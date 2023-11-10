@@ -1,5 +1,10 @@
 - todo
 ww45
 
--[] MetaMask & Bitpay packages
--[] 2 Paper 
+-[x] MetaMask & Bitpay packages
+-[x] 2 Paper 
+
+ww46
+-[] A method to measeaure how weak the dependencies are(rules, automated)
+-[] Is there other method to extract deps?
+-[] Check vuls of deps
