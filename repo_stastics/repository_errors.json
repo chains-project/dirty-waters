@@ -1,0 +1,176 @@
+{
+    "JedWatson/react-select#master": {
+        "repo_url": "https://github.com/JedWatson/react-select.git#master",
+        "error": "0",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "packages/babel-core": {
+        "repo_url": "https://github.com/babel/babel/tree/master/packages/babel-core",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "packages/babel-plugin-syntax-async-generators": {
+        "repo_url": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-async-generators",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "packages/babel-plugin-syntax-bigint": {
+        "repo_url": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-bigint",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "packages/babel-plugin-syntax-dynamic-import": {
+        "repo_url": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-dynamic-import",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "packages/babel-plugin-syntax-export-namespace-from": {
+        "repo_url": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-export-namespace-from",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "packages/babel-plugin-syntax-json-strings": {
+        "repo_url": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-json-strings",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "packages/babel-plugin-syntax-nullish-coalescing-operator": {
+        "repo_url": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-nullish-coalescing-operator",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "packages/babel-plugin-syntax-object-rest-spread": {
+        "repo_url": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-object-rest-spread",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "packages/babel-plugin-syntax-optional-catch-binding": {
+        "repo_url": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-optional-catch-binding",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "packages/babel-plugin-syntax-optional-chaining": {
+        "repo_url": "https://github.com/babel/babel/tree/master/packages/babel-plugin-syntax-optional-chaining",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "packages/babel-runtime": {
+        "repo_url": "https://github.com/babel/babel/tree/master/packages/babel-runtime",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "emotion-js/emotion#main": {
+        "repo_url": "https://github.com/emotion-js/emotion.git#main",
+        "error": "0",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "packages/hash": {
+        "repo_url": "https://github.com/emotion-js/emotion/tree/master/packages/hash",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "ethereum/web3.js#1.x": {
+        "repo_url": "https://github.com/ethereum/web3.js.git#1.x",
+        "error": "0",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "facebook/regenerator#main": {
+        "repo_url": "https://github.com/facebook/regenerator.git#main",
+        "error": "0",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "@multiformats/base-x": {
+        "repo_url": "https://github.com/gozala/@multiformats/base-x.git",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "igoradamenko/esbuild-plugin-alias": {
+        "repo_url": "https://github.com/igoradamenko/esbuild-plugin-alias.git",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "micromark/micromark#main": {
+        "repo_url": "https://github.com/micromark/micromark.git#main",
+        "error": "0",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "eslint-plugin-no-unsanitized/issues": {
+        "repo_url": "https://github.com/mozilla/eslint-plugin-no-unsanitized/issues",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "fs/fs.scandir": {
+        "repo_url": "https://github.com/nodelib/nodelib/tree/master/packages/fs/fs.scandir",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "fs/fs.stat": {
+        "repo_url": "https://github.com/nodelib/nodelib/tree/master/packages/fs/fs.stat",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "fs/fs.walk": {
+        "repo_url": "https://github.com/nodelib/nodelib/tree/master/packages/fs/fs.walk",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "packages/remark-parse": {
+        "repo_url": "https://github.com/remarkjs/remark/tree/main/packages/remark-parse",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "packages/remark": {
+        "repo_url": "https://github.com/remarkjs/remark/tree/master/packages/remark",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "packages/remark-stringify": {
+        "repo_url": "https://github.com/remarkjs/remark/tree/master/packages/remark-stringify",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "smooth-code/jest-puppeteer#master": {
+        "repo_url": "https://github.com/smooth-code/jest-puppeteer.git#master",
+        "error": "0",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "substack/node-mkdirp": {
+        "repo_url": "https://github.com/substack/node-mkdirp.git",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    },
+    "temrhn/nano-base32": {
+        "repo_url": "https://github.com/temrhn/nano-base32.git",
+        "error": "GitHub API error: 404 - {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/commits/commits#list-commits\"}",
+        "status_code": "N/A",
+        "message": "Unknown Error"
+    }
+}
