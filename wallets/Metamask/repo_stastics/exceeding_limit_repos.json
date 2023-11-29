@@ -1,0 +1,82 @@
+[
+    {
+        "repo_url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    },
+    {
+        "repo_url": "https://github.com/MetaMask/metamask-desktop.git",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    },
+    {
+        "repo_url": "https://github.com/Microsoft/TypeScript.git",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    },
+    {
+        "repo_url": "https://github.com/Microsoft/playwright.git",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    },
+    {
+        "repo_url": "https://github.com/SeleniumHQ/selenium.git",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    },
+    {
+        "repo_url": "https://github.com/babel/babel.git",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    },
+    {
+        "repo_url": "https://github.com/electron/electron.git",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    },
+    {
+        "repo_url": "https://github.com/facebook/flow.git",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    },
+    {
+        "repo_url": "https://github.com/facebook/react.git",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    },
+    {
+        "repo_url": "https://github.com/facebook/watchman",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    },
+    {
+        "repo_url": "https://github.com/mdn/browser-compat-data.git",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    },
+    {
+        "repo_url": "https://github.com/mui-org/material-ui.git",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    },
+    {
+        "repo_url": "https://github.com/storybookjs/storybook.git",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    },
+    {
+        "repo_url": "https://github.com/trufflesuite/truffle.git",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    },
+    {
+        "repo_url": "https://github.com/webpack/webpack.git",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    },
+    {
+        "repo_url": "https://www.github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "commits_exceeded": true,
+        "contributors_exceeded": false
+    }
+]
