@@ -1,0 +1,28 @@
+Undefined for @blockaid/ppom_release@1.2.8
+Undefined for @chainsafe/ssz@0.9.4
+Undefined for @ensdomains/address-encoder@0.1.9
+Undefined for @ensdomains/resolver@0.2.4
+Undefined for @fal-works/esbuild-plugin-global-externals@2.1.2
+Undefined for @keystonehq/bc-ur-registry-eth@0.19.1
+Undefined for @lavamoat/aa@3.1.5
+Undefined for @nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1
+Undefined for @segment/loosely-validate-event@2.0.0
+Undefined for @types/keyv@4.2.0
+Undefined for babel-plugin-named-exports-order@0.0.2
+Undefined for esbuild-register@3.4.2
+Undefined for join-component@1.1.0
+Undefined for metamask-crx@workspace:.
+Undefined for micro-ftch@0.3.1
+Undefined for minipass-pipeline@1.2.4
+Undefined for obj-multiplex@1.0.0
+Undefined for pinkie@2.0.4
+Undefined for polyfill-crypto.getrandomvalues@1.0.0
+Undefined for postcss-resolve-nested-selector@0.1.1
+Undefined for react-style-singleton@2.2.1
+Undefined for rework-visit@1.0.0
+Undefined for safe-event-emitter@1.0.1
+Undefined for single-call-balance-checker-abi@1.0.0
+Undefined for unicode-confusables@0.1.1
+Undefined for web-encoding@1.1.5
+
+Total: 26
