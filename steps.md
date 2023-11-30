@@ -6,9 +6,10 @@ get dependency tree:
 
 get the dependency list: 
 
-`extract_deps.py` - for tree from yarn
+`extract_deps.py` - get list from tree 
 
 > all deps(with different version):3335
+
 > unique deps: 2643
 
 Publish date & Last modified date
@@ -16,13 +17,19 @@ Publish date & Last modified date
 
 
 get publish time of specific version: specificTime_sorted.json
+
 get repos of packages `get_repo.py`:
+
 `yarn info {packages} repository.url`
 
-> repo in github: 3261
+> repo on github: 3261
+
 > undefined repo of packages: 26
-> 2 on gittea?
+
+> 2 link on gittea?
+
 > 46 patches
+
 > ⬆️ sum: 3335 -> checkout [line 11](https://github.com/chains-project/crypto_wallets/blob/main/steps.md#11)
 
 > unique repo: 2062
