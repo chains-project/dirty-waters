@@ -30,7 +30,7 @@ get repos of packages `get_repo.py`:
 
 > 46 patches
 
-> ⬆️ sum: 3335 -> checkout [line 11](https://github.com/chains-project/crypto_wallets/blob/main/steps.md#11)
+> ⬆️ sum: 3335 -> checkout [line 11](https://github.com/chains-project/crypto_wallets/blob/main/steps.md#L11)
 
 > unique repo: 2062
 
