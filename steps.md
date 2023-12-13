@@ -50,3 +50,5 @@ repo stats: `repository_stats.json`
 
 summary: `repository_stats_report_contributor_count.md`
 
+Q? why unique deps' repos are different from deps' unique repo
+
