@@ -2,6 +2,6 @@
 
 
 
-The tasks done is documented in [Steps](./steps.md)
+The tasks that have been done are documented in [Steps](./steps.md)
 
 
