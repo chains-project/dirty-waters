@@ -1,0 +1,4115 @@
+{
+    "added": [
+        {
+            "file": ".yarn/patches/@metamask-assets-controllers-npm-18.0.0-48bf74a7fa.patch",
+            "authors": [
+                "Danica Shen"
+            ]
+        },
+        {
+            "file": ".yarn/patches/nonce-tracker-npm-3.0.0-c5e9a93f9d.patch",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/images/base.png",
+            "authors": [
+                "Nidhi Kumari"
+            ]
+        },
+        {
+            "file": "app/images/zk-sync.svg",
+            "authors": [
+                "Nidhi Kumari"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/103.test.js",
+            "authors": [
+                "Monte Lai"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/103.ts",
+            "authors": [
+                "Monte Lai"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/104.test.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/104.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "playwright.config.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "shared/modules/currency-display.utils.test.ts",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "shared/modules/currency-display.utils.ts",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/.env.example",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/Dockerfile",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/README.md",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/custodian-hooks/ICustodianTestClient.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/custodian-hooks/hooks.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/helpers/custodian-helper.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/helpers/dapps-helpers.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/helpers/extension-loader.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/helpers/oauth-api-helper.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/helpers/saturn-api-helper.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/helpers/utils.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/pageObjects/mmi-accountMenu-page.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/pageObjects/mmi-auth0-page.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/pageObjects/mmi-dummyApp-page.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/pageObjects/mmi-extension-page.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/pageObjects/mmi-main-page.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/pageObjects/mmi-mainMenu-page.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/pageObjects/mmi-network-page.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/pageObjects/mmi-saturn-page.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/pageObjects/mmi-saturn-ui-page.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/pageObjects/mmi-signup-page.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/resources/circleci-artifact-screnshot.png",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/resources/trace.png",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/scripts/run-visual-test.sh",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/specs/dapp.signature.spec.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/specs/dapp.spec.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/specs/extension.visual.spec.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/specs/extension.visual.spec.ts-snapshots/popop-token-remove-approve-mmi-visual-linux.png",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/specs/extension.visual.spec.ts-snapshots/token-replacement-notification-mmi-visual-linux.png",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/specs/navigation.spec.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/specs/transactions.spec.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/specs/visual.spec.ts",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/specs/visual.spec.ts-snapshots/connect-custodian-mmi-visual-linux.png",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/specs/visual.spec.ts-snapshots/custodian-connection-info-mmi-visual-linux.png",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/specs/visual.spec.ts-snapshots/custodian-list-mmi-visual-linux.png",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/specs/visual.spec.ts-snapshots/custodian-remove-token-mmi-visual-linux.png",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/specs/visual.spec.ts-snapshots/custody-accounts-selection-mmi-visual-linux.png",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/mmi/specs/visual.spec.ts-snapshots/mainWindow-custodian-selected-mmi-visual-linux.png",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/e2e/synchronous-injection/index.html",
+            "authors": [
+                "Dan J Miller"
+            ]
+        },
+        {
+            "file": "test/e2e/synchronous-injection/synchronous-injection.spec.js",
+            "authors": [
+                "Dan J Miller"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/metrics/app-installed.spec.js",
+            "authors": [
+                "chloeYue"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/ppom-blockaid-setApprovalForAll-farming.spec.js",
+            "authors": [
+                "Sylva Elendu",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/copyable/copyable.stories.js",
+            "authors": [
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/copyable/copyable.test.js",
+            "authors": [
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/show-more/index.js",
+            "authors": [
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/show-more/index.scss",
+            "authors": [
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/show-more/show-more.js",
+            "authors": [
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/snap-home-page/snap-home-renderer.js",
+            "authors": [
+                "Frederik Bolding"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/snap-home-page/useSnapHome.js",
+            "authors": [
+                "Frederik Bolding"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/snap-link-warning/index.js",
+            "authors": [
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/snap-link-warning/snap-link-warning.js",
+            "authors": [
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/snap-update-alert/index.js",
+            "authors": [
+                "David Drazic"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/snap-update-alert/snap-update-alert.js",
+            "authors": [
+                "David Drazic"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/snap-update-alert/snap-update-alert.stories.js",
+            "authors": [
+                "David Drazic"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-button/index.ts",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-button/select-button.scss",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-button/select-button.tsx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-button/select-button.types.ts",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-option/index.ts",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-option/select-option.scss",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-option/select-option.tsx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-option/select-option.types.ts",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-wrapper/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-wrapper/__snapshots__/select-wrapper.test.tsx.snap",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-wrapper/index.ts",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-wrapper/select-wrapper.context.ts",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-wrapper/select-wrapper.scss",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-wrapper/select-wrapper.stories.tsx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-wrapper/select-wrapper.test.tsx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-wrapper/select-wrapper.tsx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/select-wrapper/select-wrapper.types.ts",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/address-list-item/address-list-item.stories.tsx",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/address-list-item/address-list-item.test.tsx",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/address-list-item/address-list-item.tsx",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/address-list-item/index.scss",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/address-list-item/index.ts",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/hooks/snaps/useIsOverflowing.js",
+            "authors": [
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/hooks/useIsOriginalNativeTokenSymbol.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/hooks/useIsOriginalNativeTokenSymbol.test.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/hooks/useIsOriginalTokenSymbol.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/hooks/useIsOriginalTokenSymbol.test.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/pages/keyring-snaps/snap-card/snap-card.stories.tsx",
+            "authors": [
+                "Kate Johnson"
+            ]
+        },
+        {
+            "file": "ui/pages/snaps/snap-view/snap-home.js",
+            "authors": [
+                "Frederik Bolding"
+            ]
+        },
+        {
+            "file": "ui/pages/snaps/snap-view/snap-settings.js",
+            "authors": [
+                "Frederik Bolding",
+                "Guillaume Roux",
+                "David Drazic"
+            ]
+        }
+    ],
+    "deleted": [
+        {
+            "file": ".yarn/patches/@metamask-snaps-controllers-npm-3.3.0-3ef659301e.patch",
+            "authors": [
+                "Dan J Miller"
+            ]
+        },
+        {
+            "file": ".yarn/patches/@metamask-snaps-rpc-methods-npm-3.3.0-51796eb3cb.patch",
+            "authors": [
+                "Dan J Miller"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/EtherscanRemoteTransactionSource.test.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/EtherscanRemoteTransactionSource.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/IncomingTransactionHelper.test.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/IncomingTransactionHelper.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/README.md",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/etherscan.test.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/etherscan.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/index.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/index.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/lib/tx-state-history-helpers.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/lib/tx-state-history-helpers.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/lib/util.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/lib/util.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/pending-tx-tracker.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/pending-tx-tracker.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/tx-gas-utils.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/tx-gas-utils.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/tx-state-manager.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/tx-state-manager.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/transactions/types.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        }
+    ],
+    "modified": [
+        {
+            "file": ".circleci/config.yml",
+            "authors": [
+                "Ramon AC",
+                "legobeat"
+            ]
+        },
+        {
+            "file": ".eslintrc.js",
+            "authors": [
+                "David Walsh",
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": ".gitignore",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": ".prettierignore",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": ".storybook/test-data.js",
+            "authors": [
+                "jiexi",
+                "David Drazic"
+            ]
+        },
+        {
+            "file": "CHANGELOG.md",
+            "authors": [
+                "Dan J Miller",
+                "chloeYue"
+            ]
+        },
+        {
+            "file": "README.md",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "app/_locales/am/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/ar/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/bg/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/bn/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/ca/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/da/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/de/messages.json",
+            "authors": [
+                "Victor Thomas",
+                "Pedro Figueiredo",
+                "Daniel",
+                "Monte Lai",
+                "David Drazic",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/el/messages.json",
+            "authors": [
+                "Victor Thomas",
+                "Pedro Figueiredo",
+                "Daniel",
+                "Monte Lai",
+                "David Drazic",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/en/messages.json",
+            "authors": [
+                "David Walsh",
+                "Victor Thomas",
+                "António Regadas",
+                "Frederik Bolding",
+                "Pedro Figueiredo",
+                "Daniel",
+                "Guillaume Roux",
+                "Monte Lai",
+                "David Drazic",
+                "Gustavo Antunes",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/es/messages.json",
+            "authors": [
+                "Victor Thomas",
+                "Pedro Figueiredo",
+                "Daniel",
+                "Monte Lai",
+                "David Drazic",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/es_419/messages.json",
+            "authors": [
+                "Monte Lai",
+                "Hassan Malik",
+                "Pedro Figueiredo"
+            ]
+        },
+        {
+            "file": "app/_locales/et/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/fa/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/fi/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/fil/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/fr/messages.json",
+            "authors": [
+                "Victor Thomas",
+                "Pedro Figueiredo",
+                "Daniel",
+                "Monte Lai",
+                "David Drazic",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/he/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/hi/messages.json",
+            "authors": [
+                "Victor Thomas",
+                "Pedro Figueiredo",
+                "Daniel",
+                "Monte Lai",
+                "David Drazic",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/hr/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/hu/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/id/messages.json",
+            "authors": [
+                "Victor Thomas",
+                "Pedro Figueiredo",
+                "Daniel",
+                "Monte Lai",
+                "David Drazic",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/it/messages.json",
+            "authors": [
+                "Victor Thomas",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/ja/messages.json",
+            "authors": [
+                "Victor Thomas",
+                "Pedro Figueiredo",
+                "Daniel",
+                "Monte Lai",
+                "David Drazic",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/kn/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/ko/messages.json",
+            "authors": [
+                "Victor Thomas",
+                "Pedro Figueiredo",
+                "Daniel",
+                "Monte Lai",
+                "David Drazic",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/lt/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/lv/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/ms/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/no/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/ph/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/pl/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/pt/messages.json",
+            "authors": [
+                "Victor Thomas",
+                "Pedro Figueiredo",
+                "Daniel",
+                "Monte Lai",
+                "David Drazic",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/pt_BR/messages.json",
+            "authors": [
+                "Monte Lai",
+                "Hassan Malik",
+                "Pedro Figueiredo"
+            ]
+        },
+        {
+            "file": "app/_locales/ro/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/ru/messages.json",
+            "authors": [
+                "Victor Thomas",
+                "Pedro Figueiredo",
+                "Daniel",
+                "Monte Lai",
+                "David Drazic",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/sk/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/sl/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/sr/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/sv/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/sw/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/tl/messages.json",
+            "authors": [
+                "Victor Thomas",
+                "Pedro Figueiredo",
+                "Daniel",
+                "Monte Lai",
+                "David Drazic",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/tr/messages.json",
+            "authors": [
+                "Victor Thomas",
+                "Pedro Figueiredo",
+                "Daniel",
+                "Monte Lai",
+                "David Drazic",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/uk/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/vi/messages.json",
+            "authors": [
+                "Victor Thomas",
+                "Pedro Figueiredo",
+                "Daniel",
+                "Monte Lai",
+                "David Drazic",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/zh_CN/messages.json",
+            "authors": [
+                "Victor Thomas",
+                "Pedro Figueiredo",
+                "Daniel",
+                "Monte Lai",
+                "David Drazic",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/_locales/zh_TW/messages.json",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "app/scripts/background.js",
+            "authors": [
+                "jiexi",
+                "Matthew Walsh",
+                "chloeYue"
+            ]
+        },
+        {
+            "file": "app/scripts/contentscript.js",
+            "authors": [
+                "Dan J Miller"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/metametrics.js",
+            "authors": [
+                "António Regadas"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/mmi-controller.js",
+            "authors": [
+                "Vinicius Stevam"
+            ]
+        },
+        {
+            "file": "app/scripts/controllers/mmi-controller.test.js",
+            "authors": [
+                "Matthew Walsh",
+                "Vinicius Stevam"
+            ]
+        },
+        {
+            "file": "app/scripts/lib/SnapsNameProvider.ts",
+            "authors": [
+                "Frederik Bolding"
+            ]
+        },
+        {
+            "file": "app/scripts/lib/createRPCMethodTrackingMiddleware.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/lib/getObjStructure.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "app/scripts/lib/hardware-keyring-builder-factory.ts",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "app/scripts/lib/middleware/pending.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/lib/setupSentry.js",
+            "authors": [
+                "jiexi",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/lib/transaction/metrics.test.ts",
+            "authors": [
+                "Olusegun Akintayo",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/lib/transaction/metrics.ts",
+            "authors": [
+                "Olusegun Akintayo",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/lib/transaction/mmi-hooks.test.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/lib/transaction/mmi-hooks.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/lib/util.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/lib/util.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/metamask-controller.actions.test.js",
+            "authors": [
+                "Howard Braham"
+            ]
+        },
+        {
+            "file": "app/scripts/metamask-controller.js",
+            "authors": [
+                "António Regadas",
+                "salimtb",
+                "Vinicius Stevam",
+                "Dan J Miller",
+                "Matthew Walsh",
+                "Guillaume Roux",
+                "Shane",
+                "Alex Donesky",
+                "David Drazic",
+                "Michele Esposito",
+                "jiexi",
+                "Maarten Zuidhoorn",
+                "Danica Shen"
+            ]
+        },
+        {
+            "file": "app/scripts/metamask-controller.test.js",
+            "authors": [
+                "salimtb",
+                "Matthew Walsh",
+                "Howard Braham"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/015.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/016.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/017.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/018.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/019.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/022.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/022.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/023.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/023.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/024.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/024.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/025.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/025.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/027.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/027.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/029.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/029.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/053.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/053.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/059.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/059.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/064.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/064.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/066.test.js",
+            "authors": [
+                "Monte Lai"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/fail-tx.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/migrations/index.js",
+            "authors": [
+                "Monte Lai",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "app/scripts/platforms/extension.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "builds.yml",
+            "authors": [
+                "Maarten Zuidhoorn",
+                "Frederik Bolding"
+            ]
+        },
+        {
+            "file": "development/build/scripts.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "development/lib/retry.js",
+            "authors": [
+                "Howard Braham"
+            ]
+        },
+        {
+            "file": "development/verify-locale-strings.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "lavamoat/browserify/beta/policy.json",
+            "authors": [
+                "Mark Stacey",
+                "Frederik Bolding",
+                "Matthew Walsh",
+                "Shane",
+                "Michele Esposito",
+                "jiexi",
+                "legobeat"
+            ]
+        },
+        {
+            "file": "lavamoat/browserify/desktop/policy.json",
+            "authors": [
+                "Mark Stacey",
+                "Frederik Bolding",
+                "Matthew Walsh",
+                "Shane",
+                "Michele Esposito",
+                "jiexi",
+                "legobeat"
+            ]
+        },
+        {
+            "file": "lavamoat/browserify/flask/policy.json",
+            "authors": [
+                "Mark Stacey",
+                "Frederik Bolding",
+                "Matthew Walsh",
+                "Shane",
+                "Michele Esposito",
+                "jiexi",
+                "legobeat"
+            ]
+        },
+        {
+            "file": "lavamoat/browserify/main/policy.json",
+            "authors": [
+                "Mark Stacey",
+                "Frederik Bolding",
+                "Matthew Walsh",
+                "Shane",
+                "Michele Esposito",
+                "jiexi",
+                "legobeat"
+            ]
+        },
+        {
+            "file": "lavamoat/browserify/mmi/policy.json",
+            "authors": [
+                "Mark Stacey",
+                "Frederik Bolding",
+                "Matthew Walsh",
+                "Shane",
+                "Michele Esposito",
+                "jiexi",
+                "legobeat"
+            ]
+        },
+        {
+            "file": "lavamoat/browserify/policy-override.json",
+            "authors": [
+                "Mark Stacey"
+            ]
+        },
+        {
+            "file": "package.json",
+            "authors": [
+                "Frederik Bolding",
+                "Danica Shen",
+                "Dan J Miller",
+                "Matthew Walsh",
+                "Shane",
+                "legobeat",
+                "Ramon AC",
+                "jiexi",
+                "Howard Braham",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "privacy-snapshot.json",
+            "authors": [
+                "Maarten Zuidhoorn"
+            ]
+        },
+        {
+            "file": "shared/constants/app.ts",
+            "authors": [
+                "Frederik Bolding"
+            ]
+        },
+        {
+            "file": "shared/constants/hardware-wallets.ts",
+            "authors": [
+                "Monte Lai"
+            ]
+        },
+        {
+            "file": "shared/constants/network.ts",
+            "authors": [
+                "Nidhi Kumari"
+            ]
+        },
+        {
+            "file": "shared/constants/permissions.test.js",
+            "authors": [
+                "Frederik Bolding"
+            ]
+        },
+        {
+            "file": "shared/constants/snaps/permissions.ts",
+            "authors": [
+                "Frederik Bolding",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "shared/constants/transaction.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "shared/lib/transaction-controller-utils.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "shared/lib/transactions-controller-utils.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "shared/modules/transaction.utils.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "shared/modules/transaction.utils.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "shared/modules/updateTxData.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "shared/modules/updateTxData.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "shared/notifications/index.js",
+            "authors": [
+                "Monte Lai"
+            ]
+        },
+        {
+            "file": "stylelint.config.js",
+            "authors": [
+                "Ramon AC"
+            ]
+        },
+        {
+            "file": "test/data/mock-send-state.json",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "test/data/mock-state.json",
+            "authors": [
+                "jiexi",
+                "David Drazic"
+            ]
+        },
+        {
+            "file": "test/e2e/accounts/common.ts",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/accounts/create-snap-account.spec.ts",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/benchmark.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/fixture-builder.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "test/e2e/flask/petnames.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/helpers.js",
+            "authors": [
+                "Howard Braham",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/json-rpc/eth_accounts.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/json-rpc/eth_call.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/json-rpc/eth_chainId.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/json-rpc/eth_estimateGas.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/json-rpc/eth_gasPrice.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/json-rpc/eth_newBlockFilter.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/json-rpc/eth_sendTransaction.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/json-rpc/switchEthereumChain.spec.js",
+            "authors": [
+                "Matthew Walsh",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/metamask-ui.spec.js",
+            "authors": [
+                "Howard Braham"
+            ]
+        },
+        {
+            "file": "test/e2e/provider/eip-6963.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/run-all.js",
+            "authors": [
+                "Frederik Bolding",
+                "Bowen Sanders"
+            ]
+        },
+        {
+            "file": "test/e2e/run-e2e-test.js",
+            "authors": [
+                "Howard Braham"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/enums.js",
+            "authors": [
+                "Frederik Bolding",
+                "Bowen Sanders"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-bip-32.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-bip-44.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-cronjob.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-dialog.spec.js",
+            "authors": [
+                "Bowen Sanders",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-ethprovider.spec.js",
+            "authors": [
+                "Bowen Sanders",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-get-file.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-get-locale.spec.js",
+            "authors": [
+                "Bowen Sanders",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-getentropy.spec.js",
+            "authors": [
+                "Bowen Sanders",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-installed.spec.js",
+            "authors": [
+                "Bowen Sanders",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-lifecycle.spec.js",
+            "authors": [
+                "Bowen Sanders",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-management.spec.js",
+            "authors": [
+                "Bowen Sanders",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-managestate.spec.js",
+            "authors": [
+                "Bowen Sanders",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-networkaccess.spec.js",
+            "authors": [
+                "Bowen Sanders",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-notification.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-revoke-perm.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-rpc.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-txinsights.spec.js",
+            "authors": [
+                "Bowen Sanders",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-update.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/snaps/test-snap-wasm.spec.js",
+            "authors": [
+                "Bowen Sanders",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/4byte-directory.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/account-details.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/account-token-list.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/add-account.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/add-custom-network.spec.js",
+            "authors": [
+                "Victor Thomas",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/add-hide-token.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/add-multiple-tokens.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/address-book.spec.js",
+            "authors": [
+                "David Walsh",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/advanced-settings.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/auto-lock.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/backup-restore.spec.js",
+            "authors": [
+                "Gustavo Antunes",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/block-explorer.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/chain-interactions.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/clear-activity.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/contract-interactions.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/custom-rpc-history.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/custom-token-add-approve.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/dapp-interactions.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/dapp-tx-edit.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/edit-gas-fee.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/encrypt-decrypt.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/ens.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/errors.spec.js",
+            "authors": [
+                "jiexi",
+                "Pedro Figueiredo"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/eth-sign.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/eth-subscribe.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/failing-contract.spec.js",
+            "authors": [
+                "Matthew Walsh",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/gas-estimates.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/import-flow.spec.js",
+            "authors": [
+                "Matthew Walsh",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/import-tokens.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/incremental-security.spec.js",
+            "authors": [
+                "Gustavo Antunes"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/ipfs-ens-resolution.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/ipfs-toggle.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/localization.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/lock-account.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/metamask-responsive-ui.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/metrics/permissions-approved.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/metrics/signature-approved.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/metrics/swaps.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/metrics/transaction-finalized.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/metrics/unlock-wallet.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/multiple-transactions.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/navigate-transactions.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/network-error.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/nft/auto-detect-nft.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/nft/erc1155-interaction.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/nft/erc721-interaction.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/nft/import-erc1155.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/nft/import-nft.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/nft/remove-erc1155.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/nft/remove-nft.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/nft/send-nft.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/nft/view-erc1155-details.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/nft/view-nft-details.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/permissions.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/personal-sign.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/phishing-controller/phishing-detection.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/portfolio-site.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/ppom-blockaid-alert-erc20-approval.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/ppom-blockaid-alert-erc20-transfer.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/ppom-blockaid-alert-trade-order-farming.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/ppom-blockaid-alert.spec.js",
+            "authors": [
+                "Matthew Walsh",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/ppom-toggle-settings.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/provider-api.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/security-provider.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/send-edit.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/send-eth.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/send-hex-address.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/send-to-contract.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/settings-general.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/settings-search.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/signature-request.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/signin-with-ethereum.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/simple-send.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/state-logs.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/state-snapshots/errors-after-init-opt-in-background-state.json",
+            "authors": [
+                "jiexi",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/state-snapshots/errors-after-init-opt-in-ui-state.json",
+            "authors": [
+                "jiexi",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/state-snapshots/errors-before-init-opt-in-background-state.json",
+            "authors": [
+                "jiexi",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/state-snapshots/errors-before-init-opt-in-ui-state.json",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/stuck-approved-transaction.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/swaps/shared.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/swaps/swap-eth.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/swaps/swaps-notifications.spec.js",
+            "authors": [
+                "Owen Craston",
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/switch-custom-network.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/terms-of-use.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/tests/token-details.spec.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/user-actions-benchmark.js",
+            "authors": [
+                "Michele Esposito"
+            ]
+        },
+        {
+            "file": "test/e2e/webdriver/driver.js",
+            "authors": [
+                "Howard Braham"
+            ]
+        },
+        {
+            "file": "test/env.js",
+            "authors": [
+                "Maarten Zuidhoorn"
+            ]
+        },
+        {
+            "file": "test/jest/mock-store.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "test/lib/createTxMeta.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "test/mocks/json-rpc-result.ts",
+            "authors": [
+                "Sylva Elendu"
+            ]
+        },
+        {
+            "file": "test/scenarios/15. swap/smart swap.csv",
+            "authors": [
+                "chloeYue"
+            ]
+        },
+        {
+            "file": "test/scenarios/15. swap/swap eth.csv",
+            "authors": [
+                "chloeYue"
+            ]
+        },
+        {
+            "file": "test/scenarios/4. tokens/autodetect NFTs.csv",
+            "authors": [
+                "Pedro Figueiredo"
+            ]
+        },
+        {
+            "file": "test/stub/tx-meta-stub.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/app-components.scss",
+            "authors": [
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/components/app/asset-list/asset-list.buy-receive.test.js",
+            "authors": [
+                "salimtb",
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/app/asset-list/asset-list.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/components/app/asset-list/asset-list.test.js",
+            "authors": [
+                "salimtb",
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/app/confirm-gas-display/confirm-gas-display.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/confirm-page-container/confirm-detail-row/confirm-detail-row.component.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/app/confirm-page-container/confirm-page-container-container.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/confirm-page-container/confirm-page-container-content/confirm-page-container-content.component.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/confirm-page-container/confirm-page-container-content/confirm-page-container-summary/confirm-page-container-summary.component.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/confirm-page-container/confirm-page-container.component.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/confirm-title/confirm-title.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/confirm-title/confirm-title.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/confirm/shared/info/row/row.tsx",
+            "authors": [
+                "Erik Nilsson",
+                "Frederik Bolding"
+            ]
+        },
+        {
+            "file": "ui/components/app/contact-list/recipient-group/recipient-group.component.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/currency-input/currency-input.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/components/app/currency-input/currency-input.test.js",
+            "authors": [
+                "salimtb",
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/app/edit-gas-fee-button/edit-gas-fee-button.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/edit-gas-fee-popover/edit-gas-fee-popover.test.js",
+            "authors": [
+                "jiexi",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/edit-gas-fee-popover/edit-gas-item/edit-gas-item.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/app/ledger-instruction-field/ledger-instruction-field.js",
+            "authors": [
+                "Monte Lai"
+            ]
+        },
+        {
+            "file": "ui/components/app/metamask-template-renderer/safe-component-list.js",
+            "authors": [
+                "Frederik Bolding"
+            ]
+        },
+        {
+            "file": "ui/components/app/modals/cancel-transaction/cancel-transaction-gas-fee/cancel-transaction-gas-fee.component.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/app/nft-details/__snapshots__/nft-details.test.js.snap",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/nft-details/nft-details.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/nfts-detection-notice-import-nfts/nfts-detection-notice-import-nfts.js",
+            "authors": [
+                "Pedro Figueiredo"
+            ]
+        },
+        {
+            "file": "ui/components/app/signature-request/signature-request.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/copyable/copyable.js",
+            "authors": [
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/copyable/index.scss",
+            "authors": [
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/snap-list-item/snap-list-item.js",
+            "authors": [
+                "David Drazic"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/snap-ui-markdown/index.scss",
+            "authors": [
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/snap-ui-markdown/snap-ui-markdown.js",
+            "authors": [
+                "Frederik Bolding",
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/snap-ui-renderer/snap-ui-renderer.js",
+            "authors": [
+                "Frederik Bolding",
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/snap-ui-renderer/snap-ui-renderer.stories.js",
+            "authors": [
+                "Frederik Bolding"
+            ]
+        },
+        {
+            "file": "ui/components/app/snaps/snap-ui-renderer/snap-ui-renderer.test.js",
+            "authors": [
+                "Frederik Bolding"
+            ]
+        },
+        {
+            "file": "ui/components/app/token-cell/token-cell.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/components/app/token-cell/token-cell.stories.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/components/app/token-cell/token-cell.test.js",
+            "authors": [
+                "salimtb",
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/app/transaction-activity-log/transaction-activity-log.container.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/app/transaction-activity-log/transaction-activity-log.util.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/transaction-activity-log/transaction-activity-log.util.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/transaction-alerts/transaction-alerts.js",
+            "authors": [
+                "Olusegun Akintayo",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/transaction-breakdown/transaction-breakdown.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/app/transaction-detail/transaction-detail.component.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/transaction-icon/transaction-icon.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/transaction-list-item-details/transaction-list-item-details.component.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/transaction-list-item-details/transaction-list-item-details.component.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/transaction-list-item/transaction-list-item.component.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/transaction-list-item/transaction-list-item.component.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/transaction-list-item/transaction-list-item.stories.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/transaction-list/transaction-list.component.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/transaction-status-label/transaction-status-label.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/app/user-preferenced-currency-display/user-preferenced-currency-display.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/app/user-preferenced-currency-input/user-preferenced-currency-input.test.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/components/app/user-preferenced-token-input/user-preferenced-token-input.component.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/components/app/wallet-overview/eth-overview.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/components/app/wallet-overview/eth-overview.test.js",
+            "authors": [
+                "salimtb",
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/app/wallet-overview/token-overview.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/components/app/wallet-overview/token-overview.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/app/whats-new-popup/whats-new-popup.js",
+            "authors": [
+                "Monte Lai"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/README.md",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/avatar-account/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/avatar-base/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/avatar-base/avatar-base.types.ts",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/avatar-favicon/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/avatar-icon/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/avatar-network/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/avatar-token/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/badge-wrapper/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/banner-alert/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/banner-base/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/banner-tip/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/box/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/button-base/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/button-icon/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/button-link/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/button-primary/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/button-secondary/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/button/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/checkbox/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/component-library-components.scss",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/form-text-field/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/form-text-field/form-text-field.js",
+            "authors": [
+                "Victor Thomas"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/header-base/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/help-text/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/icon/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/index.js",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/input/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/label/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/modal-content/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/modal-focus/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/modal-header/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/modal-overlay/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/modal/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/picker-network/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/popover-header/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/popover/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/tag-url/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/tag/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/text-field-search/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/text-field/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/component-library/text/README.mdx",
+            "authors": [
+                "Garrett Bear"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/account-details/account-details-display.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/account-details/account-details-key.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/account-list-item-menu/account-list-item-menu.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/account-list-item/account-list-item.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/account-list-item/account-list-item.test.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/account-list-menu/account-list-menu.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/account-list-menu/account-list-menu.test.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/account-picker/account-picker.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/activity-list-item/activity-list-item.test.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/address-copy-button/address-copy-button.js",
+            "authors": [
+                "David Walsh",
+                "António Regadas"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/address-copy-button/address-copy-button.test.js",
+            "authors": [
+                "António Regadas"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/address-copy-button/index.scss",
+            "authors": [
+                "António Regadas"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/app-header/app-header.js",
+            "authors": [
+                "David Walsh",
+                "António Regadas"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/app-header/index.scss",
+            "authors": [
+                "António Regadas"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/asset-list-conversion-button/asset-list-conversion-button.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/asset-picker-amount/asset-picker-amount.stories.tsx",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/asset-picker-amount/asset-picker-amount.tsx",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/balance-overview/balance-overview.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/connected-site-menu/connected-site-menu.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/create-account/create-account.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/detected-token-banner/detected-token-banner.test.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/global-menu/global-menu.js",
+            "authors": [
+                "David Walsh",
+                "David Drazic"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/global-menu/global-menu.test.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/import-account/bottom-buttons.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/import-account/import-account.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/import-account/json.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/import-tokens-modal/import-tokens-modal.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/import-tokens-modal/import-tokens-modal.test.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/index.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/menu-items/account-details-menu-item.test.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/menu-items/view-explorer-menu-item.test.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/multichain-components.scss",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/network-list-item/network-list-item.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/network-list-menu/network-list-menu.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/network-list-menu/network-list-menu.stories.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/pages/all-connections/all-connections.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/pages/send/__snapshots__/send.test.js.snap",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/pages/send/components/address-book.tsx",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/pages/send/components/recipient.tsx",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/pages/send/components/your-accounts.tsx",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/pages/send/index.scss",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/pages/send/send.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/product-tour-popover/product-tour-popover.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/select-action-modal/select-action-modal.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/token-list-item/token-list-item.js",
+            "authors": [
+                "David Walsh",
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/token-list-item/token-list-item.stories.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/components/multichain/token-list-item/token-list-item.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/ui/definition-list/definition-list.js",
+            "authors": [
+                "Victor Thomas"
+            ]
+        },
+        {
+            "file": "ui/components/ui/form-field/form-field.js",
+            "authors": [
+                "Victor Thomas"
+            ]
+        },
+        {
+            "file": "ui/components/ui/menu/menu-item.js",
+            "authors": [
+                "David Drazic"
+            ]
+        },
+        {
+            "file": "ui/components/ui/metafox-logo/__snapshots__/metafox-logo.component.test.js.snap",
+            "authors": [
+                "António Regadas"
+            ]
+        },
+        {
+            "file": "ui/components/ui/metafox-logo/metafox-logo.component.js",
+            "authors": [
+                "António Regadas"
+            ]
+        },
+        {
+            "file": "ui/components/ui/new-network-info/new-network-info.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/ui/tabs/tab/tab.component.js",
+            "authors": [
+                "David Walsh"
+            ]
+        },
+        {
+            "file": "ui/components/ui/toggle-button/toggle-button.component.js",
+            "authors": [
+                "Howard Braham"
+            ]
+        },
+        {
+            "file": "ui/components/ui/token-input/token-input.component.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/components/ui/truncated-definition-list/truncated-definition-list.js",
+            "authors": [
+                "Victor Thomas"
+            ]
+        },
+        {
+            "file": "ui/ducks/confirm-transaction/confirm-transaction.duck.test.js",
+            "authors": [
+                "jiexi",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/ducks/domains.js",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "ui/ducks/metamask/metamask.js",
+            "authors": [
+                "jiexi",
+                "Monte Lai"
+            ]
+        },
+        {
+            "file": "ui/ducks/metamask/metamask.test.js",
+            "authors": [
+                "jiexi",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/ducks/send/helpers.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/ducks/send/helpers.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/ducks/send/send.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/ducks/send/send.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/ducks/swaps/swaps.js",
+            "authors": [
+                "Daniel",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/helpers/constants/routes.ts",
+            "authors": [
+                "Frederik Bolding"
+            ]
+        },
+        {
+            "file": "ui/helpers/constants/settings.js",
+            "authors": [
+                "Pedro Figueiredo"
+            ]
+        },
+        {
+            "file": "ui/helpers/constants/transactions.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/helpers/utils/confirm-tx.util.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/helpers/utils/permission.js",
+            "authors": [
+                "Frederik Bolding",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "ui/helpers/utils/settings-search.test.js",
+            "authors": [
+                "Pedro Figueiredo"
+            ]
+        },
+        {
+            "file": "ui/helpers/utils/transactions.util.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/helpers/utils/transactions.util.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/helpers/utils/util.js",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "ui/hooks/gasFeeInput/useGasFeeErrors.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/hooks/gasFeeInput/useGasFeeErrors.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/hooks/gasFeeInput/useGasFeeInputs.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/hooks/useAccountTotalFiatBalance.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/hooks/useSwappedTokenValue.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/hooks/useTokenData.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/hooks/useTransactionDisplayData.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/hooks/useTransactionDisplayData.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/hooks/useTransactionFunctionType.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/hooks/useTransactionFunctionType.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/hooks/useTransactionInsights.js",
+            "authors": [
+                "Frederik Bolding",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/pages/asset/asset.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/pages/confirm-approve/confirm-approve.util.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/pages/confirm-signature-request/index.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/pages/confirm-signature-request/index.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/pages/confirm-transaction-base/confirm-transaction-base.component.js",
+            "authors": [
+                "António Regadas",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/pages/confirm-transaction-base/confirm-transaction-base.container.js",
+            "authors": [
+                "jiexi",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/pages/confirm-transaction-base/confirm-transaction-base.test.js",
+            "authors": [
+                "António Regadas",
+                "jiexi",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/pages/confirm-transaction-switch/confirm-transaction-switch.component.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/pages/confirmation/confirmation.js",
+            "authors": [
+                "Victor Thomas"
+            ]
+        },
+        {
+            "file": "ui/pages/confirmation/templates/__snapshots__/add-ethereum-chain.test.js.snap",
+            "authors": [
+                "Victor Thomas"
+            ]
+        },
+        {
+            "file": "ui/pages/confirmation/templates/add-ethereum-chain.js",
+            "authors": [
+                "Victor Thomas"
+            ]
+        },
+        {
+            "file": "ui/pages/confirmation/templates/index.js",
+            "authors": [
+                "Victor Thomas"
+            ]
+        },
+        {
+            "file": "ui/pages/institutional/connect-custody/__snapshots__/account-list.test.js.snap",
+            "authors": [
+                "António Regadas"
+            ]
+        },
+        {
+            "file": "ui/pages/institutional/connect-custody/account-list.js",
+            "authors": [
+                "António Regadas"
+            ]
+        },
+        {
+            "file": "ui/pages/institutional/connect-custody/index.scss",
+            "authors": [
+                "António Regadas"
+            ]
+        },
+        {
+            "file": "ui/pages/institutional/custody/custody.js",
+            "authors": [
+                "António Regadas"
+            ]
+        },
+        {
+            "file": "ui/pages/institutional/onboarding-successful/onboarding-successful.js",
+            "authors": [
+                "António Regadas"
+            ]
+        },
+        {
+            "file": "ui/pages/keyring-snaps/new-snap-account-page/new-snap-account-page.tsx",
+            "authors": [
+                "Kate Johnson"
+            ]
+        },
+        {
+            "file": "ui/pages/keyring-snaps/snap-card/__snapshots__/snap-card.test.tsx.snap",
+            "authors": [
+                "Kate Johnson"
+            ]
+        },
+        {
+            "file": "ui/pages/keyring-snaps/snap-card/snap-card.test.tsx",
+            "authors": [
+                "Kate Johnson"
+            ]
+        },
+        {
+            "file": "ui/pages/keyring-snaps/snap-card/snap-card.tsx",
+            "authors": [
+                "Kate Johnson"
+            ]
+        },
+        {
+            "file": "ui/pages/notifications/index.scss",
+            "authors": [
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/pages/notifications/notifications.js",
+            "authors": [
+                "Guillaume Roux"
+            ]
+        },
+        {
+            "file": "ui/pages/onboarding-flow/add-network-modal/__snapshots__/add-network-modal.test.js.snap",
+            "authors": [
+                "Victor Thomas"
+            ]
+        },
+        {
+            "file": "ui/pages/onboarding-flow/create-password/create-password.js",
+            "authors": [
+                "António Regadas"
+            ]
+        },
+        {
+            "file": "ui/pages/onboarding-flow/onboarding-flow-switch/onboarding-flow-switch.js",
+            "authors": [
+                "António Regadas"
+            ]
+        },
+        {
+            "file": "ui/pages/permissions-connect/snaps/snap-update/snap-update.js",
+            "authors": [
+                "David Drazic"
+            ]
+        },
+        {
+            "file": "ui/pages/routes/routes.component.js",
+            "authors": [
+                "Owen Craston"
+            ]
+        },
+        {
+            "file": "ui/pages/routes/routes.component.test.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/pages/routes/routes.container.js",
+            "authors": [
+                "Owen Craston"
+            ]
+        },
+        {
+            "file": "ui/pages/send/send-content/add-recipient/add-recipient.component.js",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "ui/pages/send/send-content/add-recipient/add-recipient.container.js",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "ui/pages/send/send-content/add-recipient/add-recipient.container.test.js",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "ui/pages/send/send-content/add-recipient/add-recipient.stories.js",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "ui/pages/send/send-content/add-recipient/domain-input.component.js",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "ui/pages/send/send-content/add-recipient/domain-input.container.js",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "ui/pages/send/send-content/send-amount-row/send-amount-row.test.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/pages/send/send-content/send-content.component.test.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/pages/send/send.constants.js",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "ui/pages/send/send.scss",
+            "authors": [
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "ui/pages/send/send.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/pages/settings/advanced-tab/__snapshots__/advanced-tab.component.test.js.snap",
+            "authors": [
+                "Monte Lai",
+                "Gustavo Antunes"
+            ]
+        },
+        {
+            "file": "ui/pages/settings/advanced-tab/advanced-tab.component.js",
+            "authors": [
+                "Monte Lai"
+            ]
+        },
+        {
+            "file": "ui/pages/settings/advanced-tab/advanced-tab.container.js",
+            "authors": [
+                "Monte Lai"
+            ]
+        },
+        {
+            "file": "ui/pages/settings/networks-tab/networks-form/networks-form.js",
+            "authors": [
+                "Victor Thomas",
+                "Howard Braham"
+            ]
+        },
+        {
+            "file": "ui/pages/settings/networks-tab/networks-form/networks-form.test.js",
+            "authors": [
+                "Victor Thomas"
+            ]
+        },
+        {
+            "file": "ui/pages/settings/security-tab/__snapshots__/security-tab.test.js.snap",
+            "authors": [
+                "Pedro Figueiredo"
+            ]
+        },
+        {
+            "file": "ui/pages/settings/security-tab/security-tab.component.js",
+            "authors": [
+                "Pedro Figueiredo"
+            ]
+        },
+        {
+            "file": "ui/pages/settings/security-tab/security-tab.test.js",
+            "authors": [
+                "Pedro Figueiredo"
+            ]
+        },
+        {
+            "file": "ui/pages/settings/settings-tab/settings-tab.container.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/pages/settings/settings-tab/settings-tab.test.js",
+            "authors": [
+                "salimtb"
+            ]
+        },
+        {
+            "file": "ui/pages/settings/settings.container.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/pages/snaps/snap-view/index.scss",
+            "authors": [
+                "Guillaume Roux",
+                "David Drazic"
+            ]
+        },
+        {
+            "file": "ui/pages/snaps/snap-view/snap-view.js",
+            "authors": [
+                "Frederik Bolding",
+                "David Drazic"
+            ]
+        },
+        {
+            "file": "ui/pages/snaps/snaps-list/snap-list.js",
+            "authors": [
+                "David Drazic"
+            ]
+        },
+        {
+            "file": "ui/pages/swaps/index.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/pages/swaps/prepare-swap-page/smart-transactions-popover.tsx",
+            "authors": [
+                "Daniel",
+                "Owen Craston"
+            ]
+        },
+        {
+            "file": "ui/pages/swaps/prepare-swap-page/view-quote-price-difference.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/pages/swaps/slippage-buttons/slippage-buttons.js",
+            "authors": [
+                "Daniel"
+            ]
+        },
+        {
+            "file": "ui/pages/swaps/slippage-buttons/slippage-buttons.test.js",
+            "authors": [
+                "Daniel"
+            ]
+        },
+        {
+            "file": "ui/pages/swaps/swaps.util.ts",
+            "authors": [
+                "Danica Shen"
+            ]
+        },
+        {
+            "file": "ui/pages/swaps/transaction-settings/transaction-settings.js",
+            "authors": [
+                "Daniel"
+            ]
+        },
+        {
+            "file": "ui/pages/swaps/transaction-settings/transaction-settings.test.js",
+            "authors": [
+                "Daniel"
+            ]
+        },
+        {
+            "file": "ui/pages/swaps/view-quote/view-quote-price-difference.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/pages/token-allowance/token-allowance.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/pages/token-details/token-details-page.test.js",
+            "authors": [
+                "jiexi"
+            ]
+        },
+        {
+            "file": "ui/selectors/confirm-transaction.js",
+            "authors": [
+                "jiexi",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/selectors/confirm-transaction.test.js",
+            "authors": [
+                "jiexi",
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/selectors/nonce-sorted-transactions-selector.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/selectors/selectors.js",
+            "authors": [
+                "Matthew Walsh",
+                "Monte Lai",
+                "David Drazic",
+                "jiexi",
+                "Hassan Malik"
+            ]
+        },
+        {
+            "file": "ui/selectors/selectors.test.js",
+            "authors": [
+                "David Drazic"
+            ]
+        },
+        {
+            "file": "ui/selectors/transactions.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/selectors/transactions.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/store/actions.test.js",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/store/actions.ts",
+            "authors": [
+                "salimtb",
+                "Matthew Walsh",
+                "David Drazic"
+            ]
+        },
+        {
+            "file": "ui/store/institutional/institution-actions.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "ui/store/store.ts",
+            "authors": [
+                "Matthew Walsh"
+            ]
+        },
+        {
+            "file": "yarn.lock",
+            "authors": [
+                "Frederik Bolding",
+                "Danica Shen",
+                "Dan J Miller",
+                "Matthew Walsh",
+                "Shane",
+                "legobeat",
+                "Ramon AC",
+                "jiexi",
+                "Howard Braham",
+                "Michele Esposito"
+            ]
+        }
+    ],
+    "renamed": [
+        {
+            "file": "test/e2e/ganache.ts",
+            "old_path": "test/e2e/ganache.js",
+            "authors": [
+                "Howard Braham"
+            ]
+        }
+    ],
+    "copied": [
+        {
+            "file": "test/e2e/snaps/test-snap-txinsights-v2.spec.js",
+            "old_path": "test/e2e/snaps/test-snap-txinsights.spec.js",
+            "authors": [
+                "Bowen Sanders"
+            ]
+        }
+    ],
+    "type-changed": [],
+    "unmerged": [],
+    "unknown": [],
+    "broken": []
+}

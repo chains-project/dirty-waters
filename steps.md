@@ -14,8 +14,21 @@ for Metamask 11.4.1, `deps_list_gav.txt` contains 3335 dependencies. `without_np
 We get 3301 github repository by running [get_github_repo](wallets/Metamask/deps_github_output/get_github_repo.py) with [*_without_npm_nopatchdetail](wallets/Metamask/deps_list/11.4.1_extension_tree_deps_list_gav_without_npm_nopatchdetail.txt) among which 26 depencies didn't find repo and 2 are hosted on gitea. 
 We [manually insepected](wallets/Metamask/deps_github_output/manual_inspect_undefined.md) the 26 depencies, -> 7 reasons
 
+
+Who contributed to `yarn.lock` the most:
+`git log --format='%an%ae' yarn.lock | sort | uniq -c | sort -nr`
+162 Mark Stacey markjstacey@gmail.com
+112 Whymarrh Whitby whymarrh.whitby@gmail.com
+77 Erik Marks 25517051+rekmarks@users.noreply.github.com
+
+`package.json`
+309 kumavis aaron@kumavis.me
+240 Mark Stacey markjstacey@gmail.com
+197 Dan Finlay dan@danfinlay.com
+
+
 ## Track lines and authors
-run in local enviroment: [here](new_release_change.py)
+run in local enviroment: [here](trace/new_release_change.py)
 
 ## deps publish data info(old)
 [here](wallets/Metamask/deps_publish_date_old)

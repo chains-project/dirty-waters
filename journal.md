@@ -1,3 +1,10 @@
+Minutes 2024-01-22
+1. Tasks(repo & trace) [Steps](./steps.md)
+2. [project plan](https://docs.google.com/document/d/1JD9PU_ABYeOvAUiEkuC1EpAFavDfiO8KOAz56Uu9TEI/edit?usp=sharing)(Research question & Method & outcome)
+
+
+
+
 - todo
 ww45
 
@@ -13,4 +20,4 @@ ww46
 ww49
 what are the dependencies without link to a repo? why is that? what are the challenges to identify them?
 
-how to trace each new line in a Metamask release to a specific commit and a author. write a first prototype.
+-[] how to trace each new line in a Metamask release to a specific commit and a author. write a first prototype.
