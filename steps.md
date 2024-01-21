@@ -11,8 +11,8 @@ we use *_withouxt_npm_nopatchdetail.txt for future analysis
 for Metamask 11.4.1, `deps_list_gav.txt` contains 3335 dependencies. `without_npm_nopatchdetail` contains 3329 dependencies, that's because some of the patches are made for the same dependency. `deps_list_nopatchdetail` contains 2628 dependencies since some dependencies have different resolutions.
 
 ## Get repo info
-We get 3301 github repository by running [get_github_repo](wallets/Metamask/output/get_github_repo.py) with [*_without_npm_nopatchdetail](wallets/Metamask/deps_list/11.4.1_extension_tree_deps_list_gav_without_npm_nopatchdetail.txt) among which 26 depencies didn't find repo and 2 are hosted on gitea. 
-We [manually insepected](wallets/Metamask/output/manual_inspect_undefined.md) the 26 depencies, -> 7 reasons
+We get 3301 github repository by running [get_github_repo](wallets/Metamask/deps_github_output/get_github_repo.py) with [*_without_npm_nopatchdetail](wallets/Metamask/deps_list/11.4.1_extension_tree_deps_list_gav_without_npm_nopatchdetail.txt) among which 26 depencies didn't find repo and 2 are hosted on gitea. 
+We [manually insepected](wallets/Metamask/deps_github_output/manual_inspect_undefined.md) the 26 depencies, -> 7 reasons
 
 ## Track lines and authors
 run in local enviroment: [here](new_release_change.py)
@@ -91,3 +91,23 @@ total value `jq '[..|scalars] | length' filename.json`
 https://git-scm.com/docs/git-diff
 
 `git log --numstat --format=%aN`
+
+
+Yarn v2 
+
+**dep**
+
+`yarn info -R`
+
+https://yarnpkg.com/cli/info
+
+Yarn v1
+**warning & error**
+
+`yarn check > xx.txt 2>&1` 
+
+**dep**
+
+https://classic.yarnpkg.com/en/docs/cli/list
+
+`yarn list`
