@@ -23,8 +23,9 @@ run in local enviroment: [here](new_release_change.py)
 ## github repo stastics(old)
 [here](wallets/Metamask/repo_stastics_old)
 
+---
 
-Steps(Old):
+### Steps(Old):
 
 ## Deps Info
 1. get dependency tree:
@@ -81,7 +82,7 @@ Q? why unique deps' repos are different from deps' unique repo
 
 
 
-memo
+Memo
 
 total keys `jq 'keys | length' filename.json`
 
