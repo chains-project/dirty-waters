@@ -1,6 +1,20 @@
 Minutes 2024-01-22
 1. Tasks(repo & trace) [Steps](./steps.md)
+where does patches come from - exact code & authors & why
+e.g. @eslint/eslintrc@patch:@eslint/eslintrc@npm%3A2.0.2#./.yarn/patches/@eslint-eslintrc-npm-2.0.2-d308674d86.patch::version=2.0.2&hash=c0def0&locator=metamask-crx%40workspace%3A.
+
+change & author
+commit & merge
+
+is there's anything unususal things(new contributor)
+
+tool:
+question the tool to answer: In a new realease, who are the new contributor automatically
+
+ledger-live @patches
+
 2. [project plan](https://docs.google.com/document/d/1JD9PU_ABYeOvAUiEkuC1EpAFavDfiO8KOAz56Uu9TEI/edit?usp=sharing)(Research question & Method & outcome)
+3. thoughts：special packages 
 
 
 
