@@ -1,0 +1,13 @@
+.snap-ui-markdown {
+  &__text {
+    em {
+      font-style: revert;
+    }
+  }
+
+  &__link {
+    & > span:last-child {
+      margin-inline-start: 2px;
+    }
+  }
+}

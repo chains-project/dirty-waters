@@ -1,0 +1,33 @@
+.asset {
+  &__container {
+    background-color: var(--color-background-default);
+  }
+
+  &__overview {
+    box-shadow: var(--shadow-size-xs) var(--color-shadow-default);
+  }
+}
+
+.asset-navigation {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  height: 64px;
+}
+
+.asset-breadcrumb {
+  @include H6;
+
+  color: var(--color-text-default);
+  background-color: inherit;
+
+  &__asset {
+    font-weight: bold;
+  }
+}
+
+.asset-options {
+  &__button {
+    padding: 2px 0 2px 8px;
+  }
+}
