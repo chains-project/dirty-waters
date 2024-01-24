@@ -34,10 +34,10 @@ Ref:
 - https://itnext.io/patch-an-npm-dependency-with-yarn-ddde2e194576
 
 *filename example*:
-package name: @babel/runtime@patch
-for which version: @babel/runtime@npm%3A7.23.2
-patch path: #~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch
-metadata(for integrity): ::version=7.23.2&hash=7df10d 
+- package name: @babel/runtime@patch
+- for which version: @babel/runtime@npm%3A7.23.2
+- patch path: #~/.yarn/patches/@babel-runtime-npm-7.23.2-d013d6cf7e.patch
+- metadata(for integrity): ::version=7.23.2&hash=7df10d 
 
 ### Who add the patches and why?
 developers make small changes to a dependency
