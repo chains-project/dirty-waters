@@ -1,3 +1,15 @@
+Minutes 2024-01-
+1. How we process patches
+2. what/how should we match the related npm package version with github repo
+3. do we care about the packages that are deprecated/archived?
+https://github.com/trufflesuite/truffle?tab=readme-ov-file
+4. want to check: the final goal is the evaluation of ssc transparency, and the tool we want to develop is here to help
+5. do we only focus javascript wallets when evaluating
+6. how we deal with the different package manager(yarn,different version, gradle, pnpm) problem, do we need more general method
+
+-. thoughts：special packages / undetected packages / 
+
+
 Minutes 2024-01-22
 1. Tasks(repo & trace) [Steps](./steps.md)
 todo:
@@ -16,12 +28,14 @@ question the tool to answer: In a new realease, who are the new contributor auto
 The final tool needs to generate a user-friendly summary
 
 
--[] check: ledger-live @patches
+-[x] check: ledger-live @patches
+ledger-live use pnpm, use `pnpm patch` & `pnpm patch-commit`, it generated the patch file authomatically
+- https://github.com/LedgerHQ/ledger-live/tree/develop/patches
+- https://pnpm.io/cli/patch
 
 2. [project plan](https://docs.google.com/document/d/1JD9PU_ABYeOvAUiEkuC1EpAFavDfiO8KOAz56Uu9TEI/edit?usp=sharing)(Research question & Method & outcome)
 
-3. thoughts：special packages / undetected packages / do we only focus javascript wallets / archived?
-https://github.com/trufflesuite/truffle?tab=readme-ov-file
+
 
 
 
