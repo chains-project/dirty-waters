@@ -20,7 +20,8 @@ The final tool needs to generate a user-friendly summary
 
 2. [project plan](https://docs.google.com/document/d/1JD9PU_ABYeOvAUiEkuC1EpAFavDfiO8KOAz56Uu9TEI/edit?usp=sharing)(Research question & Method & outcome)
 
-3. thoughts：special packages 
+3. thoughts：special packages / undetected packages / do we only focus javascript wallets / archived?
+https://github.com/trufflesuite/truffle?tab=readme-ov-file
 
 
 

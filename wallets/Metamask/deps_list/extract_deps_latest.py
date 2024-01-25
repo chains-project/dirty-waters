@@ -5,15 +5,17 @@ file_path = sys.argv[1]
 base_name, extension = os.path.splitext(file_path)
 # file_path = '11.4.1_extension_tree.txt'
 output_file_1 = f"{base_name}_deps_list_gav{extension}"
-output_file_2 = f"{base_name}_deps_list_nopatchdetail{extension}"
-output_file_3 = f"{base_name}_deps_list_gav_without_npm_nopatchdetail{extension}"
+output_file_2 = f"{base_name}_deps_list{extension}"
+output_file_3 = f"{base_name}_deps_list_gav_without_npm{extension}"
 output_file_4 = f"{base_name}_other_lines{extension}"  
+output_file_5 = f"{base_name}_deps_list_patches{extension}"
 
 
 dependencies = []
 dependencies_without_v = []
 dependencies_gav_without_npm =[]
 other_lines = []
+dep_patches = []
 
 skip_until_pipe = False
 
@@ -41,9 +43,11 @@ with open(file_path, 'r') as file:
             dependencies.append(dep_name)
 
             if '@patch' in dep_name:
-                dep_name = dep_name.split('@patch')[0].rstrip('@') 
+                dep_patches.append(dep_name)
+                # dep_name = dep_name.split('@patch')[0].rstrip('@') 
                 
-            if '@' in dep_name:
+                
+            elif '@' in dep_name:
                 dep_name_without_v = dep_name.rsplit('@', 1)[0]
                 dep_name_gav_without_npm = dep_name.replace("@npm:", "@")
             else:
@@ -68,6 +72,7 @@ def write_to_file(filename, data):
 
 write_to_file(output_file_1, dependencies)
 write_to_file(output_file_2, dependencies_without_v)
+write_to_file(output_file_5, dep_patches)
 if sorted(set(dependencies)) != sorted(set(dependencies_gav_without_npm)):
     write_to_file(output_file_3, dependencies_gav_without_npm)
 

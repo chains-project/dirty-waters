@@ -1,14 +1,15 @@
 latest update: 01/20/2024
 
 ## Get all dependencies list
-To get all the dependencies used in [MetaMask Extension 11.4.1](https://github.com/MetaMask/metamask-extension/releases/tag/v11.4.1), firstly we use command `yarn list` to get the dependency tree and saved it to [11.4.1_extension_tree.txt](wallets/Metamask/deps_list/11.4.1_extension_tree.txt). Then [extract script](/wallets/Metamask/deps_list/extract_deps.py) is used to get the list of all dependencies:
+To get all the dependencies used in [MetaMask Extension 11.4.1](https://github.com/MetaMask/metamask-extension/releases/tag/v11.4.1), firstly we use command `yarn list` to get the dependency tree and saved it to [11.4.1_extension_tree.txt](wallets/Metamask/deps_list/11.4.1_extension_tree.txt). Then [extract script](/wallets/Metamask/deps_list/extract_deps_latest.py) is used to get the list of all dependencies:
 - *_deps_list_gav.txt contains all dependencies including patches and version
-- *_without_npm_nopatchdetail.txt contains all dependencies including version and patch's dependency but exclude patches details and 'npm' string(so the patch here doesn't have version)
-- *_deps_list_nopatchdetail.txt excude all version info
+- *_gav_without_npm.txt contains all dependencies including version but exclude all patches
+- *_deps_list.txt excude all version info(also without all patches)
+- *_deps_list_patches.txt contains all the patches
 
-we use *_withouxt_npm_nopatchdetail.txt for future analysis
+we use *_withouxt_npm.txt for future analysis
 
-for Metamask 11.4.1, `deps_list_gav.txt` contains 3335 dependencies. `without_npm_nopatchdetail` contains 3329 dependencies, that's because some of the patches are made for the same dependency. `deps_list_nopatchdetail` contains 2628 dependencies since some dependencies have different resolutions.
+for Metamask 11.4.1, `deps_list_gav.txt` contains 3335 dependencies. `without_npm` contains 3289 dependencies, that's because the 46 patches are excluded . `deps_lis` contains 2603 dependencies since some dependencies have different resolutions.`deps_list_patches` contains 46 patches.
 
 ### why we get some `@patch` in the dependencies?
 
@@ -16,11 +17,12 @@ we run `find_patch_count.sh` with  `deps_list_gav.txt` to get the [patch list](w
 we manually [insepect](wallets/Metamask/deps_list/manual_inspect_patches_11.4.1.md) the patch list by comparing them with the 44 patch files in `./yarn/patches` . 6 patch files are in `.yarn/patches` but couldn't find in dep list, which may indicates they were not used. and 8 are in dep list but couldn't be found in ./yarn/patches, all of them are optional.
 
 #### Where does the file name come from?
-run `yarn patch` and edit in a folder then run `yarn patch-commit -s`, Yarn will store a patchfile based on your changes.
-The patch file(and patch file name) will be generated automatically
-The `package.json` file will be updated automatically
+- (works for v2 and above)run `yarn patch` and edit in a folder then run `yarn patch-commit -s`, Yarn will store a patchfile based on your changes.
+- The patch file(and patch file name) will be generated automatically
+- The `package.json` file will be updated automatically
+Basically, the software use these dependencies, but the resolution is with patches.
 
-e.g. "@0xsequence/abi@^0.36.13": "patch:@0xsequence/abi@npm%3A0.36.13#./.yarn/patches/@0xsequence-abi-npm-0.36.13-79fdcc587d.patch"
+e.g. in `package.json`: "@0xsequence/abi@^0.36.13": "patch:@0xsequence/abi@npm%3A0.36.13#./.yarn/patches/@0xsequence-abi-npm-0.36.13-79fdcc587d.patch"
 
 ```
 yarn patch @0xsequence/abi@npm:0.36.13 
@@ -45,7 +47,7 @@ who: `git log --pretty=format:'%an <%ae>' -- .yarn/patches  | sort | uniq -c | s
 
 
 ## Get repo info
-We get 3301 github repository by running [get_github_repo](wallets/Metamask/deps_github_output/get_github_repo.py) with [*_without_npm_nopatchdetail](wallets/Metamask/deps_list/11.4.1_extension_tree_deps_list_gav_without_npm_nopatchdetail.txt) among which 26 depencies didn't find repo and 2 are hosted on gitea. 
+We get 3301 github repository by running [get_github_repo](wallets/Metamask/deps_github_output/get_github_repo.py) with [*_without_npm_n](wallets/Metamask/deps_list/11.4.1_extension_tree_deps_list_gav_without_npm.txt) among which 26 dependencies didn't find repo and 2 are hosted on gitea. 
 We [manually insepected](wallets/Metamask/deps_github_output/manual_inspect_undefined.md) the 26 depencies, -> 7 reasons
 
 
@@ -64,6 +66,42 @@ Who contributed to `yarn.lock` the most:
 ## Track lines and authors
 run in local enviroment: [here](trace/new_release_change.py)
 
+In ideal situation(or as best practice), the each npm version should be sync with the github repository commit(release(tag) or package)
+
+### Actual situation
+#### not sync with github repo
+##### at all
+- https://github.com/apocentre/sampling
+- https://www.npmjs.com/package/@apocentre/alias-sampling 
+
+##### some are synced, some are not
+
+- https://github.com/apollographql/subscriptions-transport-ws
+- https://www.npmjs.com/package/@httptoolkit/subscriptions-transport-ws/v/0.11.2?activeTab=versions
+- https://github.com/trufflesuite/bigint-buffer
+- https://www.npmjs.com/package/@trufflesuite/bigint-buffer?activeTab=versions
+
+#### sync with github repo somehow but
+1. Many packages developed by a same author are hosted in the same repo, the version for packages are not kept seperately but as a bundle
+    https://github.com/babel/babel/tree/main/packages
+    https://www.npmjs.com/package/@babel/core?activeTab=versions 
+
+2. the tags in repo are not up-to-date, but release info is documented in some docs
+- https://github.com/Stamp9/metamask-extension/blob/develop/yarn.lock#L10
+- https://github.com/actions/toolkit
+- https://github.com/actions/toolkit/blob/1fe633e27c4cc74616d675b71163f59f9d084381/packages/core/RELEASES.md
+- https://www.npmjs.com/package/@actions/core?activeTab=versions
+
+3. in release info, there are many packages info
+- https://github.com/ethereumjs/ethereumjs-monorepo/releases
+    - https://github.com/ethereumjs/ethereumjs-monorepo e.g. couldn't find @ethereumjs/common@3.1.1 in tags but can be found in some docs: https://github.com/ethereumjs/ethereumjs-monorepo/blob/869053512ebe0a7b30afd50c3f5c1ac2bd87ccac/packages/common/CHANGELOG.md?plain=1#L189 
+- https://github.com/floating-ui/floating-ui/releases
+
+4. Not maintained or sugeested not to use
+- https://github.com/babel/babel-plugin-proposal-private-property-in-object
+
+
+
 ## deps publish data info(old)
 [here](wallets/Metamask/deps_publish_date_old)
 
@@ -73,6 +111,21 @@ run in local enviroment: [here](trace/new_release_change.py)
 ---
 
 ### Steps(Old):
+
+## Get all dependencies list
+To get all the dependencies used in [MetaMask Extension 11.4.1](https://github.com/MetaMask/metamask-extension/releases/tag/v11.4.1), firstly we use command `yarn list` to get the dependency tree and saved it to [11.4.1_extension_tree.txt](wallets/Metamask/deps_list/11.4.1_extension_tree.txt). Then [extract script](/wallets/Metamask/deps_list/extract_deps.py) is used to get the list of all dependencies:
+- *_deps_list_gav.txt contains all dependencies including patches and version
+- *_without_npm_nopatchdetail.txt contains all dependencies including version and patch's dependency but exclude patches details and 'npm' string(so the patch here doesn't have version)
+- *_deps_list_nopatchdetail.txt excude all version info
+- *_deps_list_patches.txt contains all the patches
+
+we use *_withouxt_npm_nopatchdetail.txt for future analysis
+
+for Metamask 11.4.1, `deps_list_gav.txt` contains 3335 dependencies. `without_npm_nopatchdetail` contains 3329 dependencies, that's because some of the patches are made for the same dependency. `deps_list_nopatchdetail` contains 2628 dependencies since some dependencies have different resolutions.`deps_list_patches` contains 46 patches.
+
+## Get repo info
+We get 3301 github repository by running [get_github_repo](wallets/Metamask/deps_github_output/get_github_repo.py) with [*_without_npm_nopatchdetail](wallets/Metamask/deps_list/11.4.1_extension_tree_deps_list_gav_without_npm_nopatchdetail.txt) among which 26 dependencies didn't find repo and 2 are hosted on gitea. 
+We [manually insepected](wallets/Metamask/deps_github_output/manual_inspect_undefined.md) the 26 depencies, -> 7 reasons
 
 ## Deps Info
 1. get dependency tree:
