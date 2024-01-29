@@ -1,19 +1,42 @@
-Minutes 2024-01-
+Minutes 2024-01-29
+check if the repo of npm registry
+how many packages in ideal situation
+what situations are they in (label the libraries)
+
+- final script: detailed info & summary
+- one version & differential analysis
+
 1. How we process patches
+source code, also to know the authour 
+
+2. github repo x npm
+
+find a way to validate
+
 2. what/how should we match the related npm package version with github repo
-3. do we care about the packages that are deprecated/archived?
+
+what the rate of the ideal situation
+
+3. do we care about the packages that are deprecated/archived? 
 https://github.com/trufflesuite/truffle?tab=readme-ov-file
-4. want to check: the final goal is the evaluation of ssc transparency, and the tool we want to develop is here to help
+
+4. want to check: the final goal is the evaluation of ssc transparency, and the tool we want to develop is here to help 
+
+why it is needed/who will use it
+
 5. do we only focus javascript wallets when evaluating
+Y
+
 6. how we deal with the different package manager(yarn,different version, gradle, pnpm) problem, do we need more general method
 
 -. thoughts：special packages / undetected packages / 
 
+is there any related paper?
 
 Minutes 2024-01-22
 1. Tasks(repo & trace) [Steps](./steps.md)
 todo:
--[] where does patches come from - exact code & authors & why
+-[x] where does patches come from - exact code & authors & why
 
 e.g. @eslint/eslintrc@patch:@eslint/eslintrc@npm%3A2.0.2#./.yarn/patches/@eslint-eslintrc-npm-2.0.2-d308674d86.patch::version=2.0.2&hash=c0def0&locator=metamask-crx%40workspace%3A.
 
@@ -57,7 +80,7 @@ ww46
 -[] Check vuls of deps
 
 
-ww49
+ww49==++
 
 -[x] what are the dependencies without link to a repo? why is that? what are the challenges to identify them?
 

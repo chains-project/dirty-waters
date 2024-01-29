@@ -86,6 +86,9 @@ In ideal situation(or as best practice), the each npm version should be sync wit
     https://github.com/babel/babel/tree/main/packages
     https://www.npmjs.com/package/@babel/core?activeTab=versions 
 
+
+---
+
 2. the tags in repo are not up-to-date, but release info is documented in some docs
 - https://github.com/Stamp9/metamask-extension/blob/develop/yarn.lock#L10
 - https://github.com/actions/toolkit
