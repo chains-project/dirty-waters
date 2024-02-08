@@ -62,6 +62,20 @@ Who contributed to `yarn.lock` the most:
 240 Mark Stacey markjstacey@gmail.com
 197 Dan Finlay dan@danfinlay.com
 
+### Before we do anything about repo, we should check if the repo exsits
+2000 is validated, 
+
+## How do we know if the registry repo is the true repo?
+if the first version is validated? -> no
+if github have the registry info?
+
+besides, doesn't mean the source code is the same as packages in npm
+
+1. github that doesn't exsit anymore
+
+
+discrepancy
+if the github didn't updated but npm is updating
 
 ## Track lines and authors
 run in local enviroment: [here](trace/new_release_change.py)
@@ -80,6 +94,8 @@ In ideal situation(or as best practice), the each npm version should be sync wit
 - https://www.npmjs.com/package/@httptoolkit/subscriptions-transport-ws/v/0.11.2?activeTab=versions
 - https://github.com/trufflesuite/bigint-buffer
 - https://www.npmjs.com/package/@trufflesuite/bigint-buffer?activeTab=versions
+
+##### the repo doesn't exist anymore
 
 #### sync with github repo somehow but
 1. Many packages developed by a same author are hosted in the same repo, the version for packages are not kept seperately but as a bundle
@@ -102,6 +118,17 @@ In ideal situation(or as best practice), the each npm version should be sync wit
 
 4. Not maintained or sugeested not to use
 - https://github.com/babel/babel-plugin-proposal-private-property-in-object
+
+
+
+## The tool
+
+| package name with resolution | package deprecated? | repo exist? | repo archived? | name match? |
+|---------------|--------------|-------------|----------------|-------------|
+| 1                            | 2                   | 3           | 4              | 5           |
+
+optimize name match /todo
+
 
 
 
@@ -214,3 +241,20 @@ Yarn v1
 https://classic.yarnpkg.com/en/docs/cli/list
 
 `yarn list`
+
+
+
+The tool structure
+1. get dep list
+2. get repo list
+3. check repo validation status
+3.1 get stastics of repo
+
+
+
+wallets
+(open sourced)
+myetherwallet JS npm
+electrum python https://github.com/spesmilo/electrum bitcoin
+bitpay JS npm https://github.com/bitpay/wallet
+Crypto.com JS yarn https://github.com/crypto-com/chain-desktop-wallet
