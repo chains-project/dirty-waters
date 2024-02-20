@@ -1,37 +1,61 @@
 latest update: 02/19/2024
 
+**Table of Contents**
+- [Steps](#steps)
+  - [Tool Logic](#tool-logic)
+  - [Download source code](#download-source-code)
+  - [Get all dependencies list](#get-all-dependencies-list)
+  - [Get repo info](#get-repo-info)
+  - [Deps Info](#deps-info)
+  - [The tool](#the-tool)
+- [memo](#memo)
+- [details](#details)
+  
+
+- To be solved
+1. Code search in fork 
+2. Time issue
+3. Make them automated
+
+
 Q:
-1. time
-2. Evaluation
+1. Does execution time matter?
+2. Evaluation what info do we want
 - owner change
 - new contributor
 - (who review&merge)
 - (CI) - how many CI skipped?
+- if the github didn't updated but npm is updating
 
-3. what info do we want: contributor? owner change?
+
+3. : contributor? owner change?
 4. (fork)
 5. how automated it should be
 
 DO they change the owner?
 mathjs-min
-
 compare repo changes
+
+Others:
+besides, doesn't mean the source code is the same as packages in npm
+discrepancy
 
 
 # Tool Logic
 Statistical analysis
 - dep_list -> repo_list -> get pkg and repo info
 Differential analysis
-- dep_list -> repo_list -> compare list an get repo update info
+- two_dep_list -> two_repo_list -> 
+  - compare commits
 
 
 
-
+# Steps
 
 ## Download source code
 `yarn install`
 
-# Get all dependencies list
+## Get all dependencies list
 To get all the dependencies used in [MetaMask Extension 11.4.1](https://github.com/MetaMask/metamask-extension/releases/tag/v11.4.1), firstly we use command `yarn list`(`yarn info --recursive`) to get the dependency tree and saved it to [11.4.1_extension_tree.txt](wallets/Metamask/deps_list/11.4.1_extension_tree.txt). Then [extract script](/wallets/Metamask/deps_list/extract_deps_latest.py) is used to get the list of all dependencies:
 - *_deps_list_gav.txt contains all dependencies including patches and version
 - *_gav_without_npm.txt contains all dependencies including version but exclude all patches
@@ -67,17 +91,13 @@ Who contributed to `yarn.lock` the most:
 
 
 
-
-
 ## How do we know if the registry repo is the true repo?
-if the first version is validated? -> no
-if github have the registry info?
+Thinking:
+-if the first version is validated? -> no
+- if github have the registry info? -> no
 
 besides, doesn't mean the source code is the same as packages in npm
-
-1. github that doesn't exsit anymore
 discrepancy
-if the github didn't updated but npm is updating
 
 ## Track lines and authors
 run in local enviroment: [here](trace/new_release_change.py)
