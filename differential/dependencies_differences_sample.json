@@ -1,0 +1,5874 @@
+{
+    "@metamask-institutional/sdk": {
+        "only_in_1": [
+            "0.1.20"
+        ],
+        "only_in_2": [
+            "0.1.23"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "0.1.20"
+        ],
+        "version2": [
+            "0.1.23"
+        ],
+        "repo": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "repo_name": "consensys-vertical-apps/metamask-institutional",
+        "repo_pure": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "chosen_v2": "0.1.23",
+        "chosen_v1": "0.1.20"
+    },
+    "@ethersproject/wallet": {
+        "version1": [
+            "5.7.0"
+        ],
+        "version2": null,
+        "repo": "github.com/ethers-io/ethers.js.git",
+        "repo_name": "ethers-io/ethers.js",
+        "repo_pure": "github.com/ethers-io/ethers.js.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "no-case": {
+        "only_in_1": [
+            "2.3.2"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "3.0.4"
+        ],
+        "version1": [
+            "2.3.2",
+            "3.0.4"
+        ],
+        "version2": [
+            "3.0.4"
+        ],
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "2.3.2"
+    },
+    "ua-parser-js": {
+        "version1": null,
+        "version2": [
+            "1.0.37"
+        ],
+        "repo": "github.com/faisalman/ua-parser-js.git",
+        "repo_name": "faisalman/ua-parser-js",
+        "repo_pure": "github.com/faisalman/ua-parser-js.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask-institutional/transaction-update": {
+        "only_in_1": [
+            "0.1.30"
+        ],
+        "only_in_2": [
+            "0.1.33"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "0.1.30"
+        ],
+        "version2": [
+            "0.1.33"
+        ],
+        "repo": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "repo_name": "consensys-vertical-apps/metamask-institutional",
+        "repo_pure": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "chosen_v2": "0.1.33",
+        "chosen_v1": "0.1.30"
+    },
+    "is-weakset": {
+        "version1": null,
+        "version2": [
+            "2.0.2"
+        ],
+        "repo": "github.com/inspect-js/is-weakset.git",
+        "repo_name": "inspect-js/is-weakset",
+        "repo_pure": "github.com/inspect-js/is-weakset.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "growl": {
+        "version1": [
+            "1.10.5"
+        ],
+        "version2": null,
+        "repo": "github.com/tj/node-growl.git",
+        "repo_name": "tj/node-growl",
+        "repo_pure": "github.com/tj/node-growl.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@trezor/connect-common": {
+        "only_in_1": [
+            "0.0.12"
+        ],
+        "only_in_2": [
+            "0.0.16"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "0.0.12"
+        ],
+        "version2": [
+            "0.0.16"
+        ],
+        "repo": "github.com/trezor/trezor-suite.git",
+        "repo_name": "trezor/trezor-suite",
+        "repo_pure": "github.com/trezor/trezor-suite.git",
+        "chosen_v2": "0.0.16",
+        "chosen_v1": "0.0.12"
+    },
+    "@trezor/utils": {
+        "only_in_1": [
+            "9.0.6"
+        ],
+        "only_in_2": [
+            "9.0.8",
+            "9.0.9"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "9.0.6"
+        ],
+        "version2": [
+            "9.0.8",
+            "9.0.9"
+        ],
+        "repo": "github.com/trezor/trezor-suite.git",
+        "repo_name": "trezor/trezor-suite",
+        "repo_pure": "github.com/trezor/trezor-suite.git",
+        "chosen_v2": "9.0.9",
+        "chosen_v1": "9.0.6"
+    },
+    "crypt": {
+        "version1": null,
+        "version2": [
+            "0.0.2"
+        ],
+        "repo": "github.com/pvorb/node-crypt.git",
+        "repo_name": "pvorb/node-crypt",
+        "repo_pure": "github.com/pvorb/node-crypt.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "chainsaw": {
+        "version1": [
+            "0.1.0"
+        ],
+        "version2": null,
+        "repo": "github.com/substack/node-chainsaw.git",
+        "repo_name": "substack/node-chainsaw",
+        "repo_pure": "github.com/substack/node-chainsaw.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "lavamoat-browserify": {
+        "only_in_1": [
+            "15.9.1"
+        ],
+        "only_in_2": [
+            "17.0.2"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "15.9.1"
+        ],
+        "version2": [
+            "17.0.2"
+        ],
+        "repo": "github.com/LavaMoat/lavamoat.git",
+        "repo_name": "LavaMoat/lavamoat",
+        "repo_pure": "github.com/LavaMoat/lavamoat.git",
+        "chosen_v2": "17.0.2",
+        "chosen_v1": "15.9.1"
+    },
+    "foreach": {
+        "version1": [
+            "2.0.5"
+        ],
+        "version2": null,
+        "repo": "github.com/manuelstofer/foreach.git",
+        "repo_name": "manuelstofer/foreach",
+        "repo_pure": "github.com/manuelstofer/foreach.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/announcement-controller": {
+        "only_in_1": [
+            "4.0.0"
+        ],
+        "only_in_2": [
+            "5.0.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "4.0.0"
+        ],
+        "version2": [
+            "5.0.1"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "5.0.1",
+        "chosen_v1": "4.0.0"
+    },
+    "fast-check": {
+        "version1": [
+            "3.1.1"
+        ],
+        "version2": null,
+        "repo": "github.com/dubzzz/fast-check.git",
+        "repo_name": "dubzzz/fast-check",
+        "repo_pure": "github.com/dubzzz/fast-check.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "ignore": {
+        "only_in_1": [
+            "5.2.0"
+        ],
+        "only_in_2": [
+            "5.3.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "5.2.0"
+        ],
+        "version2": [
+            "5.3.1"
+        ],
+        "repo": "github.com/kaelzhang/node-ignore.git",
+        "repo_name": "kaelzhang/node-ignore",
+        "repo_pure": "github.com/kaelzhang/node-ignore.git",
+        "chosen_v2": "5.3.1",
+        "chosen_v1": "5.2.0"
+    },
+    "@metamask-institutional/websocket-client": {
+        "only_in_1": [
+            "0.1.32"
+        ],
+        "only_in_2": [
+            "0.1.35"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "0.1.32"
+        ],
+        "version2": [
+            "0.1.35"
+        ],
+        "repo": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "repo_name": "consensys-vertical-apps/metamask-institutional",
+        "repo_pure": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "chosen_v2": "0.1.35",
+        "chosen_v1": "0.1.32"
+    },
+    "is-lower-case": {
+        "version1": [
+            "1.1.3"
+        ],
+        "version2": null,
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "xmlbuilder2": {
+        "version1": [
+            "3.0.2"
+        ],
+        "version2": null,
+        "repo": "github.com/oozcitak/xmlbuilder2.git",
+        "repo_name": "oozcitak/xmlbuilder2",
+        "repo_pure": "github.com/oozcitak/xmlbuilder2.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "lavamoat-viz": {
+        "only_in_1": [
+            "6.2.1"
+        ],
+        "only_in_2": [
+            "7.0.2"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "6.2.1"
+        ],
+        "version2": [
+            "7.0.2"
+        ],
+        "repo": "github.com/LavaMoat/lavamoat.git",
+        "repo_name": "LavaMoat/lavamoat",
+        "repo_pure": "github.com/LavaMoat/lavamoat.git",
+        "chosen_v2": "7.0.2",
+        "chosen_v1": "6.2.1"
+    },
+    "@ensdomains/address-encoder": {
+        "version1": [
+            "0.1.9"
+        ],
+        "version2": null,
+        "repo": "not github",
+        "repo_name": "not github",
+        "repo_pure": "not github",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@endo/env-options": {
+        "only_in_1": [],
+        "only_in_2": [
+            "1.1.0"
+        ],
+        "unchanged_in_1": [
+            "0.1.4"
+        ],
+        "version1": [
+            "0.1.4"
+        ],
+        "version2": [
+            "0.1.4",
+            "1.1.0"
+        ],
+        "repo": "github.com/endojs/endo.git",
+        "repo_name": "endojs/endo",
+        "repo_pure": "github.com/endojs/endo.git",
+        "chosen_v2": "1.1.0",
+        "chosen_v1": "0.1.4"
+    },
+    "protobufjs": {
+        "only_in_1": [
+            "6.11.4"
+        ],
+        "only_in_2": [
+            "6.11.3"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "6.11.4"
+        ],
+        "version2": [
+            "6.11.3"
+        ],
+        "repo": "github.com/protobufjs/protobuf.js.git",
+        "repo_name": "protobufjs/protobuf.js",
+        "repo_pure": "github.com/protobufjs/protobuf.js.git",
+        "chosen_v2": "6.11.3",
+        "chosen_v1": "6.11.4"
+    },
+    "@metamask/keyring-controller": {
+        "version1": [
+            "8.0.3"
+        ],
+        "version2": null,
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/smart-transactions-controller": {
+        "only_in_1": [
+            "4.0.0"
+        ],
+        "only_in_2": [
+            "6.2.2"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "4.0.0"
+        ],
+        "version2": [
+            "6.2.2"
+        ],
+        "repo": "github.com/MetaMask/smart-transactions-controller.git",
+        "repo_name": "MetaMask/smart-transactions-controller",
+        "repo_pure": "github.com/MetaMask/smart-transactions-controller.git",
+        "chosen_v2": "6.2.2",
+        "chosen_v1": "4.0.0"
+    },
+    "@lit-labs/react": {
+        "version1": null,
+        "version2": [
+            "1.2.1"
+        ],
+        "repo": "github.com/lit/lit.git",
+        "repo_name": "lit/lit",
+        "repo_pure": "github.com/lit/lit.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@trezor/analytics": {
+        "version1": null,
+        "version2": [
+            "1.0.3"
+        ],
+        "repo": "not github",
+        "repo_name": "not github",
+        "repo_pure": "not github",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@storybook/postinstall": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "agent-base": {
+        "only_in_1": [
+            "7.1.0"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "5.1.1",
+            "6.0.2"
+        ],
+        "version1": [
+            "5.1.1",
+            "6.0.2",
+            "7.1.0"
+        ],
+        "version2": [
+            "5.1.1",
+            "6.0.2"
+        ],
+        "repo": "github.com/TooTallNate/proxy-agents.git",
+        "repo_name": "TooTallNate/proxy-agents",
+        "repo_pure": "github.com/TooTallNate/proxy-agents.git",
+        "chosen_v2": "null",
+        "chosen_v1": "7.1.0"
+    },
+    "@storybook/theming": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "extension-port-stream": {
+        "only_in_1": [],
+        "only_in_2": [
+            "3.0.0"
+        ],
+        "unchanged_in_1": [
+            "2.1.1"
+        ],
+        "version1": [
+            "2.1.1"
+        ],
+        "version2": [
+            "2.1.1",
+            "3.0.0"
+        ],
+        "repo": "github.com/MetaMask/extension-port-stream.git",
+        "repo_name": "MetaMask/extension-port-stream",
+        "repo_pure": "github.com/MetaMask/extension-port-stream.git",
+        "chosen_v2": "3.0.0",
+        "chosen_v1": "2.1.1"
+    },
+    "traverse": {
+        "version1": [
+            "0.3.9"
+        ],
+        "version2": null,
+        "repo": "github.com/ljharb/js-traverse.git",
+        "repo_name": "ljharb/js-traverse",
+        "repo_pure": "github.com/ljharb/js-traverse.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "string_decoder": {
+        "only_in_1": [
+            "1.0.3"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "0.10.31",
+            "1.1.1",
+            "1.3.0"
+        ],
+        "version1": [
+            "0.10.31",
+            "1.0.3",
+            "1.1.1",
+            "1.3.0"
+        ],
+        "version2": [
+            "0.10.31",
+            "1.1.1",
+            "1.3.0"
+        ],
+        "repo": "github.com/nodejs/string_decoder.git",
+        "repo_name": "nodejs/string_decoder",
+        "repo_pure": "github.com/nodejs/string_decoder.git",
+        "chosen_v2": "null",
+        "chosen_v1": "1.0.3"
+    },
+    "@metamask/snaps-rpc-methods": {
+        "version1": null,
+        "version2": [
+            "4.1.0"
+        ],
+        "repo": "github.com/MetaMask/snaps.git",
+        "repo_name": "MetaMask/snaps",
+        "repo_pure": "github.com/MetaMask/snaps.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/polling-controller": {
+        "version1": null,
+        "version2": [
+            "4.0.0"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "binary": {
+        "version1": [
+            "0.3.0"
+        ],
+        "version2": null,
+        "repo": "github.com/substack/node-binary.git",
+        "repo_name": "substack/node-binary",
+        "repo_pure": "github.com/substack/node-binary.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "js-yaml": {
+        "only_in_1": [
+            "3.14.0"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "3.14.1",
+            "4.1.0"
+        ],
+        "version1": [
+            "3.14.0",
+            "3.14.1",
+            "4.1.0"
+        ],
+        "version2": [
+            "3.14.1",
+            "4.1.0"
+        ],
+        "repo": "github.com/nodeca/js-yaml.git",
+        "repo_name": "nodeca/js-yaml",
+        "repo_pure": "github.com/nodeca/js-yaml.git",
+        "chosen_v2": "null",
+        "chosen_v1": "3.14.0"
+    },
+    "@types/react-beautiful-dnd": {
+        "version1": null,
+        "version2": [
+            "13.1.5"
+        ],
+        "repo": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "repo_name": "DefinitelyTyped/DefinitelyTyped",
+        "repo_pure": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "deep-equal": {
+        "only_in_1": [
+            "1.1.1"
+        ],
+        "only_in_2": [
+            "2.2.2"
+        ],
+        "unchanged_in_1": [
+            "1.0.1"
+        ],
+        "version1": [
+            "1.0.1",
+            "1.1.1"
+        ],
+        "version2": [
+            "1.0.1",
+            "2.2.2"
+        ],
+        "repo": "github.com/inspect-js/node-deep-equal.git",
+        "repo_name": "inspect-js/node-deep-equal",
+        "repo_pure": "github.com/inspect-js/node-deep-equal.git",
+        "chosen_v2": "2.2.2",
+        "chosen_v1": "1.1.1"
+    },
+    "@figspec/react": {
+        "version1": null,
+        "version2": [
+            "1.0.3"
+        ],
+        "repo": "github.com/pocka/figspec-react.git",
+        "repo_name": "pocka/figspec-react",
+        "repo_pure": "github.com/pocka/figspec-react.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "eslint-plugin-n": {
+        "version1": null,
+        "version2": [
+            "16.6.2"
+        ],
+        "repo": "github.com/eslint-community/eslint-plugin-n.git",
+        "repo_name": "eslint-community/eslint-plugin-n",
+        "repo_pure": "github.com/eslint-community/eslint-plugin-n.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "coinstring": {
+        "version1": [
+            "2.3.0"
+        ],
+        "version2": null,
+        "repo": "github.com/cryptocoinjs/coinstring.git",
+        "repo_name": "cryptocoinjs/coinstring",
+        "repo_pure": "github.com/cryptocoinjs/coinstring.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@blockaid/ppom_release": {
+        "only_in_1": [
+            "1.2.8"
+        ],
+        "only_in_2": [
+            "1.4.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.2.8"
+        ],
+        "version2": [
+            "1.4.0"
+        ],
+        "repo": "not github",
+        "repo_name": "not github",
+        "repo_pure": "not github",
+        "chosen_v2": "1.4.0",
+        "chosen_v1": "1.2.8"
+    },
+    "@metamask/eth-sig-util": {
+        "only_in_1": [
+            "5.1.0",
+            "6.0.0",
+            "7.0.0"
+        ],
+        "only_in_2": [
+            "7.0.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "5.1.0",
+            "6.0.0",
+            "7.0.0"
+        ],
+        "version2": [
+            "7.0.1"
+        ],
+        "repo": "github.com/MetaMask/eth-sig-util.git",
+        "repo_name": "MetaMask/eth-sig-util",
+        "repo_pure": "github.com/MetaMask/eth-sig-util.git",
+        "chosen_v2": "7.0.1",
+        "chosen_v1": "7.0.0"
+    },
+    "@metamask/name-controller": {
+        "only_in_1": [
+            "3.0.0"
+        ],
+        "only_in_2": [
+            "4.0.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "3.0.0"
+        ],
+        "version2": [
+            "4.0.1"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "4.0.1",
+        "chosen_v1": "3.0.0"
+    },
+    "@metamask/snaps-ui": {
+        "only_in_1": [
+            "3.0.0"
+        ],
+        "only_in_2": [
+            "3.1.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "3.0.0"
+        ],
+        "version2": [
+            "3.1.0"
+        ],
+        "repo": "github.com/MetaMask/snaps.git",
+        "repo_name": "MetaMask/snaps",
+        "repo_pure": "github.com/MetaMask/snaps.git",
+        "chosen_v2": "3.1.0",
+        "chosen_v1": "3.0.0"
+    },
+    "node-domexception": {
+        "version1": [
+            "1.0.0"
+        ],
+        "version2": null,
+        "repo": "github.com/jimmywarting/node-domexception.git",
+        "repo_name": "jimmywarting/node-domexception",
+        "repo_pure": "github.com/jimmywarting/node-domexception.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "stop-iteration-iterator": {
+        "version1": null,
+        "version2": [
+            "1.0.0"
+        ],
+        "repo": "github.com/ljharb/stop-iteration-iterator.git",
+        "repo_name": "ljharb/stop-iteration-iterator",
+        "repo_pure": "github.com/ljharb/stop-iteration-iterator.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "babel-plugin-polyfill-corejs3": {
+        "only_in_1": [
+            "0.5.3"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "0.8.5"
+        ],
+        "version1": [
+            "0.5.3",
+            "0.8.5"
+        ],
+        "version2": [
+            "0.8.5"
+        ],
+        "repo": "github.com/babel/babel-polyfills.git",
+        "repo_name": "babel/babel-polyfills",
+        "repo_pure": "github.com/babel/babel-polyfills.git",
+        "chosen_v2": "null",
+        "chosen_v1": "0.5.3"
+    },
+    "@metamask-institutional/custody-controller": {
+        "only_in_1": [
+            "0.2.15"
+        ],
+        "only_in_2": [
+            "0.2.18"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "0.2.15"
+        ],
+        "version2": [
+            "0.2.18"
+        ],
+        "repo": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "repo_name": "consensys-vertical-apps/metamask-institutional",
+        "repo_pure": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "chosen_v2": "0.2.18",
+        "chosen_v1": "0.2.15"
+    },
+    "@metamask/eth-simple-keyring": {
+        "only_in_1": [
+            "5.0.0"
+        ],
+        "only_in_2": [
+            "6.0.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "5.0.0"
+        ],
+        "version2": [
+            "6.0.1"
+        ],
+        "repo": "github.com/MetaMask/eth-simple-keyring.git",
+        "repo_name": "MetaMask/eth-simple-keyring",
+        "repo_pure": "github.com/MetaMask/eth-simple-keyring.git",
+        "chosen_v2": "6.0.1",
+        "chosen_v1": "5.0.0"
+    },
+    "@metamask-institutional/configuration-client": {
+        "only_in_1": [
+            "2.0.0"
+        ],
+        "only_in_2": [
+            "2.0.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "2.0.0"
+        ],
+        "version2": [
+            "2.0.1"
+        ],
+        "repo": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "repo_name": "consensys-vertical-apps/metamask-institutional",
+        "repo_pure": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "chosen_v2": "2.0.1",
+        "chosen_v1": "2.0.0"
+    },
+    "@noble/hashes": {
+        "only_in_1": [
+            "1.3.2"
+        ],
+        "only_in_2": [
+            "1.3.3"
+        ],
+        "unchanged_in_1": [
+            "1.1.2",
+            "1.1.3",
+            "1.3.1"
+        ],
+        "version1": [
+            "1.1.2",
+            "1.1.3",
+            "1.3.1",
+            "1.3.2"
+        ],
+        "version2": [
+            "1.1.2",
+            "1.1.3",
+            "1.3.1",
+            "1.3.3"
+        ],
+        "repo": "github.com/paulmillr/noble-hashes.git",
+        "repo_name": "paulmillr/noble-hashes",
+        "repo_pure": "github.com/paulmillr/noble-hashes.git",
+        "chosen_v2": "1.3.3",
+        "chosen_v1": "1.3.2"
+    },
+    "@storybook/csf-tools": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "@oozcitak/infra": {
+        "version1": [
+            "1.0.8"
+        ],
+        "version2": null,
+        "repo": "github.com/oozcitak/infra.git",
+        "repo_name": "oozcitak/infra",
+        "repo_pure": "github.com/oozcitak/infra.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "isarray": {
+        "only_in_1": [],
+        "only_in_2": [
+            "2.0.5"
+        ],
+        "unchanged_in_1": [
+            "0.0.1",
+            "1.0.0"
+        ],
+        "version1": [
+            "0.0.1",
+            "1.0.0"
+        ],
+        "version2": [
+            "0.0.1",
+            "1.0.0",
+            "2.0.5"
+        ],
+        "repo": "github.com/juliangruber/isarray.git",
+        "repo_name": "juliangruber/isarray",
+        "repo_pure": "github.com/juliangruber/isarray.git",
+        "chosen_v2": "2.0.5",
+        "chosen_v1": "1.0.0"
+    },
+    "fstream": {
+        "version1": [
+            "1.0.12"
+        ],
+        "version2": null,
+        "repo": "github.com/npm/fstream.git",
+        "repo_name": "npm/fstream",
+        "repo_pure": "github.com/npm/fstream.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "is2": {
+        "version1": [
+            "2.0.1"
+        ],
+        "version2": null,
+        "repo": "github.com/stdarg/is2.git",
+        "repo_name": "stdarg/is2",
+        "repo_pure": "github.com/stdarg/is2.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/swappable-obj-proxy": {
+        "only_in_1": [
+            "2.1.0"
+        ],
+        "only_in_2": [
+            "2.2.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "2.1.0"
+        ],
+        "version2": [
+            "2.2.0"
+        ],
+        "repo": "github.com/MetaMask/swappable-obj-proxy.git",
+        "repo_name": "MetaMask/swappable-obj-proxy",
+        "repo_pure": "github.com/MetaMask/swappable-obj-proxy.git",
+        "chosen_v2": "2.2.0",
+        "chosen_v1": "2.1.0"
+    },
+    "hdkey": {
+        "only_in_1": [
+            "0.8.0",
+            "2.0.1"
+        ],
+        "only_in_2": [
+            "2.1.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "0.8.0",
+            "2.0.1"
+        ],
+        "version2": [
+            "2.1.0"
+        ],
+        "repo": "github.com/cryptocoinjs/hdkey.git",
+        "repo_name": "cryptocoinjs/hdkey",
+        "repo_pure": "github.com/cryptocoinjs/hdkey.git",
+        "chosen_v2": "2.1.0",
+        "chosen_v1": "2.0.1"
+    },
+    "eslint-plugin-es-x": {
+        "version1": null,
+        "version2": [
+            "7.5.0"
+        ],
+        "repo": "github.com/eslint-community/eslint-plugin-es-x.git",
+        "repo_name": "eslint-community/eslint-plugin-es-x",
+        "repo_pure": "github.com/eslint-community/eslint-plugin-es-x.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/ppom-validator": {
+        "only_in_1": [
+            "0.8.0"
+        ],
+        "only_in_2": [
+            "0.22.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "0.8.0"
+        ],
+        "version2": [
+            "0.22.0"
+        ],
+        "repo": "github.com/MetaMask/ppom-validator.git",
+        "repo_name": "MetaMask/ppom-validator",
+        "repo_pure": "github.com/MetaMask/ppom-validator.git",
+        "chosen_v2": "0.22.0",
+        "chosen_v1": "0.8.0"
+    },
+    "eth-method-registry": {
+        "only_in_1": [],
+        "only_in_2": [
+            "1.1.0"
+        ],
+        "unchanged_in_1": [
+            "2.0.0"
+        ],
+        "version1": [
+            "2.0.0"
+        ],
+        "version2": [
+            "1.1.0",
+            "2.0.0"
+        ],
+        "repo": "github.com/MetaMask/eth-method-registry.git",
+        "repo_name": "MetaMask/eth-method-registry",
+        "repo_pure": "github.com/MetaMask/eth-method-registry.git",
+        "chosen_v2": "1.1.0",
+        "chosen_v1": "2.0.0"
+    },
+    "secp256k1": {
+        "only_in_1": [
+            "3.8.0"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "4.0.2",
+            "4.0.3"
+        ],
+        "version1": [
+            "3.8.0",
+            "4.0.2",
+            "4.0.3"
+        ],
+        "version2": [
+            "4.0.2",
+            "4.0.3"
+        ],
+        "repo": "github.com/cryptocoinjs/secp256k1-node.git",
+        "repo_name": "cryptocoinjs/secp256k1-node",
+        "repo_pure": "github.com/cryptocoinjs/secp256k1-node.git",
+        "chosen_v2": "null",
+        "chosen_v1": "3.8.0"
+    },
+    "snake-case": {
+        "version1": [
+            "2.1.0"
+        ],
+        "version2": null,
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/snaps-execution-environments": {
+        "version1": [
+            "3.0.0"
+        ],
+        "version2": null,
+        "repo": "github.com/MetaMask/snaps.git",
+        "repo_name": "MetaMask/snaps",
+        "repo_pure": "github.com/MetaMask/snaps.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "drbg.js": {
+        "version1": [
+            "1.0.1"
+        ],
+        "version2": null,
+        "repo": "github.com/cryptocoinjs/drbg.js.git",
+        "repo_name": "cryptocoinjs/drbg.js",
+        "repo_pure": "github.com/cryptocoinjs/drbg.js.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "nano-base32": {
+        "version1": [
+            "1.0.1"
+        ],
+        "version2": null,
+        "repo": "github.com/temrhn/nano-base32.git",
+        "repo_name": "temrhn/nano-base32",
+        "repo_pure": "github.com/temrhn/nano-base32.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "fetch-blob": {
+        "version1": [
+            "3.2.0"
+        ],
+        "version2": null,
+        "repo": "github.com/node-fetch/fetch-blob.git",
+        "repo_name": "node-fetch/fetch-blob",
+        "repo_pure": "github.com/node-fetch/fetch-blob.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@storybook/addon-docs": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "@metamask/providers": {
+        "only_in_1": [
+            "11.1.2"
+        ],
+        "only_in_2": [
+            "14.0.2"
+        ],
+        "unchanged_in_1": [
+            "13.1.0"
+        ],
+        "version1": [
+            "11.1.2",
+            "13.1.0"
+        ],
+        "version2": [
+            "13.1.0",
+            "14.0.2"
+        ],
+        "repo": "github.com/MetaMask/providers.git",
+        "repo_name": "MetaMask/providers",
+        "repo_pure": "github.com/MetaMask/providers.git",
+        "chosen_v2": "14.0.2",
+        "chosen_v1": "11.1.2"
+    },
+    "babel-plugin-polyfill-regenerator": {
+        "only_in_1": [
+            "0.3.1"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "0.5.3"
+        ],
+        "version1": [
+            "0.3.1",
+            "0.5.3"
+        ],
+        "version2": [
+            "0.5.3"
+        ],
+        "repo": "github.com/babel/babel-polyfills.git",
+        "repo_name": "babel/babel-polyfills",
+        "repo_pure": "github.com/babel/babel-polyfills.git",
+        "chosen_v2": "null",
+        "chosen_v1": "0.3.1"
+    },
+    "queue-tick": {
+        "version1": null,
+        "version2": [
+            "1.0.1"
+        ],
+        "repo": "github.com/mafintosh/queue-tick.git",
+        "repo_name": "mafintosh/queue-tick",
+        "repo_pure": "github.com/mafintosh/queue-tick.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "swap-case": {
+        "version1": [
+            "1.1.2"
+        ],
+        "version2": null,
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@figspec/components": {
+        "version1": null,
+        "version2": [
+            "1.0.2"
+        ],
+        "repo": "github.com/pocka/figspec.git",
+        "repo_name": "pocka/figspec",
+        "repo_pure": "github.com/pocka/figspec.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "web-streams-polyfill": {
+        "version1": [
+            "3.2.1"
+        ],
+        "version2": null,
+        "repo": "github.com/MattiasBuelens/web-streams-polyfill.git",
+        "repo_name": "MattiasBuelens/web-streams-polyfill",
+        "repo_pure": "github.com/MattiasBuelens/web-streams-polyfill.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@noble/curves": {
+        "only_in_1": [],
+        "only_in_2": [
+            "1.3.0"
+        ],
+        "unchanged_in_1": [
+            "1.1.0"
+        ],
+        "version1": [
+            "1.1.0"
+        ],
+        "version2": [
+            "1.1.0",
+            "1.3.0"
+        ],
+        "repo": "github.com/paulmillr/noble-curves.git",
+        "repo_name": "paulmillr/noble-curves",
+        "repo_pure": "github.com/paulmillr/noble-curves.git",
+        "chosen_v2": "1.3.0",
+        "chosen_v1": "1.1.0"
+    },
+    "esbuild-register": {
+        "only_in_1": [
+            "3.4.2"
+        ],
+        "only_in_2": [
+            "3.5.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "3.4.2"
+        ],
+        "version2": [
+            "3.5.0"
+        ],
+        "repo": "not github",
+        "repo_name": "not github",
+        "repo_pure": "not github",
+        "chosen_v2": "3.5.0",
+        "chosen_v1": "3.4.2"
+    },
+    "@trezor/connect": {
+        "only_in_1": [
+            "9.0.7"
+        ],
+        "only_in_2": [
+            "9.0.11"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "9.0.7"
+        ],
+        "version2": [
+            "9.0.11"
+        ],
+        "repo": "github.com/trezor/trezor-suite.git",
+        "repo_name": "trezor/trezor-suite",
+        "repo_pure": "github.com/trezor/trezor-suite.git",
+        "chosen_v2": "9.0.11",
+        "chosen_v1": "9.0.7"
+    },
+    "is-map": {
+        "version1": null,
+        "version2": [
+            "2.0.2"
+        ],
+        "repo": "github.com/inspect-js/is-map.git",
+        "repo_name": "inspect-js/is-map",
+        "repo_pure": "github.com/inspect-js/is-map.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@babel/types": {
+        "only_in_1": [
+            "7.23.0"
+        ],
+        "only_in_2": [
+            "7.23.6",
+            "7.23.9"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "7.23.0"
+        ],
+        "version2": [
+            "7.23.6",
+            "7.23.9"
+        ],
+        "repo": "github.com/babel/babel.git",
+        "repo_name": "babel/babel",
+        "repo_pure": "github.com/babel/babel.git",
+        "chosen_v2": "7.23.9",
+        "chosen_v1": "7.23.0"
+    },
+    "@metamask/snaps-controllers": {
+        "only_in_1": [
+            "3.0.0"
+        ],
+        "only_in_2": [
+            "3.6.0",
+            "4.0.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "3.0.0"
+        ],
+        "version2": [
+            "3.6.0",
+            "4.0.0"
+        ],
+        "repo": "github.com/MetaMask/snaps.git",
+        "repo_name": "MetaMask/snaps",
+        "repo_pure": "github.com/MetaMask/snaps.git",
+        "chosen_v2": "4.0.0",
+        "chosen_v1": "3.0.0"
+    },
+    "ripemd160-min": {
+        "version1": [
+            "0.0.6"
+        ],
+        "version2": null,
+        "repo": "github.com/zone117x/ripemd160-minimal.js.git",
+        "repo_name": "zone117x/ripemd160-minimal.js",
+        "repo_pure": "github.com/zone117x/ripemd160-minimal.js.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "charenc": {
+        "version1": null,
+        "version2": [
+            "0.0.2"
+        ],
+        "repo": "github.com/pvorb/node-charenc.git",
+        "repo_name": "pvorb/node-charenc",
+        "repo_pure": "github.com/pvorb/node-charenc.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@storybook/manager-api": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "@truffle/abi-utils": {
+        "version1": [
+            "0.3.6"
+        ],
+        "version2": null,
+        "repo": "github.com/trufflesuite/truffle.git",
+        "repo_name": "trufflesuite/truffle",
+        "repo_pure": "github.com/trufflesuite/truffle.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "b4a": {
+        "version1": null,
+        "version2": [
+            "1.6.4"
+        ],
+        "repo": "github.com/holepunchto/b4a.git",
+        "repo_name": "holepunchto/b4a",
+        "repo_pure": "github.com/holepunchto/b4a.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "async-mutex": {
+        "only_in_1": [],
+        "only_in_2": [
+            "0.3.2"
+        ],
+        "unchanged_in_1": [
+            "0.2.6"
+        ],
+        "version1": [
+            "0.2.6"
+        ],
+        "version2": [
+            "0.2.6",
+            "0.3.2"
+        ],
+        "repo": "github.com/DirtyHairy/async-mutex.git",
+        "repo_name": "DirtyHairy/async-mutex",
+        "repo_pure": "github.com/DirtyHairy/async-mutex.git",
+        "chosen_v2": "0.3.2",
+        "chosen_v1": "0.2.6"
+    },
+    "lavamoat": {
+        "only_in_1": [
+            "7.3.1"
+        ],
+        "only_in_2": [
+            "8.0.2"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "7.3.1"
+        ],
+        "version2": [
+            "8.0.2"
+        ],
+        "repo": "github.com/LavaMoat/lavamoat.git",
+        "repo_name": "LavaMoat/lavamoat",
+        "repo_pure": "github.com/LavaMoat/lavamoat.git",
+        "chosen_v2": "8.0.2",
+        "chosen_v1": "7.3.1"
+    },
+    "tcp-port-used": {
+        "version1": [
+            "1.0.1"
+        ],
+        "version2": null,
+        "repo": "github.com/stdarg/tcp-port-used.git",
+        "repo_name": "stdarg/tcp-port-used",
+        "repo_pure": "github.com/stdarg/tcp-port-used.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@storybook/csf-plugin": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "sha3": {
+        "version1": [
+            "2.1.4"
+        ],
+        "version2": null,
+        "repo": "github.com/phusion/node-sha3.git",
+        "repo_name": "phusion/node-sha3",
+        "repo_pure": "github.com/phusion/node-sha3.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "is-window": {
+        "version1": [
+            "1.0.2"
+        ],
+        "version2": null,
+        "repo": "github.com/gearcase/is-window.git",
+        "repo_name": "gearcase/is-window",
+        "repo_pure": "github.com/gearcase/is-window.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "safe-event-emitter": {
+        "version1": [
+            "1.0.1"
+        ],
+        "version2": null,
+        "repo": "not github",
+        "repo_name": "not github",
+        "repo_pure": "not github",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "multicodec": {
+        "only_in_1": [
+            "0.5.7",
+            "1.0.4"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "2.1.3",
+            "3.1.0"
+        ],
+        "version1": [
+            "0.5.7",
+            "1.0.4",
+            "2.1.3",
+            "3.1.0"
+        ],
+        "version2": [
+            "2.1.3",
+            "3.1.0"
+        ],
+        "repo": "github.com/multiformats/js-multicodec.git",
+        "repo_name": "multiformats/js-multicodec",
+        "repo_pure": "github.com/multiformats/js-multicodec.git",
+        "chosen_v2": "null",
+        "chosen_v1": "1.0.4"
+    },
+    "raf-schd": {
+        "version1": null,
+        "version2": [
+            "4.0.3"
+        ],
+        "repo": "github.com/alexreardon/raf-schd.git",
+        "repo_name": "alexreardon/raf-schd",
+        "repo_pure": "github.com/alexreardon/raf-schd.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/eth-json-rpc-middleware": {
+        "only_in_1": [
+            "11.0.2"
+        ],
+        "only_in_2": [
+            "12.0.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "11.0.2"
+        ],
+        "version2": [
+            "12.0.1"
+        ],
+        "repo": "github.com/MetaMask/eth-json-rpc-middleware.git",
+        "repo_name": "MetaMask/eth-json-rpc-middleware",
+        "repo_pure": "github.com/MetaMask/eth-json-rpc-middleware.git",
+        "chosen_v2": "12.0.1",
+        "chosen_v1": "11.0.2"
+    },
+    "shallowequal": {
+        "version1": [
+            "1.1.0"
+        ],
+        "version2": null,
+        "repo": "github.com/dashed/shallowequal.git",
+        "repo_name": "dashed/shallowequal",
+        "repo_pure": "github.com/dashed/shallowequal.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/eth-trezor-keyring": {
+        "only_in_1": [
+            "1.1.0"
+        ],
+        "only_in_2": [
+            "3.0.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.1.0"
+        ],
+        "version2": [
+            "3.0.0"
+        ],
+        "repo": "github.com/MetaMask/eth-trezor-keyring.git",
+        "repo_name": "MetaMask/eth-trezor-keyring",
+        "repo_pure": "github.com/MetaMask/eth-trezor-keyring.git",
+        "chosen_v2": "3.0.0",
+        "chosen_v1": "1.1.0"
+    },
+    "@storybook/blocks": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "babel-plugin-polyfill-corejs2": {
+        "only_in_1": [
+            "0.3.3"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "0.4.6"
+        ],
+        "version1": [
+            "0.3.3",
+            "0.4.6"
+        ],
+        "version2": [
+            "0.4.6"
+        ],
+        "repo": "github.com/babel/babel-polyfills.git",
+        "repo_name": "babel/babel-polyfills",
+        "repo_pure": "github.com/babel/babel-polyfills.git",
+        "chosen_v2": "null",
+        "chosen_v1": "0.3.3"
+    },
+    "playwright-core": {
+        "only_in_1": [
+            "1.29.2"
+        ],
+        "only_in_2": [
+            "1.39.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.29.2"
+        ],
+        "version2": [
+            "1.39.0"
+        ],
+        "repo": "github.com/microsoft/playwright.git",
+        "repo_name": "microsoft/playwright",
+        "repo_pure": "github.com/microsoft/playwright.git",
+        "chosen_v2": "1.39.0",
+        "chosen_v1": "1.29.2"
+    },
+    "nofilter": {
+        "version1": [
+            "1.0.4"
+        ],
+        "version2": null,
+        "repo": "github.com/hildjj/nofilter.git",
+        "repo_name": "hildjj/nofilter",
+        "repo_pure": "github.com/hildjj/nofilter.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "crypto-addr-codec": {
+        "version1": [
+            "0.1.7"
+        ],
+        "version2": null,
+        "repo": "github.com/jay-dee7/crypto-addr-serialize.git",
+        "repo_name": "jay-dee7/crypto-addr-serialize",
+        "repo_pure": "github.com/jay-dee7/crypto-addr-serialize.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "dotenv": {
+        "only_in_1": [
+            "16.0.3"
+        ],
+        "only_in_2": [
+            "16.3.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "16.0.3"
+        ],
+        "version2": [
+            "16.3.1"
+        ],
+        "repo": "github.com/motdotla/dotenv.git",
+        "repo_name": "motdotla/dotenv",
+        "repo_pure": "github.com/motdotla/dotenv.git",
+        "chosen_v2": "16.3.1",
+        "chosen_v1": "16.0.3"
+    },
+    "node-fetch": {
+        "only_in_1": [
+            "3.3.1"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "2.6.11",
+            "2.7.0"
+        ],
+        "version1": [
+            "2.6.11",
+            "2.7.0",
+            "3.3.1"
+        ],
+        "version2": [
+            "2.6.11",
+            "2.7.0"
+        ],
+        "repo": "github.com/node-fetch/node-fetch.git",
+        "repo_name": "node-fetch/node-fetch",
+        "repo_pure": "github.com/node-fetch/node-fetch.git",
+        "chosen_v2": "null",
+        "chosen_v1": "3.3.1"
+    },
+    "es-get-iterator": {
+        "version1": null,
+        "version2": [
+            "1.1.3"
+        ],
+        "repo": "github.com/ljharb/es-get-iterator.git",
+        "repo_name": "ljharb/es-get-iterator",
+        "repo_pure": "github.com/ljharb/es-get-iterator.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask-institutional/extension": {
+        "only_in_1": [
+            "0.3.8"
+        ],
+        "only_in_2": [
+            "0.3.12"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "0.3.8"
+        ],
+        "version2": [
+            "0.3.12"
+        ],
+        "repo": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "repo_name": "consensys-vertical-apps/metamask-institutional",
+        "repo_pure": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "chosen_v2": "0.3.12",
+        "chosen_v1": "0.3.8"
+    },
+    "@metamask/json-rpc-engine": {
+        "only_in_1": [
+            "7.1.1"
+        ],
+        "only_in_2": [
+            "7.3.2"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "7.1.1"
+        ],
+        "version2": [
+            "7.3.2"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "7.3.2",
+        "chosen_v1": "7.1.1"
+    },
+    "@truffle/source-map-utils": {
+        "version1": [
+            "1.3.104"
+        ],
+        "version2": null,
+        "repo": "github.com/trufflesuite/truffle.git",
+        "repo_name": "trufflesuite/truffle",
+        "repo_pure": "github.com/trufflesuite/truffle.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@truffle/codec": {
+        "version1": [
+            "0.14.12"
+        ],
+        "version2": null,
+        "repo": "github.com/trufflesuite/truffle.git",
+        "repo_name": "trufflesuite/truffle",
+        "repo_pure": "github.com/trufflesuite/truffle.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "human-standard-token-abi": {
+        "only_in_1": [
+            "1.0.2"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "2.0.0"
+        ],
+        "version1": [
+            "1.0.2",
+            "2.0.0"
+        ],
+        "version2": [
+            "2.0.0"
+        ],
+        "repo": "github.com/flyswatter/human-standard-token-abi.git",
+        "repo_name": "flyswatter/human-standard-token-abi",
+        "repo_pure": "github.com/flyswatter/human-standard-token-abi.git",
+        "chosen_v2": "null",
+        "chosen_v1": "1.0.2"
+    },
+    "@download/blockies": {
+        "version1": [
+            "1.0.3"
+        ],
+        "version2": null,
+        "repo": "github.com/download13/blockies.git",
+        "repo_name": "download13/blockies",
+        "repo_pure": "github.com/download13/blockies.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@storybook/channels": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "globals": {
+        "only_in_1": [
+            "13.20.0"
+        ],
+        "only_in_2": [
+            "13.24.0"
+        ],
+        "unchanged_in_1": [
+            "11.12.0"
+        ],
+        "version1": [
+            "11.12.0",
+            "13.20.0"
+        ],
+        "version2": [
+            "11.12.0",
+            "13.24.0"
+        ],
+        "repo": "github.com/sindresorhus/globals.git",
+        "repo_name": "sindresorhus/globals",
+        "repo_pure": "github.com/sindresorhus/globals.git",
+        "chosen_v2": "13.24.0",
+        "chosen_v1": "13.20.0"
+    },
+    "unzipper": {
+        "version1": [
+            "0.10.14"
+        ],
+        "version2": null,
+        "repo": "github.com/ZJONSSON/node-unzipper.git",
+        "repo_name": "ZJONSSON/node-unzipper",
+        "repo_pure": "github.com/ZJONSSON/node-unzipper.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "readable-stream": {
+        "only_in_1": [
+            "2.3.3",
+            "4.3.0"
+        ],
+        "only_in_2": [
+            "4.4.2"
+        ],
+        "unchanged_in_1": [
+            "1.1.14",
+            "2.3.7",
+            "3.6.2"
+        ],
+        "version1": [
+            "1.1.14",
+            "2.3.3",
+            "2.3.7",
+            "3.6.2",
+            "4.3.0"
+        ],
+        "version2": [
+            "1.1.14",
+            "2.3.7",
+            "3.6.2",
+            "4.4.2"
+        ],
+        "repo": "github.com/nodejs/readable-stream.git",
+        "repo_name": "nodejs/readable-stream",
+        "repo_pure": "github.com/nodejs/readable-stream.git",
+        "chosen_v2": "4.4.2",
+        "chosen_v1": "4.3.0"
+    },
+    "path-case": {
+        "version1": [
+            "2.1.1"
+        ],
+        "version2": null,
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/approval-controller": {
+        "only_in_1": [
+            "3.4.0"
+        ],
+        "only_in_2": [
+            "5.1.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "3.4.0"
+        ],
+        "version2": [
+            "5.1.0"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "5.1.0",
+        "chosen_v1": "3.4.0"
+    },
+    "klaw": {
+        "version1": [
+            "1.3.1"
+        ],
+        "version2": null,
+        "repo": "github.com/jprichardson/node-klaw.git",
+        "repo_name": "jprichardson/node-klaw",
+        "repo_pure": "github.com/jprichardson/node-klaw.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "lit-html": {
+        "version1": null,
+        "version2": [
+            "2.8.0"
+        ],
+        "repo": "github.com/lit/lit.git",
+        "repo_name": "lit/lit",
+        "repo_pure": "github.com/lit/lit.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "prettier": {
+        "only_in_1": [
+            "2.8.4"
+        ],
+        "only_in_2": [
+            "2.8.7"
+        ],
+        "unchanged_in_1": [
+            "2.8.8"
+        ],
+        "version1": [
+            "2.8.4",
+            "2.8.8"
+        ],
+        "version2": [
+            "2.8.7",
+            "2.8.8"
+        ],
+        "repo": "github.com/prettier/prettier.git",
+        "repo_name": "prettier/prettier",
+        "repo_pure": "github.com/prettier/prettier.git",
+        "chosen_v2": "2.8.7",
+        "chosen_v1": "2.8.4"
+    },
+    "ws": {
+        "only_in_1": [
+            "8.13.0"
+        ],
+        "only_in_2": [
+            "8.14.2"
+        ],
+        "unchanged_in_1": [
+            "6.2.2",
+            "7.4.6",
+            "7.5.9"
+        ],
+        "version1": [
+            "6.2.2",
+            "7.4.6",
+            "7.5.9",
+            "8.13.0"
+        ],
+        "version2": [
+            "6.2.2",
+            "7.4.6",
+            "7.5.9",
+            "8.14.2"
+        ],
+        "repo": "github.com/websockets/ws.git",
+        "repo_name": "websockets/ws",
+        "repo_pure": "github.com/websockets/ws.git",
+        "chosen_v2": "8.14.2",
+        "chosen_v1": "8.13.0"
+    },
+    "bs58": {
+        "only_in_1": [
+            "2.0.1"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "4.0.1",
+            "5.0.0"
+        ],
+        "version1": [
+            "2.0.1",
+            "4.0.1",
+            "5.0.0"
+        ],
+        "version2": [
+            "4.0.1",
+            "5.0.0"
+        ],
+        "repo": "github.com/cryptocoinjs/bs58.git",
+        "repo_name": "cryptocoinjs/bs58",
+        "repo_pure": "github.com/cryptocoinjs/bs58.git",
+        "chosen_v2": "null",
+        "chosen_v1": "2.0.1"
+    },
+    "memorystream": {
+        "version1": [
+            "0.3.1"
+        ],
+        "version2": null,
+        "repo": "github.com/JSBizon/node-memorystream.git",
+        "repo_name": "JSBizon/node-memorystream",
+        "repo_pure": "github.com/JSBizon/node-memorystream.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/eth-json-rpc-infura": {
+        "only_in_1": [
+            "8.1.1"
+        ],
+        "only_in_2": [
+            "9.0.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "8.1.1"
+        ],
+        "version2": [
+            "9.0.0"
+        ],
+        "repo": "github.com/MetaMask/eth-json-rpc-infura.git",
+        "repo_name": "MetaMask/eth-json-rpc-infura",
+        "repo_pure": "github.com/MetaMask/eth-json-rpc-infura.git",
+        "chosen_v2": "9.0.0",
+        "chosen_v1": "8.1.1"
+    },
+    "@ensdomains/resolver": {
+        "version1": [
+            "0.2.4"
+        ],
+        "version2": null,
+        "repo": "not github",
+        "repo_name": "not github",
+        "repo_pure": "not github",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "sprintf-js": {
+        "only_in_1": [
+            "1.1.2"
+        ],
+        "only_in_2": [
+            "1.1.3"
+        ],
+        "unchanged_in_1": [
+            "1.0.3"
+        ],
+        "version1": [
+            "1.0.3",
+            "1.1.2"
+        ],
+        "version2": [
+            "1.0.3",
+            "1.1.3"
+        ],
+        "repo": "github.com/alexei/sprintf.js.git",
+        "repo_name": "alexei/sprintf.js",
+        "repo_pure": "github.com/alexei/sprintf.js.git",
+        "chosen_v2": "1.1.3",
+        "chosen_v1": "1.1.2"
+    },
+    "@metamask/base-controller": {
+        "only_in_1": [],
+        "only_in_2": [
+            "4.1.1"
+        ],
+        "unchanged_in_1": [
+            "3.2.3"
+        ],
+        "version1": [
+            "3.2.3"
+        ],
+        "version2": [
+            "3.2.3",
+            "4.1.1"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "4.1.1",
+        "chosen_v1": "3.2.3"
+    },
+    "@types/web": {
+        "only_in_1": [
+            "0.0.91"
+        ],
+        "only_in_2": [
+            "0.0.99"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "0.0.91"
+        ],
+        "version2": [
+            "0.0.99"
+        ],
+        "repo": "github.com/microsoft/TypeScript-DOM-Lib-Generator.git",
+        "repo_name": "microsoft/TypeScript-DOM-Lib-Generator",
+        "repo_pure": "github.com/microsoft/TypeScript-DOM-Lib-Generator.git",
+        "chosen_v2": "0.0.99",
+        "chosen_v1": "0.0.91"
+    },
+    "@ensdomains/ensjs": {
+        "version1": [
+            "2.1.0"
+        ],
+        "version2": null,
+        "repo": "github.com/ensdomains/ensjs-v3.git",
+        "repo_name": "ensdomains/ensjs-v3",
+        "repo_pure": "github.com/ensdomains/ensjs-v3.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/build-utils": {
+        "version1": null,
+        "version2": [
+            "1.0.0"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@types/trusted-types": {
+        "version1": null,
+        "version2": [
+            "2.0.5"
+        ],
+        "repo": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "repo_name": "DefinitelyTyped/DefinitelyTyped",
+        "repo_pure": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "fast-fifo": {
+        "version1": null,
+        "version2": [
+            "1.3.2"
+        ],
+        "repo": "github.com/mafintosh/fast-fifo.git",
+        "repo_name": "mafintosh/fast-fifo",
+        "repo_pure": "github.com/mafintosh/fast-fifo.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "lower-case-first": {
+        "version1": [
+            "1.0.2"
+        ],
+        "version2": null,
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "playwright": {
+        "only_in_1": [
+            "1.29.2"
+        ],
+        "only_in_2": [
+            "1.39.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.29.2"
+        ],
+        "version2": [
+            "1.39.0"
+        ],
+        "repo": "github.com/microsoft/playwright.git",
+        "repo_name": "microsoft/playwright",
+        "repo_pure": "github.com/microsoft/playwright.git",
+        "chosen_v2": "1.39.0",
+        "chosen_v1": "1.29.2"
+    },
+    "is-core-module": {
+        "only_in_1": [
+            "2.12.0"
+        ],
+        "only_in_2": [
+            "2.13.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "2.12.0"
+        ],
+        "version2": [
+            "2.13.1"
+        ],
+        "repo": "github.com/inspect-js/is-core-module.git",
+        "repo_name": "inspect-js/is-core-module",
+        "repo_pure": "github.com/inspect-js/is-core-module.git",
+        "chosen_v2": "2.13.1",
+        "chosen_v1": "2.12.0"
+    },
+    "loglevel-plugin-prefix": {
+        "version1": [
+            "0.8.4"
+        ],
+        "version2": null,
+        "repo": "github.com/kutuluk/loglevel-plugin-prefix.git",
+        "repo_name": "kutuluk/loglevel-plugin-prefix",
+        "repo_pure": "github.com/kutuluk/loglevel-plugin-prefix.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "formdata-polyfill": {
+        "version1": [
+            "4.0.10"
+        ],
+        "version2": null,
+        "repo": "github.com/jimmywarting/FormData.git",
+        "repo_name": "jimmywarting/FormData",
+        "repo_pure": "github.com/jimmywarting/FormData.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@types/sprintf-js": {
+        "version1": null,
+        "version2": [
+            "1.1.4"
+        ],
+        "repo": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "repo_name": "DefinitelyTyped/DefinitelyTyped",
+        "repo_pure": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "buffers": {
+        "version1": [
+            "0.1.1"
+        ],
+        "version2": null,
+        "repo": "github.com/substack/node-buffers.git",
+        "repo_name": "substack/node-buffers",
+        "repo_pure": "github.com/substack/node-buffers.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@types/babel__traverse": {
+        "only_in_1": [
+            "7.11.1"
+        ],
+        "only_in_2": [
+            "7.20.5"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "7.11.1"
+        ],
+        "version2": [
+            "7.20.5"
+        ],
+        "repo": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "repo_name": "DefinitelyTyped/DefinitelyTyped",
+        "repo_pure": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "chosen_v2": "7.20.5",
+        "chosen_v1": "7.11.1"
+    },
+    "@metamask/object-multiplex": {
+        "only_in_1": [],
+        "only_in_2": [
+            "2.0.0"
+        ],
+        "unchanged_in_1": [
+            "1.2.0"
+        ],
+        "version1": [
+            "1.2.0"
+        ],
+        "version2": [
+            "1.2.0",
+            "2.0.0"
+        ],
+        "repo": "github.com/MetaMask/object-multiplex.git",
+        "repo_name": "MetaMask/object-multiplex",
+        "repo_pure": "github.com/MetaMask/object-multiplex.git",
+        "chosen_v2": "2.0.0",
+        "chosen_v1": "1.2.0"
+    },
+    "node-gyp-build": {
+        "only_in_1": [
+            "4.6.0"
+        ],
+        "only_in_2": [
+            "4.6.1"
+        ],
+        "unchanged_in_1": [
+            "4.3.0"
+        ],
+        "version1": [
+            "4.3.0",
+            "4.6.0"
+        ],
+        "version2": [
+            "4.3.0",
+            "4.6.1"
+        ],
+        "repo": "github.com/prebuild/node-gyp-build.git",
+        "repo_name": "prebuild/node-gyp-build",
+        "repo_pure": "github.com/prebuild/node-gyp-build.git",
+        "chosen_v2": "4.6.1",
+        "chosen_v1": "4.6.0"
+    },
+    "debug": {
+        "only_in_1": [
+            "4.1.0",
+            "4.3.3"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "2.6.9",
+            "3.1.0",
+            "3.2.7",
+            "4.3.4"
+        ],
+        "version1": [
+            "2.6.9",
+            "3.1.0",
+            "3.2.7",
+            "4.1.0",
+            "4.3.3",
+            "4.3.4"
+        ],
+        "version2": [
+            "2.6.9",
+            "3.1.0",
+            "3.2.7",
+            "4.3.4"
+        ],
+        "repo": "github.com/debug-js/debug.git",
+        "repo_name": "debug-js/debug",
+        "repo_pure": "github.com/debug-js/debug.git",
+        "chosen_v2": "null",
+        "chosen_v1": "4.3.3"
+    },
+    "@metamask-institutional/types": {
+        "only_in_1": [
+            "1.0.3"
+        ],
+        "only_in_2": [
+            "1.0.4"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.0.3"
+        ],
+        "version2": [
+            "1.0.4"
+        ],
+        "repo": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "repo_name": "consensys-vertical-apps/metamask-institutional",
+        "repo_pure": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "chosen_v2": "1.0.4",
+        "chosen_v1": "1.0.3"
+    },
+    "node-interval-tree": {
+        "version1": [
+            "1.3.3"
+        ],
+        "version2": null,
+        "repo": "github.com/ShieldBattery/node-interval-tree.git",
+        "repo_name": "ShieldBattery/node-interval-tree",
+        "repo_pure": "github.com/ShieldBattery/node-interval-tree.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@ethersproject/solidity": {
+        "version1": [
+            "5.7.0"
+        ],
+        "version2": null,
+        "repo": "github.com/ethers-io/ethers.js.git",
+        "repo_name": "ethers-io/ethers.js",
+        "repo_pure": "github.com/ethers-io/ethers.js.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@types/mocha": {
+        "version1": null,
+        "version2": [
+            "10.0.3"
+        ],
+        "repo": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "repo_name": "DefinitelyTyped/DefinitelyTyped",
+        "repo_pure": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@types/long": {
+        "only_in_1": [
+            "4.0.1"
+        ],
+        "only_in_2": [
+            "4.0.2"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "4.0.1"
+        ],
+        "version2": [
+            "4.0.2"
+        ],
+        "repo": "not github",
+        "repo_name": "not github",
+        "repo_pure": "not github",
+        "chosen_v2": "4.0.2",
+        "chosen_v1": "4.0.1"
+    },
+    "multibase": {
+        "only_in_1": [
+            "0.6.1",
+            "0.7.0"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "2.0.0",
+            "3.1.2",
+            "4.0.4"
+        ],
+        "version1": [
+            "0.6.1",
+            "0.7.0",
+            "2.0.0",
+            "3.1.2",
+            "4.0.4"
+        ],
+        "version2": [
+            "2.0.0",
+            "3.1.2",
+            "4.0.4"
+        ],
+        "repo": "github.com/multiformats/js-multibase.git",
+        "repo_name": "multiformats/js-multibase",
+        "repo_pure": "github.com/multiformats/js-multibase.git",
+        "chosen_v2": "null",
+        "chosen_v1": "0.7.0"
+    },
+    "web3-utils": {
+        "version1": [
+            "1.8.1"
+        ],
+        "version2": null,
+        "repo": "github.com/ChainSafe/web3.js.git",
+        "repo_name": "ChainSafe/web3.js",
+        "repo_pure": "github.com/ChainSafe/web3.js.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@types/selenium-webdriver": {
+        "version1": null,
+        "version2": [
+            "4.1.19"
+        ],
+        "repo": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "repo_name": "DefinitelyTyped/DefinitelyTyped",
+        "repo_pure": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@babel/code-frame": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.23.5"
+        ],
+        "unchanged_in_1": [
+            "7.22.13"
+        ],
+        "version1": [
+            "7.22.13"
+        ],
+        "version2": [
+            "7.22.13",
+            "7.23.5"
+        ],
+        "repo": "github.com/babel/babel.git",
+        "repo_name": "babel/babel",
+        "repo_pure": "github.com/babel/babel.git",
+        "chosen_v2": "7.23.5",
+        "chosen_v1": "7.22.13"
+    },
+    "@ungap/promise-all-settled": {
+        "version1": [
+            "1.1.2"
+        ],
+        "version2": null,
+        "repo": "github.com/ungap/promise-all-settled.git",
+        "repo_name": "ungap/promise-all-settled",
+        "repo_pure": "github.com/ungap/promise-all-settled.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "cbor": {
+        "version1": [
+            "5.2.0"
+        ],
+        "version2": null,
+        "repo": "github.com/hildjj/node-cbor.git",
+        "repo_name": "hildjj/node-cbor",
+        "repo_pure": "github.com/hildjj/node-cbor.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "bignumber.js": {
+        "only_in_1": [
+            "9.1.1"
+        ],
+        "only_in_2": [
+            "9.1.2"
+        ],
+        "unchanged_in_1": [
+            "4.1.0"
+        ],
+        "version1": [
+            "4.1.0",
+            "9.1.1"
+        ],
+        "version2": [
+            "4.1.0",
+            "9.1.2"
+        ],
+        "repo": "github.com/MikeMcl/bignumber.js.git",
+        "repo_name": "MikeMcl/bignumber.js",
+        "repo_pure": "github.com/MikeMcl/bignumber.js.git",
+        "chosen_v2": "9.1.2",
+        "chosen_v1": "9.1.1"
+    },
+    "eslint-visitor-keys": {
+        "only_in_1": [
+            "3.4.0"
+        ],
+        "only_in_2": [
+            "3.4.3"
+        ],
+        "unchanged_in_1": [
+            "1.3.0",
+            "2.1.0",
+            "3.3.0"
+        ],
+        "version1": [
+            "1.3.0",
+            "2.1.0",
+            "3.3.0",
+            "3.4.0"
+        ],
+        "version2": [
+            "1.3.0",
+            "2.1.0",
+            "3.3.0",
+            "3.4.3"
+        ],
+        "repo": "github.com/eslint/eslint-visitor-keys.git",
+        "repo_name": "eslint/eslint-visitor-keys",
+        "repo_pure": "github.com/eslint/eslint-visitor-keys.git",
+        "chosen_v2": "3.4.3",
+        "chosen_v1": "3.4.0"
+    },
+    "@metamask/eth-keyring-controller": {
+        "version1": null,
+        "version2": [
+            "15.1.0"
+        ],
+        "repo": "github.com/MetaMask/KeyringController.git",
+        "repo_name": "MetaMask/KeyringController",
+        "repo_pure": "github.com/MetaMask/KeyringController.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "listenercount": {
+        "version1": [
+            "1.0.1"
+        ],
+        "version2": null,
+        "repo": "github.com/jden/node-listenercount.git",
+        "repo_name": "jden/node-listenercount",
+        "repo_pure": "github.com/jden/node-listenercount.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/eth-token-tracker": {
+        "only_in_1": [
+            "4.0.0"
+        ],
+        "only_in_2": [
+            "4.1.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "4.0.0"
+        ],
+        "version2": [
+            "4.1.0"
+        ],
+        "repo": "github.com/MetaMask/eth-token-tracker.git",
+        "repo_name": "MetaMask/eth-token-tracker",
+        "repo_pure": "github.com/MetaMask/eth-token-tracker.git",
+        "chosen_v2": "4.1.0",
+        "chosen_v1": "4.0.0"
+    },
+    "ethereum-bloom-filters": {
+        "version1": [
+            "1.0.7"
+        ],
+        "version2": null,
+        "repo": "github.com/joshstevens19/ethereum-bloom-filters.git",
+        "repo_name": "joshstevens19/ethereum-bloom-filters",
+        "repo_pure": "github.com/joshstevens19/ethereum-bloom-filters.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "buffer-indexof-polyfill": {
+        "version1": [
+            "1.0.2"
+        ],
+        "version2": null,
+        "repo": "github.com/sarosia/buffer-indexof-polyfill.git",
+        "repo_name": "sarosia/buffer-indexof-polyfill",
+        "repo_pure": "github.com/sarosia/buffer-indexof-polyfill.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "follow-redirects": {
+        "only_in_1": [
+            "1.15.2"
+        ],
+        "only_in_2": [
+            "1.15.3"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.15.2"
+        ],
+        "version2": [
+            "1.15.3"
+        ],
+        "repo": "github.com/follow-redirects/follow-redirects.git",
+        "repo_name": "follow-redirects/follow-redirects",
+        "repo_pure": "github.com/follow-redirects/follow-redirects.git",
+        "chosen_v2": "1.15.3",
+        "chosen_v1": "1.15.2"
+    },
+    "@storybook/preview-api": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "@trezor/utxo-lib": {
+        "only_in_1": [
+            "1.0.4"
+        ],
+        "only_in_2": [
+            "1.0.7"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.0.4"
+        ],
+        "version2": [
+            "1.0.7"
+        ],
+        "repo": "github.com/trezor/trezor-suite.git",
+        "repo_name": "trezor/trezor-suite",
+        "repo_pure": "github.com/trezor/trezor-suite.git",
+        "chosen_v2": "1.0.7",
+        "chosen_v1": "1.0.4"
+    },
+    "yargs-parser": {
+        "only_in_1": [
+            "2.4.1"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "18.1.3",
+            "20.2.4",
+            "20.2.9",
+            "21.1.1",
+            "5.0.1"
+        ],
+        "version1": [
+            "18.1.3",
+            "2.4.1",
+            "20.2.4",
+            "20.2.9",
+            "21.1.1",
+            "5.0.1"
+        ],
+        "version2": [
+            "18.1.3",
+            "20.2.4",
+            "20.2.9",
+            "21.1.1",
+            "5.0.1"
+        ],
+        "repo": "github.com/yargs/yargs-parser.git",
+        "repo_name": "yargs/yargs-parser",
+        "repo_pure": "github.com/yargs/yargs-parser.git",
+        "chosen_v2": "null",
+        "chosen_v1": "2.4.1"
+    },
+    "convert-source-map": {
+        "only_in_1": [
+            "1.9.0"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "2.0.0"
+        ],
+        "version1": [
+            "1.9.0",
+            "2.0.0"
+        ],
+        "version2": [
+            "2.0.0"
+        ],
+        "repo": "github.com/thlorenz/convert-source-map.git",
+        "repo_name": "thlorenz/convert-source-map",
+        "repo_pure": "github.com/thlorenz/convert-source-map.git",
+        "chosen_v2": "null",
+        "chosen_v1": "1.9.0"
+    },
+    "@types/eslint": {
+        "only_in_1": [
+            "8.4.6"
+        ],
+        "only_in_2": [
+            "8.44.8"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "8.4.6"
+        ],
+        "version2": [
+            "8.44.8"
+        ],
+        "repo": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "repo_name": "DefinitelyTyped/DefinitelyTyped",
+        "repo_pure": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "chosen_v2": "8.44.8",
+        "chosen_v1": "8.4.6"
+    },
+    "decamelize": {
+        "only_in_1": [
+            "6.0.0"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "1.2.0",
+            "4.0.0"
+        ],
+        "version1": [
+            "1.2.0",
+            "4.0.0",
+            "6.0.0"
+        ],
+        "version2": [
+            "1.2.0",
+            "4.0.0"
+        ],
+        "repo": "github.com/sindresorhus/decamelize.git",
+        "repo_name": "sindresorhus/decamelize",
+        "repo_pure": "github.com/sindresorhus/decamelize.git",
+        "chosen_v2": "null",
+        "chosen_v1": "6.0.0"
+    },
+    "bin-links": {
+        "only_in_1": [
+            "4.0.1"
+        ],
+        "only_in_2": [
+            "4.0.3"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "4.0.1"
+        ],
+        "version2": [
+            "4.0.3"
+        ],
+        "repo": "github.com/npm/bin-links.git",
+        "repo_name": "npm/bin-links",
+        "repo_pure": "github.com/npm/bin-links.git",
+        "chosen_v2": "4.0.3",
+        "chosen_v1": "4.0.1"
+    },
+    "upper-case": {
+        "version1": [
+            "1.1.3"
+        ],
+        "version2": null,
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@storybook/types": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "nanoid": {
+        "only_in_1": [
+            "3.3.1"
+        ],
+        "only_in_2": [
+            "3.3.3"
+        ],
+        "unchanged_in_1": [
+            "2.1.11",
+            "3.3.6"
+        ],
+        "version1": [
+            "2.1.11",
+            "3.3.1",
+            "3.3.6"
+        ],
+        "version2": [
+            "2.1.11",
+            "3.3.3",
+            "3.3.6"
+        ],
+        "repo": "github.com/ai/nanoid.git",
+        "repo_name": "ai/nanoid",
+        "repo_pure": "github.com/ai/nanoid.git",
+        "chosen_v2": "3.3.3",
+        "chosen_v1": "3.3.1"
+    },
+    "@metamask/queued-request-controller": {
+        "version1": null,
+        "version2": [
+            "0.3.0"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/eth-json-rpc-provider": {
+        "only_in_1": [
+            "1.0.0"
+        ],
+        "only_in_2": [
+            "2.3.2"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.0.0"
+        ],
+        "version2": [
+            "2.3.2"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "2.3.2",
+        "chosen_v1": "1.0.0"
+    },
+    "browser-util-inspect": {
+        "version1": [
+            "0.2.0"
+        ],
+        "version2": null,
+        "repo": "github.com/deecewan/util-inspect.git",
+        "repo_name": "deecewan/util-inspect",
+        "repo_pure": "github.com/deecewan/util-inspect.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "is-weakmap": {
+        "version1": null,
+        "version2": [
+            "2.0.1"
+        ],
+        "repo": "github.com/inspect-js/is-weakmap.git",
+        "repo_name": "inspect-js/is-weakmap",
+        "repo_pure": "github.com/inspect-js/is-weakmap.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "espree": {
+        "only_in_1": [
+            "9.5.1"
+        ],
+        "only_in_2": [
+            "9.6.1"
+        ],
+        "unchanged_in_1": [
+            "9.5.0"
+        ],
+        "version1": [
+            "9.5.0",
+            "9.5.1"
+        ],
+        "version2": [
+            "9.5.0",
+            "9.6.1"
+        ],
+        "repo": "github.com/eslint/espree.git",
+        "repo_name": "eslint/espree",
+        "repo_pure": "github.com/eslint/espree.git",
+        "chosen_v2": "9.6.1",
+        "chosen_v1": "9.5.1"
+    },
+    "@babel/helper-string-parser": {
+        "only_in_1": [
+            "7.22.5"
+        ],
+        "only_in_2": [
+            "7.23.4"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "7.22.5"
+        ],
+        "version2": [
+            "7.23.4"
+        ],
+        "repo": "github.com/babel/babel.git",
+        "repo_name": "babel/babel",
+        "repo_pure": "github.com/babel/babel.git",
+        "chosen_v2": "7.23.4",
+        "chosen_v1": "7.22.5"
+    },
+    "@babel/traverse": {
+        "only_in_1": [
+            "7.23.2"
+        ],
+        "only_in_2": [
+            "7.23.7"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "7.23.2"
+        ],
+        "version2": [
+            "7.23.7"
+        ],
+        "repo": "github.com/babel/babel.git",
+        "repo_name": "babel/babel",
+        "repo_pure": "github.com/babel/babel.git",
+        "chosen_v2": "7.23.7",
+        "chosen_v1": "7.23.2"
+    },
+    "@storybook/core-common": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "@lavamoat/snow": {
+        "only_in_1": [
+            "1.5.0"
+        ],
+        "only_in_2": [
+            "2.0.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.5.0"
+        ],
+        "version2": [
+            "2.0.1"
+        ],
+        "repo": "github.com/lavamoat/snow.git",
+        "repo_name": "lavamoat/snow",
+        "repo_pure": "github.com/lavamoat/snow.git",
+        "chosen_v2": "2.0.1",
+        "chosen_v1": "1.5.0"
+    },
+    "eth-block-tracker": {
+        "only_in_1": [
+            "4.4.2",
+            "7.0.1"
+        ],
+        "only_in_2": [
+            "5.0.1",
+            "8.1.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "4.4.2",
+            "7.0.1"
+        ],
+        "version2": [
+            "5.0.1",
+            "8.1.0"
+        ],
+        "repo": "github.com/MetaMask/eth-block-tracker.git",
+        "repo_name": "MetaMask/eth-block-tracker",
+        "repo_pure": "github.com/MetaMask/eth-block-tracker.git",
+        "chosen_v2": "8.1.0",
+        "chosen_v1": "7.0.1"
+    },
+    "multihashes": {
+        "only_in_1": [
+            "0.4.21"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "2.0.0",
+            "4.0.2"
+        ],
+        "version1": [
+            "0.4.21",
+            "2.0.0",
+            "4.0.2"
+        ],
+        "version2": [
+            "2.0.0",
+            "4.0.2"
+        ],
+        "repo": "github.com/multiformats/js-multihash.git",
+        "repo_name": "multiformats/js-multihash",
+        "repo_pure": "github.com/multiformats/js-multihash.git",
+        "chosen_v2": "null",
+        "chosen_v1": "0.4.21"
+    },
+    "https-proxy-agent": {
+        "only_in_1": [
+            "7.0.0"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "4.0.0",
+            "5.0.1"
+        ],
+        "version1": [
+            "4.0.0",
+            "5.0.1",
+            "7.0.0"
+        ],
+        "version2": [
+            "4.0.0",
+            "5.0.1"
+        ],
+        "repo": "github.com/TooTallNate/proxy-agents.git",
+        "repo_name": "TooTallNate/proxy-agents",
+        "repo_pure": "github.com/TooTallNate/proxy-agents.git",
+        "chosen_v2": "null",
+        "chosen_v1": "7.0.0"
+    },
+    "@metamask/keyring-api": {
+        "only_in_1": [],
+        "only_in_2": [
+            "2.0.0"
+        ],
+        "unchanged_in_1": [
+            "1.0.0"
+        ],
+        "version1": [
+            "1.0.0"
+        ],
+        "version2": [
+            "1.0.0",
+            "2.0.0"
+        ],
+        "repo": "github.com/MetaMask/keyring-api.git",
+        "repo_name": "MetaMask/keyring-api",
+        "repo_pure": "github.com/MetaMask/keyring-api.git",
+        "chosen_v2": "2.0.0",
+        "chosen_v1": "1.0.0"
+    },
+    "pure-rand": {
+        "version1": [
+            "5.0.5"
+        ],
+        "version2": null,
+        "repo": "github.com/dubzzz/pure-rand.git",
+        "repo_name": "dubzzz/pure-rand",
+        "repo_pure": "github.com/dubzzz/pure-rand.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@trezor/blockchain-link-utils": {
+        "version1": null,
+        "version2": [
+            "1.0.3"
+        ],
+        "repo": "not github",
+        "repo_name": "not github",
+        "repo_pure": "not github",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask-institutional/institutional-features": {
+        "only_in_1": [
+            "1.2.7"
+        ],
+        "only_in_2": [
+            "1.2.9"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.2.7"
+        ],
+        "version2": [
+            "1.2.9"
+        ],
+        "repo": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "repo_name": "consensys-vertical-apps/metamask-institutional",
+        "repo_pure": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "chosen_v2": "1.2.9",
+        "chosen_v1": "1.2.7"
+    },
+    "bluebird": {
+        "only_in_1": [
+            "3.4.7"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "3.7.2"
+        ],
+        "version1": [
+            "3.4.7",
+            "3.7.2"
+        ],
+        "version2": [
+            "3.7.2"
+        ],
+        "repo": "github.com/petkaantonov/bluebird.git",
+        "repo_name": "petkaantonov/bluebird",
+        "repo_pure": "github.com/petkaantonov/bluebird.git",
+        "chosen_v2": "null",
+        "chosen_v1": "3.4.7"
+    },
+    "@storybook/components": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "@metamask/eth-snap-keyring": {
+        "only_in_1": [
+            "1.0.0"
+        ],
+        "only_in_2": [
+            "2.1.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.0.0"
+        ],
+        "version2": [
+            "2.1.1"
+        ],
+        "repo": "github.com/MetaMask/eth-snap-keyring.git",
+        "repo_name": "MetaMask/eth-snap-keyring",
+        "repo_pure": "github.com/MetaMask/eth-snap-keyring.git",
+        "chosen_v2": "2.1.1",
+        "chosen_v1": "1.0.0"
+    },
+    "json-pointer": {
+        "version1": [
+            "0.6.2"
+        ],
+        "version2": null,
+        "repo": "github.com/manuelstofer/json-pointer.git",
+        "repo_name": "manuelstofer/json-pointer",
+        "repo_pure": "github.com/manuelstofer/json-pointer.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "is-set": {
+        "version1": null,
+        "version2": [
+            "2.0.2"
+        ],
+        "repo": "github.com/inspect-js/is-set.git",
+        "repo_name": "inspect-js/is-set",
+        "repo_pure": "github.com/inspect-js/is-set.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "upper-case-first": {
+        "version1": [
+            "1.1.2"
+        ],
+        "version2": null,
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@babel/parser": {
+        "only_in_1": [
+            "7.23.0"
+        ],
+        "only_in_2": [
+            "7.23.6",
+            "7.23.9"
+        ],
+        "unchanged_in_1": [
+            "7.16.4"
+        ],
+        "version1": [
+            "7.16.4",
+            "7.23.0"
+        ],
+        "version2": [
+            "7.16.4",
+            "7.23.6",
+            "7.23.9"
+        ],
+        "repo": "github.com/babel/babel.git",
+        "repo_name": "babel/babel",
+        "repo_pure": "github.com/babel/babel.git",
+        "chosen_v2": "7.23.9",
+        "chosen_v1": "7.23.0"
+    },
+    "internal-slot": {
+        "only_in_1": [
+            "1.0.5"
+        ],
+        "only_in_2": [
+            "1.0.6"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.0.5"
+        ],
+        "version2": [
+            "1.0.6"
+        ],
+        "repo": "github.com/ljharb/internal-slot.git",
+        "repo_name": "ljharb/internal-slot",
+        "repo_pure": "github.com/ljharb/internal-slot.git",
+        "chosen_v2": "1.0.6",
+        "chosen_v1": "1.0.5"
+    },
+    "klona": {
+        "only_in_1": [
+            "2.0.4"
+        ],
+        "only_in_2": [
+            "2.0.6"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "2.0.4"
+        ],
+        "version2": [
+            "2.0.6"
+        ],
+        "repo": "github.com/lukeed/klona.git",
+        "repo_name": "lukeed/klona",
+        "repo_pure": "github.com/lukeed/klona.git",
+        "chosen_v2": "2.0.6",
+        "chosen_v1": "2.0.4"
+    },
+    "@storybook/docs-tools": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "define-data-property": {
+        "version1": null,
+        "version2": [
+            "1.1.1"
+        ],
+        "repo": "github.com/ljharb/define-data-property.git",
+        "repo_name": "ljharb/define-data-property",
+        "repo_pure": "github.com/ljharb/define-data-property.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/assets-controllers": {
+        "version1": null,
+        "version2": [
+            "24.0.0"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/eth-query": {
+        "only_in_1": [],
+        "only_in_2": [
+            "4.0.0"
+        ],
+        "unchanged_in_1": [
+            "3.0.1"
+        ],
+        "version1": [
+            "3.0.1"
+        ],
+        "version2": [
+            "3.0.1",
+            "4.0.0"
+        ],
+        "repo": "github.com/MetaMask/eth-query.git",
+        "repo_name": "MetaMask/eth-query",
+        "repo_pure": "github.com/MetaMask/eth-query.git",
+        "chosen_v2": "4.0.0",
+        "chosen_v1": "3.0.1"
+    },
+    "@storybook/node-logger": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "@truffle/error": {
+        "version1": [
+            "0.2.0"
+        ],
+        "version2": null,
+        "repo": "github.com/trufflesuite/truffle.git",
+        "repo_name": "trufflesuite/truffle",
+        "repo_pure": "github.com/trufflesuite/truffle.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "param-case": {
+        "only_in_1": [
+            "2.1.1"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "3.0.4"
+        ],
+        "version1": [
+            "2.1.1",
+            "3.0.4"
+        ],
+        "version2": [
+            "3.0.4"
+        ],
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "2.1.1"
+    },
+    "@truffle/code-utils": {
+        "version1": [
+            "3.0.1"
+        ],
+        "version2": null,
+        "repo": "github.com/trufflesuite/truffle.git",
+        "repo_name": "trufflesuite/truffle",
+        "repo_pure": "github.com/trufflesuite/truffle.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@babel/generator": {
+        "only_in_1": [
+            "7.23.0"
+        ],
+        "only_in_2": [
+            "7.23.6"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "7.23.0"
+        ],
+        "version2": [
+            "7.23.6"
+        ],
+        "repo": "github.com/babel/babel.git",
+        "repo_name": "babel/babel",
+        "repo_pure": "github.com/babel/babel.git",
+        "chosen_v2": "7.23.6",
+        "chosen_v1": "7.23.0"
+    },
+    "aes-js": {
+        "only_in_1": [
+            "3.0.0"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "3.1.2"
+        ],
+        "version1": [
+            "3.0.0",
+            "3.1.2"
+        ],
+        "version2": [
+            "3.1.2"
+        ],
+        "repo": "github.com/ricmoo/aes-js.git",
+        "repo_name": "ricmoo/aes-js",
+        "repo_pure": "github.com/ricmoo/aes-js.git",
+        "chosen_v2": "null",
+        "chosen_v1": "3.0.0"
+    },
+    "which-collection": {
+        "version1": null,
+        "version2": [
+            "1.0.1"
+        ],
+        "repo": "github.com/inspect-js/which-collection.git",
+        "repo_name": "inspect-js/which-collection",
+        "repo_pure": "github.com/inspect-js/which-collection.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "http-proxy-agent": {
+        "only_in_1": [
+            "7.0.0"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "4.0.1",
+            "5.0.0"
+        ],
+        "version1": [
+            "4.0.1",
+            "5.0.0",
+            "7.0.0"
+        ],
+        "version2": [
+            "4.0.1",
+            "5.0.0"
+        ],
+        "repo": "github.com/TooTallNate/proxy-agents.git",
+        "repo_name": "TooTallNate/proxy-agents",
+        "repo_pure": "github.com/TooTallNate/proxy-agents.git",
+        "chosen_v2": "null",
+        "chosen_v1": "7.0.0"
+    },
+    "ses": {
+        "only_in_1": [],
+        "only_in_2": [
+            "1.1.0"
+        ],
+        "unchanged_in_1": [
+            "0.18.8"
+        ],
+        "version1": [
+            "0.18.8"
+        ],
+        "version2": [
+            "0.18.8",
+            "1.1.0"
+        ],
+        "repo": "github.com/endojs/endo.git",
+        "repo_name": "endojs/endo",
+        "repo_pure": "github.com/endojs/endo.git",
+        "chosen_v2": "1.1.0",
+        "chosen_v1": "0.18.8"
+    },
+    "@trezor/blockchain-link-types": {
+        "version1": null,
+        "version2": [
+            "1.0.2"
+        ],
+        "repo": "not github",
+        "repo_name": "not github",
+        "repo_pure": "not github",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "eslint-compat-utils": {
+        "version1": null,
+        "version2": [
+            "0.1.2"
+        ],
+        "repo": "github.com/ota-meshi/eslint-compat-utils.git",
+        "repo_name": "ota-meshi/eslint-compat-utils",
+        "repo_pure": "github.com/ota-meshi/eslint-compat-utils.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "selenium-webdriver": {
+        "only_in_1": [
+            "4.9.0"
+        ],
+        "only_in_2": [
+            "4.15.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "4.9.0"
+        ],
+        "version2": [
+            "4.15.0"
+        ],
+        "repo": "github.com/SeleniumHQ/selenium.git",
+        "repo_name": "SeleniumHQ/selenium",
+        "repo_pure": "github.com/SeleniumHQ/selenium.git",
+        "chosen_v2": "4.15.0",
+        "chosen_v1": "4.9.0"
+    },
+    "@types/readable-stream": {
+        "version1": null,
+        "version2": [
+            "4.0.4"
+        ],
+        "repo": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "repo_name": "DefinitelyTyped/DefinitelyTyped",
+        "repo_pure": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@ethersproject/units": {
+        "version1": [
+            "5.7.0"
+        ],
+        "version2": null,
+        "repo": "github.com/ethers-io/ethers.js.git",
+        "repo_name": "ethers-io/ethers.js",
+        "repo_pure": "github.com/ethers-io/ethers.js.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "lower-case": {
+        "only_in_1": [
+            "1.1.4"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "2.0.2"
+        ],
+        "version1": [
+            "1.1.4",
+            "2.0.2"
+        ],
+        "version2": [
+            "2.0.2"
+        ],
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "1.1.4"
+    },
+    "@babel/plugin-transform-runtime": {
+        "version1": [
+            "7.18.9"
+        ],
+        "version2": null,
+        "repo": "github.com/babel/babel.git",
+        "repo_name": "babel/babel",
+        "repo_pure": "github.com/babel/babel.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "window-size": {
+        "version1": [
+            "0.2.0"
+        ],
+        "version2": null,
+        "repo": "github.com/jonschlinkert/window-size.git",
+        "repo_name": "jonschlinkert/window-size",
+        "repo_pure": "github.com/jonschlinkert/window-size.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@truffle/compile-common": {
+        "version1": [
+            "0.9.2"
+        ],
+        "version2": null,
+        "repo": "github.com/trufflesuite/truffle.git",
+        "repo_name": "trufflesuite/truffle",
+        "repo_pure": "github.com/trufflesuite/truffle.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "cross-fetch": {
+        "only_in_1": [
+            "3.1.6"
+        ],
+        "only_in_2": [
+            "3.1.8"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "3.1.6"
+        ],
+        "version2": [
+            "3.1.8"
+        ],
+        "repo": "github.com/lquixada/cross-fetch.git",
+        "repo_name": "lquixada/cross-fetch",
+        "repo_pure": "github.com/lquixada/cross-fetch.git",
+        "chosen_v2": "3.1.8",
+        "chosen_v1": "3.1.6"
+    },
+    "dot-case": {
+        "only_in_1": [
+            "2.1.1"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "3.0.4"
+        ],
+        "version1": [
+            "2.1.1",
+            "3.0.4"
+        ],
+        "version2": [
+            "3.0.4"
+        ],
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "2.1.1"
+    },
+    "@metamask/test-dapp": {
+        "only_in_1": [
+            "7.1.0"
+        ],
+        "only_in_2": [
+            "7.3.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "7.1.0"
+        ],
+        "version2": [
+            "7.3.1"
+        ],
+        "repo": "github.com/MetaMask/test-dapp.git",
+        "repo_name": "MetaMask/test-dapp",
+        "repo_pure": "github.com/MetaMask/test-dapp.git",
+        "chosen_v2": "7.3.1",
+        "chosen_v1": "7.1.0"
+    },
+    "define-properties": {
+        "only_in_1": [
+            "1.1.4"
+        ],
+        "only_in_2": [
+            "1.2.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.1.4"
+        ],
+        "version2": [
+            "1.2.1"
+        ],
+        "repo": "github.com/ljharb/define-properties.git",
+        "repo_name": "ljharb/define-properties",
+        "repo_pure": "github.com/ljharb/define-properties.git",
+        "chosen_v2": "1.2.1",
+        "chosen_v1": "1.1.4"
+    },
+    "lit-element": {
+        "version1": null,
+        "version2": [
+            "3.3.3"
+        ],
+        "repo": "github.com/lit/lit.git",
+        "repo_name": "lit/lit",
+        "repo_pure": "github.com/lit/lit.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "commander": {
+        "only_in_1": [
+            "9.4.1"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "10.0.1",
+            "2.20.3",
+            "3.0.2",
+            "5.1.0",
+            "6.2.1",
+            "7.2.0",
+            "8.3.0",
+            "9.5.0"
+        ],
+        "version1": [
+            "10.0.1",
+            "2.20.3",
+            "3.0.2",
+            "5.1.0",
+            "6.2.1",
+            "7.2.0",
+            "8.3.0",
+            "9.4.1",
+            "9.5.0"
+        ],
+        "version2": [
+            "10.0.1",
+            "2.20.3",
+            "3.0.2",
+            "5.1.0",
+            "6.2.1",
+            "7.2.0",
+            "8.3.0",
+            "9.5.0"
+        ],
+        "repo": "github.com/tj/commander.js.git",
+        "repo_name": "tj/commander.js",
+        "repo_pure": "github.com/tj/commander.js.git",
+        "chosen_v2": "null",
+        "chosen_v1": "9.4.1"
+    },
+    "@wdio/logger": {
+        "version1": [
+            "8.11.0"
+        ],
+        "version2": null,
+        "repo": "github.com/webdriverio/webdriverio.git",
+        "repo_name": "webdriverio/webdriverio",
+        "repo_pure": "github.com/webdriverio/webdriverio.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "lit": {
+        "version1": null,
+        "version2": [
+            "2.8.0"
+        ],
+        "repo": "github.com/lit/lit.git",
+        "repo_name": "lit/lit",
+        "repo_pure": "github.com/lit/lit.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "json-rpc-middleware-stream": {
+        "only_in_1": [],
+        "only_in_2": [
+            "5.0.1"
+        ],
+        "unchanged_in_1": [
+            "4.2.1"
+        ],
+        "version1": [
+            "4.2.1"
+        ],
+        "version2": [
+            "4.2.1",
+            "5.0.1"
+        ],
+        "repo": "github.com/MetaMask/json-rpc-middleware-stream.git",
+        "repo_name": "MetaMask/json-rpc-middleware-stream",
+        "repo_pure": "github.com/MetaMask/json-rpc-middleware-stream.git",
+        "chosen_v2": "5.0.1",
+        "chosen_v1": "4.2.1"
+    },
+    "undici-types": {
+        "version1": null,
+        "version2": [
+            "5.26.5"
+        ],
+        "repo": "github.com/nodejs/undici.git",
+        "repo_name": "nodejs/undici",
+        "repo_pure": "github.com/nodejs/undici.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@truffle/encoder": {
+        "version1": [
+            "1.0.2"
+        ],
+        "version2": null,
+        "repo": "github.com/trufflesuite/truffle.git",
+        "repo_name": "trufflesuite/truffle",
+        "repo_pure": "github.com/trufflesuite/truffle.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "lavamoat-tofu": {
+        "only_in_1": [
+            "6.2.1"
+        ],
+        "only_in_2": [
+            "7.1.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "6.2.1"
+        ],
+        "version2": [
+            "7.1.0"
+        ],
+        "repo": "github.com/LavaMoat/lavamoat.git",
+        "repo_name": "LavaMoat/lavamoat",
+        "repo_pure": "github.com/LavaMoat/lavamoat.git",
+        "chosen_v2": "7.1.0",
+        "chosen_v1": "6.2.1"
+    },
+    "pony-cause": {
+        "version1": null,
+        "version2": [
+            "2.1.10"
+        ],
+        "repo": "github.com/voxpelli/pony-cause.git",
+        "repo_name": "voxpelli/pony-cause",
+        "repo_pure": "github.com/voxpelli/pony-cause.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "css-box-model": {
+        "version1": null,
+        "version2": [
+            "1.2.1"
+        ],
+        "repo": "github.com/alexreardon/css-box-model.git",
+        "repo_name": "alexreardon/css-box-model",
+        "repo_pure": "github.com/alexreardon/css-box-model.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "change-case": {
+        "version1": [
+            "3.0.2"
+        ],
+        "version2": null,
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@trezor/connect-web": {
+        "only_in_1": [
+            "9.0.7"
+        ],
+        "only_in_2": [
+            "9.0.11"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "9.0.7"
+        ],
+        "version2": [
+            "9.0.11"
+        ],
+        "repo": "github.com/trezor/trezor-suite.git",
+        "repo_name": "trezor/trezor-suite",
+        "repo_pure": "github.com/trezor/trezor-suite.git",
+        "chosen_v2": "9.0.11",
+        "chosen_v1": "9.0.7"
+    },
+    "ip-regex": {
+        "version1": [
+            "2.1.0"
+        ],
+        "version2": null,
+        "repo": "github.com/sindresorhus/ip-regex.git",
+        "repo_name": "sindresorhus/ip-regex",
+        "repo_pure": "github.com/sindresorhus/ip-regex.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/eth-hd-keyring": {
+        "only_in_1": [
+            "6.0.0"
+        ],
+        "only_in_2": [
+            "7.0.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "6.0.0"
+        ],
+        "version2": [
+            "7.0.1"
+        ],
+        "repo": "github.com/MetaMask/eth-hd-keyring.git",
+        "repo_name": "MetaMask/eth-hd-keyring",
+        "repo_pure": "github.com/MetaMask/eth-hd-keyring.git",
+        "chosen_v2": "7.0.1",
+        "chosen_v1": "6.0.0"
+    },
+    "@storybook/react-dom-shim": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "@babel/highlight": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.23.4"
+        ],
+        "unchanged_in_1": [
+            "7.22.20"
+        ],
+        "version1": [
+            "7.22.20"
+        ],
+        "version2": [
+            "7.22.20",
+            "7.23.4"
+        ],
+        "repo": "github.com/babel/babel.git",
+        "repo_name": "babel/babel",
+        "repo_pure": "github.com/babel/babel.git",
+        "chosen_v2": "7.23.4",
+        "chosen_v1": "7.22.20"
+    },
+    "@metamask/eth-ledger-bridge-keyring": {
+        "only_in_1": [
+            "0.15.0"
+        ],
+        "only_in_2": [
+            "2.0.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "0.15.0"
+        ],
+        "version2": [
+            "2.0.1"
+        ],
+        "repo": "github.com/MetaMask/eth-ledger-bridge-keyring.git",
+        "repo_name": "MetaMask/eth-ledger-bridge-keyring",
+        "repo_pure": "github.com/MetaMask/eth-ledger-bridge-keyring.git",
+        "chosen_v2": "2.0.1",
+        "chosen_v1": "0.15.0"
+    },
+    "testrpc": {
+        "version1": [
+            "0.0.1"
+        ],
+        "version2": null,
+        "repo": "github.com/trufflesuite/ganache-cli.git",
+        "repo_name": "trufflesuite/ganache-cli",
+        "repo_pure": "github.com/trufflesuite/ganache-cli.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/etherscan-link": {
+        "only_in_1": [
+            "2.2.0"
+        ],
+        "only_in_2": [
+            "3.0.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "2.2.0"
+        ],
+        "version2": [
+            "3.0.0"
+        ],
+        "repo": "github.com/MetaMask/etherscan-link.git",
+        "repo_name": "MetaMask/etherscan-link",
+        "repo_pure": "github.com/MetaMask/etherscan-link.git",
+        "chosen_v2": "3.0.0",
+        "chosen_v1": "2.2.0"
+    },
+    "@oozcitak/util": {
+        "version1": [
+            "8.3.8"
+        ],
+        "version2": null,
+        "repo": "github.com/oozcitak/util.git",
+        "repo_name": "oozcitak/util",
+        "repo_pure": "github.com/oozcitak/util.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "eth-sig-util": {
+        "only_in_1": [
+            "2.5.4"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "3.0.1"
+        ],
+        "version1": [
+            "2.5.4",
+            "3.0.1"
+        ],
+        "version2": [
+            "3.0.1"
+        ],
+        "repo": "github.com/MetaMask/eth-sig-util.git",
+        "repo_name": "MetaMask/eth-sig-util",
+        "repo_pure": "github.com/MetaMask/eth-sig-util.git",
+        "chosen_v2": "null",
+        "chosen_v1": "2.5.4"
+    },
+    "big.js": {
+        "only_in_1": [
+            "6.2.1"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "5.2.2"
+        ],
+        "version1": [
+            "5.2.2",
+            "6.2.1"
+        ],
+        "version2": [
+            "5.2.2"
+        ],
+        "repo": "github.com/MikeMcl/big.js.git",
+        "repo_name": "MikeMcl/big.js",
+        "repo_pure": "github.com/MikeMcl/big.js.git",
+        "chosen_v2": "null",
+        "chosen_v1": "6.2.1"
+    },
+    "data-uri-to-buffer": {
+        "only_in_1": [
+            "4.0.1"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "3.0.1"
+        ],
+        "version1": [
+            "3.0.1",
+            "4.0.1"
+        ],
+        "version2": [
+            "3.0.1"
+        ],
+        "repo": "github.com/TooTallNate/proxy-agents.git",
+        "repo_name": "TooTallNate/proxy-agents",
+        "repo_pure": "github.com/TooTallNate/proxy-agents.git",
+        "chosen_v2": "null",
+        "chosen_v1": "4.0.1"
+    },
+    "@metamask/snaps-registry": {
+        "only_in_1": [
+            "2.0.0"
+        ],
+        "only_in_2": [
+            "2.1.1",
+            "3.0.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "2.0.0"
+        ],
+        "version2": [
+            "2.1.1",
+            "3.0.0"
+        ],
+        "repo": "github.com/MetaMask/snaps-registry.git",
+        "repo_name": "MetaMask/snaps-registry",
+        "repo_pure": "github.com/MetaMask/snaps-registry.git",
+        "chosen_v2": "3.0.0",
+        "chosen_v1": "2.0.0"
+    },
+    "parse-uri": {
+        "version1": [
+            "1.0.7"
+        ],
+        "version2": null,
+        "repo": "github.com/kikobeats/parse-uri.git",
+        "repo_name": "kikobeats/parse-uri",
+        "repo_pure": "github.com/kikobeats/parse-uri.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/network-controller": {
+        "only_in_1": [
+            "10.3.1",
+            "12.2.0",
+            "13.0.0"
+        ],
+        "only_in_2": [
+            "15.2.0",
+            "17.2.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "10.3.1",
+            "12.2.0",
+            "13.0.0"
+        ],
+        "version2": [
+            "15.2.0",
+            "17.2.0"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "17.2.0",
+        "chosen_v1": "13.0.0"
+    },
+    "acorn": {
+        "only_in_1": [
+            "8.10.0"
+        ],
+        "only_in_2": [
+            "8.11.3"
+        ],
+        "unchanged_in_1": [
+            "6.4.2"
+        ],
+        "version1": [
+            "6.4.2",
+            "8.10.0"
+        ],
+        "version2": [
+            "6.4.2",
+            "8.11.3"
+        ],
+        "repo": "github.com/acornjs/acorn.git",
+        "repo_name": "acornjs/acorn",
+        "repo_pure": "github.com/acornjs/acorn.git",
+        "chosen_v2": "8.11.3",
+        "chosen_v1": "8.10.0"
+    },
+    "cids": {
+        "only_in_1": [
+            "0.7.5"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "1.1.7"
+        ],
+        "version1": [
+            "0.7.5",
+            "1.1.7"
+        ],
+        "version2": [
+            "1.1.7"
+        ],
+        "repo": "github.com/multiformats/js-cid.git",
+        "repo_name": "multiformats/js-cid",
+        "repo_pure": "github.com/multiformats/js-cid.git",
+        "chosen_v2": "null",
+        "chosen_v1": "0.7.5"
+    },
+    "nonce-tracker": {
+        "version1": [
+            "1.0.1"
+        ],
+        "version2": null,
+        "repo": "github.com/MetaMask/nonce-tracker.git",
+        "repo_name": "MetaMask/nonce-tracker",
+        "repo_pure": "github.com/MetaMask/nonce-tracker.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/permission-controller": {
+        "only_in_1": [],
+        "only_in_2": [
+            "5.0.1",
+            "7.1.0"
+        ],
+        "unchanged_in_1": [
+            "4.1.2"
+        ],
+        "version1": [
+            "4.1.2"
+        ],
+        "version2": [
+            "4.1.2",
+            "5.0.1",
+            "7.1.0"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "7.1.0",
+        "chosen_v1": "4.1.2"
+    },
+    "workerpool": {
+        "only_in_1": [
+            "6.2.0"
+        ],
+        "only_in_2": [
+            "6.2.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "6.2.0"
+        ],
+        "version2": [
+            "6.2.1"
+        ],
+        "repo": "github.com/josdejong/workerpool.git",
+        "repo_name": "josdejong/workerpool",
+        "repo_pure": "github.com/josdejong/workerpool.git",
+        "chosen_v2": "6.2.1",
+        "chosen_v1": "6.2.0"
+    },
+    "@metamask/utils": {
+        "only_in_1": [
+            "4.0.0",
+            "8.1.0"
+        ],
+        "only_in_2": [
+            "8.3.0"
+        ],
+        "unchanged_in_1": [
+            "5.0.2",
+            "6.2.0"
+        ],
+        "version1": [
+            "4.0.0",
+            "5.0.2",
+            "6.2.0",
+            "8.1.0"
+        ],
+        "version2": [
+            "5.0.2",
+            "6.2.0",
+            "8.3.0"
+        ],
+        "repo": "github.com/MetaMask/utils.git",
+        "repo_name": "MetaMask/utils",
+        "repo_pure": "github.com/MetaMask/utils.git",
+        "chosen_v2": "8.3.0",
+        "chosen_v1": "8.1.0"
+    },
+    "set-function-name": {
+        "version1": null,
+        "version2": [
+            "2.0.1"
+        ],
+        "repo": "github.com/ljharb/set-function-name.git",
+        "repo_name": "ljharb/set-function-name",
+        "repo_pure": "github.com/ljharb/set-function-name.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "camel-case": {
+        "only_in_1": [
+            "3.0.0"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "4.1.2"
+        ],
+        "version1": [
+            "3.0.0",
+            "4.1.2"
+        ],
+        "version2": [
+            "4.1.2"
+        ],
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "3.0.0"
+    },
+    "regexp.prototype.flags": {
+        "only_in_1": [
+            "1.4.3"
+        ],
+        "only_in_2": [
+            "1.5.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.4.3"
+        ],
+        "version2": [
+            "1.5.1"
+        ],
+        "repo": "github.com/es-shims/RegExp.prototype.flags.git",
+        "repo_name": "es-shims/RegExp.prototype.flags",
+        "repo_pure": "github.com/es-shims/RegExp.prototype.flags.git",
+        "chosen_v2": "1.5.1",
+        "chosen_v1": "1.4.3"
+    },
+    "minimatch": {
+        "only_in_1": [
+            "4.2.1"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "3.1.2",
+            "5.0.1",
+            "7.4.6",
+            "9.0.3"
+        ],
+        "version1": [
+            "3.1.2",
+            "4.2.1",
+            "5.0.1",
+            "7.4.6",
+            "9.0.3"
+        ],
+        "version2": [
+            "3.1.2",
+            "5.0.1",
+            "7.4.6",
+            "9.0.3"
+        ],
+        "repo": "github.com/isaacs/minimatch.git",
+        "repo_name": "isaacs/minimatch",
+        "repo_pure": "github.com/isaacs/minimatch.git",
+        "chosen_v2": "null",
+        "chosen_v1": "4.2.1"
+    },
+    "mocha": {
+        "only_in_1": [
+            "9.2.2"
+        ],
+        "only_in_2": [
+            "10.2.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "9.2.2"
+        ],
+        "version2": [
+            "10.2.0"
+        ],
+        "repo": "github.com/mochajs/mocha.git",
+        "repo_name": "mochajs/mocha",
+        "repo_pure": "github.com/mochajs/mocha.git",
+        "chosen_v2": "10.2.0",
+        "chosen_v1": "9.2.2"
+    },
+    "resolve-pkg-maps": {
+        "version1": null,
+        "version2": [
+            "1.0.0"
+        ],
+        "repo": "github.com/privatenumber/resolve-pkg-maps.git",
+        "repo_name": "privatenumber/resolve-pkg-maps",
+        "repo_pure": "github.com/privatenumber/resolve-pkg-maps.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@babel/helper-define-polyfill-provider": {
+        "only_in_1": [
+            "0.3.3"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "0.4.3"
+        ],
+        "version1": [
+            "0.3.3",
+            "0.4.3"
+        ],
+        "version2": [
+            "0.4.3"
+        ],
+        "repo": "github.com/babel/babel-polyfills.git",
+        "repo_name": "babel/babel-polyfills",
+        "repo_pure": "github.com/babel/babel-polyfills.git",
+        "chosen_v2": "null",
+        "chosen_v1": "0.3.3"
+    },
+    "compare-versions": {
+        "version1": [
+            "6.1.0"
+        ],
+        "version2": null,
+        "repo": "github.com/omichelsen/compare-versions.git",
+        "repo_name": "omichelsen/compare-versions",
+        "repo_pure": "github.com/omichelsen/compare-versions.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/controller-utils": {
+        "only_in_1": [],
+        "only_in_2": [
+            "8.0.2"
+        ],
+        "unchanged_in_1": [
+            "4.3.2",
+            "5.0.2"
+        ],
+        "version1": [
+            "4.3.2",
+            "5.0.2"
+        ],
+        "version2": [
+            "4.3.2",
+            "5.0.2",
+            "8.0.2"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "8.0.2",
+        "chosen_v1": "5.0.2"
+    },
+    "@ethersproject/json-wallets": {
+        "version1": [
+            "5.7.0"
+        ],
+        "version2": null,
+        "repo": "github.com/ethers-io/ethers.js.git",
+        "repo_name": "ethers-io/ethers.js",
+        "repo_pure": "github.com/ethers-io/ethers.js.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "constant-case": {
+        "version1": [
+            "2.0.0"
+        ],
+        "version2": null,
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "crypto-js": {
+        "version1": null,
+        "version2": [
+            "4.2.0"
+        ],
+        "repo": "github.com/brix/crypto-js.git",
+        "repo_name": "brix/crypto-js",
+        "repo_pure": "github.com/brix/crypto-js.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "cockatiel": {
+        "version1": null,
+        "version2": [
+            "3.1.2"
+        ],
+        "repo": "github.com/connor4312/cockatiel.git",
+        "repo_name": "connor4312/cockatiel",
+        "repo_pure": "github.com/connor4312/cockatiel.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "mocha-junit-reporter": {
+        "version1": null,
+        "version2": [
+            "2.2.1"
+        ],
+        "repo": "github.com/michaelleeallen/mocha-junit-reporter.git",
+        "repo_name": "michaelleeallen/mocha-junit-reporter",
+        "repo_pure": "github.com/michaelleeallen/mocha-junit-reporter.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "is-upper-case": {
+        "version1": [
+            "1.1.2"
+        ],
+        "version2": null,
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/logging-controller": {
+        "only_in_1": [
+            "1.0.1"
+        ],
+        "only_in_2": [
+            "1.0.4"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.0.1"
+        ],
+        "version2": [
+            "1.0.4"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "1.0.4",
+        "chosen_v1": "1.0.1"
+    },
+    "@lavamoat/lavapack": {
+        "only_in_1": [
+            "5.4.1"
+        ],
+        "only_in_2": [
+            "6.0.2"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "5.4.1"
+        ],
+        "version2": [
+            "6.0.2"
+        ],
+        "repo": "github.com/LavaMoat/lavamoat.git",
+        "repo_name": "LavaMoat/lavamoat",
+        "repo_pure": "github.com/LavaMoat/lavamoat.git",
+        "chosen_v2": "6.0.2",
+        "chosen_v1": "5.4.1"
+    },
+    "@ensdomains/ens": {
+        "version1": [
+            "0.4.5"
+        ],
+        "version2": null,
+        "repo": "github.com/ensdomains/ens.git",
+        "repo_name": "ensdomains/ens",
+        "repo_pure": "github.com/ensdomains/ens.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "tar-stream": {
+        "only_in_1": [],
+        "only_in_2": [
+            "3.1.6"
+        ],
+        "unchanged_in_1": [
+            "2.2.0"
+        ],
+        "version1": [
+            "2.2.0"
+        ],
+        "version2": [
+            "2.2.0",
+            "3.1.6"
+        ],
+        "repo": "github.com/mafintosh/tar-stream.git",
+        "repo_name": "mafintosh/tar-stream",
+        "repo_pure": "github.com/mafintosh/tar-stream.git",
+        "chosen_v2": "3.1.6",
+        "chosen_v1": "2.2.0"
+    },
+    "@storybook/addon-designs": {
+        "version1": null,
+        "version2": [
+            "7.0.5"
+        ],
+        "repo": "github.com/storybookjs/addon-designs.git",
+        "repo_name": "storybookjs/addon-designs",
+        "repo_pure": "github.com/storybookjs/addon-designs.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@lit/reactive-element": {
+        "version1": null,
+        "version2": [
+            "1.6.3"
+        ],
+        "repo": "github.com/lit/lit.git",
+        "repo_name": "lit/lit",
+        "repo_pure": "github.com/lit/lit.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@storybook/router": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "use-memo-one": {
+        "version1": null,
+        "version2": [
+            "1.1.3"
+        ],
+        "repo": "github.com/alexreardon/use-memo-one.git",
+        "repo_name": "alexreardon/use-memo-one",
+        "repo_pure": "github.com/alexreardon/use-memo-one.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "content-hash": {
+        "version1": [
+            "2.5.2"
+        ],
+        "version2": null,
+        "repo": "github.com/pldespaigne/content-hash.git",
+        "repo_name": "pldespaigne/content-hash",
+        "repo_pure": "github.com/pldespaigne/content-hash.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "type-fest": {
+        "only_in_1": [],
+        "only_in_2": [
+            "4.7.1"
+        ],
+        "unchanged_in_1": [
+            "0.13.1",
+            "0.16.0",
+            "0.20.2",
+            "0.6.0",
+            "0.8.1",
+            "2.19.0",
+            "3.5.1"
+        ],
+        "version1": [
+            "0.13.1",
+            "0.16.0",
+            "0.20.2",
+            "0.6.0",
+            "0.8.1",
+            "2.19.0",
+            "3.5.1"
+        ],
+        "version2": [
+            "0.13.1",
+            "0.16.0",
+            "0.20.2",
+            "0.6.0",
+            "0.8.1",
+            "2.19.0",
+            "3.5.1",
+            "4.7.1"
+        ],
+        "repo": "github.com/sindresorhus/type-fest.git",
+        "repo_name": "sindresorhus/type-fest",
+        "repo_pure": "github.com/sindresorhus/type-fest.git",
+        "chosen_v2": "4.7.1",
+        "chosen_v1": "3.5.1"
+    },
+    "axios": {
+        "only_in_1": [
+            "1.4.0"
+        ],
+        "only_in_2": [
+            "1.6.2"
+        ],
+        "unchanged_in_1": [
+            "0.21.4",
+            "0.27.2"
+        ],
+        "version1": [
+            "0.21.4",
+            "0.27.2",
+            "1.4.0"
+        ],
+        "version2": [
+            "0.21.4",
+            "0.27.2",
+            "1.6.2"
+        ],
+        "repo": "github.com/axios/axios.git",
+        "repo_name": "axios/axios",
+        "repo_pure": "github.com/axios/axios.git",
+        "chosen_v2": "1.6.2",
+        "chosen_v1": "1.4.0"
+    },
+    "@trezor/transport": {
+        "only_in_1": [
+            "1.1.8"
+        ],
+        "only_in_2": [
+            "1.1.12"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.1.8"
+        ],
+        "version2": [
+            "1.1.12"
+        ],
+        "repo": "github.com/trezor/trezor-suite.git",
+        "repo_name": "trezor/trezor-suite",
+        "repo_pure": "github.com/trezor/trezor-suite.git",
+        "chosen_v2": "1.1.12",
+        "chosen_v1": "1.1.8"
+    },
+    "@metamask/phishing-warning": {
+        "only_in_1": [
+            "2.1.0"
+        ],
+        "only_in_2": [
+            "3.0.3"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "2.1.0"
+        ],
+        "version2": [
+            "3.0.3"
+        ],
+        "repo": "github.com/MetaMask/phishing-warning.git",
+        "repo_name": "MetaMask/phishing-warning",
+        "repo_pure": "github.com/MetaMask/phishing-warning.git",
+        "chosen_v2": "3.0.3",
+        "chosen_v1": "2.1.0"
+    },
+    "class-is": {
+        "version1": [
+            "1.1.0"
+        ],
+        "version2": null,
+        "repo": "github.com/moxystudio/js-class-is.git",
+        "repo_name": "moxystudio/js-class-is",
+        "repo_pure": "github.com/moxystudio/js-class-is.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/rpc-errors": {
+        "only_in_1": [
+            "5.1.1",
+            "6.0.0"
+        ],
+        "only_in_2": [
+            "6.1.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "5.1.1",
+            "6.0.0"
+        ],
+        "version2": [
+            "6.1.0"
+        ],
+        "repo": "github.com/MetaMask/rpc-errors.git",
+        "repo_name": "MetaMask/rpc-errors",
+        "repo_pure": "github.com/MetaMask/rpc-errors.git",
+        "chosen_v2": "6.1.0",
+        "chosen_v1": "6.0.0"
+    },
+    "get-intrinsic": {
+        "only_in_1": [
+            "1.2.1"
+        ],
+        "only_in_2": [
+            "1.2.2"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.2.1"
+        ],
+        "version2": [
+            "1.2.2"
+        ],
+        "repo": "github.com/ljharb/get-intrinsic.git",
+        "repo_name": "ljharb/get-intrinsic",
+        "repo_pure": "github.com/ljharb/get-intrinsic.git",
+        "chosen_v2": "1.2.2",
+        "chosen_v1": "1.2.1"
+    },
+    "junit-report-merger": {
+        "version1": [
+            "4.0.0"
+        ],
+        "version2": null,
+        "repo": "github.com/bhovhannes/junit-report-merger.git",
+        "repo_name": "bhovhannes/junit-report-merger",
+        "repo_pure": "github.com/bhovhannes/junit-report-merger.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "memoize-one": {
+        "only_in_1": [],
+        "only_in_2": [
+            "5.2.1"
+        ],
+        "unchanged_in_1": [
+            "6.0.0"
+        ],
+        "version1": [
+            "6.0.0"
+        ],
+        "version2": [
+            "5.2.1",
+            "6.0.0"
+        ],
+        "repo": "github.com/alexreardon/memoize-one.git",
+        "repo_name": "alexreardon/memoize-one",
+        "repo_pure": "github.com/alexreardon/memoize-one.git",
+        "chosen_v2": "5.2.1",
+        "chosen_v1": "6.0.0"
+    },
+    "function-bind": {
+        "only_in_1": [
+            "1.1.1"
+        ],
+        "only_in_2": [
+            "1.1.2"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.1.1"
+        ],
+        "version2": [
+            "1.1.2"
+        ],
+        "repo": "github.com/Raynos/function-bind.git",
+        "repo_name": "Raynos/function-bind",
+        "repo_pure": "github.com/Raynos/function-bind.git",
+        "chosen_v2": "1.1.2",
+        "chosen_v1": "1.1.1"
+    },
+    "blo": {
+        "version1": null,
+        "version2": [
+            "1.1.1"
+        ],
+        "repo": "github.com/bpierre/blo.git",
+        "repo_name": "bpierre/blo",
+        "repo_pure": "github.com/bpierre/blo.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "jsonfile": {
+        "only_in_1": [
+            "2.4.0"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "4.0.0",
+            "6.1.0"
+        ],
+        "version1": [
+            "2.4.0",
+            "4.0.0",
+            "6.1.0"
+        ],
+        "version2": [
+            "4.0.0",
+            "6.1.0"
+        ],
+        "repo": "github.com/jprichardson/node-jsonfile.git",
+        "repo_name": "jprichardson/node-jsonfile",
+        "repo_pure": "github.com/jprichardson/node-jsonfile.git",
+        "chosen_v2": "null",
+        "chosen_v1": "2.4.0"
+    },
+    "solc": {
+        "version1": [
+            "0.4.26"
+        ],
+        "version2": null,
+        "repo": "github.com/ethereum/solc-js.git",
+        "repo_name": "ethereum/solc-js",
+        "repo_pure": "github.com/ethereum/solc-js.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/post-message-stream": {
+        "only_in_1": [
+            "6.2.0"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "7.0.0"
+        ],
+        "version1": [
+            "6.2.0",
+            "7.0.0"
+        ],
+        "version2": [
+            "7.0.0"
+        ],
+        "repo": "github.com/MetaMask/post-message-stream.git",
+        "repo_name": "MetaMask/post-message-stream",
+        "repo_pure": "github.com/MetaMask/post-message-stream.git",
+        "chosen_v2": "null",
+        "chosen_v1": "6.2.0"
+    },
+    "title-case": {
+        "version1": [
+            "2.1.1"
+        ],
+        "version2": null,
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "is-builtin-module": {
+        "version1": null,
+        "version2": [
+            "3.2.1"
+        ],
+        "repo": "github.com/sindresorhus/is-builtin-module.git",
+        "repo_name": "sindresorhus/is-builtin-module",
+        "repo_pure": "github.com/sindresorhus/is-builtin-module.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "builtin-modules": {
+        "version1": null,
+        "version2": [
+            "3.3.0"
+        ],
+        "repo": "github.com/sindresorhus/builtin-modules.git",
+        "repo_name": "sindresorhus/builtin-modules",
+        "repo_pure": "github.com/sindresorhus/builtin-modules.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/preferences-controller": {
+        "only_in_1": [],
+        "only_in_2": [
+            "6.0.0"
+        ],
+        "unchanged_in_1": [
+            "4.4.3"
+        ],
+        "version1": [
+            "4.4.3"
+        ],
+        "version2": [
+            "4.4.3",
+            "6.0.0"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "6.0.0",
+        "chosen_v1": "4.4.3"
+    },
+    "@oozcitak/dom": {
+        "version1": [
+            "1.15.10"
+        ],
+        "version2": null,
+        "repo": "github.com/oozcitak/dom.git",
+        "repo_name": "oozcitak/dom",
+        "repo_pure": "github.com/oozcitak/dom.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/snaps-sdk": {
+        "version1": null,
+        "version2": [
+            "1.3.2"
+        ],
+        "repo": "github.com/MetaMask/snaps.git",
+        "repo_name": "MetaMask/snaps",
+        "repo_pure": "github.com/MetaMask/snaps.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "tslib": {
+        "only_in_1": [
+            "2.5.0"
+        ],
+        "only_in_2": [
+            "2.5.2",
+            "2.6.2"
+        ],
+        "unchanged_in_1": [
+            "1.14.1",
+            "2.0.3",
+            "2.2.0"
+        ],
+        "version1": [
+            "1.14.1",
+            "2.0.3",
+            "2.2.0",
+            "2.5.0"
+        ],
+        "version2": [
+            "1.14.1",
+            "2.0.3",
+            "2.2.0",
+            "2.5.2",
+            "2.6.2"
+        ],
+        "repo": "github.com/Microsoft/tslib.git",
+        "repo_name": "Microsoft/tslib",
+        "repo_pure": "github.com/Microsoft/tslib.git",
+        "chosen_v2": "2.6.2",
+        "chosen_v1": "2.5.0"
+    },
+    "is-cross-origin": {
+        "version1": [
+            "1.0.1"
+        ],
+        "version2": null,
+        "repo": "github.com/weizman/is-cross-origin.git",
+        "repo_name": "weizman/is-cross-origin",
+        "repo_pure": "github.com/weizman/is-cross-origin.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/ethjs-unit": {
+        "version1": null,
+        "version2": [
+            "0.2.1"
+        ],
+        "repo": "github.com/MetaMask/ethjs-unit.git",
+        "repo_name": "MetaMask/ethjs-unit",
+        "repo_pure": "github.com/MetaMask/ethjs-unit.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@lit-labs/ssr-dom-shim": {
+        "version1": null,
+        "version2": [
+            "1.1.2"
+        ],
+        "repo": "github.com/lit/lit.git",
+        "repo_name": "lit/lit",
+        "repo_pure": "github.com/lit/lit.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "punycode": {
+        "only_in_1": [
+            "2.1.1"
+        ],
+        "only_in_2": [
+            "2.3.1"
+        ],
+        "unchanged_in_1": [
+            "1.4.1",
+            "2.1.0"
+        ],
+        "version1": [
+            "1.4.1",
+            "2.1.0",
+            "2.1.1"
+        ],
+        "version2": [
+            "1.4.1",
+            "2.1.0",
+            "2.3.1"
+        ],
+        "repo": "github.com/mathiasbynens/punycode.js.git",
+        "repo_name": "mathiasbynens/punycode.js",
+        "repo_pure": "github.com/mathiasbynens/punycode.js.git",
+        "chosen_v2": "2.3.1",
+        "chosen_v1": "2.1.1"
+    },
+    "@metamask/selected-network-controller": {
+        "only_in_1": [
+            "1.0.0"
+        ],
+        "only_in_2": [
+            "6.0.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.0.0"
+        ],
+        "version2": [
+            "6.0.0"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "6.0.0",
+        "chosen_v1": "1.0.0"
+    },
+    "fs-extra": {
+        "only_in_1": [
+            "0.30.0"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "10.1.0",
+            "11.1.1",
+            "8.1.0"
+        ],
+        "version1": [
+            "0.30.0",
+            "10.1.0",
+            "11.1.1",
+            "8.1.0"
+        ],
+        "version2": [
+            "10.1.0",
+            "11.1.1",
+            "8.1.0"
+        ],
+        "repo": "github.com/jprichardson/node-fs-extra.git",
+        "repo_name": "jprichardson/node-fs-extra",
+        "repo_pure": "github.com/jprichardson/node-fs-extra.git",
+        "chosen_v2": "null",
+        "chosen_v1": "0.30.0"
+    },
+    "bs58check": {
+        "only_in_1": [],
+        "only_in_2": [
+            "3.0.1"
+        ],
+        "unchanged_in_1": [
+            "2.1.2"
+        ],
+        "version1": [
+            "2.1.2"
+        ],
+        "version2": [
+            "2.1.2",
+            "3.0.1"
+        ],
+        "repo": "github.com/bitcoinjs/bs58check.git",
+        "repo_name": "bitcoinjs/bs58check",
+        "repo_pure": "github.com/bitcoinjs/bs58check.git",
+        "chosen_v2": "3.0.1",
+        "chosen_v1": "2.1.2"
+    },
+    "@metamask/snaps-utils": {
+        "only_in_1": [
+            "3.0.0"
+        ],
+        "only_in_2": [
+            "3.3.0",
+            "5.1.2"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "3.0.0"
+        ],
+        "version2": [
+            "3.3.0",
+            "5.1.2"
+        ],
+        "repo": "github.com/MetaMask/snaps.git",
+        "repo_name": "MetaMask/snaps",
+        "repo_pure": "github.com/MetaMask/snaps.git",
+        "chosen_v2": "5.1.2",
+        "chosen_v1": "3.0.0"
+    },
+    "md5": {
+        "version1": null,
+        "version2": [
+            "2.3.0"
+        ],
+        "repo": "github.com/pvorb/node-md5.git",
+        "repo_name": "pvorb/node-md5",
+        "repo_pure": "github.com/pvorb/node-md5.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@playwright/test": {
+        "version1": null,
+        "version2": [
+            "1.39.0"
+        ],
+        "repo": "github.com/microsoft/playwright.git",
+        "repo_name": "microsoft/playwright",
+        "repo_pure": "github.com/microsoft/playwright.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "sentence-case": {
+        "version1": [
+            "2.1.1"
+        ],
+        "version2": null,
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@truffle/decoder": {
+        "version1": [
+            "5.3.5"
+        ],
+        "version2": null,
+        "repo": "github.com/trufflesuite/truffle.git",
+        "repo_name": "trufflesuite/truffle",
+        "repo_pure": "github.com/trufflesuite/truffle.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@types/node": {
+        "only_in_1": [
+            "17.0.45"
+        ],
+        "only_in_2": [
+            "18.18.9"
+        ],
+        "unchanged_in_1": [
+            "16.18.34",
+            "20.8.2"
+        ],
+        "version1": [
+            "16.18.34",
+            "17.0.45",
+            "20.8.2"
+        ],
+        "version2": [
+            "16.18.34",
+            "18.18.9",
+            "20.8.2"
+        ],
+        "repo": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "repo_name": "DefinitelyTyped/DefinitelyTyped",
+        "repo_pure": "github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "chosen_v2": "18.18.9",
+        "chosen_v1": "17.0.45"
+    },
+    "@scure/base": {
+        "only_in_1": [
+            "1.1.1"
+        ],
+        "only_in_2": [
+            "1.1.3"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.1.1"
+        ],
+        "version2": [
+            "1.1.3"
+        ],
+        "repo": "github.com/paulmillr/scure-base.git",
+        "repo_name": "paulmillr/scure-base",
+        "repo_pure": "github.com/paulmillr/scure-base.git",
+        "chosen_v2": "1.1.3",
+        "chosen_v1": "1.1.1"
+    },
+    "@oozcitak/url": {
+        "version1": [
+            "1.0.4"
+        ],
+        "version2": null,
+        "repo": "github.com/oozcitak/url.git",
+        "repo_name": "oozcitak/url",
+        "repo_pure": "github.com/oozcitak/url.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@eslint-community/regexpp": {
+        "only_in_1": [
+            "4.5.0"
+        ],
+        "only_in_2": [
+            "4.10.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "4.5.0"
+        ],
+        "version2": [
+            "4.10.0"
+        ],
+        "repo": "github.com/eslint-community/regexpp.git",
+        "repo_name": "eslint-community/regexpp",
+        "repo_pure": "github.com/eslint-community/regexpp.git",
+        "chosen_v2": "4.10.0",
+        "chosen_v1": "4.5.0"
+    },
+    "@trezor/env-utils": {
+        "version1": null,
+        "version2": [
+            "1.0.2"
+        ],
+        "repo": "github.com/trezor/trezor-suite.git",
+        "repo_name": "trezor/trezor-suite",
+        "repo_pure": "github.com/trezor/trezor-suite.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "mkdirp": {
+        "only_in_1": [],
+        "only_in_2": [
+            "3.0.1"
+        ],
+        "unchanged_in_1": [
+            "0.5.6",
+            "1.0.4"
+        ],
+        "version1": [
+            "0.5.6",
+            "1.0.4"
+        ],
+        "version2": [
+            "0.5.6",
+            "1.0.4",
+            "3.0.1"
+        ],
+        "repo": "github.com/isaacs/node-mkdirp.git",
+        "repo_name": "isaacs/node-mkdirp",
+        "repo_pure": "github.com/isaacs/node-mkdirp.git",
+        "chosen_v2": "3.0.1",
+        "chosen_v1": "1.0.4"
+    },
+    "react-beautiful-dnd": {
+        "version1": null,
+        "version2": [
+            "13.1.1"
+        ],
+        "repo": "github.com/atlassian/react-beautiful-dnd.git",
+        "repo_name": "atlassian/react-beautiful-dnd",
+        "repo_pure": "github.com/atlassian/react-beautiful-dnd.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "yargs": {
+        "only_in_1": [
+            "4.8.1"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "15.4.1",
+            "16.2.0",
+            "17.7.1",
+            "17.7.2",
+            "7.1.2"
+        ],
+        "version1": [
+            "15.4.1",
+            "16.2.0",
+            "17.7.1",
+            "17.7.2",
+            "4.8.1",
+            "7.1.2"
+        ],
+        "version2": [
+            "15.4.1",
+            "16.2.0",
+            "17.7.1",
+            "17.7.2",
+            "7.1.2"
+        ],
+        "repo": "github.com/yargs/yargs.git",
+        "repo_name": "yargs/yargs",
+        "repo_pure": "github.com/yargs/yargs.git",
+        "chosen_v2": "null",
+        "chosen_v1": "4.8.1"
+    },
+    "hasown": {
+        "version1": null,
+        "version2": [
+            "2.0.0"
+        ],
+        "repo": "github.com/inspect-js/hasOwn.git",
+        "repo_name": "inspect-js/hasOwn",
+        "repo_pure": "github.com/inspect-js/hasOwn.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "require-from-string": {
+        "only_in_1": [
+            "1.2.1"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "2.0.2"
+        ],
+        "version1": [
+            "1.2.1",
+            "2.0.2"
+        ],
+        "version2": [
+            "2.0.2"
+        ],
+        "repo": "github.com/floatdrop/require-from-string.git",
+        "repo_name": "floatdrop/require-from-string",
+        "repo_pure": "github.com/floatdrop/require-from-string.git",
+        "chosen_v2": "null",
+        "chosen_v1": "1.2.1"
+    },
+    "@lavamoat/aa": {
+        "only_in_1": [
+            "3.1.5"
+        ],
+        "only_in_2": [
+            "4.0.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "3.1.5"
+        ],
+        "version2": [
+            "4.0.1"
+        ],
+        "repo": "not github",
+        "repo_name": "not github",
+        "repo_pure": "not github",
+        "chosen_v2": "4.0.1",
+        "chosen_v1": "3.1.5"
+    },
+    "chalk": {
+        "only_in_1": [
+            "5.2.0"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "2.4.2",
+            "3.0.0",
+            "4.1.2"
+        ],
+        "version1": [
+            "2.4.2",
+            "3.0.0",
+            "4.1.2",
+            "5.2.0"
+        ],
+        "version2": [
+            "2.4.2",
+            "3.0.0",
+            "4.1.2"
+        ],
+        "repo": "github.com/chalk/chalk.git",
+        "repo_name": "chalk/chalk",
+        "repo_pure": "github.com/chalk/chalk.git",
+        "chosen_v2": "null",
+        "chosen_v1": "5.2.0"
+    },
+    "header-case": {
+        "version1": [
+            "1.0.1"
+        ],
+        "version2": null,
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@lavamoat/allow-scripts": {
+        "only_in_1": [
+            "2.3.1"
+        ],
+        "only_in_2": [
+            "3.0.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "2.3.1"
+        ],
+        "version2": [
+            "3.0.1"
+        ],
+        "repo": "github.com/LavaMoat/LavaMoat.git",
+        "repo_name": "LavaMoat/LavaMoat",
+        "repo_pure": "github.com/LavaMoat/LavaMoat.git",
+        "chosen_v2": "3.0.1",
+        "chosen_v1": "2.3.1"
+    },
+    "geckodriver": {
+        "version1": [
+            "4.0.4"
+        ],
+        "version2": null,
+        "repo": "github.com/webdriverio-community/node-geckodriver.git",
+        "repo_name": "webdriverio-community/node-geckodriver",
+        "repo_pure": "github.com/webdriverio-community/node-geckodriver.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@testim/chrome-version": {
+        "version1": [
+            "1.1.3"
+        ],
+        "version2": null,
+        "repo": "github.com/testimio/chrome-version.git",
+        "repo_name": "testimio/chrome-version",
+        "repo_pure": "github.com/testimio/chrome-version.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@trezor/blockchain-link": {
+        "only_in_1": [
+            "2.1.8"
+        ],
+        "only_in_2": [
+            "2.1.13"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "2.1.8"
+        ],
+        "version2": [
+            "2.1.13"
+        ],
+        "repo": "github.com/trezor/trezor-suite.git",
+        "repo_name": "trezor/trezor-suite",
+        "repo_pure": "github.com/trezor/trezor-suite.git",
+        "chosen_v2": "2.1.13",
+        "chosen_v1": "2.1.8"
+    },
+    "@metamask-institutional/custody-keyring": {
+        "only_in_1": [
+            "1.0.4"
+        ],
+        "only_in_2": [
+            "1.0.7"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "1.0.4"
+        ],
+        "version2": [
+            "1.0.7"
+        ],
+        "repo": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "repo_name": "consensys-vertical-apps/metamask-institutional",
+        "repo_pure": "github.com/consensys-vertical-apps/metamask-institutional.git",
+        "chosen_v2": "1.0.7",
+        "chosen_v1": "1.0.4"
+    },
+    "@storybook/client-logger": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "@metamask/contract-metadata": {
+        "only_in_1": [
+            "2.3.1"
+        ],
+        "only_in_2": [
+            "2.4.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "2.3.1"
+        ],
+        "version2": [
+            "2.4.0"
+        ],
+        "repo": "github.com/MetaMask/contract-metadata.git",
+        "repo_name": "MetaMask/contract-metadata",
+        "repo_pure": "github.com/MetaMask/contract-metadata.git",
+        "chosen_v2": "2.4.0",
+        "chosen_v1": "2.3.1"
+    },
+    "ethers": {
+        "version1": [
+            "5.7.2"
+        ],
+        "version2": null,
+        "repo": "github.com/ethers-io/ethers.js.git",
+        "repo_name": "ethers-io/ethers.js",
+        "repo_pure": "github.com/ethers-io/ethers.js.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@metamask/gas-fee-controller": {
+        "only_in_1": [
+            "6.0.1"
+        ],
+        "only_in_2": [
+            "12.0.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "6.0.1"
+        ],
+        "version2": [
+            "12.0.0"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "12.0.0",
+        "chosen_v1": "6.0.1"
+    },
+    "@metamask/browser-passworder": {
+        "only_in_1": [
+            "4.1.0"
+        ],
+        "only_in_2": [
+            "4.3.0"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "4.1.0"
+        ],
+        "version2": [
+            "4.3.0"
+        ],
+        "repo": "github.com/MetaMask/browser-passworder.git",
+        "repo_name": "MetaMask/browser-passworder",
+        "repo_pure": "github.com/MetaMask/browser-passworder.git",
+        "chosen_v2": "4.3.0",
+        "chosen_v1": "4.1.0"
+    },
+    "chromedriver": {
+        "version1": [
+            "116.0.0"
+        ],
+        "version2": null,
+        "repo": "github.com/giggio/node-chromedriver.git",
+        "repo_name": "giggio/node-chromedriver",
+        "repo_pure": "github.com/giggio/node-chromedriver.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "streamx": {
+        "version1": null,
+        "version2": [
+            "2.15.1"
+        ],
+        "repo": "github.com/mafintosh/streamx.git",
+        "repo_name": "mafintosh/streamx",
+        "repo_pure": "github.com/mafintosh/streamx.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "@storybook/core-events": {
+        "only_in_1": [],
+        "only_in_2": [
+            "7.5.3"
+        ],
+        "unchanged_in_1": [
+            "7.4.6"
+        ],
+        "version1": [
+            "7.4.6"
+        ],
+        "version2": [
+            "7.4.6",
+            "7.5.3"
+        ],
+        "repo": "github.com/storybookjs/storybook.git",
+        "repo_name": "storybookjs/storybook",
+        "repo_pure": "github.com/storybookjs/storybook.git",
+        "chosen_v2": "7.5.3",
+        "chosen_v1": "7.4.6"
+    },
+    "pascal-case": {
+        "only_in_1": [
+            "2.0.1"
+        ],
+        "only_in_2": [],
+        "unchanged_in_1": [
+            "3.1.2"
+        ],
+        "version1": [
+            "2.0.1",
+            "3.1.2"
+        ],
+        "version2": [
+            "3.1.2"
+        ],
+        "repo": "github.com/blakeembrey/change-case.git",
+        "repo_name": "blakeembrey/change-case",
+        "repo_pure": "github.com/blakeembrey/change-case.git",
+        "chosen_v2": "null",
+        "chosen_v1": "2.0.1"
+    },
+    "@metamask/phishing-controller": {
+        "only_in_1": [
+            "6.0.0"
+        ],
+        "only_in_2": [
+            "8.0.1"
+        ],
+        "unchanged_in_1": [],
+        "version1": [
+            "6.0.0"
+        ],
+        "version2": [
+            "8.0.1"
+        ],
+        "repo": "github.com/MetaMask/core.git",
+        "repo_name": "MetaMask/core",
+        "repo_pure": "github.com/MetaMask/core.git",
+        "chosen_v2": "8.0.1",
+        "chosen_v1": "6.0.0"
+    },
+    "@trezor/connect-analytics": {
+        "version1": null,
+        "version2": [
+            "1.0.2"
+        ],
+        "repo": "not github",
+        "repo_name": "not github",
+        "repo_pure": "not github",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    },
+    "get-tsconfig": {
+        "version1": null,
+        "version2": [
+            "4.7.2"
+        ],
+        "repo": "github.com/privatenumber/get-tsconfig.git",
+        "repo_name": "privatenumber/get-tsconfig",
+        "repo_pure": "github.com/privatenumber/get-tsconfig.git",
+        "chosen_v2": "null",
+        "chosen_v1": "null"
+    }
+}
