@@ -16,8 +16,15 @@ latest update: 02/19/2024
 1. Code search in fork 
 2. Time issue
 3. Make them automated
+4. Consistency of the use of yarn and npm
+
+Minutes 02/21/2024
+Q
+1. Github doesn't have record about owner transfer
 
 
+
+Minutes 02/19/2024
 Q:
 1. Does execution time matter?
 2. Evaluation what info do we want
@@ -26,8 +33,6 @@ Q:
 - (who review&merge)
 - (CI) - how many CI skipped?
 - if the github didn't updated but npm is updating
-
-
 3. : contributor? owner change?
 4. (fork)
 5. how automated it should be
@@ -335,7 +340,11 @@ compare:
 * [Compare two commits](https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28#compare-two-commits)
 * [API pagination](https://stackoverflow.com/questions/68355441/github-api-compare-2-commits-large-comparison-cant-get-all-changed-files)
 
+npm-version
+-  https://docs.npmjs.com/cli/v10/commands/npm-version#commit-hooks
 
+renaming a repo
+- https://docs.github.com/en/repositories/creating-and-managing-repositories/renaming-a-repository
 
 **wallets(open sourced)**
 
