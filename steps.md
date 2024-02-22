@@ -17,6 +17,7 @@ latest update: 02/19/2024
 2. Time issue
 3. Make them automated
 4. Consistency of the use of yarn and npm
+5. Check Socket.dev
 
 Minutes 02/21/2024
 Q
@@ -345,6 +346,12 @@ npm-version
 
 renaming a repo
 - https://docs.github.com/en/repositories/creating-and-managing-repositories/renaming-a-repository
+
+collaborators
+https://docs.github.com/en/rest/collaborators/collaborators?apiVersion=2022-11-28#check-if-a-user-is-a-repository-collaborator
+
+GH Archive
+https://www.gharchive.org/
 
 **wallets(open sourced)**
 
