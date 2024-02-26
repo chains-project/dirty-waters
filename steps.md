@@ -22,6 +22,15 @@ latest update: 02/19/2024
 Minutes 02/26/34
 Q:
 1. For evaluation, do we want all versions' experiments and what should we include
+- comparing 
+- project
+Working on tooling and chapter 3 writing
+- to consider evaluation
+optionA: look at major releases from three wallets
+OptionB: look at latest ten releases from three wallets
+OptionC: ablation study before and after an attack, maybe the one from 2023
+
+
 
 
 Minutes 02/21/2024
@@ -363,6 +372,15 @@ https://docs.github.com/en/rest/orgs/organization-roles?apiVersion=2022-11-28#li
 OAuth app tokens and personal access tokens (classic) need the admin:org scope to use this endpoint.
 
 
+https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-user-account-settings/permission-levels-for-a-personal-account-repository
+https://docs.github.com/en/rest/collaborators/collaborators?apiVersion=2022-11-28#get-repository-permissions-for-a-user
+
+GraphQL
+https://docs.github.com/zh/graphql/reference/enums#repositorypermission The access level to a repository.
+
+
+
+
 
 GH Archive
 https://www.gharchive.org/
@@ -398,7 +416,14 @@ The source for file explorer? github or npm?
 https://socket.dev/npm/issue/gitDependency -> didn't get it
 
 
+</details>
 
-
-
+<details open>
+  <summary>Endpoints</summary>
+  get commits: /repos/{owner}/{repo}/commits
+  find PR: /repos/{owner}/{repo}/commits/{commit_sha}/pulls
+  get review info: /repos/{owner}/{repo}/pulls/{pull_number}/reviews
+  Identify merger:/repos/{owner}/{repo}/pulls/{pull_number}/merge
+  check runs: /repos/{owner}/{repo}/commits/{ref}/check-runs  -> https://docs.github.com/en/rest/checks?apiVersion=2022-11-28
+  
 </details>
