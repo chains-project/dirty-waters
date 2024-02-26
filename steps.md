@@ -19,6 +19,11 @@ latest update: 02/19/2024
 4. Consistency of the use of yarn and npm
 5. Check Socket.dev
 
+Minutes 02/26/34
+Q:
+1. For evaluation, do we want all versions' experiments and what should we include
+
+
 Minutes 02/21/2024
 Q
 1. Github doesn't have record about owner transfer
@@ -349,6 +354,15 @@ renaming a repo
 
 collaborators
 https://docs.github.com/en/rest/collaborators/collaborators?apiVersion=2022-11-28#check-if-a-user-is-a-repository-collaborator
+https://docs.github.com/en/rest/collaborators/collaborators?apiVersion=2022-11-28#list-repository-collaborators
+List public member for org is okay
+https://docs.github.com/en/rest/orgs/members?apiVersion=2022-11-28#list-public-organization-members
+https://docs.github.com/en/rest/orgs/members?apiVersion=2022-11-28#get-organization-membership-for-a-user
+
+https://docs.github.com/en/rest/orgs/organization-roles?apiVersion=2022-11-28#list-users-that-are-assigned-to-an-organization-role
+OAuth app tokens and personal access tokens (classic) need the admin:org scope to use this endpoint.
+
+
 
 GH Archive
 https://www.gharchive.org/
@@ -359,9 +373,32 @@ https://www.gharchive.org/
 - electrum python https://github.com/spesmilo/electrum bitcoin
 - bitpay JS npm https://github.com/bitpay/wallet
 - Crypto.com JS yarn https://github.com/crypto-com/chain-desktop-wallet
+- Safe JS yarn v1 https://github.com/safe-global/safe-wallet-web
+- Trust wallet 
 
 **dependency related**
 
 https://owasp.org/www-project-dependency-check/
+
+**About Socket.Dev**
+
+Socket for GitHub
+
+Socket watches for changes to “package manifest” files
+- identify a new install script
+- Telemetry
+- Known Malware
+- Troll Packages
+
+https://socket.dev/npm/issue
+
+
+Troll Packages -> how
+The source for file explorer? github or npm?
+https://socket.dev/npm/issue/gitDependency -> didn't get it
+
+
+
+
 
 </details>
