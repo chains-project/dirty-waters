@@ -1,4 +1,4 @@
-latest update: 02/19/2024
+latest update: 02/28/2024
 
 **Table of Contents**
 - [Steps](#steps)
@@ -11,8 +11,21 @@ latest update: 02/19/2024
 - [memo](#memo)
 - [details](#details)
   
+Tool:
+functionA(for one relese): 
+- npm deprecate, latest update time
+- github available/archived/redirected/name_match/latest update time/open PR
 
-- To be solved
+functionB(Compare two release):
+- npm deprecate status
+- CI/contributor access/new controbutor/new reviewer or merger/ archive status
+
+Minutes 02/28/34
+indictor
+- and what is missing so far
+- metrics -score change
+
+**To be solved**
 1. Code search in fork 
 2. Time issue
 3. Make them automated
@@ -24,6 +37,7 @@ Q:
 1. For evaluation, do we want all versions' experiments and what should we include
 - comparing 
 - project
+
 Working on tooling and chapter 3 writing
 - to consider evaluation
 optionA: look at major releases from three wallets
