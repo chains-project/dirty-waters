@@ -13,12 +13,23 @@ latest update: 02/28/2024
   
 Tool:
 functionA(for one relese): 
-- npm deprecate, latest update time
-- github available/archived/redirected/name_match/latest update time/open PR
+- npm deprecate, latest update time, 
+- github available/archived/redirected/name_match/latest update time/open PR/(Scorecard)
+
 
 functionB(Compare two release):
 - npm deprecate status
-- CI/contributor access/new controbutor/new reviewer or merger/ archive status
+- archive status
+
+- CI
+
+
+- contributor access 
+
+- new controbutor
+- new reviewer or merger
+
+- who release the tag
 
 Minutes 02/28/34
 indictor
@@ -407,6 +418,7 @@ https://www.gharchive.org/
 - Crypto.com JS yarn https://github.com/crypto-com/chain-desktop-wallet
 - Safe JS yarn v1 https://github.com/safe-global/safe-wallet-web
 - Trust wallet 
+- Uniswap
 
 **dependency related**
 
@@ -437,7 +449,34 @@ https://socket.dev/npm/issue/gitDependency -> didn't get it
   get commits: /repos/{owner}/{repo}/commits
   find PR: /repos/{owner}/{repo}/commits/{commit_sha}/pulls
   get review info: /repos/{owner}/{repo}/pulls/{pull_number}/reviews
-  Identify merger:/repos/{owner}/{repo}/pulls/{pull_number}/merge
   check runs: /repos/{owner}/{repo}/commits/{ref}/check-runs  -> https://docs.github.com/en/rest/checks?apiVersion=2022-11-28
+  PR author: https://api.github.com/search/issues?q=repo:LavaMoat/lavamoat+is:pr%20is:merged%20author:kumavis&sort=created&order=asc
+  https://docs.github.com/en/search-github/getting-started-with-searching-on-github/understanding-the-search-syntax
+  For API (V3) you can include the sort qualifier in your query - +sort:author-date-desc for descending and +sort:author-date-asc for ascending.
+  https://api.github.com/search/repositories?q=user:km-poonacha+sort:author-date-asc
+
+  commits
+  https://api.github.com/search/commits?q=repo:LavaMoat/LavaMoat/+author:weizman+sort:author-date-asc
+  PR
+  https://api.github.com/search/issues?q=repo:chains-project/chains-project.github.io+is:pull-request+author:stamp9+is:merged&sort=created&order=asc
+
+  https://api.github.com/search/issues?q=repo:LavaMoat/LavaMoat/+author:weizman+sort:author-date-asc+type:pr++is:merged
+  https://api.github.com/search/issues?q=repo:LavaMoat/lavamoat+is:pr%20is:merged%20author:kumavis&sort=created&order=asc
+
+  https://docs.github.com/en/graphql/reference/objects#pullrequestcontributionsbyrepository
+
+  https://docs.github.com/en/graphql/reference/enums#pullrequestreviewstate
+  https://docs.github.com/en/graphql/reference/enums#pullrequeststate
+  https://docs.github.com/en/graphql/reference/objects#pullrequestcontributionsbyrepository
+  https://docs.github.com/en/graphql/reference/objects#pullrequestreviewcontributionsbyrepository
+  https://docs.github.com/en/graphql/reference/objects#commitcontributionsbyrepository
+
+  
+
+  CI
+  https://stackoverflow.com/questions/67919168/github-checks-api-vs-check-runs-vs-check-suites
+  https://docs.github.com/en/rest/checks/runs?apiVersion=2022-11-28#list-check-runs-for-a-git-reference
+
+  GraphQL: https://docs.github.com/en/graphql/overview/explorer
   
 </details>
