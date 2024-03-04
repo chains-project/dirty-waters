@@ -1,0 +1,91 @@
+query{
+  organization(login:"MetaMask"){
+    repository(name:"snaps"){
+      collaborators {
+        edges {
+          permissionSources {
+            permission
+            roleName
+            source {
+              ... on Organization {
+                id
+                login
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+{
+  "data": {
+    "repository": {
+      "collaborators": null
+    }
+  },
+  "errors": [
+    {
+      "type": "FORBIDDEN",
+      "path": [
+        "repository",
+        "collaborators"
+      ],
+      "locations": [
+        {
+          "line": 3,
+          "column": 5
+        }
+      ],
+      "message": "You do not have permission to view repository collaborators."
+    }
+  ]
+}
+
+
+query{
+  repository(owner:"MetaMask",name:"snaps" ){
+    collaborators{
+        edges{
+          permission
+          
+        }
+      }
+    }
+  }
+
+{
+  "errors": [
+    {
+      "type": "INSUFFICIENT_SCOPES",
+      "locations": [
+        {
+          "line": 6,
+          "column": 11
+        }
+      ],
+      "message": "Your token has not been granted the required scopes to execute this query. The 'permissionSources' field requires one of the following scopes: ['admin:org'], but your token has only been granted the: ['read:discussion', 'read:enterprise', 'read:gpg_key', 'read:org', 'read:packages', 'read:project', 'read:public_key', 'read:repo_hook', 'repo', 'user'] scopes. Please modify your token's scopes at: https://github.com/settings/tokens."
+    },
+    {
+      "type": "INSUFFICIENT_SCOPES",
+      "locations": [
+        {
+          "line": 7,
+          "column": 13
+        }
+      ],
+      "message": "Your token has not been granted the required scopes to execute this query. The 'permission' field requires one of the following scopes: ['admin:org'], but your token has only been granted the: ['read:discussion', 'read:enterprise', 'read:gpg_key', 'read:org', 'read:packages', 'read:project', 'read:public_key', 'read:repo_hook', 'repo', 'user'] scopes. Please modify your token's scopes at: https://github.com/settings/tokens."
+    },
+    {
+      "type": "INSUFFICIENT_SCOPES",
+      "locations": [
+        {
+          "line": 8,
+          "column": 13
+        }
+      ],
+      "message": "Your token has not been granted the required scopes to execute this query. The 'roleName' field requires one of the following scopes: ['admin:org'], but your token has only been granted the: ['read:discussion', 'read:enterprise', 'read:gpg_key', 'read:org', 'read:packages', 'read:project', 'read:public_key', 'read:repo_hook', 'repo', 'user'] scopes. Please modify your token's scopes at: https://github.com/settings/tokens."
+    }
+  ]
+}
