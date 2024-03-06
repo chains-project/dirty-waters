@@ -1,4 +1,4 @@
-latest update: 02/28/2024
+latest update: 03/06/2024
 
 **Table of Contents**
 - [Steps](#steps)
@@ -18,18 +18,45 @@ functionA(for one relese):
 
 
 functionB(Compare two release):
+- new controbutor
+- new reviewer 
+- new merger
+
 - npm deprecate status
-- archive status
+- archive status(archivedAt vs updatedAt)
 
 - CI
 
-
 - contributor access 
 
-- new controbutor
-- new reviewer or merger
-
 - who release the tag
+
+
+Minutes 03/06/24
+
+Progress:
+1. identify new author to commit
+2. identify new reviewer to review
+
+
+Q:
+1. archived status: No log 
+2. Maintainer: need permission [link](https://github.com/chains-project/crypto_wallets/blob/main/differential/collaborator.graphql) [codeowner](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners): Code owners are automatically requested for review when someone opens a pull request that modifies code that they own.
+
+3. PR merger: no endpoint -> need to go through all prs of a author or a repo
+https://docs.github.com/en/graphql/reference/objects#pullrequest
+4. Evaluation
+three latest version
+
+Todo:
+ownerChange -> handle change
+We may intergrated scorecard
+Metrics
+
+
+
+
+
 
 Minutes 02/28/34
 indictor
@@ -478,5 +505,10 @@ https://socket.dev/npm/issue/gitDependency -> didn't get it
   https://docs.github.com/en/rest/checks/runs?apiVersion=2022-11-28#list-check-runs-for-a-git-reference
 
   GraphQL: https://docs.github.com/en/graphql/overview/explorer
-  
+
+  archived data: When a repository is archived, its issues, pull requests, code, labels, milestones, projects, wiki, releases, commits, tags, branches, reactions, code scanning alerts, comments and permissions become read-only. To make changes in an archived repository, you must unarchive the repository first.
+  https://docs.github.com/en/repositories/archiving-a-github-repository/archiving-repositories
+
+
+
 </details>
