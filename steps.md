@@ -1,4 +1,4 @@
-latest update: 03/06/2024
+latest update: 03/20/2024
 
 **Table of Contents**
 - [Steps](#steps)
@@ -13,9 +13,9 @@ latest update: 03/06/2024
   
 Tool:
 functionA(for one relese): 
-- npm deprecate, latest update time, 
+- npm deprecate, latest update time, provenance
 - github available/archived/redirected/name_match/latest update time/open PR/(Scorecard)
-
+- 
 
 functionB(Compare two release):
 - new controbutor
@@ -24,19 +24,73 @@ functionB(Compare two release):
 
 - npm deprecate status
 - archive status(archivedAt vs updatedAt)
-
-- CI
-
 - contributor access 
 
 - who release the tag
+
+- CI
+
+Minutes 03/20/24
+how to present the findings?:
+1. deprecatd, packages without source code 
+2. unarchived deprecated repo
+
+3. newly added packages and packages with old version
+4. for commits? 
+- one commit used by many release
+- are the author new?
+
+- We write sperate results for each wallet in chapter4 and discuss the result in Discussion part.
+
+for report:
+- Good numbers
+- Bad numbers / Warning
+We remove All Versions Deprecated Packages
+
+We keep :
+- specific version deprecated packages
+- Total packages
+- GitHub URL does not exist
+- Forks 
+
+Other info>
+We keep:
+- Source code repo is not GitHub
+- Names do not match
+
+Output:
+The list of all packages will be provided in a different markdown
+
+Differenciating mode:
+- We keep info about downgrading updates
+- Repo metric to catch an attack from a package supplier
+- Add a warning section if a new author has a spread commit
+
+
+
+
+renovate
+NOW
+- coding tool
+- Writing chapter4: tool
+
+TODO
+
+
+Minutes 03/13/24
+NOW
+- coding tool
+TODO
+- ✅ process patch
+- process yarn.lock v1 file
+- metamask-crx@workspace:.
 
 
 Minutes 03/06/24
 
 Progress:
-1. identify new author to commit
-2. identify new reviewer to review
+1. ✅ identify new author to commit
+2. ✅ identify new reviewer to review
 
 
 Q:
@@ -509,6 +563,11 @@ https://socket.dev/npm/issue/gitDependency -> didn't get it
   archived data: When a repository is archived, its issues, pull requests, code, labels, milestones, projects, wiki, releases, commits, tags, branches, reactions, code scanning alerts, comments and permissions become read-only. To make changes in an archived repository, you must unarchive the repository first.
   https://docs.github.com/en/repositories/archiving-a-github-repository/archiving-repositories
 
+
+  Something fun
+
+  - https://github.com/microsoft/pylance-release/issues/5630
+  - fix: https://github.com/microsoft/pylance-release/issues/5630#issuecomment-2004637561, https://github.com/pandas-dev/pandas-stubs/pull/890
 
 
 </details>
