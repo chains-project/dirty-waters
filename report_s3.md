@@ -1,32 +1,35 @@
 # Summary
-
+<details>
+    <summary>Info</summary>
+Dirty-waters has analyzed your project dependencies and have found different categories for each of them:
+- ⚠️⚠️⚠️ : severe
+- ⚠️⚠️: moderate
+- ⚠️: precaution
+</details>
 
 ### Total packages: 2140
-
 
 :heavy_exclamation_mark: Github URL couldn't be found from package registry: 36
 
 :no_entry: Github URL doesn't exist: 14
 
+
+
 :x: Packages that are deprecated: 38
 
 :black_square_button: Packages without provenance: 2110
 
+
 :cactus: Forks: 24
 
-Other info:
+### Other info:
 - Source code repo is not hosted on github: 1
 - Name not match: 0
 
 If you want to know more details about the suspicious packages, please take a look at the following two tables.
 
-TODO: add a dropdown to to tables
-TODO: add explantion of each conclusion
-<details>
-    <summary> ## :heavy_exclamation_mark: :no_entry: List of packages that source code could not be found(50):</summary>
-
-
-Explanation: without source code repo means we couldn't find the repository link from the metadata of registry
+<details> <summary>Source code could not be found(50)</summary>  
+    ## :heavy_exclamation_mark: :no_entry: Source code could not be found(50):
 
 |   index | package_name                               | github_url                                                            | github_exists   |
 |--------:|:-------------------------------------------|:----------------------------------------------------------------------|:----------------|
@@ -83,8 +86,8 @@ Explanation: without source code repo means we couldn't find the repository link
 
 </details>
 
-
-## List of deprecated packages(38):
+<details> <summary> List of deprecated packages(38):</summary>
+    
 | package_name                                 | deprecated_in_version   | provenance_in_version   | all_deprecated   | github_url                                              | github_exists   | github_redirected   | archived   | is_fork   | open_issues_count   | is_match   |
 |:---------------------------------------------|:------------------------|:------------------------|:-----------------|:--------------------------------------------------------|:----------------|:--------------------|:-----------|:----------|:--------------------|:-----------|
 | @firebase/firestore@4.3.0                    | True                    | False                   | False            | https://github.com/firebase/firebase-js-sdk             | True            | False               | False      | False     | 632                 |            |
@@ -126,5 +129,6 @@ Explanation: without source code repo means we couldn't find the repository link
 | workbox-google-analytics@7.0.0               | True                    | False                   | True             | https://github.com/googlechrome/workbox                 | True            | False               | False      | False     | 235                 |            |
 | zksync-web3@0.14.4                           | True                    | False                   | True             | https://github.com/zksync-sdk/zksync2-js                | True            | False               | False      | False     | 6                   |            |
 
+</details>
 
-
+## What do I do now?? 👻
