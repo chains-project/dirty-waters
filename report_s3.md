@@ -1,26 +1,23 @@
-# Summary
+# Transparency Report of MetaMask
 <details>
     <summary>Info</summary>
-Dirty-waters has analyzed your project dependencies and have found different categories for each of them:
+Dirty-waters has analyzed your project dependencies and found different categories for each of them:
 - ⚠️⚠️⚠️ : severe
 - ⚠️⚠️: moderate
 - ⚠️: precaution
 </details>
 
-### Total packages: 2140
+### Total packages in the supply chain: 2140
 
-:heavy_exclamation_mark: Github URL couldn't be found from package registry: 36
+:heavy_exclamation_mark: GitHub URL couldn't be found from package registry: 36
 
-:no_entry: Github URL doesn't exist: 14
-
-
+:no_entry: Packages with GitHub URL doesn't exist: 14
 
 :x: Packages that are deprecated: 38
 
 :black_square_button: Packages without provenance: 2110
 
-
-:cactus: Forks: 24
+:cactus: Packages with GitHub forks: 24
 
 ### Other info:
 - Source code repo is not hosted on github: 1
