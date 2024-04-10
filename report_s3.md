@@ -9,18 +9,16 @@ Dirty-waters has analyzed your project dependencies and have found different cat
 
 ### Total packages: 2140
 
-:heavy_exclamation_mark: Github URL couldn't be found from package registry: 36
+:heavy_exclamation_mark: Packages with no Source Code URL: 36
 
-:no_entry: Github URL doesn't exist: 14
-
-
+:no_entry:  Packages with Github URLs that are 404: 14
 
 :x: Packages that are deprecated: 38
 
 :black_square_button: Packages without provenance: 2110
 
 
-:cactus: Forks: 24
+:cactus: Packages from forks: 24
 
 ### Other info:
 - Source code repo is not hosted on github: 1
