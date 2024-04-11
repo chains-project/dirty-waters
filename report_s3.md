@@ -1,11 +1,12 @@
 # Transparency Report of MetaMask
 <details>
-    <summary>Info</summary>
+    <summary>How to read the results</summary>
 Dirty-waters has analyzed your project dependencies and found different categories for each of them:
 - ⚠️⚠️⚠️ : severe
 - ⚠️⚠️: moderate
 - ⚠️: precaution
 </details>
+
 
 ### Total packages in the supply chain: 2140
 
