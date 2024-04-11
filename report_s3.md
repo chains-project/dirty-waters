@@ -1,6 +1,7 @@
 # Transparency Report of MetaMask
 <details>
     <summary>How to read the results</summary>
+    
 Dirty-waters has analyzed your project dependencies and found different categories for each of them:
 - ⚠️⚠️⚠️ : severe
 - ⚠️⚠️: moderate
@@ -21,14 +22,16 @@ Dirty-waters has analyzed your project dependencies and found different categori
 :cactus: Packages with GitHub forks: 24  (⚠️) 
 
 <details> <summary> Other info:</summary> 
-    - Source code repo is not hosted on github: 1
-    - Name not match: 0
+
+- Source code repo is not hosted on github: 1
+- Name not match: 0
 </details>
 
 ### Fine grained information
 If you want to know more details about the suspicious packages, please take a look at the following two tables.
 
 <details> <summary>Source code could not be found(50)</summary>  
+    
     ## :heavy_exclamation_mark: :no_entry: Source code could not be found(50):
 
 |   index | package_name                               | github_url                                                            | github_exists   |
@@ -136,20 +139,20 @@ If you want to know more details about the suspicious packages, please take a lo
     <summary>👻 What do I do now? </summary>
         For packages without source code: 
 
-        - Reevaluate the dependency usage 
-        - Check if it is deprecated 
-        - Pull Request to developer (from the dependency) to ask for updating the metadata 
+        1. Reevaluate the dependency usage 
+        2. Check if it is deprecated 
+        3. Pull Request to developer (from the dependency) to ask for updating the metadata 
         
 For deprecated packages:
 
-        - Check for not deprecated versions
-        - If all versions deprecated, confirm maintainer's reason/declaration
+        1. Check for not deprecated versions
+        2. If all versions deprecated, confirm maintainer's reason/declaration
         
 For packages without provenance:
 
-        - Open an issue on the dependency repository to get provenance  
+        1. Open an issue on the dependency repository to get provenance  
         
 For packages from forks
 
-        - To verify the GitHub repository to prevent using malicious fork
+        1. To verify the GitHub repository to prevent using malicious fork
 </details>
