@@ -20,10 +20,12 @@ Dirty-waters has analyzed your project dependencies and found different categori
 
 :cactus: Packages with GitHub forks: 24  (⚠️) 
 
-### Other info:
-- Source code repo is not hosted on github: 1
-- Name not match: 0
+<details> <summary> Other info:</summary> 
+    - Source code repo is not hosted on github: 1
+    - Name not match: 0
+</details>
 
+### Fine grained information
 If you want to know more details about the suspicious packages, please take a look at the following two tables.
 
 <details> <summary>Source code could not be found(50)</summary>  
