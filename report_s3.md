@@ -129,4 +129,24 @@ If you want to know more details about the suspicious packages, please take a lo
 
 </details>
 
-## What do I do now?? 👻
+<details>
+    <summary>👻 What do I do now? </summary>
+        From not source code found: 
+
+        - Reevaluate the dependency usage 
+        - Check if it is deprecated 
+        - Pull Request to developer (from the dependency) to ask for updating the metadata 
+        
+From deprecated packages:
+
+        - Check for not deprecated versions
+        - If all versions deprecated, confirm maintainer's reason/declaration
+        
+From without provenance:
+
+        - Open an issue on the dependency repository to get provenance  
+        
+From forks
+
+        - To verify the GitHub repository to prevent using malicious fork
+</details>
