@@ -156,3 +156,12 @@ For packages from forks
 
         1. To verify the GitHub repository to prevent using malicious fork
 </details>
+
+
+Report created by [dirty-waters][https://github.com/chains-project/dirty-waters/]
+
+Tool version: commit x
+
+Date of creation: timestamp
+
+Project version: commit of the project that was analyzed
