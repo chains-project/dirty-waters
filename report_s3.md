@@ -1,6 +1,6 @@
 # Transparency Report of MetaMask
 <details>
-    <summary>How to read the results</summary>
+    <summary>How to read the results 📖 </summary>
     
 Dirty-waters has analyzed your project dependencies and found different categories for each of them:
 - ⚠️⚠️⚠️ : severe
@@ -28,7 +28,7 @@ Dirty-waters has analyzed your project dependencies and found different categori
 </details>
 
 ### Fine grained information
-If you want to know more details about the suspicious packages, please take a look at the following two tables.
+For further information about package transparency in your project, take a look at the following tables.
 
 <details> <summary>Source code could not be found(50)</summary>  
     
@@ -158,7 +158,7 @@ For packages from forks
 </details>
 
 
-Report created by [dirty-waters][https://github.com/chains-project/dirty-waters/]
+Report created by [dirty-waters](https://github.com/chains-project/dirty-waters/)
 
 Tool version: commit x
 
