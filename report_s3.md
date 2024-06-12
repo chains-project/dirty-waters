@@ -1,32 +1,38 @@
-# Summary
+# Transparency Report of MetaMask
+<details>
+    <summary>How to read the results 📖 </summary>
+    
+Dirty-waters has analyzed your project dependencies and found different categories for each of them:
+- ⚠️⚠️⚠️ : severe
+- ⚠️⚠️: moderate
+- ⚠️: precaution
+</details>
 
 
-### Total packages: 2140
+### Total packages in the supply chain: 2140
 
+:heavy_exclamation_mark: GitHub URL couldn't be found from package registry: 36     (⚠️⚠️⚠️)
 
-:heavy_exclamation_mark: Github URL couldn't be found from package registry: 36
+:no_entry: Packages with GitHub URL doesn't exist: 14  (⚠️⚠️⚠️)
 
-:no_entry: Github URL doesn't exist: 14
+:x: Packages that are deprecated: 38  (⚠️⚠️) 
 
-:x: Packages that are deprecated: 38
+:black_square_button: Packages without provenance: 2110  (⚠️) 
 
-:black_square_button: Packages without provenance: 2110
+:cactus: Packages with GitHub forks: 24  (⚠️) 
 
-:cactus: Forks: 24
+<details> <summary> Other info:</summary> 
 
-Other info:
 - Source code repo is not hosted on github: 1
 - Name not match: 0
+</details>
 
-If you want to know more details about the suspicious packages, please take a look at the following two tables.
+### Fine grained information
+For further information about package transparency in your project, take a look at the following tables.
 
-TODO: add a dropdown to to tables
-TODO: add explantion of each conclusion
-<details>
-    <summary> ## :heavy_exclamation_mark: :no_entry: List of packages that source code could not be found(50):</summary>
-
-
-Explanation: without source code repo means we couldn't find the repository link from the metadata of registry
+<details> <summary>Source code could not be found(50)</summary>  
+    
+    ## :heavy_exclamation_mark: :no_entry: Source code could not be found(50):
 
 |   index | package_name                               | github_url                                                            | github_exists   |
 |--------:|:-------------------------------------------|:----------------------------------------------------------------------|:----------------|
@@ -83,8 +89,8 @@ Explanation: without source code repo means we couldn't find the repository link
 
 </details>
 
-
-## List of deprecated packages(38):
+<details> <summary> List of deprecated packages(38):</summary>
+    
 | package_name                                 | deprecated_in_version   | provenance_in_version   | all_deprecated   | github_url                                              | github_exists   | github_redirected   | archived   | is_fork   | open_issues_count   | is_match   |
 |:---------------------------------------------|:------------------------|:------------------------|:-----------------|:--------------------------------------------------------|:----------------|:--------------------|:-----------|:----------|:--------------------|:-----------|
 | @firebase/firestore@4.3.0                    | True                    | False                   | False            | https://github.com/firebase/firebase-js-sdk             | True            | False               | False      | False     | 632                 |            |
@@ -126,5 +132,36 @@ Explanation: without source code repo means we couldn't find the repository link
 | workbox-google-analytics@7.0.0               | True                    | False                   | True             | https://github.com/googlechrome/workbox                 | True            | False               | False      | False     | 235                 |            |
 | zksync-web3@0.14.4                           | True                    | False                   | True             | https://github.com/zksync-sdk/zksync2-js                | True            | False               | False      | False     | 6                   |            |
 
+</details>
+
+### Call to Action:
+<details>
+    <summary>👻 What do I do now? </summary>
+        For packages without source code: 
+
+        1. Reevaluate the dependency usage 
+        2. Check if it is deprecated 
+        3. Pull Request to developer (from the dependency) to ask for updating the metadata 
+        
+For deprecated packages:
+
+        1. Check for not deprecated versions
+        2. If all versions deprecated, confirm maintainer's reason/declaration
+        
+For packages without provenance:
+
+        1. Open an issue on the dependency repository to get provenance  
+        
+For packages from forks
+
+        1. To verify the GitHub repository to prevent using malicious fork
+</details>
 
 
+Report created by [dirty-waters](https://github.com/chains-project/dirty-waters/)
+
+Tool version: commit x
+
+Date of creation: timestamp
+
+Project version: commit of the project that was analyzed
