@@ -1,20 +1,44 @@
 # dirty-waters
 
-Automatically find software supply chain issues in your project.
+Dirty-waters automatically finds software supply chain issues in software projects by analyzing the available metadata of all dependencies, transitively.
 
-Kinds of problems handled by dirty-waters
+By using dirty-waters, you identify the shady areas of your supply chain, which would be natural target for attackers to exploit.
 
-* No link to source code
-* Deprecated packages
-* Depends on a fork
-* No tag for release
+Kinds of problems identified by dirty-waters
 
+* Dependencies with no link to source code repositories (high severity)
+* Dependencies with no tag / commit sha for release, impossible to have reproducible builds (high severity)
+* Deprecated Dependencies (medium severity)
+* Depends on a fork (medium severity)
+* Dependencies with no build attestation (low severity)
+
+Additionally, dirty-waters gives a supplier view on the dependency trees (who owns the different dependencies?)
+
+dirty-waters is developed as part of the [Chains research project](https://chains.proj.kth.se/).
 
 ## NPM Support
 
-To be documented
-
-## Java Support
+### Installation
 
 TODO
 
+### Usage
+
+To be documented
+
+Example reports: TODO add link
+
+## Java Support
+
+### Installation
+
+### Usage
+
+Usage:
+
+Example reports: TODO add link
+
+
+## License
+
+MIT License.
