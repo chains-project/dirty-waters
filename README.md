@@ -36,6 +36,9 @@ Example reports: TODO add link
 
 Usage:
 
+## Other issues not handled by dirty-waters
+
+* Bloated dependencies: we recommend [DepClean](https://github.com/ASSERT-KTH/depclean) for Java
 Example reports: TODO add link
 
 
