@@ -35,11 +35,12 @@ Example reports: TODO add link
 ### Usage
 
 Usage:
+Example reports: TODO add link
+
 
 ## Other issues not handled by dirty-waters
 
-* Bloated dependencies: we recommend [DepClean](https://github.com/ASSERT-KTH/depclean) for Java
-Example reports: TODO add link
+* Bloated dependencies: we recommend [DepClean](https://github.com/ASSERT-KTH/depclean) for Java, [depcheck](https://github.com/depcheck/depcheck) for NPM
 
 
 ## License
