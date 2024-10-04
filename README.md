@@ -40,8 +40,9 @@ Example reports: TODO add link
 
 ## Other issues not handled by dirty-waters
 
+* Missing dependencies: simply run mvn/pip/... install :)
 * Bloated dependencies: we recommend [DepClean](https://github.com/ASSERT-KTH/depclean) for Java, [depcheck](https://github.com/depcheck/depcheck) for NPM
-
+* Version constraint inconsistencies: we recommend [pipdeptree](https://github.com/tox-dev/pipdeptree) for Python
 
 ## License
 
