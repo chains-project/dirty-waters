@@ -65,8 +65,8 @@ Notes:
 - When using `-d` for differential analysis, both `-v` and `-vn` must be specified.
 
 Example reports:
-- [One version analysis]()
-- [Differential analysis]()
+- [One version analysis](https://github.com/chains-project/dirty-waters/blob/main/Examples/v1.30.0_static_summary.md)
+- [Differential analysis](https://github.com/chains-project/dirty-waters/blob/main/Examples/v1.30.0_v1.31.0_diff_summary.md)
 
 
 
