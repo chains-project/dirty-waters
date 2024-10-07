@@ -1,8 +1,0 @@
-{
-  "extends": [
-    "config:base"
-  ],
-  "ignorePresets": [":ignoreModulesAndTests"],
-  "rangeStrategy": "replace",
-  "automerge": true
-}
