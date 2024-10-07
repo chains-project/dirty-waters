@@ -21,13 +21,24 @@ dirty-waters is developed as part of the [Chains research project](https://chain
 ### Installation
 To set up the Dirty-Waters, follow these steps:
 
+1. Clone the repository:
 ```
 git clone https://github.com/chains-project/dirty-waters.git
 cd dirty-waters
+···
+2. Set up a virtual environment and install dependencies:
+```
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
+```
+3. Set up the GitHub API token:
+```
+export GITHUB_API_TOKEN=<your_token>
 ```
 
 ### Usage
+
 Run the tool using the following command structure:
 ```
 python main.py -w <wallet_repo_name> -v <release_version_old> -s -pm <package_manager> [-vn <release_version_new>] [-d]
@@ -65,7 +76,7 @@ Notes:
 - When using `-d` for differential analysis, both `-v` and `-vn` must be specified.
 
 Example reports:
-- [One version analysis](https://github.com/chains-project/dirty-waters/blob/main/example_reports/v1.30.0_static_summary.md))
+- [One version analysis](https://github.com/chains-project/dirty-waters/blob/main/example_reports/v1.30.0_static_summary.md)
 - [Differential analysis](https://github.com/chains-project/dirty-waters/blob/main/example_reports/v1.30.0_v1.31.0_diff_summary.md)
 
 
