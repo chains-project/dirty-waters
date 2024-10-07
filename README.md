@@ -25,7 +25,8 @@ To set up the Dirty-Waters, follow these steps:
 ```
 git clone https://github.com/chains-project/dirty-waters.git
 cd dirty-waters
-···
+```
+
 2. Set up a virtual environment and install dependencies:
 ```
 python3 -m venv venv
