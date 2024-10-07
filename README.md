@@ -19,14 +19,56 @@ dirty-waters is developed as part of the [Chains research project](https://chain
 ## NPM Support
 
 ### Installation
+To set up the Dirty-Waters, follow these steps:
 
-TODO
+```
+git clone https://github.com/chains-project/dirty-waters.git
+cd dirty-waters
+pip install -r requirements.txt
+```
 
 ### Usage
+Run the tool using the following command structure:
+```
+python main.py -w <wallet_repo_name> -v <release_version_old> -s -pm <package_manager> [-vn <release_version_new>] [-d]
+```
 
-To be documented
 
-Example reports: TODO add link
+#### Required Arguments:
+```
+- `-w, --wallet-repo-name`: Name of the wallet repository
+- `-v, --release-version-old`: The release tag of the wallet repository to analyze.
+- `-s, --static-analysis`: Run one version analysis and generate a markdown report of the project.
+- `-pm, --package-manager`: Specify package manager (yarn-classic, yarn-berry, pnpm)
+```
+
+#### Optional Arguments:
+```
+- `-vn, --release-version-new`: Newer release version for comparison
+- `-d, --differential-analysis`: Run differential analysis and generate a markdown report comparing two versions.
+```
+
+
+#### Example usage:
+1. One version analysis:
+```
+python3 main.py -w metamask/metamask-extension -v 1.11.0 -s -pm yarn-berry
+```
+
+2. Differential analysis:
+```
+python3 main.py -w metamask/metamask-extension -v 1.11.0 -vn 1.12.0 -s -d -pm yarn-berry
+```
+
+Notes:
+- The `-s` flag is required for all analyses.
+- When using `-d` for differential analysis, both `-v` and `-vn` must be specified.
+
+Example reports:
+- [One version analysis]()
+- [Differential analysis]()
+
+
 
 ## Java Support
 
