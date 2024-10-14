@@ -47,7 +47,7 @@ python main.py -p <project_repo_name> -v <release_version_old> -s -pm <package_m
 ```
 
 
-#### Required Arguments:
+#### Arguments:
 ```
 usage: main.py [-h] -p PROJECT_REPO_NAME -v RELEASE_VERSION_OLD [-vn RELEASE_VERSION_NEW] -s [-d] -pm
                {yarn-classic,yarn-berry,pnpm}
