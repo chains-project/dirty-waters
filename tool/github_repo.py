@@ -3,10 +3,14 @@ import subprocess
 import re
 import json
 import sqlite3
+import logging
+from pathlib import Path
+from tqdm import tqdm
 
 # from datetime import datetime
-from pathlib import Path
 
+
+TIMEOUT = 60
 
 script_dir = Path(__file__).parent.absolute()
 database_file = script_dir / "database" / "github_repo_info_all.db"
@@ -28,7 +32,7 @@ def write_output(folder_path, filename, data):
     file_path = os.path.join(folder_path, filename)
     # check if the folder exists
 
-    with open(file_path, "w") as f:
+    with open(file_path, "w", encoding="utf-8") as f:
         if isinstance(data, list):
             f.write("\n".join(data))
             f.write(f"\nTotal: {len(data)}\n")
@@ -54,11 +58,8 @@ def process_package(
     c.execute("SELECT github FROM pkg_github_repo_output WHERE package = ?", (package,))
     db_result = c.fetchone()
 
-    print(f"Getting packges {package}'s GitHub URL...")
-
     if db_result:
         repo_info = db_result[0]
-        print(f"Repo info from database {package}: {repo_info}")
 
     else:
         try:
@@ -68,6 +69,7 @@ def process_package(
                     capture_output=True,
                     text=True,
                     check=True,
+                    timeout=TIMEOUT,
                 )
 
             elif pm == "pnpm":
@@ -76,18 +78,30 @@ def process_package(
                     capture_output=True,
                     text=True,
                     check=True,
+                    timeout=TIMEOUT,
                 )
 
+            else:
+                raise ValueError(f"Unsupported package manager: {pm}")
+
             repo_info = result.stdout if result.stdout else result.stderr
-            print(f"Repo info for {package}: {repo_info}")
+            # print(f"Repo info for {package}: {repo_info}")
             c.execute(
                 "INSERT OR IGNORE INTO pkg_github_repo_output (package, github) VALUES (?,?)",
                 (package, repo_info),
             )
             conn.commit()
 
+        except subprocess.TimeoutExpired:
+            logging.error(
+                "Yarn info command timed out after %s seconds for package %s",
+                TIMEOUT,
+                package,
+            )
+            repo_info = None
+
         except subprocess.CalledProcessError as e:
-            some_errors.append(f"Error for {package}: {e.stderr}")
+            logging.error("Yarn info command failed for package %s: %s", package, e)
             repo_info = None
 
     package = package.replace("@npm:", "@")
@@ -120,19 +134,23 @@ def get_github_repo_url(folder, dep_list, pm):
     same_repos_deps = {}  # Dict to store packages with same GitHub URL
     repos_output_json = {}  # Dict to store packages with GitHub URL
 
+    print("Getting GitHub URLs of packages...")
+    total_packages_to_process = len(dep_list.get("resolutions", []))
     # have not process patches
-    for pkg_res in dep_list.get("resolutions"):
-        package = pkg_res
+    with tqdm(total=total_packages_to_process, desc="Getting GitHub URLs") as pbar:
+        for pkg_res in dep_list.get("resolutions"):
+            package = pkg_res
 
-        process_package(
-            package,
-            pm,
-            repos_output,
-            undefined,
-            same_repos_deps,
-            some_errors,
-            repos_output_json,
-        )
+            process_package(
+                package,
+                pm,
+                repos_output,
+                undefined,
+                same_repos_deps,
+                some_errors,
+                repos_output_json,
+            )
+            pbar.update(1)
 
     # Write collected data to files
     unique_repos_output = sorted(set(repos_output))

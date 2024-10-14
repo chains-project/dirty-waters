@@ -10,10 +10,6 @@ headers = {
     "Accept": "application/vnd.github.v3+json",
 }
 
-setup_cache("package")
-# logging.info("Cache [package_cache] setup complete")
-# requests_cache.install_cache('package_cache') #cache
-
 
 def tag_formart(tag, package_name):
     tag_formats = [
@@ -94,8 +90,8 @@ def get_commit_authors(headers, packages_data):
                             else:
                                 status_old = "GitHub old tag not found"
                                 category = "Upgraded package"
-                        except Exception as e:
-                            logging.error(f"Error: {e}")
+                        except (ValueError, KeyError) as e:
+                            logging.error("Error: %s", str(e))
                             print(f"Error: {e}")
                             # Error_old = f"{e}"
                             continue
@@ -109,8 +105,8 @@ def get_commit_authors(headers, packages_data):
                             else:
                                 status_new = "GitHub new tag not found"
                                 category = "Upgraded package"
-                        except Exception as e:
-                            logging.error(f"Error: {e}")
+                        except (ValueError, KeyError) as e:
+                            logging.error("Error: %s", str(e))
                             print(f"Error: {e}")
                             continue
 
@@ -320,22 +316,14 @@ def get_patch_commits(headers, repo_name, release_version, patch_data):
     return authors_per_patches
 
 
-def get_commit_results(headers, repo_name, release_version, patch_data, packages_data):
+def get_commit_results(
+    api_headers, repo_name, release_version, patch_data, packages_data
+):
+    setup_cache("package_commits")
     authors_per_patches_result = get_patch_commits(
-        headers, repo_name, release_version, patch_data
+        api_headers, repo_name, release_version, patch_data
     )
     authors_per_package_result = get_commit_authors(headers, packages_data)
     commit_results = {**authors_per_patches_result, **authors_per_package_result}
 
     return commit_results
-
-
-# def main():
-#     file = sys.argv[1]
-#     with open(file, 'r') as f:
-#         packages_data = json.load(f)
-
-#     authors = get_commit_authors(headers, packages_data)
-
-# if __name__ == "__main__":
-#     main()

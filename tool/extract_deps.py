@@ -1,3 +1,5 @@
+"""Module for extracting dependencies."""
+
 import re
 import os
 import subprocess
@@ -7,10 +9,21 @@ import sys
 import shutil
 from collections import defaultdict
 
+from tool_config import PNPM_LIST_COMMAND
+
 logger = logging.getLogger(__name__)
 
 
 def extract_deps_from_yarn_berry(yarn_lock_file):
+    """
+    Extract dependencies from a Yarn Berry lock file.
+
+    Args:
+        yarn_lock_file (str): The content of the Yarn Berry lock file.
+
+    Returns:
+        dict: A dictionary containing the extracted dependencies and patches.
+    """
     try:
         patches = []
         pkg_name_with_resolution = []
@@ -29,14 +42,24 @@ def extract_deps_from_yarn_berry(yarn_lock_file):
 
         return deps_list_data
 
-    except Exception as e:
+    except (IOError, ValueError, KeyError) as e:
         logging.error(
-            f"An error occurred while extracting dependencies from yarn.lock file(Yarn Berry): {e}"
+            "An error occurred while extracting dependencies from yarn.lock file(Yarn Berry): %s",
+            str(e),
         )
         return {"resolutions": [], "patches": []}
 
 
 def extract_deps_from_v1_yarn(yarn_lock_file):
+    """
+    Extract dependencies from a Yarn Classic lock file.
+
+    Args:
+        yarn_lock_file (str): The content of the Yarn Classic lock file.
+
+    Returns:
+        dict: A dictionary containing the extracted dependencies and patches.
+    """
     # yarn-classic
     try:
         extracted_info = []
@@ -58,20 +81,33 @@ def extract_deps_from_v1_yarn(yarn_lock_file):
 
         return deps_list_data
 
-    except Exception as e:
+    except (IOError, ValueError, KeyError) as e:
         logging.error(
-            f"An error occurred while extracting dependencies from yarn.lock file(Yarn Classic): {e}"
+            "An error occurred while extracting dependencies from yarn.lock file(Yarn Classic): %s",
+            str(e),
         )
         return {"resolutions": [], "patches": []}
 
 
-def get_pnpm_dep_tree(folder_path, version_tag):
-    version_tag_name = version_tag.replace("/", "-")
-    # for ledger-live
-    dir_name = f"ledger-live-{version_tag_name}"
+def get_pnpm_dep_tree(folder_path, version_tag, project_repo_name):
+    """
+    Get pnpm dependency tree for the given project.
 
-    if not os.path.exists(f"ledger-live-{version_tag_name}"):
-        repo_url = "https://github.com/LedgerHQ/ledger-live.git"
+    Args:
+        folder_path (str): Path to the project folder
+        version_tag (str): Version tag of the project
+        project_repo_name (str): Name of the project repository
+
+    Returns:
+        dict: Dependency tree
+    """
+    version_tag_name = version_tag.replace("/", "-")
+    project_repo_name_for_dir = project_repo_name.replace("/", "-")
+    # for pnpm mono repo
+    dir_name = f"{project_repo_name_for_dir}-{version_tag_name}"
+
+    if not os.path.exists(dir_name):
+        repo_url = f"https://github.com/{project_repo_name}.git"
         subprocess.run(
             [
                 "git",
@@ -85,11 +121,11 @@ def get_pnpm_dep_tree(folder_path, version_tag):
             ],
             check=True,
         )
-        logging.info("Cloning Ledger-live Repository...")
+        logging.info("Cloning %s Repository...", project_repo_name)
 
         # repo_name = repo_url.split("/")[-1].replace(".git", "")
 
-        logging.info(f"Cloned to {dir_name}")
+        logging.info("Cloned to %s", dir_name)
 
         os.chdir(dir_name)
 
@@ -103,12 +139,12 @@ def get_pnpm_dep_tree(folder_path, version_tag):
         if dir_if != dir_name:
             os.chdir(dir_name)
 
-        logging.info(
-            "Getting pnpm dependency tree by running `pnpm list --filter ledger-live-desktop --depth Infinity`"
-        )
+        logging.info("Getting pnpm dependency tree by running %s", PNPM_LIST_COMMAND)
+
+        command = PNPM_LIST_COMMAND
         print("Getting pnpm dependency tree...")
         result = subprocess.run(
-            ["pnpm", "list", "--filter", "ledger-live-desktop", "--depth", "Infinity"],
+            command,
             check=True,
             capture_output=True,
             text=True,
@@ -118,15 +154,15 @@ def get_pnpm_dep_tree(folder_path, version_tag):
         details_folder = os.path.join(parent_directory, folder_path)
 
         output_file_path = os.path.join(details_folder, "pnpm_dep_tree.txt")
-        logging.info(f"Writing pnpm dependency tree to {output_file_path}")
+        logging.info("Writing pnpm dependency tree to %s", output_file_path)
 
-        with open(output_file_path, "w") as f:
+        with open(output_file_path, "w", encoding="utf-8") as f:
             f.write(result.stdout)
 
         # os.chdir("..")
         change_to_cloned_parent_dir = f"../{dir_name}"
         shutil.rmtree(change_to_cloned_parent_dir)
-        logging.info(f"Removed {dir_name}")
+        logging.info("Removed %s", dir_name)
         # change to child folder
 
         return result.stdout.splitlines(), folder_path
@@ -138,16 +174,28 @@ def get_pnpm_dep_tree(folder_path, version_tag):
     finally:
         if os.path.exists(dir_name):
             shutil.rmtree(dir_name)
-            logging.info(f"Removed {dir_name}")
+            logging.info("Removed %s", dir_name)
 
 
-def extract_deps_from_pnpm_mono(folder_path, version_tag):
+def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name):
+    """
+    Extract dependencies from a pnpm monorepo.
+
+    Args:
+        folder_path (str): Path to the monorepo folder
+        version_tag (str): Version tag to use
+
+    Returns:
+        tuple: Lists of all dependencies and registry dependencies
+    """
     all_deps = []
     registry_dep = []
     workspace_dep = []
     patched_dep = []
 
-    tree, folder_path_for_this = get_pnpm_dep_tree(folder_path, version_tag)
+    tree, folder_path_for_this = get_pnpm_dep_tree(
+        folder_path, version_tag, project_repo_name
+    )
 
     os.chdir("..")
     if tree is None:
@@ -170,7 +218,7 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag):
             dep_name = match.group(1).strip()
             dep_version = match.group(2).strip()
             dependencies[dep_name].append(dep_version)
-            print("dep_name match", dep_name)
+            print("dependency found", dep_name)
 
         # logging.info(f"Number of dependencies({version_tag}): {len(dependencies)}")
 
@@ -187,9 +235,9 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag):
 
     dep_all_path = os.path.join(folder_path_for_this, "deps_list_all_installed.json")
 
-    logging.info(f"Writing all dependencies to {dep_all_path}")
+    logging.info("Writing all dependencies to %s", dep_all_path)
 
-    with open(dep_all_path, "w") as f:
+    with open(dep_all_path, "w", encoding="utf-8") as f:
         json.dump(all_deps, f, indent=4)
 
     deps_list_data = {
@@ -199,34 +247,58 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag):
     }
 
     logging.info(
-        f"Number of packages from registry({version_tag}): {len(deps_list_data['resolutions'])}"
+        "Number of packages from registry(%s): %d",
+        version_tag,
+        len(deps_list_data["resolutions"]),
     )
     logging.info(
-        f"Number of packages from workspace({version_tag}): {len(deps_list_data['workspace'])}"
+        "Number of packages from workspace(%s): %d",
+        version_tag,
+        len(deps_list_data["workspace"]),
     )
     logging.info(
-        f"Number of patched packages({version_tag}): {len(deps_list_data['patches'])}"
+        "Number of patched packages(%s): %d",
+        version_tag,
+        len(deps_list_data["patches"]),
     )
 
     return deps_list_data
 
 
 def deps_versions(deps_versions_info_list):
-    deps_versions = {}
+    """
+    Extract dependencies versions from a list of dependency versions.
+
+    Args:
+        deps_versions_info_list (list): List of dependency versions
+
+    Returns:
+        dict: Dictionary containing dependency names and their versions
+    """
+    deps_versions_dict = {}
     for pkg in deps_versions_info_list.get("resolutions"):
         pkg_name, version = pkg.rsplit("@", 1)
 
         version = version.replace("npm:", "")
 
-        if pkg_name in deps_versions:
-            deps_versions[pkg_name].append(version)
+        if pkg_name in deps_versions_dict:
+            deps_versions_dict[pkg_name].append(version)
         else:
-            deps_versions[pkg_name] = [version]
+            deps_versions_dict[pkg_name] = [version]
 
-    return deps_versions
+    return deps_versions_dict
 
 
 def get_pacthes_info(yarn_lock_file):
+    """
+    Get patches information from a Yarn Berry lock file.
+
+    Args:
+        yarn_lock_file (str): The content of the Yarn Berry lock file.
+
+    Returns:
+        dict: Dictionary containing patch information
+    """
     deps_list = extract_deps_from_yarn_berry(yarn_lock_file)
 
     pacthse_info = {}
@@ -252,6 +324,6 @@ def get_pacthes_info(yarn_lock_file):
                 "patch_file_path": None,
             }
 
-    logging.info(f"Number of patches: {len(pacthse_info)}")
+    logging.info("Number of patches: %d", len(pacthse_info))
 
     return pacthse_info

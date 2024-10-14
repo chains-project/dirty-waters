@@ -8,7 +8,7 @@ from tool_config import setup_cache
 
 script_dir = Path(__file__).parent.absolute()
 database_file = script_dir / "database" / "github_commit.db"
-print("Database file: ", database_file)
+# print("Database file: ", database_file)
 
 
 conn = sqlite3.connect(database_file)
@@ -27,7 +27,6 @@ c.execute("""CREATE TABLE IF NOT EXISTS commit_data (
 conn.commit()
 
 
-setup_cache("github_cache")
 # logging.info("Cache [github_cache_cache] setup complete")
 
 
@@ -42,6 +41,17 @@ headers = {
 
 
 def get_user_first_commit_info(data):
+    """
+    Get the first commit information for each author in the given data.
+
+    Args:
+        data (dict): A dictionary containing package information with authors.
+
+    Returns:
+        dict: A dictionary with updated package information including first commit details.
+    """
+    setup_cache("github_commits_info")
+
     faied_api_urls = set()
 
     earliest_commit_sha = None

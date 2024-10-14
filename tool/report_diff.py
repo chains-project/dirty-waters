@@ -118,9 +118,9 @@ def filter_df(df):
 
 
 def generate_diff_report(
-    data, wallet_repo_name, release_version_old, release_version_new, output_file
+    data, project_repo_name, release_version_old, release_version_new, output_file
 ):
-    print(f"Generating differential report for {wallet_repo_name}")
+    print(f"Generating differential report for {project_repo_name}")
     record, record_list, author_list = process_data(data)
 
     df_all = create_dataframe(record)
@@ -185,7 +185,7 @@ def generate_diff_report(
     # We write into a markdown file
     with open(output_file, "w") as f:
         f.write(
-            f"# Differential Report of {wallet_repo_name} - {release_version_old} & {release_version_new}\n"
+            f"# Differential Report of {project_repo_name} - {release_version_old} & {release_version_new}\n"
         )
         f.write("\n")
 
@@ -242,8 +242,8 @@ def generate_diff_report(
         # Tool version
         # tool_commit_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).strip().decode('utf-8')
         # md_file.write(f"- Tool version: {tool_commit_hash}\n")
-        f.write(f"- Wallet Name: {wallet_repo_name}\n")
+        f.write(f"- project Name: {project_repo_name}\n")
         f.write(
-            f"- Compared Wallet Versions: {release_version_old} & {release_version_new}\n"
+            f"- Compared project Versions: {release_version_old} & {release_version_new}\n"
         )
     print(f"Report generated at {output_file}")

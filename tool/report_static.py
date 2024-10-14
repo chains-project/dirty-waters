@@ -1,20 +1,33 @@
-import pandas as pd
+"""
+Generate the report for the static analysis results.
+"""
+
 import json
+import subprocess
 from datetime import datetime
+import pandas as pd
 
 
 def load_data(filename):
-    with open(filename) as f:
+    """Load data from a JSON file got from static analysis."""
+
+    with open(filename, encoding="utf-8") as f:
         return json.load(f)
 
 
 def create_dataframe(data):
+    """
+    Create a dataframe from the data got from static analysis.
+
+    """
+
     rows = []
 
     for package_name, package_data in data.items():
         github_exists_data = package_data.get("github_exists", {}) or {}
 
         match_data = package_data.get("match_info", {}) or {}
+        release_tag_exists_info = github_exists_data.get("release_tag", {}) or {}
 
         # Create a row for each package
 
@@ -39,15 +52,28 @@ def create_dataframe(data):
             "forked_from": github_exists_data.get("parent_repo_link", "-"),
             "open_issues_count": github_exists_data.get("open_issues_count", "-"),
             "is_match": match_data.get("match", None),
+            # "release_tag_exists_info": github_exists_data.get("release_tag", {}),
+            "release_tag_exists": release_tag_exists_info.get("exists", "-"),
+            "tag_version": release_tag_exists_info.get("tag_version", "-"),
+            "tag_url": release_tag_exists_info.get("url", "-"),
+            "tag_related_info": release_tag_exists_info.get("tag_related_info", "-"),
+            "status_code_for_release_tag": release_tag_exists_info.get(
+                "status_code", "-"
+            ),
         }
         rows.append(row)
 
     df = pd.DataFrame(rows)
+
     return df.set_index("package_name")
 
 
-def write_summary(df, wallet_name, release_version, filename, mode="w"):
-    No_source_code_repo_df = df.loc[
+def write_summary(df, project_name, release_version, filename, mode="w"):
+    """
+    Write a summary of the static analysis results to a markdown file.
+    """
+
+    no_source_code_repo_df = df.loc[
         df["github_url"] == "No_repo_info_found", ["github_url", "github_exists"]
     ]
     github_repo_404_df = df.loc[
@@ -55,17 +81,25 @@ def write_summary(df, wallet_name, release_version, filename, mode="w"):
     ]
 
     combined_repo_problems_df = (
-        pd.concat([No_source_code_repo_df, github_repo_404_df])
+        pd.concat([no_source_code_repo_df, github_repo_404_df])
         .reset_index(drop=False)
         .drop_duplicates(subset=["package_name"])
     )
+    # could not find release tag while github exists
+    release_tag_not_found_df = df.loc[
+        (df["release_tag_exists"] == False) & (df["github_exists"] == True),
+        [
+            "release_tag_exists",
+            "tag_version",
+            "github_url",
+            "tag_related_info",
+            "status_code_for_release_tag",
+        ],
+    ]
 
     # all_deprecated_df = df[df["all_deprecated"] is True]
     version_deprecated_df = df[df["deprecated_in_version"] == True]
     forked_package_df = df[df["is_fork"] == True]
-    # unarchived_deprecated_packages_count = all_deprecated_df[
-    #     all_deprecated_df["archived"] is not True
-    # ].shape[0]
 
     common_counts = {
         "### Total packages in the supply chain:": len(df),
@@ -78,33 +112,37 @@ def write_summary(df, wallet_name, release_version, filename, mode="w"):
         ":no_entry: Packages with Github URLs that are 404(⚠️⚠️⚠️)": (
             df["github_exists"] == False
         ).sum(),
+        ":wrench: Packages with inaccessible GitHub tags(⚠️⚠️⚠️)": (
+            df["release_tag_exists"] == False
+        ).sum(),
         ":x: Packages that are deprecated(⚠️⚠️)": (
             df["deprecated_in_version"] == True
         ).sum(),
+        ":cactus: Packages that are forks(⚠️⚠️)": (df["is_fork"] == True).sum(),
         ":black_square_button: Packages without provenance(⚠️)": (
             df["provenance_in_version"] == False
         ).sum(),
-        ":cactus: Packages that are forks(⚠️)": (df["is_fork"] == True).sum(),
     }
 
     not_on_github_counts = (df["github_url"] == "Not_github_repo").sum()
-    name_not_match_counts = (df["is_match"] == False).sum()
 
     source_sus = (df["github_url"] == "No_repo_info_found").sum() + (
         df["github_exists"] == False
     ).sum()
 
-    with open(filename, mode) as md_file:
-        md_file.write(f"# Transparency Report of {wallet_name} - {release_version}\n")
+    with open(filename, mode, encoding="utf-8") as md_file:
+        md_file.write(
+            f"# Software Supply Chain Report of {project_name} - {release_version}\n"
+        )
         md_file.write("\n")
 
-        md_file.write(f"""
+        md_file.write("""
 <details>
     <summary>How to read the results :book: </summary>
     \n Dirty-waters has analyzed your project dependencies and found different categories for each of them:\n
-    \n - ⚠️⚠️⚠️ : severe \n
-    \n - ⚠️⚠️: moderate \n
-    \n - ⚠️: precaution \n
+    \n - ⚠️⚠️⚠️ : high severity \n
+    \n - ⚠️⚠️: medium severity \n
+    \n - ⚠️: low severity \n
 </details>
         """)
 
@@ -124,7 +162,6 @@ def write_summary(df, wallet_name, release_version, filename, mode="w"):
 <details>
     <summary>Other info:</summary>
      \n- Source code repo is not hosted on github:  {not_on_github_counts} \n
-     \n- Name not match: {name_not_match_counts} \n
 </details>
                       
                       """)
@@ -133,13 +170,13 @@ def write_summary(df, wallet_name, release_version, filename, mode="w"):
         # md_file.write("\n---\n")
         md_file.write("\n### Fine grained information\n")
         md_file.write(
-            "\n:dolphin: For further information about package transparency in your project, take a look at the following tables.\n"
+            "\n:dolphin: For further information about software supply chain smells in your project, take a look at the following tables.\n"
         )
 
         if not combined_repo_problems_df.empty:
             md_file.write(f"""
 <details>
-    <summary>Source code could not be found({source_sus})</summary>
+    <summary>Source code links that could not be found({source_sus})</summary>
         """)
             md_file.write("\n\n\n")
             combined_repo_problems_df.index = range(
@@ -151,24 +188,38 @@ def write_summary(df, wallet_name, release_version, filename, mode="w"):
             md_file.write(markdown_text)
             md_file.write("\n</details>")
         else:
-            md_file.write(f"No package doesn't have source code repo.\n")
+            md_file.write("No package doesn't have source code repo.\n")
+
+        if not release_tag_not_found_df.empty:
+            md_file.write(f"""
+
+<details>
+    <summary>List of packages with inaccessible tags({(df["release_tag_exists"] == False).sum()}) </summary>
+        """)
+            md_file.write("\n\n\n")
+            markdown_text = release_tag_not_found_df.reset_index().to_markdown(
+                index=False
+            )
+            md_file.write(markdown_text)
+            md_file.write("\n</details>")
+        else:
+            md_file.write("\nNo package with inaccessible tags.\n")
 
         if not version_deprecated_df.empty:
             md_file.write(f"""
 <details>
     <summary>List of deprecated packages({(df['deprecated_in_version'] == True).sum()})</summary>
         """)
-            # md_file.write("\n\n## List of deprecated packages:\n")
             md_file.write("\n\n\n")
             markdown_text = version_deprecated_df.reset_index().to_markdown(index=False)
             md_file.write(markdown_text)
             md_file.write("\n</details>")
         else:
-            md_file.write(f"No deprecated package found.\n")
+            md_file.write("No deprecated package found.\n")
 
         if not forked_package_df.empty:
             md_file.write(f"""
-                      
+
 <details>
     <summary>List of packages from fork({(df["is_fork"] == True).sum()}) </summary>
         """)
@@ -179,42 +230,51 @@ def write_summary(df, wallet_name, release_version, filename, mode="w"):
         else:
             md_file.write("\nNo package is from fork.\n")
 
-        md_file.write(f"\n### Call to Action:\n")
-        md_file.write(f"""
+        md_file.write("\n### Call to Action:\n")
+        md_file.write("""
                       
 <details>
     <summary>👻What do I do now? </summary>
-        For packages without source code:  \n
-        1. Reevaluate the dependency usage 
-        2. Check if it is deprecated 
-        3. Pull Request to developer (from the dependency) to ask for updating the metadata 
+        For packages without source code & accsible release tags:  \n
+        Pull Request to the maintainer of dependency, requesting correct repository metadata and proper tagging. \n
         \nFor deprecated packages:\n
-        1. Check for not deprecated versions
-        2. If all versions deprecated, confirm maintainer's reason/declaration
+        1. Confirm the maintainer’s deprecation intention 
+        2. Check for not deprecated versions
         \nFor packages without provenance:\n
-        1. Open an issue on the dependency repository to get provenance  
+        Open an issue in the dependency’s repository to request the inclusion of provenance and build attestation in the CI/CD pipeline. 
         \nFor packages that are forks\n
-        1. To verify the GitHub repository to prevent using malicious fork
+        Inspect the package and its GitHub repository to verify the fork is not malicious.
 </details>
 
 
 
 """)
-        md_file.write(f"---\n")
+        md_file.write("---\n")
         md_file.write(
-            f"\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/) - version: commit.\n"
+            "\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/).\n"
         )
         md_file.write(
             f"\nReport created on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
         )
 
         # Tool version
-        # tool_commit_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).strip().decode('utf-8')
-        # md_file.write(f"- Tool version: {tool_commit_hash}\n")
-        md_file.write(f"- Wallet Name: {wallet_name}\n")
-        md_file.write(f"- Wallet Version: {release_version}\n")
+        tool_commit_hash = (
+            subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
+            .strip()
+            .decode("utf-8")
+        )
+        md_file.write(f"- Tool version: {tool_commit_hash}\n")
+        md_file.write(f"- Project Name: {project_name}\n")
+        md_file.write(f"- Project Version: {release_version}\n")
 
 
-def get_s_summary(data, wallet_name, release_version, summary_filename):
+def get_s_summary(data, project_name, release_version, summary_filename):
+    """
+    Get a summary of the static analysis results.
+    """
+
     df = create_dataframe(data)
-    write_summary(df, wallet_name, release_version, filename=summary_filename, mode="w")
+    write_summary(
+        df, project_name, release_version, filename=summary_filename, mode="w"
+    )
+    print(f"Report created at {summary_filename}")

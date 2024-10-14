@@ -1,37 +1,36 @@
-import requests
 import json
 import os
 import base64
 import time
 import urllib.parse
-import requests_cache
-import pathlib
-import logging
+from tqdm import tqdm
+
+import requests
 
 import tool_config
+from compare_commits import tag_formart
 
 
 github_token = os.getenv("GITHUB_API_TOKEN")
-# if not github_token:
-#     raise ValueError("GitHub API token is not set in the environment variables.")
 
 headers = {
     "Authorization": f"Bearer {github_token}",
     "Accept": "application/vnd.github.v3+json",
 }
 
+# tool_config.setup_cache("static")
 
-cache_folder = pathlib.Path("cache")
-cache_folder.mkdir(parents=True, exist_ok=True)
-cache_file = cache_folder / "static_cache"
-requests_cache.install_cache(
-    cache_name=str(cache_file), backend="sqlite", expire_after=7776000
-)
+
+MAX_WAIT_TIME = 15 * 60
 
 
 def check_deprecated_and_provenance(package, package_version):
+    """
+    Check if the package is deprecated and if it has a provenance from the npm registry.
+    """
+
     try:
-        response = requests.get(f"https://registry.npmjs.org/{package}")
+        response = requests.get(f"https://registry.npmjs.org/{package}", timeout=20)
 
         response.raise_for_status()
     except requests.RequestException:
@@ -106,53 +105,77 @@ def api_constructor(package_name, repository):
 
     try:
         parts = package_name.split("@")
+        package_full_name = None
+        name = None
+        version = None
+
         if len(parts) > 2 or package_name.startswith("@"):
-            scope, name = parts[1].split("/")
+            package_full_name = f"@{parts[1]}"
+            _, name = parts[1].split("/")  # scope,name
+            version = parts[2]
 
         elif len(parts) == 2:
             if "/" in parts[1]:
+                package_full_name = parts[0]
                 scope, name = parts[0].split("/")
+                version = parts[1]
             else:
+                package_full_name = parts[0]
                 name = parts[0]
+                version = parts[1]
 
-    except Exception as e:
+    except (ValueError, TypeError, AttributeError) as e:
         error_message = f"Error: {str(e)}"
+    except Exception as e:
+        error_message = f"Unexpected error: {str(e)}"
 
-    return repo_api, simplified_path, name, error_message
+    return repo_api, simplified_path, package_full_name, name, version, error_message
+
+
+def make_github_request(url, headers):
+    """Make a GET request to the GitHub API."""
+
+    response = requests.get(url, headers=headers)
+
+    if (
+        response.status_code == 403
+        and int(response.headers.get("X-RateLimit-Remaining", 0)) <= 10
+    ):
+        reset_time = int(response.headers.get("X-RateLimit-Reset", 0))
+        sleep_time = min(reset_time - int(time.time()), MAX_WAIT_TIME)
+        print(f"\nRate limit reached. Waiting for {sleep_time} seconds.")
+        time.sleep(sleep_time)
+        print("\nResuming analysis...")
+        response = requests.get(url, headers=headers)
+    return response
 
 
 def check_exisience(package_name, repository):
-    repo_api, simplified_path, _, error_message = api_constructor(
-        package_name, repository
+    """Check if the package exists in the repository."""
+    repo_api, simplified_path, package_full_name, _, version, error_message = (
+        api_constructor(package_name, repository)
     )
 
-    response = requests.get(repo_api, headers=headers)
-    status_code = response.status_code
-
+    repo_link = f"https://github.com/{simplified_path}".lower()
     github_exists = False
     archived = False
     is_fork = False
+    release_tag_exists = False
+    release_tag_url = None
+    tag_related_info = None
+    status_code_release_tag = None
     github_redireted = False
     now_repo_url = None
     open_issues_count = None
 
-    if status_code != 200:
-        if status_code == 403:
-            limit_check = response.headers.get("X-RateLimit-Remaining")
-            reset_time = response.headers.get("X-RateLimit-Reset")
-
-            if limit_check <= "10":
-                sleep_time = int(reset_time) - int(time.time())
-                time.sleep(sleep_time)
-                response = requests.get(repo_api, headers=headers)
-                status_code = response.status_code
-
-        else:
-            archived = None
-            is_fork = None
-            repo_link = f"https://github.com/{simplified_path}".lower()
-
+    response = make_github_request(repo_api, headers=headers)
+    status_code = response.status_code
     data = response.json()
+
+    if status_code != 200:
+        archived = None
+        is_fork = None
+        repo_link = f"https://github.com/{simplified_path}".lower()
 
     if status_code == 200:
         github_exists = True
@@ -172,6 +195,33 @@ def check_exisience(package_name, repository):
         else:
             now_repo_url = None
 
+        # check if the repo has any tags(to reduce the number of API requests)
+        have_no_tags_check_api = f"{repo_api}/tags"
+        have_no_tags_response = requests.get(have_no_tags_check_api, headers=headers)
+        have_no_tags_response_status_code = have_no_tags_response.status_code
+        have_no_tags_data = have_no_tags_response.json()
+
+        if len(have_no_tags_data) == 0:
+            release_tag_exists = False
+            release_tag_url = None
+            tag_related_info = "No tag found in the repo"
+            status_code_release_tag = have_no_tags_response_status_code
+
+        else:
+            tag_possible_formats = tag_formart(version, package_full_name)
+
+            for tag_format in tag_possible_formats:
+                tag_url = f"{repo_api}/git/ref/tags/{tag_format}"
+                response = make_github_request(tag_url, headers=headers)
+                if response.status_code == 200:
+                    release_tag_exists = True
+                    release_tag_url = tag_url
+                    tag_related_info = f"Tag {tag_format} is found in the repo"
+                    status_code_release_tag = response.status_code
+                    break
+                else:
+                    tag_related_info = "Tags are not found in the repo"
+                    status_code_release_tag = response.status_code
     github_info = {
         "github_api": repo_api,
         "github_url": repo_link,
@@ -181,6 +231,13 @@ def check_exisience(package_name, repository):
         "status_code": status_code,
         "archived": archived,
         "is_fork": is_fork,
+        "release_tag": {
+            "exists": release_tag_exists,
+            "tag_version": version,
+            "url": release_tag_url,
+            "tag_related_info": tag_related_info,
+            "status_code": status_code_release_tag,
+        },
         "parent_repo_link": parent_repo_link if is_fork else None,
         "open_issues_count": open_issues_count,
         "error": error_message if error_message else "No error message.",
@@ -190,6 +247,9 @@ def check_exisience(package_name, repository):
 
 
 def get_api_content(api, headers):
+    """
+    Get the content of the API.
+    """
     try:
         response = requests.get(api, headers=headers)
         response.raise_for_status()
@@ -215,7 +275,7 @@ def check_name_match_for_fork(package_name, repository):
     name_match = False
     unmatch_info = None
 
-    repo_api, repo, pkg_only_name, _ = api_constructor(package_name, repository)
+    repo_api, repo, _, pkg_only_name, _, _ = api_constructor(package_name, repository)
     fork_api_json_url = [
         f"{repo_api}/contents/package.json",
         f"{repo_api}/contents/contents/packages/{pkg_only_name}/package.json",
@@ -226,7 +286,7 @@ def check_name_match_for_fork(package_name, repository):
     status_code = None
 
     for api in fork_api_json_url:
-        fork_api_response = requests.get(api, headers=headers)
+        fork_api_response = requests.get(api, headers=headers, timeout=20)
         status_code = fork_api_response.status_code
         if status_code == 200:
             fork_api_json = fork_api_response.json()
@@ -281,7 +341,7 @@ def check_name_match(package_name, repository):
     tool_config.setup_cache("check_name")
     # logging.info("Cache [check_name_cache] setup complete")
 
-    _, repo_name, _, _ = api_constructor(package_name, repository)
+    _, repo_name, _, _, _, _ = api_constructor(package_name, repository)
     original_package_name = package_name.rsplit("@", 1)[0]
 
     query = f'"\\"name\\": \\"{original_package_name}\\""'
@@ -292,7 +352,7 @@ def check_name_match(package_name, repository):
 
     url = f"https://api.github.com/search/code?q={encoded_search_term}+in:file+repo:{encoded_repo}"
 
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, timeout=20)
 
     if not response.from_cache:
         time.sleep(6)
@@ -391,9 +451,9 @@ def analyze_package_data(package, repo_url, check_match=False):
                             "repo_name": repo_url_to_use,
                         }
 
-    except Exception as e:
+    except (ValueError, TypeError, AttributeError) as e:
         return None, {
-            "error_type": "Exception",
+            "error_type": type(e).__name__,
             "message": str(e),
             "repo_url": repo_url,
             "package": package,
@@ -408,17 +468,20 @@ def get_static_data(folder, packages_data, check_match=False):
     package_all = {}
     errors = {}
 
-    for package, repo_urls in packages_data.items():
-        print(f"Analyzing {package}")
-        repo_url = repo_urls.get("github", "")
-        analyzed_data, error = analyze_package_data(
-            package, repo_url, check_match=check_match
-        )
+    with tqdm(total=len(packages_data), desc="Analyzing packages") as pbar:
+        for package, repo_urls in packages_data.items():
+            # print(f"Analyzing {package}")
+            tqdm.write(f"{package}")
+            repo_url = repo_urls.get("github", "")
+            analyzed_data, error = analyze_package_data(
+                package, repo_url, check_match=check_match
+            )
+            pbar.update(1)
 
-        if error:
-            errors[package] = error
-        else:
-            package_all[package] = analyzed_data
+            if error:
+                errors[package] = error
+            else:
+                package_all[package] = analyzed_data
 
     # filepaths
 

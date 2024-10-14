@@ -8,8 +8,7 @@ import logging
 
 
 GITHUB_TOKEN = os.getenv("GITHUB_API_TOKEN")
-# if not GITHUB_TOKEN:
-#     raise ValueError("GitHub API token is not set in the environment variables.")
+
 
 headers = {
     "Authorization": f"Bearer {GITHUB_TOKEN}",
@@ -20,7 +19,7 @@ url = "https://api.github.com/graphql"
 
 script_dir = Path(__file__).parent.absolute()
 database_file = script_dir / "database" / "github_prr_data_new.db"
-print(database_file)
+# print(database_file)
 
 conn = sqlite3.connect(database_file)
 c = conn.cursor()
@@ -91,7 +90,7 @@ def get_first_pr_info(search_string):
 
 def get_pr_review_info(data):
     logging.info("Getting PR review info...")
-    print(f"Processing PR info...")
+    print("Processing PR info...")
 
     pr_data = copy.deepcopy(data)
 
@@ -113,7 +112,7 @@ def get_pr_review_info(data):
                 if merge_state == "MERGED" and len(reviewer_info) >= 1:
                     for reviewer in reviewer_info:
                         review_author_login = reviewer.get("review_author")
-                        review_author_type = reviewer.get("review_author_type")
+                        # review_author_type = reviewer.get("review_author_type")
                         review_id = reviewer.get("review_id")
                         search_string = f"repo:{repo_name} is:pr reviewed-by:{review_author_login} sort:author-date-asc"
 
@@ -200,6 +199,6 @@ def get_pr_review_info(data):
             print(f"No authors for package:{package}")
             info["prr_data"] = None
 
-    print(f"PR review info processed.")
+    print("PR review info processed.")
 
     return pr_data
