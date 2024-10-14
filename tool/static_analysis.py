@@ -485,11 +485,11 @@ def get_static_data(folder, packages_data, check_match=False):
 
     # filepaths
 
-    file_path = os.path.join(folder, "all_info.json")
-    error_path = os.path.join(folder, "errors.json")
+    # file_path = os.path.join(folder, "all_info.json")
+    # error_path = os.path.join(folder, "errors.json")
 
-    save_results_to_file(file_path, package_all)
-    save_results_to_file(error_path, errors)
+    # save_results_to_file(file_path, package_all)
+    # save_results_to_file(error_path, errors)
 
     return package_all, errors
 

@@ -221,11 +221,11 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
 
     rv_name = release_version.replace("/", "_")
 
-    write_to_file(f"{rv_name}_deps_list_all.json", folder_path, deps_list_all)
-    write_to_file(
-        f"{rv_name}_dep_with_many_versions.json", folder_path, dep_with_many_versions
-    )
-    write_to_file(f"{rv_name}_patches_info.json", folder_path, patches_info)
+    # write_to_file(f"{rv_name}_deps_list_all.json", folder_path, deps_list_all)
+    # write_to_file(
+    #     f"{rv_name}_dep_with_many_versions.json", folder_path, dep_with_many_versions
+    # )
+    # write_to_file(f"{rv_name}_patches_info.json", folder_path, patches_info)
 
     return deps_list_all, dep_with_many_versions, patches_info
 
@@ -255,8 +255,8 @@ def static_analysis_all(
     )
     logging.info("Errors: %s", errors)
 
-    rv_name = release_version.replace("/", "_")
-    write_to_file(f"{rv_name}_repo_info.json", folder_path, repo_url_info)
+    # rv_name = release_version.replace("/", "_")
+    # write_to_file(f"{rv_name}_repo_info.json", folder_path, repo_url_info)
 
     return static_results, deps_list, dep_with_many_versions, patches_info
 

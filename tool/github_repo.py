@@ -155,10 +155,10 @@ def get_github_repo_url(folder, dep_list, pm):
     # Write collected data to files
     unique_repos_output = sorted(set(repos_output))
     outputs = {
-        "github_repo_all.txt": repos_output,
-        "github_repo_unique.txt": unique_repos_output,
+        # "github_repo_all.txt": repos_output,
+        # "github_repo_unique.txt": unique_repos_output,
         "github_repo_undefined.log": undefined,
-        "github_repo_some_error.log": some_errors,
+        # "github_repo_some_error.log": some_errors,
         "github_repos_depsnsamerepo.json": same_repos_deps,
         "github_repos_output.json": repos_output_json,
     }

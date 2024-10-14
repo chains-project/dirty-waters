@@ -37,7 +37,7 @@ class PathManager:
         result_folder_path = self.base_dir / folder_name
         result_folder_path.mkdir(parents=True, exist_ok=True)
 
-        json_directory = result_folder_path / "details" / version_tag
+        json_directory = result_folder_path / "sscs" / version_tag
         json_directory.mkdir(parents=True, exist_ok=True)
         diff_directory = result_folder_path / "diff"
         diff_directory.mkdir(parents=True, exist_ok=True)
