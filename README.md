@@ -43,44 +43,49 @@ export GITHUB_API_TOKEN=<your_token>
 
 Run the tool using the following command structure:
 ```
-python main.py -w <wallet_repo_name> -v <release_version_old> -s -pm <package_manager> [-vn <release_version_new>] [-d]
+python main.py -p <project_repo_name> -v <release_version_old> -s -pm <package_manager> [-vn <release_version_new>] [-d]
 ```
 
 
 #### Required Arguments:
 ```
-- `-w, --wallet-repo-name`: Name of the wallet repository
-- `-v, --release-version-old`: The release tag of the wallet repository to analyze.
-- `-s, --static-analysis`: Run one version analysis and generate a markdown report of the project.
-- `-pm, --package-manager`: Specify package manager (yarn-classic, yarn-berry, pnpm)
-```
+usage: main.py [-h] -p PROJECT_REPO_NAME -v RELEASE_VERSION_OLD [-vn RELEASE_VERSION_NEW] -s [-d] -pm
+               {yarn-classic,yarn-berry,pnpm}
 
-#### Optional Arguments:
-```
-- `-vn, --release-version-new`: Newer release version for comparison
-- `-d, --differential-analysis`: Run differential analysis and generate a markdown report comparing two versions.
+options:
+  -p PROJECT_REPO_NAME, --project-repo-name PROJECT_REPO_NAME
+                        Specify the project repository name. Example: MetaMask/metamask-extension
+  -v RELEASE_VERSION_OLD, --release-version-old RELEASE_VERSION_OLD
+                        The old release tag of the project repository. Example: v10.0.0
+  -vn RELEASE_VERSION_NEW, --release-version-new RELEASE_VERSION_NEW
+                        The new release version of the project repository.
+  -s, --static-analysis
+                        Run static analysis and generate a markdown report of the project
+  -d, --differential-analysis
+                        Run diffenretial analysis and generate a markdown report of the project
+  -pm {yarn-classic,yarn-berry,pnpm}, --package-manager {yarn-classic,yarn-berry,pnpm}
+                        The package manager used in the project.
 ```
 
 
 #### Example usage:
-1. One version analysis:
+1. Software supply chain smell analysis:
 ```
-python3 main.py -w MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry
+python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry
 ```
+
+- Example output: [Software Supply Chain Smells Report Example](https://github.com/chains-project/dirty-waters/blob/main/example_reports/software_supply_chain_smells_report_example.md)
 
 2. Differential analysis:
 ```
-python3 main.py -w MetaMask/metamask-extension -v v11.11.0 -vn v11.12.0 -s -d -pm yarn-berry
+python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -vn v11.12.0 -s -d -pm yarn-berry
 ```
 
 Notes:
-- `-v` should be the version of GitHub release, e.g. for [this release](https://github.com/MetaMask/metamask-extension/releases/tag/v11.1.0), the value should be `v11.11.0`, not `Version 11.11.0`.
+- `-v` should be the version of GitHub release, e.g. for [this release](https://github.com/MetaMask/metamask-extension/releases/tag/v11.1.0), the value should be `v11.11.0`, not `Version 11.11.0` or `11.11.0`.
 - The `-s` flag is required for all analyses.
 - When using `-d` for differential analysis, both `-v` and `-vn` must be specified.
 
-Example reports:
-- [One version analysis](https://github.com/chains-project/dirty-waters/blob/main/example_reports/v1.30.0_static_summary.md)
-- [Differential analysis](https://github.com/chains-project/dirty-waters/blob/main/example_reports/v1.30.0_v1.31.0_diff_summary.md)
 
 
 
