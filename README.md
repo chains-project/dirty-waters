@@ -31,8 +31,8 @@ cd dirty-waters
 ```
 python3 -m venv venv
 source venv/bin/activate
-cd tool
 pip install -r requirements.txt
+cd tool
 ```
 3. Set up the GitHub API token:
 ```
