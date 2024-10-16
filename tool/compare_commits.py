@@ -11,7 +11,7 @@ headers = {
 }
 
 
-def tag_formart(tag, package_name):
+def tag_format(tag, package_name):
     tag_formats = [
         f"{tag}",
         f"v{tag}",
@@ -21,10 +21,10 @@ def tag_formart(tag, package_name):
     ]
 
     if "/" in package_name:
-        only_packge_name = package_name.split("/")[1]
-        tag_formats.append(f"{only_packge_name}@{tag}")
-        tag_formats.append(f"{only_packge_name}-v{tag}")
-        tag_formats.append(f"{only_packge_name}-{tag}")
+        only_package_name = package_name.split("/")[1]
+        tag_formats.append(f"{only_package_name}@{tag}")
+        tag_formats.append(f"{only_package_name}-v{tag}")
+        tag_formats.append(f"{only_package_name}-{tag}")
 
     return tag_formats
 
@@ -51,11 +51,11 @@ def get_commit_authors(headers, packages_data):
             comparison_found = False
             compare_urls = []
 
-            tag_formarts_new = tag_formart(tag2_chosen, package)
-            tag_formarts_old = tag_formart(tag1_chosen, package)
+            tag_formats_new = tag_format(tag2_chosen, package)
+            tag_formats_old = tag_format(tag1_chosen, package)
 
             for tag_format_old, tag_format_new in zip(
-                tag_formarts_old, tag_formarts_new
+                tag_formats_old, tag_formats_new
             ):
                 compare_urls.append(
                     f"https://api.github.com/repos/{repo_name}/compare/{tag_format_old}...{tag_format_new}"
@@ -72,11 +72,11 @@ def get_commit_authors(headers, packages_data):
                 new_tag_urls = []
 
                 if comparison_found is False:
-                    for tag_old in tag_formarts_old:
+                    for tag_old in tag_formats_old:
                         old_tag_urls.append(
                             f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_old}"
                         )
-                    for tag_new in tag_formarts_new:
+                    for tag_new in tag_formats_new:
                         new_tag_urls.append(
                             f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_new}"
                         )

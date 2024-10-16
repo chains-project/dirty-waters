@@ -256,7 +256,7 @@ def get_useful_pr_info(commits_data):
                                         review_info = {
                                             "review_author": review_author,
                                             "review_author_type": review_author_type,
-                                            "revie_state": review_node.get(
+                                            "review_state": review_node.get(
                                                 "state", None
                                             ),
                                             "review_id": review_node.get("id", None),

@@ -70,7 +70,7 @@ def get_args():
         "-d",
         "--differential-analysis",
         action="store_true",
-        help="Run diffenretial analysis and generate a markdown report of the project",
+        help="Run differential analysis and generate a markdown report of the project",
     )
     parser.add_argument(
         "-n",
@@ -202,7 +202,7 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
             deps_list_all = deps_list_all = extract_deps.extract_deps_from_yarn_berry(
                 yarn_file
             )
-            patches_info = extract_deps.get_pacthes_info(yarn_file)
+            patches_info = extract_deps.get_patches_info(yarn_file)
 
     logging.info(
         "Number of dependencies: %d", len(deps_list_all.get("resolutions", {}))
