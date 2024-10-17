@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 def extract_deps_from_yarn_berry(yarn_lock_file):
     """
+    # JavaScript
     Extract dependencies from a Yarn Berry lock file.
 
     Args:
@@ -52,6 +53,7 @@ def extract_deps_from_yarn_berry(yarn_lock_file):
 
 def extract_deps_from_v1_yarn(yarn_lock_file):
     """
+    # JavaScript
     Extract dependencies from a Yarn Classic lock file.
 
     Args:
