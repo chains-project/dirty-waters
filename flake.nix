@@ -12,15 +12,12 @@
       project = pyproject-nix.lib.project.loadRequirementsTxt { projectRoot = ./.; };
 
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      python = pkgs.python3;
+      python = pkgs.python312;
 
       pythonEnv =
-        # Assert that versions from nixpkgs matches what's described in requirements.txt
-        # In projects that are overly strict about pinning it might be best to remove this assertion entirely.
-        # assert project.validators.validateVersionConstraints { inherit python; } == { };
         (
           # Render requirements.txt into a Python withPackages environment
-          pkgs.python3.withPackages (project.renderers.withPackages { inherit python; })
+          pkgs.python312.withPackages (project.renderers.withPackages { inherit python; })
         );
 
     in
