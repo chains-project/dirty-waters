@@ -52,7 +52,7 @@ def get_user_first_commit_info(data):
     """
     setup_cache("github_commits_info")
 
-    faied_api_urls = set()
+    failed_api_urls = set()
 
     earliest_commit_sha = None
     author_login_in_commit = None
@@ -126,7 +126,7 @@ def get_user_first_commit_info(data):
                         while (
                             retries < max_retries
                             and not success
-                            and api_url not in faied_api_urls
+                            and api_url not in failed_api_urls
                         ):
                             response = requests.get(api_url, headers=headers)
                             time.sleep(2)
@@ -208,7 +208,7 @@ def get_user_first_commit_info(data):
                             commit_result["commit_notice"] = (
                                 f"Failed to retrieve data from API({api_url})"
                             )
-                            faied_api_urls.add(api_url)
+                            failed_api_urls.add(api_url)
 
                 author["commit_result"] = commit_result
 

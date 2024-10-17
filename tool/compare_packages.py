@@ -230,12 +230,12 @@ def get_repo_from_SA(dep_file_1, dep_file_2, SA_old, SA_new):
                     check_directed_old = (
                         SA_old.get(dep_name_version_old, {})
                         .get("github_exists", {})
-                        .get("github_redireted", None)
+                        .get("github_redirected", None)
                     )
                     check_directed_new = (
                         SA_new.get(dep_name_version_new, {})
                         .get("github_exists", {})
-                        .get("github_redireted", None)
+                        .get("github_redirected", None)
                     )
 
                     differences[dep]["v1_repo_directed"] = check_directed_old
@@ -343,11 +343,11 @@ def changed_patch(package_data_old, package_data_new):
             package_data_old.keys()
         )
 
-        for new_pacth in unique_patches_in_data2:
-            patches_change[new_pacth] = {
-                "name": new_pacth,
-                "version": package_data_new[new_pacth].get("version"),
-                "patch_file_path": package_data_new[new_pacth].get("patch_file_path"),
+        for new_patch in unique_patches_in_data2:
+            patches_change[new_patch] = {
+                "name": new_patch,
+                "version": package_data_new[new_patch].get("version"),
+                "patch_file_path": package_data_new[new_patch].get("patch_file_path"),
             }
 
         no_change_patches["No change patches"] = list(common_patches)

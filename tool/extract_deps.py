@@ -289,7 +289,7 @@ def deps_versions(deps_versions_info_list):
     return deps_versions_dict
 
 
-def get_pacthes_info(yarn_lock_file):
+def get_patches_info(yarn_lock_file):
     """
     Get patches information from a Yarn Berry lock file.
 
@@ -301,7 +301,7 @@ def get_pacthes_info(yarn_lock_file):
     """
     deps_list = extract_deps_from_yarn_berry(yarn_lock_file)
 
-    pacthse_info = {}
+    patches_info = {}
     for pkg_patches in deps_list.get("patches"):
         pattern = r"\.yarn/patches/(.*?\.patch).*version=([0-9.]+)&hash=([a-z0-9]+)"
         match = re.search(pattern, pkg_patches)
@@ -311,19 +311,19 @@ def get_pacthes_info(yarn_lock_file):
             version = match.group(2)
             hash_code = match.group(3)
 
-            pacthse_info[pkg_patches] = {
+            patches_info[pkg_patches] = {
                 "version": str(version),
                 "hash_code": str(hash_code),
                 "patch_file_path": str(patch_file_path),
             }
 
         else:
-            pacthse_info[pkg_patches] = {
+            patches_info[pkg_patches] = {
                 "version": None,
                 "hash_code": None,
                 "patch_file_path": None,
             }
 
-    logging.info("Number of patches: %d", len(pacthse_info))
+    logging.info("Number of patches: %d", len(patches_info))
 
-    return pacthse_info
+    return patches_info
