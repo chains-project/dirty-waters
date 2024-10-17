@@ -8,7 +8,7 @@ from tqdm import tqdm
 import requests
 
 import tool_config
-from compare_commits import tag_formart
+from compare_commits import tag_format
 
 
 github_token = os.getenv("GITHUB_API_TOKEN")
@@ -150,7 +150,7 @@ def make_github_request(url, headers):
     return response
 
 
-def check_exisience(package_name, repository):
+def check_existence(package_name, repository):
     """Check if the package exists in the repository."""
     repo_api, simplified_path, package_full_name, _, version, error_message = (
         api_constructor(package_name, repository)
@@ -164,7 +164,7 @@ def check_exisience(package_name, repository):
     release_tag_url = None
     tag_related_info = None
     status_code_release_tag = None
-    github_redireted = False
+    github_redirected = False
     now_repo_url = None
     open_issues_count = None
 
@@ -191,7 +191,7 @@ def check_exisience(package_name, repository):
         repo_link = f"https://github.com/{simplified_path}".lower()
 
         if now_repo_url != repo_link:
-            github_redireted = True
+            github_redirected = True
         else:
             now_repo_url = None
 
@@ -208,7 +208,7 @@ def check_exisience(package_name, repository):
             status_code_release_tag = have_no_tags_response_status_code
 
         else:
-            tag_possible_formats = tag_formart(version, package_full_name)
+            tag_possible_formats = tag_format(version, package_full_name)
 
             for tag_format in tag_possible_formats:
                 tag_url = f"{repo_api}/git/ref/tags/{tag_format}"
@@ -226,8 +226,8 @@ def check_exisience(package_name, repository):
         "github_api": repo_api,
         "github_url": repo_link,
         "github_exists": github_exists,
-        "github_redireted": github_redireted,
-        "redireted_repo": now_repo_url,
+        "github_redirected": github_redirected,
+        "redirected_repo": now_repo_url,
         "status_code": status_code,
         "archived": archived,
         "is_fork": is_fork,
@@ -427,10 +427,10 @@ def analyze_package_data(package, repo_url, check_match=False):
         elif "not github" in repo_url:
             package_info["github_exists"] = {"github_url": "Not_github_repo"}
         else:
-            github_info = check_exisience(package, repo_url)
+            github_info = check_existence(package, repo_url)
             package_info["github_exists"] = github_info
             if github_info.get("github_exists"):
-                repo_url_to_use = github_info.get("redireted_repo") or repo_url
+                repo_url_to_use = github_info.get("redirected_repo") or repo_url
                 if check_match:
                     if package_info["provenance"] == False:
                         if (

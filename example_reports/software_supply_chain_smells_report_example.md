@@ -461,7 +461,7 @@
                       
 <details>
     <summary>👻What do I do now? </summary>
-        For packages without source code & accsible release tags:  
+        For packages without source code & accessible release tags:  
 
         Pull Request to the maintainer of dependency, requesting correct repository metadata and proper tagging. 
 

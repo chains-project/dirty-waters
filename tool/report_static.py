@@ -46,7 +46,7 @@ def create_dataframe(data):
                 "github_url", "Could not find repo from package registry"
             ),
             "github_exists": github_exists_data.get("github_exists", None),
-            "github_redirected": github_exists_data.get("github_redireted", None),
+            "github_redirected": github_exists_data.get("github_redirected", None),
             "archived": github_exists_data.get("archived", None),
             "is_fork": github_exists_data.get("is_fork", None),
             "forked_from": github_exists_data.get("parent_repo_link", "-"),
@@ -235,7 +235,7 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
                       
 <details>
     <summary>👻What do I do now? </summary>
-        For packages without source code & accsible release tags:  \n
+        For packages without source code & accessible release tags:  \n
         Pull Request to the maintainer of dependency, requesting correct repository metadata and proper tagging. \n
         \nFor deprecated packages:\n
         1. Confirm the maintainer’s deprecation intention 
