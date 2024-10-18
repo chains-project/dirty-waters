@@ -34,7 +34,10 @@ source venv/bin/activate
 pip install -r requirements.txt
 cd tool
 ```
-3. Set up the GitHub API token:
+
+In alternative, you may also use the Nix flake present in this repository.
+
+3. Set up the GitHub API token (ideally, in a `.env` file):
 ```
 export GITHUB_API_TOKEN=<your_token>
 ```
@@ -62,7 +65,7 @@ options:
   -s, --static-analysis
                         Run static analysis and generate a markdown report of the project
   -d, --differential-analysis
-                        Run diffenretial analysis and generate a markdown report of the project
+                        Run differential analysis and generate a markdown report of the project
   -pm {yarn-classic,yarn-berry,pnpm}, --package-manager {yarn-classic,yarn-berry,pnpm}
                         The package manager used in the project.
 ```
