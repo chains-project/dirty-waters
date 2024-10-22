@@ -7,6 +7,7 @@ import argparse
 import logging
 import os
 import requests
+# from dotenv import load_dotenv
 
 
 import extract_deps
@@ -21,7 +22,7 @@ import tool_config
 import report_static
 import report_diff
 
-
+# load_dotenv()
 github_token = os.getenv("GITHUB_API_TOKEN")
 if not github_token:
     raise ValueError(
@@ -83,7 +84,7 @@ def get_args():
         "--package-manager",
         required=True,
         help="The package manager used in the project.",
-        choices=["yarn-classic", "yarn-berry", "pnpm"],
+        choices=["yarn-classic", "yarn-berry", "pnpm", "npm"],
     )
 
     arguments = parser.parse_args()
@@ -134,9 +135,13 @@ def get_lockfile(project_repo_name, release_version, package_manager):
         lockfile_name = "yarn.lock"
     elif package_manager == "pnpm":
         lockfile_name = "pnpm-lock.yaml"
+    elif package_manager == "npm":
+        lockfile_name = "package-lock.json"
     else:
-        logging.error("Invalid package manager: %s", package_manager)
-        raise ValueError("Invalid package manager.")
+        logging.error(
+            "Invalid package manager or lack of lockfile: %s", package_manager
+        )
+        raise ValueError("Invalid package manager or lack of lockfile.")
 
     response = requests.get(
         f"https://api.github.com/repos/{project_repo_name}/contents/{lockfile_name}?ref={release_version}",
@@ -148,10 +153,10 @@ def get_lockfile(project_repo_name, release_version, package_manager):
         data = response.json()
         download_url = data.get("download_url")
         yarn_lock_content = requests.get(download_url, timeout=60).text
-        print("Got the Yarn.lock file.")
+        print("Got the lockfile from %s.", download_url)
     else:
         logging.error("Failed to get yarn.lock.")
-        raise ValueError("Failed to get yarn.lock.")
+        raise ValueError("Failed to get lockfile.")
 
     repo_branch_api = f"https://api.github.com/repos/{project_repo_name}"
     repo_branch_response = requests.get(repo_branch_api, headers=headers, timeout=20)
@@ -192,7 +197,7 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
         )
 
     # extract deps from lockfile
-    else:
+    elif package_manager == "yarn-classic" or package_manager == "yarn-berry":
         yarn_file, _, _ = get_lockfile(
             project_repo_name, release_version, package_manager
         )
@@ -203,6 +208,12 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
                 yarn_file
             )
             patches_info = extract_deps.get_patches_info(yarn_file)
+
+    elif package_manager == "npm":
+        npm_file, _, _ = get_lockfile(
+            project_repo_name, release_version, package_manager
+        )
+        deps_list_all = extract_deps.extract_deps_from_npm(npm_file)
 
     logging.info(
         "Number of dependencies: %d", len(deps_list_all.get("resolutions", {}))
