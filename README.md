@@ -66,7 +66,7 @@ options:
                         Run static analysis and generate a markdown report of the project
   -d, --differential-analysis
                         Run differential analysis and generate a markdown report of the project
-  -pm {yarn-classic,yarn-berry,pnpm}, --package-manager {yarn-classic,yarn-berry,pnpm}
+  -pm {yarn-classic,yarn-berry,pnpm,npm}, --package-manager {yarn-classic,yarn-berry,pnpm,npm}
                         The package manager used in the project.
 ```
 
