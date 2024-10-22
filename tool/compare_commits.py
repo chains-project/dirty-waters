@@ -270,9 +270,10 @@ def get_patch_commits(headers, repo_name, release_version, patch_data):
                 author_type = author_data.get("type")
                 if author_info is None:
                     author_login = "null"
+                    author_id = "null"
                 else:
-                    author_login = commit.get("author").get("login")
-                    author_id = commit.get("author").get("id")
+                    author_login = commit.get("author").get("login", "No_author_login")
+                    author_id = commit.get("author").get("id", "No_author_id")
                 if commit.get("committer") is None:
                     committer_login = "null"
                 else:
