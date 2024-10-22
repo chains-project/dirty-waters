@@ -101,6 +101,9 @@ Notes:
 Usage:
 Example reports: TODO add link
 
+## Academic Work
+- [Dirty-Waters: Detecting Software Supply Chain Smells](https://arxiv.org/abs/2410.16049)
+
 
 ## Other issues not handled by dirty-waters
 
