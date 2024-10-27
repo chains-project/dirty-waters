@@ -8,6 +8,7 @@ from tqdm import tqdm
 import requests
 
 import tool_config
+import logging
 from compare_commits import tag_format
 
 
@@ -24,63 +25,133 @@ headers = {
 MAX_WAIT_TIME = 15 * 60
 
 
-def check_deprecated_and_provenance(package, package_version):
+def check_deprecated_and_provenance(package, package_version, pm):
     """
-    Check if the package is deprecated and if it has a provenance from the npm registry.
+    Check if the package is deprecated and if it has a provenance from the package manager's registry.
     """
 
-    try:
-        response = requests.get(f"https://registry.npmjs.org/{package}", timeout=20)
+    def check_npm(package, package_version):
+      try:
+          response = requests.get(f"https://registry.npmjs.org/{package}", timeout=20)
 
-        response.raise_for_status()
-    except requests.RequestException:
-        return {
+          response.raise_for_status()
+      except requests.RequestException:
+          return {
+              "package_only_name": package,
+              "package_version": package_version,
+              "error": "Failed to fetch package data",
+              "status_code": response.status_code if response else "No Response",
+          }
+
+      data = response.json()
+
+      if_deprecated = False
+      has_provenance = False
+      provenance_url = None
+      provenance_info = None
+      all_deprecated = True
+
+      version_info = data.get("versions", {}).get(package_version, {})
+      all_versions = data.get("versions", {})
+
+      deprecated_in_version = version_info.get("deprecated", "")
+      provenance_in_version = version_info.get("dist", {}).get("attestations", "")
+
+      if deprecated_in_version:
+          if_deprecated = True
+
+      if provenance_in_version:
+          has_provenance = True
+          provenance_url = provenance_in_version.get("url")
+          provenance_info = provenance_in_version.get("provenance")
+
+      for version in all_versions.values():
+          if not version.get("deprecated"):
+              all_deprecated = False
+              break
+
+      npm_package_info = {
+          "package_only_name": package,
+          "package_version": package_version,
+          "deprecated_in_version": if_deprecated,
+          "provenance_in_version": has_provenance,
+          "all_deprecated": all_deprecated,
+          "provenance_url": provenance_url,
+          "provenance_info": provenance_info,
+          "status_code": 200,
+      }
+
+      return npm_package_info
+
+    def check_maven(package, package_version):
+        try:
+            response = requests.get(f"https://search.maven.org/solrsearch/select?q=g:{package}+AND+v:{package_version}&core=gav&rows=20&wt=json", timeout=20)
+            response.raise_for_status()
+        except requests.RequestException:
+            return {
+                "package_only_name": package,
+                "package_version": package_version,
+                "error": "Failed to fetch package data",
+                "status_code": response.status_code if response else "No Response",
+            }
+
+        data = response.json()
+        if_deprecated = False
+        has_provenance = False
+        provenance_url = None
+        provenance_info = None
+        all_deprecated = True
+
+        response = data.get("response", {})
+        docs = response.get("docs", [])
+
+        if len(docs) == 0:
+            return {
+                "package_only_name": package,
+                "package_version": package_version,
+                "error": "No package found",
+                "status_code": response.status_code if response else "No Response",
+            }
+
+        doc = docs[0]
+        deprecated_in_version = doc.get("ec", "")
+        provenance_in_version = doc.get("ec", "")
+
+        if deprecated_in_version:
+            if_deprecated = True
+
+        if provenance_in_version:
+            has_provenance = True
+            provenance_url = provenance_in_version.get("url")
+            provenance_info = provenance_in_version.get("provenance")
+
+        for doc in docs:
+            if not doc.get("ec"):
+                all_deprecated = False
+                break
+
+        maven_package_info = {
             "package_only_name": package,
             "package_version": package_version,
-            "error": "Failed to fetch package data",
-            "status_code": response.status_code if response else "No Response",
+            "deprecated_in_version": if_deprecated,
+            "provenance_in_version": has_provenance,
+            "all_deprecated": all_deprecated,
+            "provenance_url": provenance_url,
+            "provenance_info": provenance_info,
+            "status_code": 200,
         }
 
-    data = response.json()
+        return maven_package_info
 
-    if_deprecated = False
-    has_provenance = False
-    provenance_url = None
-    provenance_info = None
-    all_deprecated = True
 
-    version_info = data.get("versions", {}).get(package_version, {})
-    all_versions = data.get("versions", {})
-
-    deprecated_in_version = version_info.get("deprecated", "")
-    provenance_in_version = version_info.get("dist", {}).get("attestations", "")
-
-    if deprecated_in_version:
-        if_deprecated = True
-
-    if provenance_in_version:
-        has_provenance = True
-        provenance_url = provenance_in_version.get("url")
-        provenance_info = provenance_in_version.get("provenance")
-
-    for version in all_versions.values():
-        if not version.get("deprecated"):
-            all_deprecated = False
-            break
-
-    npm_package_info = {
-        "package_only_name": package,
-        "package_version": package_version,
-        "deprecated_in_version": if_deprecated,
-        "provenance_in_version": has_provenance,
-        "all_deprecated": all_deprecated,
-        "provenance_url": provenance_url,
-        "provenance_info": provenance_info,
-        "status_code": 200,
-    }
-
-    return npm_package_info
-
+    if pm in ("yarn-berry", "yarn-classic", "pnpm"):
+      return check_npm(package, package_version)
+    elif pm == "maven":
+      return check_maven(package, package_version)
+    else:
+      # log stuff
+      # blow up
+      logging.error(f"Package manager {pm} not supported.")
 
 def api_constructor(package_name, repository):
     repo_url = (
@@ -210,13 +281,13 @@ def check_existence(package_name, repository):
         else:
             tag_possible_formats = tag_format(version, package_full_name)
 
-            for tag_format in tag_possible_formats:
-                tag_url = f"{repo_api}/git/ref/tags/{tag_format}"
+            for tag_fmt in tag_possible_formats:
+                tag_url = f"{repo_api}/git/ref/tags/{tag_fmt}"
                 response = make_github_request(tag_url, headers=headers)
                 if response.status_code == 200:
                     release_tag_exists = True
                     release_tag_url = tag_url
-                    tag_related_info = f"Tag {tag_format} is found in the repo"
+                    tag_related_info = f"Tag {tag_fmt} is found in the repo"
                     status_code_release_tag = response.status_code
                     break
                 else:
@@ -404,24 +475,26 @@ def check_name_match(package_name, repository):
     return match_info
 
 
-def analyze_package_data(package, repo_url, check_match=False):
+def analyze_package_data(package, repo_url, pm, check_match=False):
     package_info = {
         "deprecated": None,
         "provenance": None,
-        "npm_package_info": None,
+        "package_info": None,
         "github_exists": None,
         "match_info": None,
     }
 
     try:
-        package_name_npm, package_version_npm = package.rsplit("@", 1)
-        npm_package_infos = check_deprecated_and_provenance(
-            package_name_npm, package_version_npm
+        # TODO: check if this needs to be different because of differences between npm, maven, etc
+        package_name, package_version = package.rsplit("@", 1)
+        package_infos = check_deprecated_and_provenance(
+            package_name, package_version, pm
         )
-        package_info["deprecated"] = npm_package_infos.get("deprecated_in_version")
-        package_info["provenance"] = npm_package_infos.get("provenance_in_version")
-        package_info["npm_package_info"] = npm_package_infos
+        package_info["deprecated"] = package_infos.get("deprecated_in_version")
+        package_info["provenance"] = package_infos.get("provenance_in_version")
+        package_info["package_info"] = package_infos
 
+        # TODO: is this the same for every package manager?
         if "Could not find" in repo_url:
             package_info["github_exists"] = {"github_url": "No_repo_info_found"}
         elif "not github" in repo_url:
@@ -463,18 +536,17 @@ def analyze_package_data(package, repo_url, check_match=False):
     return package_info, None
 
 
-def get_static_data(folder, packages_data, check_match=False):
+def get_static_data(folder, packages_data, pm, check_match=False):
     print("Analyzing package static data...")
     package_all = {}
     errors = {}
 
     with tqdm(total=len(packages_data), desc="Analyzing packages") as pbar:
         for package, repo_urls in packages_data.items():
-            # print(f"Analyzing {package}")
-            tqdm.write(f"{package}")
+            tqdm.write(f"Analyzing {package}")
             repo_url = repo_urls.get("github", "")
             analyzed_data, error = analyze_package_data(
-                package, repo_url, check_match=check_match
+                package, repo_url, pm, check_match=check_match
             )
             pbar.update(1)
 
