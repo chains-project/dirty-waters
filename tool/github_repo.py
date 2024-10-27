@@ -81,17 +81,29 @@ def process_package(
                     timeout=TIMEOUT,
                 )
 
+            elif pm == "maven":
+                # package is in the form of group_id:artifact_id@version -- we need all 3
+                name, version = package.split("@")
+                group_id, artifact_id = name.split(":")
+                result = subprocess.run(
+                    ["mvn", "help:evaluate", "-Dexpression=project.scm.url", f"-Dartifact={group_id}:{artifact_id}:{version}", "-q", "-DforceStdout"],
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                    timeout=TIMEOUT,
+                )
+
             else:
                 raise ValueError(f"Unsupported package manager: {pm}")
 
             repo_info = result.stdout if result.stdout else result.stderr
-            # print(f"Repo info for {package}: {repo_info}")
             c.execute(
                 "INSERT OR IGNORE INTO pkg_github_repo_output (package, github) VALUES (?,?)",
                 (package, repo_info),
             )
             conn.commit()
-
+        
+        # TODO: this shouldn't just be yarn
         except subprocess.TimeoutExpired:
             logging.error(
                 "Yarn info command timed out after %s seconds for package %s",
@@ -100,10 +112,12 @@ def process_package(
             )
             repo_info = None
 
+        # TODO: this shouldn't just be yarn
         except subprocess.CalledProcessError as e:
             logging.error("Yarn info command failed for package %s: %s", package, e)
             repo_info = None
 
+    # TODO: npm?
     package = package.replace("@npm:", "@")
 
     if (
@@ -136,7 +150,7 @@ def get_github_repo_url(folder, dep_list, pm):
 
     print("Getting GitHub URLs of packages...")
     total_packages_to_process = len(dep_list.get("resolutions", []))
-    # have not process patches
+
     with tqdm(total=total_packages_to_process, desc="Getting GitHub URLs") as pbar:
         for pkg_res in dep_list.get("resolutions"):
             package = pkg_res
