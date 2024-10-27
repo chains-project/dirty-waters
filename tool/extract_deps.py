@@ -9,11 +9,52 @@ import json
 import logging
 import sys
 import shutil
+import yaml
 from collections import defaultdict
 
 from tool_config import PNPM_LIST_COMMAND
 
 logger = logging.getLogger(__name__)
+
+
+def extract_deps_from_pnpm_lockfile(pnpm_lockfile_yaml):
+    """
+    Extract dependencies from a pnpm-lock.yaml file.
+
+    Args:
+        pnpm_lockfile_yaml (str): The content of the pnpm lock file.
+
+    Returns:
+        dict: A dictionary containing the extracted dependencies and patches.
+    """
+    yaml_data = yaml.safe_load(pnpm_lockfile_yaml)
+    yaml_version = yaml_data.get("lockfileVersion")
+    if yaml_version != "9.0":
+        logging.error("Invalid pnpm lockfile version: %s", yaml_version)
+        print("The pnpm lockfile version is not supported(yet): ", yaml_version)
+        # end the process
+        sys.exit(1)
+
+    try:
+        # pkg_name_with_resolution = set()
+        deps_list_data = {}
+
+        package_keys = sorted(list(yaml_data.get("packages", {}).keys()))
+        patches = sorted(list(yaml_data.get("patchedDependencies", {}).keys()))
+
+        deps_list_data = {
+            "resolutions": package_keys,
+            "patches": patches,
+        }
+
+        return deps_list_data
+
+    except (IOError, ValueError, KeyError) as e:
+        logging.error(
+            "An error occurred while extracting dependencies from pnpm-lock.yaml: %s",
+            str(e),
+        )
+        return {"resolutions": [], "patches": []}
 
 
 def extract_deps_from_npm(npm_lock_file):
