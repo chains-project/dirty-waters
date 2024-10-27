@@ -358,6 +358,12 @@ def extract_deps_from_maven(pom_xml_content):
         parent_version_match = re.search(parent_version_pattern, pom_xml_content, re.DOTALL)
         if parent_version_match:
             properties['project.version'] = parent_version_match.group(1)
+        
+        # Extract parent artifactId if exists
+        parent_artifactId_pattern = r'<parent>.*?<artifactId>(.*?)</artifactId>.*?</parent>'
+        parent_artifactId_match = re.search(parent_artifactId_pattern, pom_xml_content, re.DOTALL)
+        if parent_artifactId_match:
+            properties['project.artifactId'] = parent_artifactId_match.group(1)
 
         # Extract parent groupId if exists
         parent_groupId_pattern = r'<parent>.*?<groupId>(.*?)</groupId>.*?</parent>'
@@ -372,6 +378,8 @@ def extract_deps_from_maven(pom_xml_content):
             # Resolve property placeholders
             if group_id.startswith('${'):
                 group_id = properties.get(group_id[2:-1], group_id)
+            if artifact_id.startswith('${'):
+                artifact_id = properties.get(artifact_id[2:-1], artifact_id)
             if version.startswith('${'):
                 version = properties.get(version[2:-1], version)
             deps_list.append(f"{group_id}:{artifact_id}@{version}")
