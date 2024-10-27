@@ -53,7 +53,7 @@ python main.py -p <project_repo_name> -v <release_version_old> -s -pm <package_m
 #### Arguments:
 ```
 usage: main.py [-h] -p PROJECT_REPO_NAME -v RELEASE_VERSION_OLD [-vn RELEASE_VERSION_NEW] -s [-d] -pm
-               {yarn-classic,yarn-berry,pnpm}
+               {yarn-classic,yarn-berry,pnpm} [--pnpm-scope]
 
 options:
   -p PROJECT_REPO_NAME, --project-repo-name PROJECT_REPO_NAME
@@ -68,6 +68,9 @@ options:
                         Run differential analysis and generate a markdown report of the project
   -pm {yarn-classic,yarn-berry,pnpm,npm}, --package-manager {yarn-classic,yarn-berry,pnpm,npm}
                         The package manager used in the project.
+  --pnpm-scope          Extract dependencies from pnpm with a specific scope
+                        using 'pnpm list --filter <scope> --depth Infinity'
+                        command. Configure the scope in tool_config.py file.
 ```
 
 
