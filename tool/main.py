@@ -81,9 +81,9 @@ def get_args():
     parser.add_argument(
         "-pm",
         "--package-manager",
+        choices=["yarn-berry", "yarn-classic", "pnpm", "maven"],
         required=True,
-        help="The package manager used in the project.",
-        choices=["yarn-classic", "yarn-berry", "pnpm"],
+        help="Specify the package manager used in the project",
     )
 
     arguments = parser.parse_args()
@@ -117,14 +117,12 @@ def get_lockfile(project_repo_name, release_version, package_manager):
         package_manager (str): The package manager used in the project.
 
     Returns:
-        str: The content of the lockfile.
+        str: The content of the lockfile or pom.xml.
         str: The default branch of the project.
         str: The name of the project repository.
     """
 
     tool_config.setup_cache("demo")
-    # logging.info("Cache [demo_cache] setup complete")
-
     logging.info("Getting lockfile for %s@%s", project_repo_name, release_version)
     logging.info("Package manager: %s", package_manager)
 
@@ -134,24 +132,21 @@ def get_lockfile(project_repo_name, release_version, package_manager):
         lockfile_name = "yarn.lock"
     elif package_manager == "pnpm":
         lockfile_name = "pnpm-lock.yaml"
+    elif package_manager == "maven":
+        lockfile_name = "pom.xml"
     else:
         logging.error("Invalid package manager: %s", package_manager)
         raise ValueError("Invalid package manager.")
 
-    response = requests.get(
-        f"https://api.github.com/repos/{project_repo_name}/contents/{lockfile_name}?ref={release_version}",
-        headers=headers,
-        timeout=20,
-    )
-
+    file_url = f"https://raw.githubusercontent.com/{project_repo_name}/{release_version}/{lockfile_name}"
+    response = requests.get(file_url, headers=headers, timeout=20)
+    
     if response.status_code == 200:
-        data = response.json()
-        download_url = data.get("download_url")
-        yarn_lock_content = requests.get(download_url, timeout=60).text
-        print("Got the Yarn.lock file.")
+        file_content = response.text
+        print(f"Got the {lockfile_name} file.")
     else:
-        logging.error("Failed to get yarn.lock.")
-        raise ValueError("Failed to get yarn.lock.")
+        logging.error(f"Failed to get {lockfile_name}.")
+        raise ValueError(f"Failed to get {lockfile_name}.")
 
     repo_branch_api = f"https://api.github.com/repos/{project_repo_name}"
     repo_branch_response = requests.get(repo_branch_api, headers=headers, timeout=20)
@@ -165,8 +160,7 @@ def get_lockfile(project_repo_name, release_version, package_manager):
     else:
         raise ValueError("Failed to get default branch")
 
-    return yarn_lock_content, default_branch, project_repo_name
-
+    return file_content, default_branch, project_repo_name
 
 def get_deps(folder_path, project_repo_name, release_version, package_manager):
     """
@@ -190,6 +184,12 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
         deps_list_all = extract_deps.extract_deps_from_pnpm_mono(
             folder_path, release_version, project_repo_name
         )
+    
+    elif package_manager == "maven":
+        pom_xml_content, _, _ = get_lockfile(
+            project_repo_name, release_version, package_manager
+        )
+        deps_list_all = extract_deps.extract_deps_from_maven(pom_xml_content)
 
     # extract deps from lockfile
     else:
@@ -251,7 +251,7 @@ def static_analysis_all(
     )
 
     static_results, errors = static_analysis.get_static_data(
-        folder_path, repo_url_info, check_match=check_match
+        folder_path, repo_url_info, package_manager, check_match=check_match
     )
     logging.info("Errors: %s", errors)
 
