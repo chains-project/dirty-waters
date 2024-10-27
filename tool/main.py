@@ -86,6 +86,11 @@ def get_args():
         help="The package manager used in the project.",
         choices=["yarn-classic", "yarn-berry", "pnpm", "npm"],
     )
+    parser.add_argument(
+        "--pnpm-scope",
+        action="store_true",
+        help="Extract dependencies from pnpm with a specific scope using 'pnpm list --filter <scope> --depth Infinity' command. Configure the scope in tool_config.py file.",
+    )
 
     arguments = parser.parse_args()
 
@@ -152,10 +157,10 @@ def get_lockfile(project_repo_name, release_version, package_manager):
     if response.status_code == 200:
         data = response.json()
         download_url = data.get("download_url")
-        yarn_lock_content = requests.get(download_url, timeout=60).text
+        lock_content = requests.get(download_url, timeout=60).text
         print("Got the lockfile from %s.", download_url)
     else:
-        logging.error("Failed to get yarn.lock.")
+        logging.error("Failed to get lockfile.")
         raise ValueError("Failed to get lockfile.")
 
     repo_branch_api = f"https://api.github.com/repos/{project_repo_name}"
@@ -170,7 +175,7 @@ def get_lockfile(project_repo_name, release_version, package_manager):
     else:
         raise ValueError("Failed to get default branch")
 
-    return yarn_lock_content, default_branch, project_repo_name
+    return lock_content, default_branch, project_repo_name
 
 
 def get_deps(folder_path, project_repo_name, release_version, package_manager):
@@ -192,9 +197,15 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
 
     # if it is a pnpm monorepo
     if package_manager == "pnpm":
-        deps_list_all = extract_deps.extract_deps_from_pnpm_mono(
-            folder_path, release_version, project_repo_name
-        )
+        if get_args().pnpm_scope:
+            deps_list_all = extract_deps.extract_deps_from_pnpm_mono(
+                folder_path, release_version, project_repo_name
+            )
+        else:
+            yaml_lockfile, _, _ = get_lockfile(
+                project_repo_name, release_version, package_manager
+            )
+            deps_list_all = extract_deps.extract_deps_from_pnpm_lockfile(yaml_lockfile)
 
     # extract deps from lockfile
     elif package_manager == "yarn-classic" or package_manager == "yarn-berry":
@@ -369,6 +380,7 @@ def setup_project_info(args):
         else None,
         "check_match": args.name_match,
         "package_manager": args.package_manager,
+        "pnpm_scope": args.pnpm_scope,
     }
 
 
