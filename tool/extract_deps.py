@@ -329,3 +329,60 @@ def get_patches_info(yarn_lock_file):
     logging.info("Number of patches: %d", len(patches_info))
 
     return patches_info
+
+
+def extract_deps_from_maven(pom_xml_content):
+    """
+    Extract dependencies from a Maven pom.xml file.
+
+    Args:
+        pom_xml_content (str): The content of the pom.xml file.
+
+    Returns:
+        dict: A dictionary containing the extracted dependencies.
+    """
+    try:
+        deps_list = []
+        properties = {}
+        
+        # Extract properties
+        prop_pattern = r'<properties>(.*?)</properties>'
+        prop_matches = re.findall(prop_pattern, pom_xml_content, re.DOTALL)
+        for prop_content in prop_matches:
+            print(f"Properties content: {prop_content}")
+            prop_items = re.findall(r'<([^>]+)>(.*?)</\1>', prop_content, re.DOTALL)
+            properties.update(dict(prop_items))
+
+        # Extract parent version if exists
+        parent_version_pattern = r'<parent>.*?<version>(.*?)</version>.*?</parent>'
+        parent_version_match = re.search(parent_version_pattern, pom_xml_content, re.DOTALL)
+        if parent_version_match:
+            properties['project.version'] = parent_version_match.group(1)
+
+        # Extract parent groupId if exists
+        parent_groupId_pattern = r'<parent>.*?<groupId>(.*?)</groupId>.*?</parent>'
+        parent_groupId_match = re.search(parent_groupId_pattern, pom_xml_content, re.DOTALL)
+        if parent_groupId_match:
+            properties['project.groupId'] = parent_groupId_match.group(1)
+
+        pattern = r'<dependency>.*?<groupId>(.*?)</groupId>.*?<artifactId>(.*?)</artifactId>.*?<version>(.*?)</version>.*?</dependency>'
+        matches = re.findall(pattern, pom_xml_content, re.DOTALL)
+
+        for group_id, artifact_id, version in matches:
+            # Resolve property placeholders
+            if group_id.startswith('${'):
+                group_id = properties.get(group_id[2:-1], group_id)
+            if version.startswith('${'):
+                version = properties.get(version[2:-1], version)
+            deps_list.append(f"{group_id}:{artifact_id}@{version}")
+
+        deps_list_data = {"resolutions": deps_list, "patches": []}
+
+        return deps_list_data
+
+    except (IOError, ValueError, KeyError) as e:
+        logging.error(
+            "An error occurred while extracting dependencies from pom.xml file: %s",
+            str(e),
+        )
+        return {"resolutions": [], "patches": []}
