@@ -31,61 +31,64 @@ def check_deprecated_and_provenance(package, package_version, pm):
     """
 
     def check_npm(package, package_version):
-      try:
-          response = requests.get(f"https://registry.npmjs.org/{package}", timeout=20)
+        try:
+            response = requests.get(f"https://registry.npmjs.org/{package}", timeout=20)
 
-          response.raise_for_status()
-      except requests.RequestException:
-          return {
-              "package_only_name": package,
-              "package_version": package_version,
-              "error": "Failed to fetch package data",
-              "status_code": response.status_code if response else "No Response",
-          }
+            response.raise_for_status()
+        except requests.RequestException:
+            return {
+                "package_only_name": package,
+                "package_version": package_version,
+                "error": "Failed to fetch package data",
+                "status_code": response.status_code if response else "No Response",
+            }
 
-      data = response.json()
+        data = response.json()
 
-      if_deprecated = False
-      has_provenance = False
-      provenance_url = None
-      provenance_info = None
-      all_deprecated = True
+        if_deprecated = False
+        has_provenance = False
+        provenance_url = None
+        provenance_info = None
+        all_deprecated = True
 
-      version_info = data.get("versions", {}).get(package_version, {})
-      all_versions = data.get("versions", {})
+        version_info = data.get("versions", {}).get(package_version, {})
+        all_versions = data.get("versions", {})
 
-      deprecated_in_version = version_info.get("deprecated", "")
-      provenance_in_version = version_info.get("dist", {}).get("attestations", "")
+        deprecated_in_version = version_info.get("deprecated", "")
+        provenance_in_version = version_info.get("dist", {}).get("attestations", "")
 
-      if deprecated_in_version:
-          if_deprecated = True
+        if deprecated_in_version:
+            if_deprecated = True
 
-      if provenance_in_version:
-          has_provenance = True
-          provenance_url = provenance_in_version.get("url")
-          provenance_info = provenance_in_version.get("provenance")
+        if provenance_in_version:
+            has_provenance = True
+            provenance_url = provenance_in_version.get("url")
+            provenance_info = provenance_in_version.get("provenance")
 
-      for version in all_versions.values():
-          if not version.get("deprecated"):
-              all_deprecated = False
-              break
+        for version in all_versions.values():
+            if not version.get("deprecated"):
+                all_deprecated = False
+                break
 
-      npm_package_info = {
-          "package_only_name": package,
-          "package_version": package_version,
-          "deprecated_in_version": if_deprecated,
-          "provenance_in_version": has_provenance,
-          "all_deprecated": all_deprecated,
-          "provenance_url": provenance_url,
-          "provenance_info": provenance_info,
-          "status_code": 200,
-      }
+        npm_package_info = {
+            "package_only_name": package,
+            "package_version": package_version,
+            "deprecated_in_version": if_deprecated,
+            "provenance_in_version": has_provenance,
+            "all_deprecated": all_deprecated,
+            "provenance_url": provenance_url,
+            "provenance_info": provenance_info,
+            "status_code": 200,
+        }
 
-      return npm_package_info
+        return npm_package_info
 
     def check_maven(package, package_version):
         try:
-            response = requests.get(f"https://search.maven.org/solrsearch/select?q=g:{package}+AND+v:{package_version}&core=gav&rows=20&wt=json", timeout=20)
+            response = requests.get(
+                f"https://search.maven.org/solrsearch/select?q=g:{package}+AND+v:{package_version}&core=gav&rows=20&wt=json",
+                timeout=20,
+            )
             response.raise_for_status()
         except requests.RequestException:
             return {
@@ -143,15 +146,15 @@ def check_deprecated_and_provenance(package, package_version, pm):
 
         return maven_package_info
 
-
     if pm in ("yarn-berry", "yarn-classic", "pnpm"):
-      return check_npm(package, package_version)
+        return check_npm(package, package_version)
     elif pm == "maven":
-      return check_maven(package, package_version)
+        return check_maven(package, package_version)
     else:
-      # log stuff
-      # blow up
-      logging.error(f"Package manager {pm} not supported.")
+        # log stuff
+        # blow up
+        logging.error(f"Package manager {pm} not supported.")
+
 
 def api_constructor(package_name, repository):
     repo_url = (

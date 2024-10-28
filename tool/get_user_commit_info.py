@@ -14,7 +14,8 @@ database_file = script_dir / "database" / "github_commit.db"
 conn = sqlite3.connect(database_file)
 c = conn.cursor()
 
-c.execute("""CREATE TABLE IF NOT EXISTS commit_data (
+c.execute(
+    """CREATE TABLE IF NOT EXISTS commit_data (
              api_url TEXT PRIMARY KEY,
              earliest_commit_sha TEXT,
              repo_name TEXT,
@@ -22,7 +23,8 @@ c.execute("""CREATE TABLE IF NOT EXISTS commit_data (
              author_login TEXT,
              author_commit_sha TEXT,
              author_login_in_1st_commit TEXT,
-             author_id_in_1st_commit TEXT)""")
+             author_id_in_1st_commit TEXT)"""
+)
 
 conn.commit()
 

@@ -18,9 +18,11 @@ database_file = script_dir / "database" / "github_repo_info_all.db"
 conn = sqlite3.connect(database_file)
 c = conn.cursor()
 
-c.execute("""CREATE TABLE IF NOT EXISTS pkg_github_repo_output (
+c.execute(
+    """CREATE TABLE IF NOT EXISTS pkg_github_repo_output (
                 package TEXT PRIMARY KEY,
-                github TEXT)""")
+                github TEXT)"""
+)
 
 conn.commit()
 
@@ -87,7 +89,14 @@ def process_package(
                 # package is in the form of group_id:artifact_id@version -- we need all 3
                 name, version = package.split("@")
                 group_id, artifact_id = name.split(":")
-                command = ["mvn", "help:evaluate", "-Dexpression=project.scm.url", f"-Dartifact={group_id}:{artifact_id}:{version}", "-q", "-DforceStdout"]
+                command = [
+                    "mvn",
+                    "help:evaluate",
+                    "-Dexpression=project.scm.url",
+                    f"-Dartifact={group_id}:{artifact_id}:{version}",
+                    "-q",
+                    "-DforceStdout",
+                ]
                 result = subprocess.run(
                     command,
                     capture_output=True,
@@ -114,7 +123,7 @@ def process_package(
                 (package, repo_info),
             )
             conn.commit()
-        
+
         except subprocess.TimeoutExpired:
             logging.error(
                 f"Command {command} timed out after {TIMEOUT} seconds for package {package}",

@@ -24,8 +24,10 @@ database_file = script_dir / "database" / "github_prr_data_new.db"
 conn = sqlite3.connect(database_file)
 c = conn.cursor()
 
-c.execute("""CREATE TABLE IF NOT EXISTS new_pr_reviewinfo_6
-             (package TEXT, repo TEXT, author TEXT, first_prr_data TEXT, search_string TEXT)""")
+c.execute(
+    """CREATE TABLE IF NOT EXISTS new_pr_reviewinfo_6
+             (package TEXT, repo TEXT, author TEXT, first_prr_data TEXT, search_string TEXT)"""
+)
 
 conn.commit()
 

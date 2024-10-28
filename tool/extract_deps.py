@@ -445,43 +445,51 @@ def extract_deps_from_maven(pom_xml_content):
     try:
         deps_list = []
         properties = {}
-        
+
         # Extract properties
-        prop_pattern = r'<properties>(.*?)</properties>'
+        prop_pattern = r"<properties>(.*?)</properties>"
         prop_matches = re.findall(prop_pattern, pom_xml_content, re.DOTALL)
         for prop_content in prop_matches:
             print(f"Properties content: {prop_content}")
-            prop_items = re.findall(r'<([^>]+)>(.*?)</\1>', prop_content, re.DOTALL)
+            prop_items = re.findall(r"<([^>]+)>(.*?)</\1>", prop_content, re.DOTALL)
             properties.update(dict(prop_items))
 
         # Extract parent version if exists
-        parent_version_pattern = r'<parent>.*?<version>(.*?)</version>.*?</parent>'
-        parent_version_match = re.search(parent_version_pattern, pom_xml_content, re.DOTALL)
+        parent_version_pattern = r"<parent>.*?<version>(.*?)</version>.*?</parent>"
+        parent_version_match = re.search(
+            parent_version_pattern, pom_xml_content, re.DOTALL
+        )
         if parent_version_match:
-            properties['project.version'] = parent_version_match.group(1)
-        
+            properties["project.version"] = parent_version_match.group(1)
+
         # Extract parent artifactId if exists
-        parent_artifactId_pattern = r'<parent>.*?<artifactId>(.*?)</artifactId>.*?</parent>'
-        parent_artifactId_match = re.search(parent_artifactId_pattern, pom_xml_content, re.DOTALL)
+        parent_artifactId_pattern = (
+            r"<parent>.*?<artifactId>(.*?)</artifactId>.*?</parent>"
+        )
+        parent_artifactId_match = re.search(
+            parent_artifactId_pattern, pom_xml_content, re.DOTALL
+        )
         if parent_artifactId_match:
-            properties['project.artifactId'] = parent_artifactId_match.group(1)
+            properties["project.artifactId"] = parent_artifactId_match.group(1)
 
         # Extract parent groupId if exists
-        parent_groupId_pattern = r'<parent>.*?<groupId>(.*?)</groupId>.*?</parent>'
-        parent_groupId_match = re.search(parent_groupId_pattern, pom_xml_content, re.DOTALL)
+        parent_groupId_pattern = r"<parent>.*?<groupId>(.*?)</groupId>.*?</parent>"
+        parent_groupId_match = re.search(
+            parent_groupId_pattern, pom_xml_content, re.DOTALL
+        )
         if parent_groupId_match:
-            properties['project.groupId'] = parent_groupId_match.group(1)
+            properties["project.groupId"] = parent_groupId_match.group(1)
 
-        pattern = r'<dependency>.*?<groupId>(.*?)</groupId>.*?<artifactId>(.*?)</artifactId>.*?<version>(.*?)</version>.*?</dependency>'
+        pattern = r"<dependency>.*?<groupId>(.*?)</groupId>.*?<artifactId>(.*?)</artifactId>.*?<version>(.*?)</version>.*?</dependency>"
         matches = re.findall(pattern, pom_xml_content, re.DOTALL)
 
         for group_id, artifact_id, version in matches:
             # Resolve property placeholders
-            if group_id.startswith('${'):
+            if group_id.startswith("${"):
                 group_id = properties.get(group_id[2:-1], group_id)
-            if artifact_id.startswith('${'):
+            if artifact_id.startswith("${"):
                 artifact_id = properties.get(artifact_id[2:-1], artifact_id)
-            if version.startswith('${'):
+            if version.startswith("${"):
                 version = properties.get(version[2:-1], version)
             deps_list.append(f"{group_id}:{artifact_id}@{version}")
 

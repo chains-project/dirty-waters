@@ -7,6 +7,7 @@ import argparse
 import logging
 import os
 import requests
+
 # from dotenv import load_dotenv
 
 
@@ -151,7 +152,7 @@ def get_lockfile(project_repo_name, release_version, package_manager):
 
     file_url = f"https://raw.githubusercontent.com/{project_repo_name}/{release_version}/{lockfile_name}"
     response = requests.get(file_url, headers=headers, timeout=20)
-    
+
     if response.status_code == 200:
         data = response.json()
         download_url = data.get("download_url")
@@ -204,7 +205,7 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
                 project_repo_name, release_version, package_manager
             )
             deps_list_all = extract_deps.extract_deps_from_pnpm_lockfile(yaml_lockfile)
-    
+
     elif package_manager == "maven":
         pom_xml_content, _, _ = get_lockfile(
             project_repo_name, release_version, package_manager
@@ -379,9 +380,11 @@ def setup_project_info(args):
         "old_version": args.release_version_old,
         "new_version": args.release_version_new,
         "old_version_name": args.release_version_old.replace("/", "_"),
-        "new_version_name": args.release_version_new.replace("/", "_")
-        if args.release_version_new
-        else None,
+        "new_version_name": (
+            args.release_version_new.replace("/", "_")
+            if args.release_version_new
+            else None
+        ),
         "check_match": args.name_match,
         "package_manager": args.package_manager,
         "pnpm_scope": args.pnpm_scope,
