@@ -1,5 +1,6 @@
 name: Run Black Formatter throughout the codebase
 
+# Run action on PRs to master
 on:
   push:
     paths:
@@ -9,29 +10,12 @@ on:
       - "**.py"
 
 jobs:
-  black:
+  suggest:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          fetch-depth: 0
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
-
-      - name: Install Black
-        run: pip install black
-
-      - name: Run Black formatter
-        run: black .
-
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "style: format Python code with Black"
-          branch: ${{ github.head_ref }}
+      # Checks-out your repository under $GITHUB_WORKSPACE, so that black can inspect it
+      - uses: actions/checkout@v2
+      - uses: rgasper/python-black-pull-request-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
