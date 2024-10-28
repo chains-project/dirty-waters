@@ -1,8 +1,10 @@
-name: Upload Python Package
+name: Upload Python Package to TestPyPI
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -13,20 +15,20 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.x'  
+        python-version: '3.x'
 
     - name: Install build dependencies
       run: |
         python -m pip install --upgrade pip
         pip install build twine
 
-    - name: Build the package
-      run: |
-        python -m build
+    - name: Build package
+      run: python -m build
 
-    - name: Publish the package
+    - name: Publish to Test PyPI
       env:
         TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.PYPI_API_KEY }}
+        TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_KEY }}
+        TWINE_REPOSITORY: testpypi
       run: |
-        twine upload dist/*
+        twine upload --repository testpypi dist/*
