@@ -7,6 +7,7 @@ import argparse
 import logging
 import os
 import requests
+# from dotenv import load_dotenv
 
 
 import extract_deps
@@ -21,7 +22,7 @@ import tool_config
 import report_static
 import report_diff
 
-
+# load_dotenv()
 github_token = os.getenv("GITHUB_API_TOKEN")
 if not github_token:
     raise ValueError(
@@ -83,7 +84,13 @@ def get_args():
         "--package-manager",
         choices=["yarn-berry", "yarn-classic", "pnpm", "maven"],
         required=True,
-        help="Specify the package manager used in the project",
+        help="The package manager used in the project.",
+        choices=["yarn-classic", "yarn-berry", "pnpm", "npm"],
+    )
+    parser.add_argument(
+        "--pnpm-scope",
+        action="store_true",
+        help="Extract dependencies from pnpm with a specific scope using 'pnpm list --filter <scope> --depth Infinity' command. Configure the scope in tool_config.py file.",
     )
 
     arguments = parser.parse_args()
@@ -134,16 +141,22 @@ def get_lockfile(project_repo_name, release_version, package_manager):
         lockfile_name = "pnpm-lock.yaml"
     elif package_manager == "maven":
         lockfile_name = "pom.xml"
+    elif package_manager == "npm":
+        lockfile_name = "package-lock.json"
     else:
-        logging.error("Invalid package manager: %s", package_manager)
-        raise ValueError("Invalid package manager.")
+        logging.error(
+            "Invalid package manager or lack of lockfile: %s", package_manager
+        )
+        raise ValueError("Invalid package manager or lack of lockfile.")
 
     file_url = f"https://raw.githubusercontent.com/{project_repo_name}/{release_version}/{lockfile_name}"
     response = requests.get(file_url, headers=headers, timeout=20)
     
     if response.status_code == 200:
-        file_content = response.text
-        print(f"Got the {lockfile_name} file.")
+        data = response.json()
+        download_url = data.get("download_url")
+        lock_content = requests.get(download_url, timeout=60).text
+        print(f"Got the lockfile from {download_url}.")
     else:
         logging.error(f"Failed to get {lockfile_name}.")
         raise ValueError(f"Failed to get {lockfile_name}.")
@@ -160,7 +173,8 @@ def get_lockfile(project_repo_name, release_version, package_manager):
     else:
         raise ValueError("Failed to get default branch")
 
-    return file_content, default_branch, project_repo_name
+    return lock_content, default_branch, project_repo_name
+
 
 def get_deps(folder_path, project_repo_name, release_version, package_manager):
     """
@@ -181,9 +195,15 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
 
     # if it is a pnpm monorepo
     if package_manager == "pnpm":
-        deps_list_all = extract_deps.extract_deps_from_pnpm_mono(
-            folder_path, release_version, project_repo_name
-        )
+        if get_args().pnpm_scope:
+            deps_list_all = extract_deps.extract_deps_from_pnpm_mono(
+                folder_path, release_version, project_repo_name
+            )
+        else:
+            yaml_lockfile, _, _ = get_lockfile(
+                project_repo_name, release_version, package_manager
+            )
+            deps_list_all = extract_deps.extract_deps_from_pnpm_lockfile(yaml_lockfile)
     
     elif package_manager == "maven":
         pom_xml_content, _, _ = get_lockfile(
@@ -192,7 +212,7 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
         deps_list_all = extract_deps.extract_deps_from_maven(pom_xml_content)
 
     # extract deps from lockfile
-    else:
+    elif package_manager == "yarn-classic" or package_manager == "yarn-berry":
         yarn_file, _, _ = get_lockfile(
             project_repo_name, release_version, package_manager
         )
@@ -203,6 +223,12 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
                 yarn_file
             )
             patches_info = extract_deps.get_patches_info(yarn_file)
+
+    elif package_manager == "npm":
+        npm_file, _, _ = get_lockfile(
+            project_repo_name, release_version, package_manager
+        )
+        deps_list_all = extract_deps.extract_deps_from_npm(npm_file)
 
     logging.info(
         "Number of dependencies: %d", len(deps_list_all.get("resolutions", {}))
@@ -358,6 +384,7 @@ def setup_project_info(args):
         else None,
         "check_match": args.name_match,
         "package_manager": args.package_manager,
+        "pnpm_scope": args.pnpm_scope,
     }
 
 

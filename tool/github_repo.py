@@ -96,6 +96,15 @@ def process_package(
                     timeout=TIMEOUT,
                 )
 
+            elif pm == "npm":
+                result = subprocess.run(
+                    ["npm", "info", package, "repository.url"],
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                    timeout=TIMEOUT,
+                )
+
             else:
                 raise ValueError(f"Unsupported package manager: {pm}")
 

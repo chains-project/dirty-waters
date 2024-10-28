@@ -183,7 +183,7 @@ def generate_diff_report(
     }
 
     # We write into a markdown file
-    with open(output_file, "w") as f:
+    with open(output_file, "w", encoding="utf-8") as f:
         f.write(
             f"# Differential Report of {project_repo_name} - {release_version_old} & {release_version_new}\n"
         )
@@ -194,44 +194,51 @@ def generate_diff_report(
             f.write("\n")
 
         f.write("### Fine grained information\n")
-        f.write("\n")
 
-        f.write(f"""
-        <details>
-        <summary>Downgraded packages\n</summary>
+        if downgraded_number > 0:
+            f.write("\n")
+            f.write(f"""
+<details>
+            <summary>Downgraded packages</summary>
+                        """)
+            f.write("\n\n\n")
+            f.write(df_down_selected_without_index.to_markdown(index=True))
+            f.write("\n")
+            f.write("</details>")
+            f.write("\n")
+
+        if both_new_commits > 0:
+            f.write("\n")
+            f.write(f"""
+<details>
+            <summary>Both Authors and Reviewers are new to the repository </summary>
+                """)
+            f.write("\n\n\n")
+            f.write(cp_df_author_both_new.to_markdown(index=True))
+            f.write("\n")
+            f.write("</details>")
+
+        if new_author_commits > 0:
+            f.write("\n")
+            f.write(f"""
+<details>
+            <summary>Authors are new to the repository </summary>
                     """)
-        f.write("\n\n\n")
-        f.write(df_down_selected_without_index.to_markdown(index=True))
-        f.write("\n")
-        f.write("</details>")
-        f.write("\n")
+            f.write("\n\n\n")
+            f.write(cp_df_author_new_author.to_markdown(index=True))
+            f.write("\n")
+            f.write("</details>")
 
-        f.write(f"""
-        <details>
-            <summary>Both Authors and Reviewers are new to the repository \n</summary>
+        if new_reviewer_commits > 0:
+            f.write("\n")
+            f.write(f"""
+<details>
+            <summary>Reviewers are new to the repository </summary>
                 """)
-        f.write("\n\n\n")
-        f.write(cp_df_author_both_new.to_markdown(index=True))
-        f.write("\n")
-        f.write("</details>")
-
-        f.write(f"""
-        <details>
-            <summary>Authors are new to the repository \n</summary>
-                """)
-        f.write("\n\n\n")
-        f.write(cp_df_author_new_author.to_markdown(index=True))
-        f.write("\n")
-        f.write("</details>")
-
-        f.write(f"""
-        <details>
-            <summary>Reviewers are new to the repository \n</summary>
-                """)
-        f.write("\n\n\n")
-        f.write(cp_df_author_new_reviewer.to_markdown(index=True))
-        f.write("\n")
-        f.write("</details>")
+            f.write("\n\n\n")
+            f.write(cp_df_author_new_reviewer.to_markdown(index=True))
+            f.write("\n")
+            f.write("</details>")
 
         f.write(f"---\n")
         f.write(
