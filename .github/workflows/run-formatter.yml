@@ -1,6 +1,12 @@
 name: Run Black Formatter throughout the codebase
 
-on: [push]
+on:
+  push:
+    paths:
+      - "**.py"
+  pull_request:
+    paths:
+      - "**.py"
 
 jobs:
   black:
