@@ -8,7 +8,7 @@ from tqdm import tqdm
 import requests
 
 import tool_config
-from compare_commits import tag_format
+from compare_commits import tag_format as construct_tag_format
 
 
 github_token = os.getenv("GITHUB_API_TOKEN")
@@ -208,20 +208,22 @@ def check_existence(package_name, repository):
             status_code_release_tag = have_no_tags_response_status_code
 
         else:
-            tag_possible_formats = tag_format(version, package_full_name)
+            tag_possible_formats = construct_tag_format(version, package_full_name)
 
-            for tag_format in tag_possible_formats:
-                tag_url = f"{repo_api}/git/ref/tags/{tag_format}"
-                response = make_github_request(tag_url, headers=headers)
-                if response.status_code == 200:
-                    release_tag_exists = True
-                    release_tag_url = tag_url
-                    tag_related_info = f"Tag {tag_format} is found in the repo"
-                    status_code_release_tag = response.status_code
-                    break
-                else:
-                    tag_related_info = "Tags are not found in the repo"
-                    status_code_release_tag = response.status_code
+            if tag_possible_formats:
+                for tag_format in tag_possible_formats:
+                    tag_url = f"{repo_api}/git/ref/tags/{tag_format}"
+                    response = make_github_request(tag_url, headers=headers)
+                    if response.status_code == 200:
+                        release_tag_exists = True
+                        release_tag_url = tag_url
+                        tag_related_info = f"Tag {tag_format} is found in the repo"
+                        status_code_release_tag = response.status_code
+                        break
+                    else:
+                        tag_related_info = "Tags are not found in the repo"
+                        status_code_release_tag = response.status_code
+
     github_info = {
         "github_api": repo_api,
         "github_url": repo_link,

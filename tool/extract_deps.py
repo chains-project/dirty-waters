@@ -1,4 +1,6 @@
-"""Module for extracting dependencies."""
+"""Module for extracting dependencies.
+Support npm, yarn classic, yarn berry, pnpm
+"""
 
 import re
 import os
@@ -7,11 +9,104 @@ import json
 import logging
 import sys
 import shutil
+import yaml
 from collections import defaultdict
 
 from tool_config import PNPM_LIST_COMMAND
 
 logger = logging.getLogger(__name__)
+
+
+def extract_deps_from_pnpm_lockfile(pnpm_lockfile_yaml):
+    """
+    Extract dependencies from a pnpm-lock.yaml file.
+
+    Args:
+        pnpm_lockfile_yaml (str): The content of the pnpm lock file.
+
+    Returns:
+        dict: A dictionary containing the extracted dependencies and patches.
+    """
+    yaml_data = yaml.safe_load(pnpm_lockfile_yaml)
+    yaml_version = yaml_data.get("lockfileVersion")
+    if yaml_version != "9.0":
+        logging.error("Invalid pnpm lockfile version: %s", yaml_version)
+        print("The pnpm lockfile version is not supported(yet): ", yaml_version)
+        # end the process
+        sys.exit(1)
+
+    try:
+        # pkg_name_with_resolution = set()
+        deps_list_data = {}
+
+        package_keys = sorted(list(yaml_data.get("packages", {}).keys()))
+        patches = sorted(list(yaml_data.get("patchedDependencies", {}).keys()))
+
+        deps_list_data = {
+            "resolutions": package_keys,
+            "patches": patches,
+        }
+
+        return deps_list_data
+
+    except (IOError, ValueError, KeyError) as e:
+        logging.error(
+            "An error occurred while extracting dependencies from pnpm-lock.yaml: %s",
+            str(e),
+        )
+        return {"resolutions": [], "patches": []}
+
+
+def extract_deps_from_npm(npm_lock_file):
+    """
+    Extract dependencies from a "package-lock.json" file.
+
+    Args:
+        npm_lock_file (dict): The content of the npm lock file.
+
+    Returns:
+        dict: A dictionary containing the extracted dependencies and patches.
+
+    """
+
+    lock_file_json = json.loads(npm_lock_file)
+    try:
+        patches = []
+        pkg_name_with_resolution = set()
+        deps_list_data = {}
+
+        packages = {}
+
+        # Extract packages from the "packages" object
+        if lock_file_json.get("packages") and isinstance(
+            lock_file_json["packages"], dict
+        ):
+            for package_path, package_info in lock_file_json["packages"].items():
+                if package_path.startswith("node_modules/"):
+                    package_name = package_path.split("/", 1)[1]
+                    if "node_modules" in package_name:
+                        package_name = package_name.split("node_modules/")[-1]
+
+                    if package_info.get("version"):
+                        packages[package_name] = package_info["version"]
+                        pkg_name_with_resolution.add(
+                            f"{package_name}@{package_info['version']}"
+                        )
+
+            deps_list_data = {
+                "resolutions": sorted(list(pkg_name_with_resolution)),
+                "patches": patches,
+            }
+
+        return deps_list_data
+
+    except (IOError, ValueError, KeyError) as e:
+        logging.error(
+            "An error occurred while extracting dependencies from package-lock.json: %s",
+            str(e),
+        )
+
+    return {"resolutions": [], "patches": []}
 
 
 def extract_deps_from_yarn_berry(yarn_lock_file):
@@ -89,6 +184,12 @@ def extract_deps_from_v1_yarn(yarn_lock_file):
             str(e),
         )
         return {"resolutions": [], "patches": []}
+
+
+def extract_deps_from_pnpm_lock_yaml(pnpm_lock_yaml_file):
+    """
+    Extract dependencies from a pnpm-lock.yaml file.
+    """
 
 
 def get_pnpm_dep_tree(folder_path, version_tag, project_repo_name):
