@@ -64,8 +64,9 @@ def process_package(
     else:
         try:
             if pm == "yarn-berry" or pm == "yarn-classic":
+                command = ["yarn", "info", package, "repository.url"]
                 result = subprocess.run(
-                    ["yarn", "info", package, "repository.url"],
+                    command,
                     capture_output=True,
                     text=True,
                     check=True,
@@ -73,8 +74,9 @@ def process_package(
                 )
 
             elif pm == "pnpm":
+                command = ["pnpm", "info", package, "repository.url"]
                 result = subprocess.run(
-                    ["pnpm", "info", package, "repository.url"],
+                    command,
                     capture_output=True,
                     text=True,
                     check=True,
@@ -85,8 +87,9 @@ def process_package(
                 # package is in the form of group_id:artifact_id@version -- we need all 3
                 name, version = package.split("@")
                 group_id, artifact_id = name.split(":")
+                command = ["mvn", "help:evaluate", "-Dexpression=project.scm.url", f"-Dartifact={group_id}:{artifact_id}:{version}", "-q", "-DforceStdout"]
                 result = subprocess.run(
-                    ["mvn", "help:evaluate", "-Dexpression=project.scm.url", f"-Dartifact={group_id}:{artifact_id}:{version}", "-q", "-DforceStdout"],
+                    command,
                     capture_output=True,
                     text=True,
                     check=True,
@@ -103,18 +106,14 @@ def process_package(
             )
             conn.commit()
         
-        # TODO: this shouldn't just be yarn
         except subprocess.TimeoutExpired:
             logging.error(
-                "Yarn info command timed out after %s seconds for package %s",
-                TIMEOUT,
-                package,
+                f"Command {command} timed out after {TIMEOUT} seconds for package {package}",
             )
             repo_info = None
 
-        # TODO: this shouldn't just be yarn
         except subprocess.CalledProcessError as e:
-            logging.error("Yarn info command failed for package %s: %s", package, e)
+            logging.error(f"Command {command} failed for package {package}: {e}")
             repo_info = None
 
     # TODO: npm?
@@ -131,6 +130,7 @@ def process_package(
         undefined.append(f"Undefined for {package}, {repo_info}")
     else:
         url = extract_repo_url(repo_info)
+        # print(f"[INFO] Found GitHub URL for {package}: {url}")
         repos_output_json[package] = {"github": url}
         if url:
             repos_output.append(url)
