@@ -214,7 +214,7 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
         md_file.write("\n### Call to Action:\n")
         md_file.write(
             """
-  
+
 <details>
     <summary>👻What do I do now? </summary>
         For packages without source code & accessible release tags:  \n
