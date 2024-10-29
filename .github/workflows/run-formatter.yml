@@ -8,6 +8,9 @@ on:
     paths:
       - "**.py"
 
+permissions:
+  contents: write # Allows auto-fix commits to be made
+
 jobs:
   black:
     runs-on: ubuntu-latest
