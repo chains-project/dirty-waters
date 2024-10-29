@@ -1,21 +1,29 @@
 name: Run Black Formatter throughout the codebase
 
-# Run action on PRs to master
-on:
-  push:
-    paths:
-      - "**.py"
-  pull_request:
-    paths:
-      - "**.py"
+on: [push]
 
 jobs:
-  suggest:
+  black:
     runs-on: ubuntu-latest
-
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so that black can inspect it
       - uses: actions/checkout@v2
-      - uses: rgasper/python-black-pull-request-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          ref: ${{ github.head_ref }}
+
+      - uses: actions/setup-python@v1
+
+      - run: pip install black
+
+      - name: autoblack_check
+        id: black-check
+        continue-on-error: true
+        run: black --check --config pyproject.toml .
+
+      - name: autoblack
+        if: steps.black-check.outcome != 'success'
+        run: |
+          black --config pyproject.toml .
+          git config --global user.name github-actions
+          git config --global user.email '${GITHUB_ACTOR}@users.noreply.github.com'
+          git commit -am "style: format Python code with Black"
+          git push
