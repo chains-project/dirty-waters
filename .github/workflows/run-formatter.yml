@@ -1,5 +1,4 @@
 name: Run Black Formatter throughout the codebase
-
 on:
   push:
     paths:
@@ -19,15 +18,12 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - uses: actions/setup-python@v1
-
+      - uses: actions/setup-python@v2
       - run: pip install black
-
       - name: autoblack_check
         id: black-check
         continue-on-error: true
         run: black --check --config pyproject.toml .
-
       - name: autoblack
         if: steps.black-check.outcome != 'success'
         run: |

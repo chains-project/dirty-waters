@@ -1,16 +1,26 @@
 name: Ruff check and auto-fix
 on: push
 
+permissions:
+  contents: write # Allows auto-fix commits to be made
+
 jobs:
   ruff:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
       - uses: actions/setup-python@v2
       - uses: chartboost/ruff-action@v1
         with:
           args: check --fix --show-fixes --output-format=github
           src: tool
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "style: lint code with Ruff"
+        continue-on-error: true
+      - name: commit changes
+        if: steps.ruff.outcome != 'success'
+        run: |
+          git config --global user.name github-actions
+          git config --global user.email '${GITHUB_ACTOR}@users.noreply.github.com'
+          git commit -am "style: lint Python code with Ruff"
+          git push
