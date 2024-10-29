@@ -1,9 +1,10 @@
-import requests
 import copy
 import os
 import sqlite3
 import time
 from pathlib import Path
+
+import requests
 from tool_config import setup_cache
 
 script_dir = Path(__file__).parent.absolute()

@@ -1,11 +1,11 @@
-import requests
-import sqlite3
-import os
-from pathlib import Path
-import json
 import copy
+import json
 import logging
+import os
+import sqlite3
+from pathlib import Path
 
+import requests
 
 GITHUB_TOKEN = os.getenv("GITHUB_API_TOKEN")
 

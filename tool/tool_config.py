@@ -3,8 +3,8 @@ This file contains the configuration for the tool.
 """
 
 import datetime
-import pathlib
 import logging
+import pathlib
 
 import requests_cache
 

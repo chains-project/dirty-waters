@@ -1,5 +1,5 @@
-import re
 import logging
+import re
 
 
 def parse_dependencies(file_path):

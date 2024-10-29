@@ -1,11 +1,11 @@
-import requests
-import sqlite3
-import os
-import json
-import time
 import copy
+import json
 import logging
+import os
+import sqlite3
+import time
 
+import requests
 
 GITHUB_TOKEN = os.getenv("GITHUB_API_TOKEN")
 # if not GITHUB_TOKEN:
@@ -111,7 +111,7 @@ def fetch_pull_requests(commit_node_id):
     if response.status_code != 200:
         # retry 10 sec later and try 5 times
         for i in range(5):
-            print(f"Retrying in 10 seconds...")
+            print("Retrying in 10 seconds...")
             time.sleep(10)
             response = requests.post(url, data=body, headers=headers)
             if response.status_code == 200:

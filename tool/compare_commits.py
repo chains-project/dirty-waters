@@ -1,6 +1,7 @@
-import requests
 import logging
 import os
+
+import requests
 from tool_config import setup_cache
 
 github_token = os.getenv("GITHUB_API_TOKEN")

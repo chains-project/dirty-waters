@@ -2,16 +2,16 @@
 Support npm, yarn classic, yarn berry, pnpm
 """
 
-import re
-import os
-import subprocess
 import json
 import logging
-import sys
+import os
+import re
 import shutil
-import yaml
+import subprocess
+import sys
 from collections import defaultdict
 
+import yaml
 from tool_config import PNPM_LIST_COMMAND
 
 logger = logging.getLogger(__name__)

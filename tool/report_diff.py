@@ -1,5 +1,6 @@
-import pandas as pd
 from datetime import datetime
+
+import pandas as pd
 
 
 def process_data(data):
@@ -184,7 +185,7 @@ def generate_diff_report(data, project_repo_name, release_version_old, release_v
         if downgraded_number > 0:
             f.write("\n")
             f.write(
-                f"""
+                """
 <details>
             <summary>Downgraded packages</summary>
                         """
@@ -198,7 +199,7 @@ def generate_diff_report(data, project_repo_name, release_version_old, release_v
         if both_new_commits > 0:
             f.write("\n")
             f.write(
-                f"""
+                """
 <details>
             <summary>Both Authors and Reviewers are new to the repository </summary>
                 """
@@ -211,7 +212,7 @@ def generate_diff_report(data, project_repo_name, release_version_old, release_v
         if new_author_commits > 0:
             f.write("\n")
             f.write(
-                f"""
+                """
 <details>
             <summary>Authors are new to the repository </summary>
                     """
@@ -224,7 +225,7 @@ def generate_diff_report(data, project_repo_name, release_version_old, release_v
         if new_reviewer_commits > 0:
             f.write("\n")
             f.write(
-                f"""
+                """
 <details>
             <summary>Reviewers are new to the repository </summary>
                 """
@@ -234,9 +235,9 @@ def generate_diff_report(data, project_repo_name, release_version_old, release_v
             f.write("\n")
             f.write("</details>")
 
-        f.write(f"---\n")
+        f.write("---\n")
         f.write(
-            f"\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/) - version: commit.\n"
+            "\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/) - version: commit.\n"
         )
         f.write(f"\nReport created on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
 

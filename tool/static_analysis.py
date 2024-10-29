@@ -1,16 +1,14 @@
-import json
-import os
 import base64
+import json
+import logging
+import os
 import time
 import urllib.parse
-from tqdm import tqdm
 
 import requests
-
 import tool_config
-import logging
 from compare_commits import tag_format as construct_tag_format
-
+from tqdm import tqdm
 
 github_token = os.getenv("GITHUB_API_TOKEN")
 

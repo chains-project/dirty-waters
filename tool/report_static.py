@@ -5,6 +5,7 @@ Generate the report for the static analysis results.
 import json
 import subprocess
 from datetime import datetime
+
 import pandas as pd
 
 
