@@ -71,13 +71,9 @@ def get_commit_authors(headers, packages_data):
 
                 if comparison_found is False:
                     for tag_old in tag_formats_old:
-                        old_tag_urls.append(
-                            f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_old}"
-                        )
+                        old_tag_urls.append(f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_old}")
                     for tag_new in tag_formats_new:
-                        new_tag_urls.append(
-                            f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_new}"
-                        )
+                        new_tag_urls.append(f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_new}")
 
                     for old_tag_url in old_tag_urls:
                         try:
@@ -136,26 +132,16 @@ def get_commit_authors(headers, packages_data):
                                 author_type = "No author info"
                                 author_id = "No author info"
                             else:
-                                author_login = commit.get("author").get(
-                                    "login", "No_author_login"
-                                )
-                                author_id = commit.get("author").get(
-                                    "id", "No_author_id"
-                                )
-                                author_type = commit.get("author").get(
-                                    "type", "No_author_type"
-                                )
+                                author_login = commit.get("author").get("login", "No_author_login")
+                                author_id = commit.get("author").get("id", "No_author_id")
+                                author_type = commit.get("author").get("type", "No_author_type")
 
                             if commit.get("committer") is None:
                                 committer_login = "No committer info"
                             else:
-                                committer_login = commit.get("committer").get(
-                                    "login", None
-                                )
+                                committer_login = commit.get("committer").get("login", None)
                                 committer_id = commit.get("committer").get("id", None)
-                                committer_type = commit.get("committer").get(
-                                    "type", None
-                                )
+                                committer_type = commit.get("committer").get("type", None)
 
                                 authors_info.append(
                                     {
@@ -314,13 +300,9 @@ def get_patch_commits(headers, repo_name, release_version, patch_data):
     return authors_per_patches
 
 
-def get_commit_results(
-    api_headers, repo_name, release_version, patch_data, packages_data
-):
+def get_commit_results(api_headers, repo_name, release_version, patch_data, packages_data):
     setup_cache("package_commits")
-    authors_per_patches_result = get_patch_commits(
-        api_headers, repo_name, release_version, patch_data
-    )
+    authors_per_patches_result = get_patch_commits(api_headers, repo_name, release_version, patch_data)
     authors_per_package_result = get_commit_authors(headers, packages_data)
     commit_results = {**authors_per_patches_result, **authors_per_package_result}
 

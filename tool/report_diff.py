@@ -49,9 +49,7 @@ def process_data(data):
 
             for commit_merge_info in commit_merge_infos:
                 merger = commit_merge_info.get("merge_by", "")
-                if "reviews" in commit_merge_info and isinstance(
-                    commit_merge_info["reviews"], list
-                ):
+                if "reviews" in commit_merge_info and isinstance(commit_merge_info["reviews"], list):
                     for review in commit_merge_info["reviews"]:
                         if isinstance(review, dict) and "prr_data" in review:
                             reviewer = review.get("review_author")
@@ -117,9 +115,7 @@ def filter_df(df):
     return df_author_first, df_review_first, df_both_first
 
 
-def generate_diff_report(
-    data, project_repo_name, release_version_old, release_version_new, output_file
-):
+def generate_diff_report(data, project_repo_name, release_version_old, release_version_new, output_file):
     print(f"Generating differential report for {project_repo_name}")
     record, record_list, author_list = process_data(data)
 
@@ -144,18 +140,14 @@ def generate_diff_report(
     new_order = ["sha"] + [col for col in df_author.columns if col != "sha"]
     df_author = df_author.reindex(columns=new_order)
 
-    df_author_new_author, df_author_new_reviewer, df_author_both_new = filter_df(
-        df_author
-    )
+    df_author_new_author, df_author_new_reviewer, df_author_both_new = filter_df(df_author)
 
     # know the columns
 
     profile_url = "https://github.com/"
 
     cp_df_author_new_author = df_author_new_author.copy()
-    cp_df_author_new_author.index = df_author_new_author.index.map(
-        lambda x: f"[{x}]({profile_url}{x})"
-    )
+    cp_df_author_new_author.index = df_author_new_author.index.map(lambda x: f"[{x}]({profile_url}{x})")
     # df_author_new_author.loc[:,"author"] = df_author_new_author.loc[:,"author"].map(lambda x: f"[{x}]({profile_url}{x})")
 
     cp_df_author_new_reviewer = df_author_new_reviewer.copy()
@@ -164,12 +156,8 @@ def generate_diff_report(
     )
 
     cp_df_author_both_new = df_author_both_new.copy()
-    cp_df_author_both_new.index = df_author_both_new.index.map(
-        lambda x: f"[{x}]({profile_url}{x})"
-    )
-    cp_df_author_both_new["reviewer"] = df_author_both_new["reviewer"].apply(
-        lambda x: f"[{x}]({profile_url}{x})"
-    )
+    cp_df_author_both_new.index = df_author_both_new.index.map(lambda x: f"[{x}]({profile_url}{x})")
+    cp_df_author_both_new["reviewer"] = df_author_both_new["reviewer"].apply(lambda x: f"[{x}]({profile_url}{x})")
 
     new_author_commits = df_author_new_author.shape[0]
     new_reviewer_commits = df_author_new_reviewer.shape[0]
@@ -184,9 +172,7 @@ def generate_diff_report(
 
     # We write into a markdown file
     with open(output_file, "w", encoding="utf-8") as f:
-        f.write(
-            f"# Differential Report of {project_repo_name} - {release_version_old} & {release_version_new}\n"
-        )
+        f.write(f"# Differential Report of {project_repo_name} - {release_version_old} & {release_version_new}\n")
         f.write("\n")
 
         for key, val in counts.items():
@@ -258,7 +244,5 @@ def generate_diff_report(
         # tool_commit_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).strip().decode('utf-8')
         # md_file.write(f"- Tool version: {tool_commit_hash}\n")
         f.write(f"- project Name: {project_repo_name}\n")
-        f.write(
-            f"- Compared project Versions: {release_version_old} & {release_version_new}\n"
-        )
+        f.write(f"- Compared project Versions: {release_version_old} & {release_version_new}\n")
     print(f"Report generated at {output_file}")
