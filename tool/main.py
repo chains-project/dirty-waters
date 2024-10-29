@@ -2,26 +2,25 @@
 Main file to run the software supply chain smell analysis.
 """
 
-import json
 import argparse
+import json
 import logging
 import os
-import requests
+
+import compare_commits
+import compare_packages
 
 # from dotenv import load_dotenv
-
-
 import extract_deps
-import github_repo
-import static_analysis
-import compare_packages
-import compare_commits
-import get_user_commit_info
 import get_pr_info
 import get_pr_review
-import tool_config
-import report_static
+import get_user_commit_info
+import github_repo
 import report_diff
+import report_static
+import requests
+import static_analysis
+import tool_config
 
 # load_dotenv()
 github_token = os.getenv("GITHUB_API_TOKEN")
