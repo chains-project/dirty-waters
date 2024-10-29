@@ -186,7 +186,6 @@ def get_github_repo_url(folder, dep_list, pm):
             pbar.update(1)
 
     # Write collected data to files
-    unique_repos_output = sorted(set(repos_output))
     outputs = {
         # "github_repo_all.txt": repos_output,
         # "github_repo_unique.txt": unique_repos_output,

@@ -81,10 +81,9 @@ def get_args():
     parser.add_argument(
         "-pm",
         "--package-manager",
-        choices=["yarn-berry", "yarn-classic", "pnpm", "maven"],
         required=True,
         help="The package manager used in the project.",
-        choices=["yarn-classic", "yarn-berry", "pnpm", "npm"],
+        choices=["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
     )
     parser.add_argument(
         "--pnpm-scope",

@@ -139,7 +139,6 @@ def get_pr_info(data):
         for author in authors:
             commit_sha = author.get("sha")
             commit_node_id = author.get("node_id")
-            commit_url = author.get("commit_url")
 
             c.execute(
                 "SELECT pr_data FROM pr_info_sample WHERE commit_node_id=?",

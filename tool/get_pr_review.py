@@ -72,7 +72,7 @@ def get_first_pr_info(search_string):
         }
     }
     }
-    
+
 
     """
 

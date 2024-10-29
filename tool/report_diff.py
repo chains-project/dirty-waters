@@ -109,9 +109,9 @@ def create_dataframe(record):
 
 
 def filter_df(df):
-    df_author_first = df[(df["author_first"] == True)]
-    df_review_first = df[df["prr_first"] == True]
-    df_both_first = df[(df["author_first"] == True) & (df["prr_first"] == True)]
+    df_author_first = df[(df["author_first"])]
+    df_review_first = df[df["prr_first"]]
+    df_both_first = df[(df["author_first"]) & (df["prr_first"])]
 
     return df_author_first, df_review_first, df_both_first
 

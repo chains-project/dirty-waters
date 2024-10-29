@@ -39,8 +39,8 @@ def extract_deps_from_pnpm_lockfile(pnpm_lockfile_yaml):
         # pkg_name_with_resolution = set()
         deps_list_data = {}
 
-        package_keys = sorted(list(yaml_data.get("packages", {}).keys()))
-        patches = sorted(list(yaml_data.get("patchedDependencies", {}).keys()))
+        package_keys = sorted(yaml_data.get("packages", {}).keys())
+        patches = sorted(yaml_data.get("patchedDependencies", {}).keys())
 
         deps_list_data = {
             "resolutions": package_keys,
@@ -90,7 +90,7 @@ def extract_deps_from_npm(npm_lock_file):
                         pkg_name_with_resolution.add(f"{package_name}@{package_info['version']}")
 
             deps_list_data = {
-                "resolutions": sorted(list(pkg_name_with_resolution)),
+                "resolutions": sorted(pkg_name_with_resolution),
                 "patches": patches,
             }
 
