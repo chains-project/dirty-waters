@@ -221,7 +221,7 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
         len(dep_with_many_versions),
     )
 
-    rv_name = release_version.replace("/", "_")
+    # rv_name = release_version.replace("/", "_")
 
     # write_to_file(f"{rv_name}_deps_list_all.json", folder_path, deps_list_all)
     # write_to_file(

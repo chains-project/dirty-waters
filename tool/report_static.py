@@ -65,7 +65,7 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
     """
 
     no_source_code_repo_df = df.loc[df["github_url"] == "No_repo_info_found", ["github_url", "github_exists"]]
-    github_repo_404_df = df.loc[df["github_exists"] == False, ["github_url", "github_exists"]]
+    github_repo_404_df = df.loc[not df["github_exists"], ["github_url", "github_exists"]]
 
     combined_repo_problems_df = (
         pd.concat([no_source_code_repo_df, github_repo_404_df])
@@ -74,7 +74,7 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
     )
     # could not find release tag while github exists
     release_tag_not_found_df = df.loc[
-        (df["release_tag_exists"] == False) & (df["github_exists"] == True),
+        (not df["release_tag_exists"]) & (df["github_exists"]),
         [
             "release_tag_exists",
             "tag_version",
@@ -85,8 +85,8 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
     ]
 
     # all_deprecated_df = df[df["all_deprecated"] is True]
-    version_deprecated_df = df[df["deprecated_in_version"] == True]
-    forked_package_df = df[df["is_fork"] == True]
+    version_deprecated_df = df[df["deprecated_in_version"]]
+    forked_package_df = df[df["is_fork"]]
 
     common_counts = {
         "### Total packages in the supply chain:": len(df),
@@ -96,16 +96,16 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
         ":heavy_exclamation_mark: Packages with no Source Code URL(⚠️⚠️⚠️)": (
             df["github_url"] == "No_repo_info_found"
         ).sum(),
-        ":no_entry: Packages with Github URLs that are 404(⚠️⚠️⚠️)": (df["github_exists"] == False).sum(),
-        ":wrench: Packages with inaccessible GitHub tags(⚠️⚠️⚠️)": (df["release_tag_exists"] == False).sum(),
-        ":x: Packages that are deprecated(⚠️⚠️)": (df["deprecated_in_version"] == True).sum(),
-        ":cactus: Packages that are forks(⚠️⚠️)": (df["is_fork"] == True).sum(),
-        ":black_square_button: Packages without provenance(⚠️)": (df["provenance_in_version"] == False).sum(),
+        ":no_entry: Packages with Github URLs that are 404(⚠️⚠️⚠️)": (not df["github_exists"]).sum(),
+        ":wrench: Packages with inaccessible GitHub tags(⚠️⚠️⚠️)": (not df["release_tag_exists"]).sum(),
+        ":x: Packages that are deprecated(⚠️⚠️)": (df["deprecated_in_version"]).sum(),
+        ":cactus: Packages that are forks(⚠️⚠️)": (df["is_fork"]).sum(),
+        ":black_square_button: Packages without provenance(⚠️)": (not df["provenance_in_version"]).sum(),
     }
 
     not_on_github_counts = (df["github_url"] == "Not_github_repo").sum()
 
-    source_sus = (df["github_url"] == "No_repo_info_found").sum() + (df["github_exists"] == False).sum()
+    source_sus = (df["github_url"] == "No_repo_info_found").sum() + (not df["github_exists"]).sum()
 
     with open(filename, mode, encoding="utf-8") as md_file:
         md_file.write(f"# Software Supply Chain Report of {project_name} - {release_version}\n")
@@ -141,7 +141,7 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
     <summary>Other info:</summary>
      \n- Source code repo is not hosted on github:  {not_on_github_counts} \n
 </details>
-                      
+
                       """
         )
 
@@ -172,7 +172,7 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
                 f"""
 
 <details>
-    <summary>List of packages with inaccessible tags({(df["release_tag_exists"] == False).sum()}) </summary>
+    <summary>List of packages with inaccessible tags({(not df["release_tag_exists"]).sum()}) </summary>
         """
             )
             md_file.write("\n\n\n")
@@ -186,7 +186,7 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
             md_file.write(
                 f"""
 <details>
-    <summary>List of deprecated packages({(df['deprecated_in_version'] == True).sum()})</summary>
+    <summary>List of deprecated packages({(df['deprecated_in_version']).sum()})</summary>
         """
             )
             md_file.write("\n\n\n")
@@ -201,7 +201,7 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
                 f"""
 
 <details>
-    <summary>List of packages from fork({(df["is_fork"] == True).sum()}) </summary>
+    <summary>List of packages from fork({(df["is_fork"]).sum()}) </summary>
         """
             )
             md_file.write("\n\n\n")
@@ -214,16 +214,16 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
         md_file.write("\n### Call to Action:\n")
         md_file.write(
             """
-                      
+  
 <details>
     <summary>👻What do I do now? </summary>
         For packages without source code & accessible release tags:  \n
         Pull Request to the maintainer of dependency, requesting correct repository metadata and proper tagging. \n
         \nFor deprecated packages:\n
-        1. Confirm the maintainer’s deprecation intention 
+        1. Confirm the maintainer’s deprecation intention
         2. Check for not deprecated versions
         \nFor packages without provenance:\n
-        Open an issue in the dependency’s repository to request the inclusion of provenance and build attestation in the CI/CD pipeline. 
+        Open an issue in the dependency’s repository to request the inclusion of provenance and build attestation in the CI/CD pipeline.
         \nFor packages that are forks\n
         Inspect the package and its GitHub repository to verify the fork is not malicious.
 </details>

@@ -499,12 +499,12 @@ def analyze_package_data(package, repo_url, pm, check_match=False):
             if github_info.get("github_exists"):
                 repo_url_to_use = github_info.get("redirected_repo") or repo_url
                 if check_match:
-                    if package_info["provenance"] == False:
-                        if github_info.get("is_fork") == True or github_info.get("archived") == True:
+                    if not package_info["provenance"]:
+                        if github_info.get("is_fork") or github_info.get("archived"):
                             package_info["match_info"] = check_name_match_for_fork(package, repo_url_to_use)
                         else:
                             package_info["match_info"] = check_name_match(package, repo_url_to_use)
-                    elif package_info["provenance"] == True:
+                    elif package_info["provenance"]:
                         package_info["match_info"] = {
                             "has_provenance": True,
                             "match": True,
