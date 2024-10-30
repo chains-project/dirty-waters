@@ -20,11 +20,11 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
-      #- name: Version bump
-      #  uses: monperrus/pyproject-bump-pypi@main
-      #  with:
-      #    file_to_bump: "./pyproject.toml"
-      #    bump_type: "minor"
+      - name: Version bump
+        uses: monperrus/pyproject-bump-pypi@main
+        with:
+          file_to_bump: "./pyproject.toml"
+          bump_type: "minor"
 
       - name: Set up Python
         uses: actions/setup-python@v3
