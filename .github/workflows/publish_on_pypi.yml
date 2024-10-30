@@ -1,4 +1,4 @@
-name: Upload Python Package to TestPyPI
+name: Upload Python Package to PyPI
 
 on:
   push:
@@ -32,8 +32,7 @@ jobs:
           python-version: "3.x"
       - run: pip install build
       - run: python -m build --wheel
-      - name: Publish package to TestPyPI
+      - name: Publish package to PyPi
         uses: pypa/gh-action-pypi-publish@release/v1.8
         with:
-          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-          repository-url: https://test.pypi.org/legacy/
+          password: ${{ secrets.PYPI_API_TOKEN }}
