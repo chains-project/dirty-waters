@@ -46,6 +46,9 @@ dependencies = [
 Homepage = "https://github.com/chains-project/dirty-waters"
 "Bug Tracker" = "https://github.com/chains-project/dirty-waters/issues"
 
+[project.scripts]
+dirty-waters = "tool.main:main"
+
 [tool.setuptools]
 package-dir = {"" = "."}
 
