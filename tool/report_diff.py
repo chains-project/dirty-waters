@@ -197,10 +197,12 @@ def generate_diff_report(
 
         if downgraded_number > 0:
             f.write("\n")
-            f.write(f"""
+            f.write(
+                f"""
 <details>
             <summary>Downgraded packages</summary>
-                        """)
+                        """
+            )
             f.write("\n\n\n")
             f.write(df_down_selected_without_index.to_markdown(index=True))
             f.write("\n")
@@ -209,10 +211,12 @@ def generate_diff_report(
 
         if both_new_commits > 0:
             f.write("\n")
-            f.write(f"""
+            f.write(
+                f"""
 <details>
             <summary>Both Authors and Reviewers are new to the repository </summary>
-                """)
+                """
+            )
             f.write("\n\n\n")
             f.write(cp_df_author_both_new.to_markdown(index=True))
             f.write("\n")
@@ -220,10 +224,12 @@ def generate_diff_report(
 
         if new_author_commits > 0:
             f.write("\n")
-            f.write(f"""
+            f.write(
+                f"""
 <details>
             <summary>Authors are new to the repository </summary>
-                    """)
+                    """
+            )
             f.write("\n\n\n")
             f.write(cp_df_author_new_author.to_markdown(index=True))
             f.write("\n")
@@ -231,10 +237,12 @@ def generate_diff_report(
 
         if new_reviewer_commits > 0:
             f.write("\n")
-            f.write(f"""
+            f.write(
+                f"""
 <details>
             <summary>Reviewers are new to the repository </summary>
-                """)
+                """
+            )
             f.write("\n\n\n")
             f.write(cp_df_author_new_reviewer.to_markdown(index=True))
             f.write("\n")

@@ -54,9 +54,7 @@ def get_commit_authors(headers, packages_data):
             tag_formats_new = tag_format(tag2_chosen, package)
             tag_formats_old = tag_format(tag1_chosen, package)
 
-            for tag_format_old, tag_format_new in zip(
-                tag_formats_old, tag_formats_new
-            ):
+            for tag_format_old, tag_format_new in zip(tag_formats_old, tag_formats_new):
                 compare_urls.append(
                     f"https://api.github.com/repos/{repo_name}/compare/{tag_format_old}...{tag_format_new}"
                 )

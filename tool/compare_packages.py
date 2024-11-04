@@ -68,9 +68,9 @@ def choose_compare_version(dep_file_1, dep_file_2):
         if not versions.get("only_in_2"):
             chosen_v2 = None
             if versions.get("only_in_1") is not None:
-                differences[dep]["message"] = (
-                    f"Deleted package - version {versions.get('only_in_1')} deleted"
-                )
+                differences[dep][
+                    "message"
+                ] = f"Deleted package - version {versions.get('only_in_1')} deleted"
 
         else:
             chosen_v2 = versions["only_in_2"][-1]
@@ -213,12 +213,12 @@ def get_repo_from_SA(dep_file_1, dep_file_2, SA_old, SA_new):
                     .get("github_url", "Error")
                 )
 
-                differences[dep]["v1_repo_accessibility"] = (
-                    dep_old_repo_url_accessibility
-                )
-                differences[dep]["v2_repo_accessibility"] = (
-                    dep_new_repo_url_accessibility
-                )
+                differences[dep][
+                    "v1_repo_accessibility"
+                ] = dep_old_repo_url_accessibility
+                differences[dep][
+                    "v2_repo_accessibility"
+                ] = dep_new_repo_url_accessibility
 
                 differences[dep]["v1_repo_link"] = dep_old_repo_url
                 differences[dep]["v2_repo_link"] = dep_new_repo_url
@@ -286,18 +286,18 @@ def get_repo_from_SA(dep_file_1, dep_file_2, SA_old, SA_new):
                     dep_old_repo_url_accessibility is False
                     or dep_old_repo_url_accessibility is None
                 ):
-                    differences[dep]["v1_repo_accessibility"] = (
-                        "Repo link not accessible"
-                    )
+                    differences[dep][
+                        "v1_repo_accessibility"
+                    ] = "Repo link not accessible"
                     differences[dep]["compare_message"] = "DO NOT COMPARE"
 
                 if (
                     dep_new_repo_url_accessibility is False
                     or dep_new_repo_url_accessibility is None
                 ):
-                    differences[dep]["v2_repo_accessibility"] = (
-                        "Repo link not accessible"
-                    )
+                    differences[dep][
+                        "v2_repo_accessibility"
+                    ] = "Repo link not accessible"
                     differences[dep]["compare_message"] = "DO NOT COMPARE"
 
         else:

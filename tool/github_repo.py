@@ -18,9 +18,11 @@ database_file = script_dir / "database" / "github_repo_info_all.db"
 conn = sqlite3.connect(database_file)
 c = conn.cursor()
 
-c.execute("""CREATE TABLE IF NOT EXISTS pkg_github_repo_output (
+c.execute(
+    """CREATE TABLE IF NOT EXISTS pkg_github_repo_output (
                 package TEXT PRIMARY KEY,
-                github TEXT)""")
+                github TEXT)"""
+)
 
 conn.commit()
 

@@ -7,6 +7,7 @@ import argparse
 import logging
 import os
 import requests
+
 # from dotenv import load_dotenv
 
 
@@ -375,9 +376,11 @@ def setup_project_info(args):
         "old_version": args.release_version_old,
         "new_version": args.release_version_new,
         "old_version_name": args.release_version_old.replace("/", "_"),
-        "new_version_name": args.release_version_new.replace("/", "_")
-        if args.release_version_new
-        else None,
+        "new_version_name": (
+            args.release_version_new.replace("/", "_")
+            if args.release_version_new
+            else None
+        ),
         "check_match": args.name_match,
         "package_manager": args.package_manager,
         "pnpm_scope": args.pnpm_scope,

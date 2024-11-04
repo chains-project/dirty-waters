@@ -136,7 +136,8 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
         )
         md_file.write("\n")
 
-        md_file.write("""
+        md_file.write(
+            """
 <details>
     <summary>How to read the results :book: </summary>
     \n Dirty-waters has analyzed your project dependencies and found different categories for each of them:\n
@@ -144,7 +145,8 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
     \n - ⚠️⚠️: medium severity \n
     \n - ⚠️: low severity \n
 </details>
-        """)
+        """
+        )
 
         md_file.write("\n")
 
@@ -158,13 +160,15 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
 
         # md_file.write(f"#### Other info")
 
-        md_file.write(f"""
+        md_file.write(
+            f"""
 <details>
     <summary>Other info:</summary>
      \n- Source code repo is not hosted on github:  {not_on_github_counts} \n
 </details>
                       
-                      """)
+                      """
+        )
 
         md_file.write("\n\n")
         # md_file.write("\n---\n")
@@ -174,10 +178,12 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
         )
 
         if not combined_repo_problems_df.empty:
-            md_file.write(f"""
+            md_file.write(
+                f"""
 <details>
     <summary>Source code links that could not be found({source_sus})</summary>
-        """)
+        """
+            )
             md_file.write("\n\n\n")
             combined_repo_problems_df.index = range(
                 1, len(combined_repo_problems_df) + 1
@@ -191,11 +197,13 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
             md_file.write("No package doesn't have source code repo.\n")
 
         if not release_tag_not_found_df.empty:
-            md_file.write(f"""
+            md_file.write(
+                f"""
 
 <details>
     <summary>List of packages with inaccessible tags({(df["release_tag_exists"] == False).sum()}) </summary>
-        """)
+        """
+            )
             md_file.write("\n\n\n")
             markdown_text = release_tag_not_found_df.reset_index().to_markdown(
                 index=False
@@ -206,10 +214,12 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
             md_file.write("\nNo package with inaccessible tags.\n")
 
         if not version_deprecated_df.empty:
-            md_file.write(f"""
+            md_file.write(
+                f"""
 <details>
     <summary>List of deprecated packages({(df['deprecated_in_version'] == True).sum()})</summary>
-        """)
+        """
+            )
             md_file.write("\n\n\n")
             markdown_text = version_deprecated_df.reset_index().to_markdown(index=False)
             md_file.write(markdown_text)
@@ -218,11 +228,13 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
             md_file.write("No deprecated package found.\n")
 
         if not forked_package_df.empty:
-            md_file.write(f"""
+            md_file.write(
+                f"""
 
 <details>
     <summary>List of packages from fork({(df["is_fork"] == True).sum()}) </summary>
-        """)
+        """
+            )
             md_file.write("\n\n\n")
             markdown_text = forked_package_df.reset_index().to_markdown(index=False)
             md_file.write(markdown_text)
@@ -231,7 +243,8 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
             md_file.write("\nNo package is from fork.\n")
 
         md_file.write("\n### Call to Action:\n")
-        md_file.write("""
+        md_file.write(
+            """
                       
 <details>
     <summary>👻What do I do now? </summary>
@@ -248,7 +261,8 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
 
 
 
-""")
+"""
+        )
         md_file.write("---\n")
         md_file.write(
             "\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/).\n"
