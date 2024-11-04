@@ -78,9 +78,7 @@ def extract_deps_from_npm(npm_lock_file):
         packages = {}
 
         # Extract packages from the "packages" object
-        if lock_file_json.get("packages") and isinstance(
-            lock_file_json["packages"], dict
-        ):
+        if lock_file_json.get("packages") and isinstance(lock_file_json["packages"], dict):
             for package_path, package_info in lock_file_json["packages"].items():
                 if package_path.startswith("node_modules/"):
                     package_name = package_path.split("/", 1)[1]
@@ -89,9 +87,7 @@ def extract_deps_from_npm(npm_lock_file):
 
                     if package_info.get("version"):
                         packages[package_name] = package_info["version"]
-                        pkg_name_with_resolution.add(
-                            f"{package_name}@{package_info['version']}"
-                        )
+                        pkg_name_with_resolution.add(f"{package_name}@{package_info['version']}")
 
             deps_list_data = {
                 "resolutions": sorted(list(pkg_name_with_resolution)),
@@ -296,9 +292,7 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name):
     workspace_dep = []
     patched_dep = []
 
-    tree, folder_path_for_this = get_pnpm_dep_tree(
-        folder_path, version_tag, project_repo_name
-    )
+    tree, folder_path_for_this = get_pnpm_dep_tree(folder_path, version_tag, project_repo_name)
 
     os.chdir("..")
     if tree is None:
@@ -309,10 +303,7 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name):
     logging.info("Extracting dependencies from pnpm list output")
 
     for line in tree:
-        if (
-            "ledger-live-desktop" in line
-            or "production dependency, optional only, dev only" in line
-        ):
+        if "ledger-live-desktop" in line or "production dependency, optional only, dev only" in line:
             print("ledger-live-desktop found")
             continue
 

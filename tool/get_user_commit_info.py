@@ -104,9 +104,7 @@ def get_user_first_commit_info(data):
                             author_login_in_commit,
                             author_id_in_commit,
                         ) = data
-                        first_time_commit = (
-                            True if earliest_commit_sha == commit_sha else False
-                        )
+                        first_time_commit = True if earliest_commit_sha == commit_sha else False
 
                         commit_result.update(
                             {
@@ -125,11 +123,7 @@ def get_user_first_commit_info(data):
                         retries = 0
                         success = False
 
-                        while (
-                            retries < max_retries
-                            and not success
-                            and api_url not in failed_api_urls
-                        ):
+                        while retries < max_retries and not success and api_url not in failed_api_urls:
                             response = requests.get(api_url, headers=headers)
                             time.sleep(2)
 
@@ -137,28 +131,20 @@ def get_user_first_commit_info(data):
                                 success = True
                                 commits_data = response.json()
                                 earliest_commit_sha = (
-                                    commits_data["items"][0]["sha"]
-                                    if commits_data["items"]
-                                    else None
+                                    commits_data["items"][0]["sha"] if commits_data["items"] else None
                                 )
 
                                 author_login_in_commit = (
-                                    commits_data["items"][0]["author"]["login"]
-                                    if commits_data["items"]
-                                    else None
+                                    commits_data["items"][0]["author"]["login"] if commits_data["items"] else None
                                 )
                                 # author_type = commits_data['items'][0]['author']['__typename'] if commits_data['items'] else None
 
                                 author_id_in_commit = (
-                                    commits_data["items"][0]["author"]["id"]
-                                    if commits_data["items"]
-                                    else None
+                                    commits_data["items"][0]["author"]["id"] if commits_data["items"] else None
                                 )
                                 # api_url_cache[api_url] = earliest_commit_sha
 
-                                first_time_commit = (
-                                    True if earliest_commit_sha == commit_sha else False
-                                )
+                                first_time_commit = True if earliest_commit_sha == commit_sha else False
 
                                 c.execute(
                                     "INSERT INTO commit_data (api_url, earliest_commit_sha, repo_name, package, author_login, author_commit_sha, author_login_in_1st_commit, author_id_in_1st_commit) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
@@ -188,9 +174,7 @@ def get_user_first_commit_info(data):
 
                             else:
                                 print(f"Error: {response.status_code}")
-                                remaining = response.headers.get(
-                                    "X-RateLimit-Remaining"
-                                )
+                                remaining = response.headers.get("X-RateLimit-Remaining")
                                 reset_time = response.headers.get("X-RateLimit-Reset")
                                 wait_time = max(int(reset_time) - int(time.time()), 0)
                                 print(f"Rate limit remaining: {remaining}")
@@ -202,14 +186,10 @@ def get_user_first_commit_info(data):
                                     time.sleep(base_wait_time)
 
                                 retries += 1
-                                print(
-                                    f"Retrying...{retries}/{max_retries} for {api_url}"
-                                )
+                                print(f"Retrying...{retries}/{max_retries} for {api_url}")
 
                         if not success:
-                            commit_result["commit_notice"] = (
-                                f"Failed to retrieve data from API({api_url})"
-                            )
+                            commit_result["commit_notice"] = f"Failed to retrieve data from API({api_url})"
                             failed_api_urls.add(api_url)
 
                 author["commit_result"] = commit_result

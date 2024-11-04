@@ -33,18 +33,10 @@ def create_dataframe(data):
 
         row = {
             "package_name": package_name,
-            "deprecated_in_version": package_data["npm_package_info"].get(
-                "deprecated_in_version"
-            ),
-            "provenance_in_version": package_data["npm_package_info"].get(
-                "provenance_in_version"
-            ),
-            "all_deprecated": package_data["npm_package_info"].get(
-                "all_deprecated", None
-            ),
-            "github_url": github_exists_data.get(
-                "github_url", "Could not find repo from package registry"
-            ),
+            "deprecated_in_version": package_data["npm_package_info"].get("deprecated_in_version"),
+            "provenance_in_version": package_data["npm_package_info"].get("provenance_in_version"),
+            "all_deprecated": package_data["npm_package_info"].get("all_deprecated", None),
+            "github_url": github_exists_data.get("github_url", "Could not find repo from package registry"),
             "github_exists": github_exists_data.get("github_exists", None),
             "github_redirected": github_exists_data.get("github_redirected", None),
             "archived": github_exists_data.get("archived", None),
@@ -57,9 +49,7 @@ def create_dataframe(data):
             "tag_version": release_tag_exists_info.get("tag_version", "-"),
             "tag_url": release_tag_exists_info.get("url", "-"),
             "tag_related_info": release_tag_exists_info.get("tag_related_info", "-"),
-            "status_code_for_release_tag": release_tag_exists_info.get(
-                "status_code", "-"
-            ),
+            "status_code_for_release_tag": release_tag_exists_info.get("status_code", "-"),
         }
         rows.append(row)
 
@@ -73,12 +63,8 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
     Write a summary of the static analysis results to a markdown file.
     """
 
-    no_source_code_repo_df = df.loc[
-        df["github_url"] == "No_repo_info_found", ["github_url", "github_exists"]
-    ]
-    github_repo_404_df = df.loc[
-        df["github_exists"] == False, ["github_url", "github_exists"]
-    ]
+    no_source_code_repo_df = df.loc[df["github_url"] == "No_repo_info_found", ["github_url", "github_exists"]]
+    github_repo_404_df = df.loc[df["github_exists"] == False, ["github_url", "github_exists"]]
 
     combined_repo_problems_df = (
         pd.concat([no_source_code_repo_df, github_repo_404_df])
@@ -109,31 +95,19 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
         ":heavy_exclamation_mark: Packages with no Source Code URL(⚠️⚠️⚠️)": (
             df["github_url"] == "No_repo_info_found"
         ).sum(),
-        ":no_entry: Packages with Github URLs that are 404(⚠️⚠️⚠️)": (
-            df["github_exists"] == False
-        ).sum(),
-        ":wrench: Packages with inaccessible GitHub tags(⚠️⚠️⚠️)": (
-            df["release_tag_exists"] == False
-        ).sum(),
-        ":x: Packages that are deprecated(⚠️⚠️)": (
-            df["deprecated_in_version"] == True
-        ).sum(),
+        ":no_entry: Packages with Github URLs that are 404(⚠️⚠️⚠️)": (df["github_exists"] == False).sum(),
+        ":wrench: Packages with inaccessible GitHub tags(⚠️⚠️⚠️)": (df["release_tag_exists"] == False).sum(),
+        ":x: Packages that are deprecated(⚠️⚠️)": (df["deprecated_in_version"] == True).sum(),
         ":cactus: Packages that are forks(⚠️⚠️)": (df["is_fork"] == True).sum(),
-        ":black_square_button: Packages without provenance(⚠️)": (
-            df["provenance_in_version"] == False
-        ).sum(),
+        ":black_square_button: Packages without provenance(⚠️)": (df["provenance_in_version"] == False).sum(),
     }
 
     not_on_github_counts = (df["github_url"] == "Not_github_repo").sum()
 
-    source_sus = (df["github_url"] == "No_repo_info_found").sum() + (
-        df["github_exists"] == False
-    ).sum()
+    source_sus = (df["github_url"] == "No_repo_info_found").sum() + (df["github_exists"] == False).sum()
 
     with open(filename, mode, encoding="utf-8") as md_file:
-        md_file.write(
-            f"# Software Supply Chain Report of {project_name} - {release_version}\n"
-        )
+        md_file.write(f"# Software Supply Chain Report of {project_name} - {release_version}\n")
         md_file.write("\n")
 
         md_file.write(
@@ -185,12 +159,8 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
         """
             )
             md_file.write("\n\n\n")
-            combined_repo_problems_df.index = range(
-                1, len(combined_repo_problems_df) + 1
-            )
-            markdown_text = combined_repo_problems_df.reset_index().to_markdown(
-                index=False
-            )
+            combined_repo_problems_df.index = range(1, len(combined_repo_problems_df) + 1)
+            markdown_text = combined_repo_problems_df.reset_index().to_markdown(index=False)
             md_file.write(markdown_text)
             md_file.write("\n</details>")
         else:
@@ -205,9 +175,7 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
         """
             )
             md_file.write("\n\n\n")
-            markdown_text = release_tag_not_found_df.reset_index().to_markdown(
-                index=False
-            )
+            markdown_text = release_tag_not_found_df.reset_index().to_markdown(index=False)
             md_file.write(markdown_text)
             md_file.write("\n</details>")
         else:
@@ -264,19 +232,11 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
 """
         )
         md_file.write("---\n")
-        md_file.write(
-            "\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/).\n"
-        )
-        md_file.write(
-            f"\nReport created on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
-        )
+        md_file.write("\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/).\n")
+        md_file.write(f"\nReport created on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
 
         # Tool version
-        tool_commit_hash = (
-            subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
-            .strip()
-            .decode("utf-8")
-        )
+        tool_commit_hash = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).strip().decode("utf-8")
         md_file.write(f"- Tool version: {tool_commit_hash}\n")
         md_file.write(f"- Project Name: {project_name}\n")
         md_file.write(f"- Project Version: {release_version}\n")
@@ -288,7 +248,5 @@ def get_s_summary(data, project_name, release_version, summary_filename):
     """
 
     df = create_dataframe(data)
-    write_summary(
-        df, project_name, release_version, filename=summary_filename, mode="w"
-    )
+    write_summary(df, project_name, release_version, filename=summary_filename, mode="w")
     print(f"Report created at {summary_filename}")

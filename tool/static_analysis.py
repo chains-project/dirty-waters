@@ -83,9 +83,7 @@ def check_deprecated_and_provenance(package, package_version):
 
 
 def api_constructor(package_name, repository):
-    repo_url = (
-        repository.replace("https://", "").replace("http://", "").replace("/issues", "")
-    )
+    repo_url = repository.replace("https://", "").replace("http://", "").replace("/issues", "")
 
     # simplified_path = repo_url.replace("github.com/", "").split('#')[0].split('tree/master')[0].rstrip('/')
     simplified_path = (
@@ -137,10 +135,7 @@ def make_github_request(url, headers):
 
     response = requests.get(url, headers=headers)
 
-    if (
-        response.status_code == 403
-        and int(response.headers.get("X-RateLimit-Remaining", 0)) <= 10
-    ):
+    if response.status_code == 403 and int(response.headers.get("X-RateLimit-Remaining", 0)) <= 10:
         reset_time = int(response.headers.get("X-RateLimit-Reset", 0))
         sleep_time = min(reset_time - int(time.time()), MAX_WAIT_TIME)
         print(f"\nRate limit reached. Waiting for {sleep_time} seconds.")
@@ -152,9 +147,7 @@ def make_github_request(url, headers):
 
 def check_existence(package_name, repository):
     """Check if the package exists in the repository."""
-    repo_api, simplified_path, package_full_name, _, version, error_message = (
-        api_constructor(package_name, repository)
-    )
+    repo_api, simplified_path, package_full_name, _, version, error_message = api_constructor(package_name, repository)
 
     repo_link = f"https://github.com/{simplified_path}".lower()
     github_exists = False
@@ -417,9 +410,7 @@ def analyze_package_data(package, repo_url, check_match=False):
 
     try:
         package_name_npm, package_version_npm = package.rsplit("@", 1)
-        npm_package_infos = check_deprecated_and_provenance(
-            package_name_npm, package_version_npm
-        )
+        npm_package_infos = check_deprecated_and_provenance(package_name_npm, package_version_npm)
         package_info["deprecated"] = npm_package_infos.get("deprecated_in_version")
         package_info["provenance"] = npm_package_infos.get("provenance_in_version")
         package_info["npm_package_info"] = npm_package_infos
@@ -435,17 +426,10 @@ def analyze_package_data(package, repo_url, check_match=False):
                 repo_url_to_use = github_info.get("redirected_repo") or repo_url
                 if check_match:
                     if package_info["provenance"] == False:
-                        if (
-                            github_info.get("is_fork") == True
-                            or github_info.get("archived") == True
-                        ):
-                            package_info["match_info"] = check_name_match_for_fork(
-                                package, repo_url_to_use
-                            )
+                        if github_info.get("is_fork") == True or github_info.get("archived") == True:
+                            package_info["match_info"] = check_name_match_for_fork(package, repo_url_to_use)
                         else:
-                            package_info["match_info"] = check_name_match(
-                                package, repo_url_to_use
-                            )
+                            package_info["match_info"] = check_name_match(package, repo_url_to_use)
                     elif package_info["provenance"] == True:
                         package_info["match_info"] = {
                             "has_provenance": True,
@@ -475,9 +459,7 @@ def get_static_data(folder, packages_data, check_match=False):
             # print(f"Analyzing {package}")
             tqdm.write(f"{package}")
             repo_url = repo_urls.get("github", "")
-            analyzed_data, error = analyze_package_data(
-                package, repo_url, check_match=check_match
-            )
+            analyzed_data, error = analyze_package_data(package, repo_url, check_match=check_match)
             pbar.update(1)
 
             if error:

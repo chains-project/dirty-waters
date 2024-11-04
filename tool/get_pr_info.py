@@ -192,26 +192,18 @@ def get_useful_pr_info(commits_data):
                 if author.get("node_id") == commit_node_id:
                     author["commit_merged_info"] = []
                     if len(associated_prs) == 0:
-                        author["commit_merged_info"].append(
-                            {"merge_info": "no associated PRs"}
-                        )
+                        author["commit_merged_info"].append({"merge_info": "no associated PRs"})
                     else:
                         for associated_pr in associated_prs:
                             merge_node_info = associated_pr.get("node", {})
-                            author_association = merge_node_info.get(
-                                "authorAssociation"
-                            )
-                            auto_merge_request = merge_node_info.get(
-                                "autoMergeRequest", {}
-                            )
+                            author_association = merge_node_info.get("authorAssociation")
+                            auto_merge_request = merge_node_info.get("autoMergeRequest", {})
                             created_at = merge_node_info.get("createdAt")
                             pr_id = merge_node_info.get("id")
                             state = merge_node_info.get("state")
                             merge_at = merge_node_info.get("mergedAt")
                             pull_url = merge_node_info.get("url")
-                            reviews = merge_node_info.get("reviews", {}).get(
-                                "edges", []
-                            )
+                            reviews = merge_node_info.get("reviews", {}).get("edges", [])
 
                             merged_info = {
                                 "repo": repo_name,
@@ -229,16 +221,12 @@ def get_useful_pr_info(commits_data):
 
                             if state == "MERGED":
                                 if merge_node_info.get("mergedBy"):
-                                    merged_info["merge_by"] = merge_node_info.get(
-                                        "mergedBy", {}
-                                    ).get("login")
-                                    merged_info["merge_by_type"] = merge_node_info.get(
-                                        "mergedBy", {}
-                                    ).get("__typename")
-                                else:
-                                    merged_info["merge_by"] = merge_node_info.get(
-                                        "mergedBy"
+                                    merged_info["merge_by"] = merge_node_info.get("mergedBy", {}).get("login")
+                                    merged_info["merge_by_type"] = merge_node_info.get("mergedBy", {}).get(
+                                        "__typename"
                                     )
+                                else:
+                                    merged_info["merge_by"] = merge_node_info.get("mergedBy")
 
                             else:
                                 merged_info["merge_by"] = None
@@ -248,19 +236,13 @@ def get_useful_pr_info(commits_data):
                                 review_node = review.get("node", {})
                                 if review_node:
                                     if review_node.get("author", {}):
-                                        review_author = review_node.get(
-                                            "author", {}
-                                        ).get("login", None)
-                                        review_author_type = review_node.get(
-                                            "author", {}
-                                        ).get("__typename", None)
+                                        review_author = review_node.get("author", {}).get("login", None)
+                                        review_author_type = review_node.get("author", {}).get("__typename", None)
 
                                         review_info = {
                                             "review_author": review_author,
                                             "review_author_type": review_author_type,
-                                            "review_state": review_node.get(
-                                                "state", None
-                                            ),
+                                            "review_state": review_node.get("state", None),
                                             "review_id": review_node.get("id", None),
                                         }
 

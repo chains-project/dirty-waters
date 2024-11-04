@@ -26,9 +26,7 @@ import report_diff
 # load_dotenv()
 github_token = os.getenv("GITHUB_API_TOKEN")
 if not github_token:
-    raise ValueError(
-        "GitHub API token(GITHUB_API_TOKEN) is not set in the environment variables."
-    )
+    raise ValueError("GitHub API token(GITHUB_API_TOKEN) is not set in the environment variables.")
 
 headers = {
     "Authorization": f"Bearer {github_token}",
@@ -144,9 +142,7 @@ def get_lockfile(project_repo_name, release_version, package_manager):
     elif package_manager == "npm":
         lockfile_name = "package-lock.json"
     else:
-        logging.error(
-            "Invalid package manager or lack of lockfile: %s", package_manager
-        )
+        logging.error("Invalid package manager or lack of lockfile: %s", package_manager)
         raise ValueError("Invalid package manager or lack of lockfile.")
 
     response = requests.get(
@@ -170,9 +166,7 @@ def get_lockfile(project_repo_name, release_version, package_manager):
     if repo_branch_response.status_code == 200:
         data = repo_branch_response.json()
         default_branch = data["default_branch"]
-        logging.info(
-            "%s is the default branch of %s.", default_branch, project_repo_name
-        )
+        logging.info("%s is the default branch of %s.", default_branch, project_repo_name)
     else:
         raise ValueError("Failed to get default branch")
 
@@ -192,48 +186,32 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
     patches_info = None
     deps_list_all = None
 
-    logging.info(
-        "Getting dependencies for %s@%s...", project_repo_name, release_version
-    )
+    logging.info("Getting dependencies for %s@%s...", project_repo_name, release_version)
 
     # if it is a pnpm monorepo
     if package_manager == "pnpm":
         if get_args().pnpm_scope:
-            deps_list_all = extract_deps.extract_deps_from_pnpm_mono(
-                folder_path, release_version, project_repo_name
-            )
+            deps_list_all = extract_deps.extract_deps_from_pnpm_mono(folder_path, release_version, project_repo_name)
         else:
-            yaml_lockfile, _, _ = get_lockfile(
-                project_repo_name, release_version, package_manager
-            )
+            yaml_lockfile, _, _ = get_lockfile(project_repo_name, release_version, package_manager)
             deps_list_all = extract_deps.extract_deps_from_pnpm_lockfile(yaml_lockfile)
 
     # extract deps from lockfile
     elif package_manager == "yarn-classic" or package_manager == "yarn-berry":
-        yarn_file, _, _ = get_lockfile(
-            project_repo_name, release_version, package_manager
-        )
+        yarn_file, _, _ = get_lockfile(project_repo_name, release_version, package_manager)
         if package_manager == "yarn-classic":
             deps_list_all = extract_deps.extract_deps_from_v1_yarn(yarn_file)
         elif package_manager == "yarn-berry":
-            deps_list_all = deps_list_all = extract_deps.extract_deps_from_yarn_berry(
-                yarn_file
-            )
+            deps_list_all = deps_list_all = extract_deps.extract_deps_from_yarn_berry(yarn_file)
             patches_info = extract_deps.get_patches_info(yarn_file)
 
     elif package_manager == "npm":
-        npm_file, _, _ = get_lockfile(
-            project_repo_name, release_version, package_manager
-        )
+        npm_file, _, _ = get_lockfile(project_repo_name, release_version, package_manager)
         deps_list_all = extract_deps.extract_deps_from_npm(npm_file)
 
-    logging.info(
-        "Number of dependencies: %d", len(deps_list_all.get("resolutions", {}))
-    )
+    logging.info("Number of dependencies: %d", len(deps_list_all.get("resolutions", {})))
     logging.info("Number of patches: %d", len(deps_list_all.get("patches", {})))
-    logging.info(
-        "Number of workspace dependencies: %d", len(deps_list_all.get("workspace", {}))
-    )
+    logging.info("Number of workspace dependencies: %d", len(deps_list_all.get("workspace", {})))
 
     # dep with different resolutions for further analysis
     dep_with_many_versions = extract_deps.deps_versions(deps_list_all)
@@ -253,9 +231,7 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
     return deps_list_all, dep_with_many_versions, patches_info
 
 
-def static_analysis_all(
-    folder_path, project_repo_name, release_version, package_manager, check_match=False
-):
+def static_analysis_all(folder_path, project_repo_name, release_version, package_manager, check_match=False):
     """
     Perform static analysis on the given project and release version.
 
@@ -269,13 +245,9 @@ def static_analysis_all(
     deps_list, dep_with_many_versions, patches_info = get_deps(
         folder_path, project_repo_name, release_version, package_manager
     )
-    repo_url_info = github_repo.get_github_repo_url(
-        folder_path, deps_list, package_manager
-    )
+    repo_url_info = github_repo.get_github_repo_url(folder_path, deps_list, package_manager)
 
-    static_results, errors = static_analysis.get_static_data(
-        folder_path, repo_url_info, check_match=check_match
-    )
+    static_results, errors = static_analysis.get_static_data(folder_path, repo_url_info, check_match=check_match)
     logging.info("Errors: %s", errors)
 
     # rv_name = release_version.replace("/", "_")
@@ -325,9 +297,7 @@ def differential_analysis(
         _,
         upgraded_pkg,
         _,
-    ) = compare_packages.differential(
-        old_rv_dep_versions, new_rv_dep_versions, sa_1, sa_2
-    )
+    ) = compare_packages.differential(old_rv_dep_versions, new_rv_dep_versions, sa_1, sa_2)
 
     changed_patches, _ = compare_packages.changed_patch(patches_old, patches_new)
 
@@ -376,11 +346,7 @@ def setup_project_info(args):
         "old_version": args.release_version_old,
         "new_version": args.release_version_new,
         "old_version_name": args.release_version_old.replace("/", "_"),
-        "new_version_name": (
-            args.release_version_new.replace("/", "_")
-            if args.release_version_new
-            else None
-        ),
+        "new_version_name": (args.release_version_new.replace("/", "_") if args.release_version_new else None),
         "check_match": args.name_match,
         "package_manager": args.package_manager,
         "pnpm_scope": args.pnpm_scope,
@@ -391,9 +357,7 @@ def setup_directories_and_logging(project_info):
     """Set up necessary directories and logging."""
 
     dir_path = tool_config.PathManager()
-    result_folder_path, json_directory, diff_folder = dir_path.create_folders(
-        project_info["old_version_name"]
-    )
+    result_folder_path, json_directory, diff_folder = dir_path.create_folders(project_info["old_version_name"])
     project_info["result_folder_path"] = result_folder_path
     project_info["json_directory"] = json_directory
     project_info["diff_folder"] = diff_folder
@@ -405,14 +369,8 @@ def setup_directories_and_logging(project_info):
 def perform_static_analysis(project_info, is_old_version):
     """Perform static analysis for a given version."""
 
-    version = (
-        project_info["old_version"] if is_old_version else project_info["new_version"]
-    )
-    version_name = (
-        project_info["old_version_name"]
-        if is_old_version
-        else project_info["new_version_name"]
-    )
+    version = project_info["old_version"] if is_old_version else project_info["new_version"]
+    version_name = project_info["old_version_name"] if is_old_version else project_info["new_version_name"]
     json_dir = (
         project_info["json_directory"]
         if is_old_version
@@ -441,18 +399,10 @@ def perform_static_analysis(project_info, is_old_version):
 
 def generate_static_report(analysis_results, project_info, is_old_version):
     """Generate static analysis report."""
-    version = (
-        project_info["old_version"] if is_old_version else project_info["new_version"]
-    )
-    version_name = (
-        project_info["old_version_name"]
-        if is_old_version
-        else project_info["new_version_name"]
-    )
+    version = project_info["old_version"] if is_old_version else project_info["new_version"]
+    version_name = project_info["old_version_name"] if is_old_version else project_info["new_version_name"]
 
-    summary_file = (
-        project_info["result_folder_path"] / f"{version_name}_static_summary.md"
-    )
+    summary_file = project_info["result_folder_path"] / f"{version_name}_static_summary.md"
 
     logging.info("Generating static analysis report for %s", version_name)
     report_static.get_s_summary(
@@ -518,15 +468,11 @@ def main():
     generate_static_report(old_analysis_results, project_info, is_old_version=True)
 
     if project_info["new_version"]:
-        new_analysis_results = perform_static_analysis(
-            project_info, is_old_version=False
-        )
+        new_analysis_results = perform_static_analysis(project_info, is_old_version=False)
         generate_static_report(new_analysis_results, project_info, is_old_version=False)
 
         if dw_args.differential_analysis:
-            perform_differential_analysis(
-                old_analysis_results, new_analysis_results, project_info
-            )
+            perform_differential_analysis(old_analysis_results, new_analysis_results, project_info)
 
 
 if __name__ == "__main__":

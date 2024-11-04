@@ -68,9 +68,7 @@ def choose_compare_version(dep_file_1, dep_file_2):
         if not versions.get("only_in_2"):
             chosen_v2 = None
             if versions.get("only_in_1") is not None:
-                differences[dep][
-                    "message"
-                ] = f"Deleted package - version {versions.get('only_in_1')} deleted"
+                differences[dep]["message"] = f"Deleted package - version {versions.get('only_in_1')} deleted"
 
         else:
             chosen_v2 = versions["only_in_2"][-1]
@@ -188,37 +186,22 @@ def get_repo_from_SA(dep_file_1, dep_file_2, SA_old, SA_new):
             dep_name_version_new = f"{dep}@{versions['chosen_v2']}"
 
             dep_old_repo_url_accessibility = (
-                SA_old.get(dep_name_version_old, {})
-                .get("github_exists", {})
-                .get("github_exists", None)
+                SA_old.get(dep_name_version_old, {}).get("github_exists", {}).get("github_exists", None)
             )
             dep_new_repo_url_accessibility = (
-                SA_new.get(dep_name_version_new, {})
-                .get("github_exists", {})
-                .get("github_exists", None)
+                SA_new.get(dep_name_version_new, {}).get("github_exists", {}).get("github_exists", None)
             )
 
-            if (
-                dep_old_repo_url_accessibility is True
-                and dep_new_repo_url_accessibility is True
-            ):
+            if dep_old_repo_url_accessibility is True and dep_new_repo_url_accessibility is True:
                 dep_old_repo_url = (
-                    SA_old.get(dep_name_version_old, {})
-                    .get("github_exists", {})
-                    .get("github_url", "Error")
+                    SA_old.get(dep_name_version_old, {}).get("github_exists", {}).get("github_url", "Error")
                 )
                 dep_new_repo_url = (
-                    SA_new.get(dep_name_version_new, {})
-                    .get("github_exists", {})
-                    .get("github_url", "Error")
+                    SA_new.get(dep_name_version_new, {}).get("github_exists", {}).get("github_url", "Error")
                 )
 
-                differences[dep][
-                    "v1_repo_accessibility"
-                ] = dep_old_repo_url_accessibility
-                differences[dep][
-                    "v2_repo_accessibility"
-                ] = dep_new_repo_url_accessibility
+                differences[dep]["v1_repo_accessibility"] = dep_old_repo_url_accessibility
+                differences[dep]["v2_repo_accessibility"] = dep_new_repo_url_accessibility
 
                 differences[dep]["v1_repo_link"] = dep_old_repo_url
                 differences[dep]["v2_repo_link"] = dep_new_repo_url
@@ -228,14 +211,10 @@ def get_repo_from_SA(dep_file_1, dep_file_2, SA_old, SA_new):
                     differences[dep]["compare_message"] = "DO NOT COMPARE"
 
                     check_directed_old = (
-                        SA_old.get(dep_name_version_old, {})
-                        .get("github_exists", {})
-                        .get("github_redirected", None)
+                        SA_old.get(dep_name_version_old, {}).get("github_exists", {}).get("github_redirected", None)
                     )
                     check_directed_new = (
-                        SA_new.get(dep_name_version_new, {})
-                        .get("github_exists", {})
-                        .get("github_redirected", None)
+                        SA_new.get(dep_name_version_new, {}).get("github_exists", {}).get("github_redirected", None)
                     )
 
                     differences[dep]["v1_repo_directed"] = check_directed_old
@@ -247,18 +226,14 @@ def get_repo_from_SA(dep_file_1, dep_file_2, SA_old, SA_new):
 
                     v1_repo_url_pure = match1.group(1) if match1 else "not github"
                     v1_repo_url_clean = (
-                        v1_repo_url_pure.replace("https://", "")
-                        .replace("http://", "")
-                        .replace("/issues", "")
+                        v1_repo_url_pure.replace("https://", "").replace("http://", "").replace("/issues", "")
                     )
 
                     match2 = re.search(pattern, dep_new_repo_url, re.IGNORECASE)
 
                     v2_repo_url_pure = match2.group(1) if match2 else "not github"
                     v2_repo_url_clean = (
-                        v2_repo_url_pure.replace("https://", "")
-                        .replace("http://", "")
-                        .replace("/issues", "")
+                        v2_repo_url_pure.replace("https://", "").replace("http://", "").replace("/issues", "")
                     )
 
                     if v1_repo_url_clean == v2_repo_url_clean:
@@ -282,38 +257,20 @@ def get_repo_from_SA(dep_file_1, dep_file_2, SA_old, SA_new):
 
             else:
                 differences[dep]["compare_message"] = "DO NOT COMPARE"
-                if (
-                    dep_old_repo_url_accessibility is False
-                    or dep_old_repo_url_accessibility is None
-                ):
-                    differences[dep][
-                        "v1_repo_accessibility"
-                    ] = "Repo link not accessible"
+                if dep_old_repo_url_accessibility is False or dep_old_repo_url_accessibility is None:
+                    differences[dep]["v1_repo_accessibility"] = "Repo link not accessible"
                     differences[dep]["compare_message"] = "DO NOT COMPARE"
 
-                if (
-                    dep_new_repo_url_accessibility is False
-                    or dep_new_repo_url_accessibility is None
-                ):
-                    differences[dep][
-                        "v2_repo_accessibility"
-                    ] = "Repo link not accessible"
+                if dep_new_repo_url_accessibility is False or dep_new_repo_url_accessibility is None:
+                    differences[dep]["v2_repo_accessibility"] = "Repo link not accessible"
                     differences[dep]["compare_message"] = "DO NOT COMPARE"
 
         else:
             differences[dep]["compare_message"] = "DO NOT COMPARE"
             dep_name_version_old = f"{dep}@{versions['chosen_v1']}"
             dep_name_version_new = f"{dep}@{versions['chosen_v2']}"
-            repo_1 = (
-                SA_old.get(dep_name_version_old, {})
-                .get("github_exists", {})
-                .get("github_url", "Error")
-            )
-            repo_2 = (
-                SA_old.get(dep_name_version_old, {})
-                .get("github_exists", {})
-                .get("github_url", "Error")
-            )
+            repo_1 = SA_old.get(dep_name_version_old, {}).get("github_exists", {}).get("github_url", "Error")
+            repo_2 = SA_old.get(dep_name_version_old, {}).get("github_exists", {}).get("github_url", "Error")
             if repo_1 == repo_2 and repo_1 != "Error" and repo_2 != "Error":
                 differences[dep]["repo_message"] = "Repo - ok"
                 differences[dep]["repo"] = repo_1
@@ -339,9 +296,7 @@ def changed_patch(package_data_old, package_data_new):
     no_change_patches = {}
     if package_data_old and package_data_new:
         common_patches = set(package_data_old.keys()) & set(package_data_new.keys())
-        unique_patches_in_data2 = set(package_data_new.keys()) - set(
-            package_data_old.keys()
-        )
+        unique_patches_in_data2 = set(package_data_new.keys()) - set(package_data_old.keys())
 
         for new_patch in unique_patches_in_data2:
             patches_change[new_patch] = {

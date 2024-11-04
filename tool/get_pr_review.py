@@ -116,7 +116,9 @@ def get_pr_review_info(data):
                         review_author_login = reviewer.get("review_author")
                         # review_author_type = reviewer.get("review_author_type")
                         review_id = reviewer.get("review_id")
-                        search_string = f"repo:{repo_name} is:pr reviewed-by:{review_author_login} sort:author-date-asc"
+                        search_string = (
+                            f"repo:{repo_name} is:pr reviewed-by:{review_author_login} sort:author-date-asc"
+                        )
 
                         c.execute(
                             "SELECT first_prr_data FROM new_pr_reviewinfo_6 WHERE author=? AND repo=? and search_string=?",
@@ -143,33 +145,19 @@ def get_pr_review_info(data):
                                 )
                                 conn.commit()
 
-                        useful_info = (
-                            first_pr_info.get("data", {})
-                            .get("search", {})
-                            .get("nodes", [])
-                        )
+                        useful_info = first_pr_info.get("data", {}).get("search", {}).get("nodes", [])
                         first_review_info = useful_info[0] if useful_info else {}
-                        all_useful_first_prr_info = first_review_info.get(
-                            "reviews", {}
-                        ).get("edges", [])
+                        all_useful_first_prr_info = first_review_info.get("reviews", {}).get("edges", [])
 
                         if len(all_useful_first_prr_info) >= 1:
                             first_review = (
-                                all_useful_first_prr_info[0].get("node", {})
-                                if all_useful_first_prr_info
-                                else {}
+                                all_useful_first_prr_info[0].get("node", {}) if all_useful_first_prr_info else {}
                             )
                             first_prr_node_id = first_review.get("id")
                             first_prr_author = first_review.get("author", {})
-                            first_prr_author = (
-                                first_prr_author.get("login")
-                                if first_prr_author
-                                else None
-                            )
+                            first_prr_author = first_prr_author.get("login") if first_prr_author else None
                             first_prr_state = first_review.get("state")
-                            first_prr_author_association = first_review.get(
-                                "authorAssociation"
-                            )
+                            first_prr_author_association = first_review.get("authorAssociation")
                             is_first_prr = False
 
                             if review_id is not None:
