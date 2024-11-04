@@ -61,14 +61,19 @@ exclude = ["tests*", "docs*", "example_reports*"]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
+[tool.black]
+line-length = 119
+include = '\.pyi?$'
+
 [tool.ruff]
-# Enable pycodestyle (`E`), Pyflakes (`F`), and import sorting (`I`)
-select = ["E", "F", "I", "N", "S", "B", "COM", "C4", "SIM", "RET", "UP"]
-ignore = []
+# Never enforce `E501` (line length violations).
+lint.ignore = ["C901", "E501", "E741"]
+lint.select = ["C", "E", "F", "I", "W"]
+line-length = 119
 
 # Allow autofix for all enabled rules (when `--fix`) is provided.
-fixable = ["ALL"]
-unfixable = []
+lint.fixable = ["ALL"]
+lint.unfixable = []
 
 # Exclude a variety of commonly ignored directories.
 exclude = [
@@ -101,11 +106,11 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 # Assume Python 3.10.
 target-version = "py310"
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 # Unlike Flake8, default to a complexity level of 10.
 max-complexity = 10
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["tool"]
 
 [tool.ruff.flake8-quotes]
