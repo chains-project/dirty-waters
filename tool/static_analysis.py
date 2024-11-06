@@ -81,7 +81,7 @@ def check_deprecated_and_provenance(package, package_version, pm):
         }
 
         return npm_package_info
-    
+
     def check_maven(package, package_version):
         return {
             "package_only_name": package,

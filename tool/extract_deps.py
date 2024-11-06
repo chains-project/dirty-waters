@@ -357,6 +357,7 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name):
 
     return deps_list_data
 
+
 def extract_deps_from_maven(pom_xml_content):
     """
     Extract dependencies from a Maven pom.xml file.
@@ -420,6 +421,7 @@ def extract_deps_from_maven(pom_xml_content):
             str(e),
         )
         return {"resolutions": [], "patches": []}
+
 
 def deps_versions(deps_versions_info_list):
     """

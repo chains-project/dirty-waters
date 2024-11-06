@@ -143,7 +143,7 @@ def write_summary(df, project_name, release_version, filename, package_manager, 
         md_file.write("\n")
 
         # md_file.write(f"#### Other info")
-        
+
         if package_manager in SUPPORTED_SMELLS["no_source_code"]:
             md_file.write(
                 f"""
@@ -175,7 +175,9 @@ def write_summary(df, project_name, release_version, filename, package_manager, 
                 md_file.write(markdown_text)
                 md_file.write("\n</details>")
             else:
-                md_file.write("The package manager ({package_manager}) does not support checking for not found source code links.\n")
+                md_file.write(
+                    "The package manager ({package_manager}) does not support checking for not found source code links.\n"
+                )
         else:
             md_file.write("No package doesn't have source code repo.\n")
 
@@ -193,7 +195,9 @@ def write_summary(df, project_name, release_version, filename, package_manager, 
                 md_file.write(markdown_text)
                 md_file.write("\n</details>")
             else:
-                md_file.write("The package manager ({package_manager}) does not support checking for inaccessible tags.\n")
+                md_file.write(
+                    "The package manager ({package_manager}) does not support checking for inaccessible tags.\n"
+                )
         else:
             md_file.write("\nNo package with inaccessible tags.\n")
 
@@ -210,7 +214,9 @@ def write_summary(df, project_name, release_version, filename, package_manager, 
                 md_file.write(markdown_text)
                 md_file.write("\n</details>")
             else:
-                md_file.write("The package manager ({package_manager}) does not support checking for deprecated packages.\n")
+                md_file.write(
+                    "The package manager ({package_manager}) does not support checking for deprecated packages.\n"
+                )
         else:
             md_file.write("No deprecated package found.\n")
 
@@ -228,7 +234,9 @@ def write_summary(df, project_name, release_version, filename, package_manager, 
                 md_file.write(markdown_text)
                 md_file.write("\n</details>\n")
             else:
-                md_file.write("The package manager ({package_manager}) does not support checking for forked packages.\n")
+                md_file.write(
+                    "The package manager ({package_manager}) does not support checking for forked packages.\n"
+                )
         else:
             md_file.write("\nNo package is from fork.\n")
 

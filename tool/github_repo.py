@@ -96,7 +96,7 @@ def process_package(
                 )
 
             elif pm == "maven":
-                                # package is in the form of group_id:artifact_id@version -- we need all 3
+                # package is in the form of group_id:artifact_id@version -- we need all 3
                 name, version = package.split("@")
                 group_id, artifact_id = name.split(":")
                 command = [
