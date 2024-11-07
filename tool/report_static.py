@@ -68,7 +68,7 @@ def create_dataframe(data):
     return df.set_index("package_name")
 
 
-def write_summary(df, project_name, release_version, filename, package_manager, mode="w"):
+def write_summary(df, project_name, release_version, package_manager, filename, mode="w"):
     """
     Write a summary of the static analysis results to a markdown file.
     """
@@ -274,7 +274,7 @@ def write_summary(df, project_name, release_version, filename, package_manager, 
         md_file.write(f"- Project Version: {release_version}\n")
 
 
-def get_s_summary(data, project_name, release_version, summary_filename, package_manager):
+def get_s_summary(data, project_name, release_version, package_manager, summary_filename):
     """
     Get a summary of the static analysis results.
     """
