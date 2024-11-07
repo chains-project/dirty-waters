@@ -106,7 +106,9 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
             df["github_url"] == "No_repo_info_found"
         ).sum(),
         ":no_entry: Packages with Github URLs that are 404(⚠️⚠️⚠️)": (df["github_exists"] == False).sum(),
-        ":wrench: Packages with accessible source code repos but inaccessible GitHub tags(⚠️⚠️⚠️)": (release_tag_not_found_df.shape[0]),
+        ":wrench: Packages with accessible source code repos but inaccessible GitHub tags(⚠️⚠️⚠️)": (
+            release_tag_not_found_df.shape[0]
+        ),
         ":x: Packages that are deprecated(⚠️⚠️)": (df["deprecated_in_version"] == True).sum(),
         ":cactus: Packages that are forks(⚠️⚠️)": (df["is_fork"] == True).sum(),
         ":black_square_button: Packages without provenance(⚠️)": (df["provenance_in_version"] == False).sum(),
