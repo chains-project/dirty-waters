@@ -83,7 +83,7 @@ def get_args():
         "--package-manager",
         required=True,
         help="The package manager used in the project.",
-        choices=["yarn-classic", "yarn-berry", "pnpm", "npm"],
+        choices=["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
     )
     parser.add_argument(
         "--pnpm-scope",
@@ -122,7 +122,7 @@ def get_lockfile(project_repo_name, release_version, package_manager):
         package_manager (str): The package manager used in the project.
 
     Returns:
-        str: The content of the lockfile.
+        str: The content of the lockfile or pom.xml.
         str: The default branch of the project.
         str: The name of the project repository.
     """
@@ -141,24 +141,23 @@ def get_lockfile(project_repo_name, release_version, package_manager):
         lockfile_name = "pnpm-lock.yaml"
     elif package_manager == "npm":
         lockfile_name = "package-lock.json"
+    elif package_manager == "maven":
+        lockfile_name = "pom.xml"
     else:
         logging.error("Invalid package manager or lack of lockfile: %s", package_manager)
         raise ValueError("Invalid package manager or lack of lockfile.")
 
-    response = requests.get(
-        f"https://api.github.com/repos/{project_repo_name}/contents/{lockfile_name}?ref={release_version}",
-        headers=headers,
-        timeout=20,
-    )
+    file_url = f"https://api.github.com/repos/{project_repo_name}/contents/{lockfile_name}?ref={release_version}"
+    response = requests.get(file_url, headers=headers, timeout=20)
 
     if response.status_code == 200:
         data = response.json()
         download_url = data.get("download_url")
         lock_content = requests.get(download_url, timeout=60).text
-        print("Got the lockfile from %s.", download_url)
+        print(f"Got the lockfile from {download_url}.")
     else:
-        logging.error("Failed to get lockfile.")
-        raise ValueError("Failed to get lockfile.")
+        logging.error(f"Failed to get {lockfile_name}.")
+        raise ValueError(f"Failed to get {lockfile_name}.")
 
     repo_branch_api = f"https://api.github.com/repos/{project_repo_name}"
     repo_branch_response = requests.get(repo_branch_api, headers=headers, timeout=20)
@@ -209,6 +208,10 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
         npm_file, _, _ = get_lockfile(project_repo_name, release_version, package_manager)
         deps_list_all = extract_deps.extract_deps_from_npm(npm_file)
 
+    elif package_manager == "maven":
+        pom_xml_content, _, _ = get_lockfile(project_repo_name, release_version, package_manager)
+        deps_list_all = extract_deps.extract_deps_from_maven(pom_xml_content)
+
     logging.info("Number of dependencies: %d", len(deps_list_all.get("resolutions", {})))
     logging.info("Number of patches: %d", len(deps_list_all.get("patches", {})))
     logging.info("Number of workspace dependencies: %d", len(deps_list_all.get("workspace", {})))
@@ -247,7 +250,9 @@ def static_analysis_all(folder_path, project_repo_name, release_version, package
     )
     repo_url_info = github_repo.get_github_repo_url(folder_path, deps_list, package_manager)
 
-    static_results, errors = static_analysis.get_static_data(folder_path, repo_url_info, check_match=check_match)
+    static_results, errors = static_analysis.get_static_data(
+        folder_path, repo_url_info, package_manager, check_match=check_match
+    )
     logging.info("Errors: %s", errors)
 
     # rv_name = release_version.replace("/", "_")
@@ -409,6 +414,7 @@ def generate_static_report(analysis_results, project_info, is_old_version):
         analysis_results[0],
         project_info["repo_name"],
         version,
+        project_info["package_manager"],
         summary_filename=summary_file,
     )
 

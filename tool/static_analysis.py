@@ -24,62 +24,81 @@ headers = {
 MAX_WAIT_TIME = 15 * 60
 
 
-def check_deprecated_and_provenance(package, package_version):
+def check_deprecated_and_provenance(package, package_version, pm):
     """
-    Check if the package is deprecated and if it has a provenance from the npm registry.
+    Check if the package is deprecated and if it has a provenance from the package manager's registry.
     """
 
-    try:
-        response = requests.get(f"https://registry.npmjs.org/{package}", timeout=20)
+    def check_npm(package, package_version):
+        try:
+            response = requests.get(f"https://registry.npmjs.org/{package}", timeout=20)
 
-        response.raise_for_status()
-    except requests.RequestException:
+            response.raise_for_status()
+        except requests.RequestException:
+            return {
+                "package_only_name": package,
+                "package_version": package_version,
+                "error": "Failed to fetch package data",
+                "status_code": response.status_code if response else "No Response",
+            }
+
+        data = response.json()
+
+        if_deprecated = False
+        has_provenance = False
+        provenance_url = None
+        provenance_info = None
+        all_deprecated = True
+
+        version_info = data.get("versions", {}).get(package_version, {})
+        all_versions = data.get("versions", {})
+
+        deprecated_in_version = version_info.get("deprecated", "")
+        provenance_in_version = version_info.get("dist", {}).get("attestations", "")
+
+        if deprecated_in_version:
+            if_deprecated = True
+
+        if provenance_in_version:
+            has_provenance = True
+            provenance_url = provenance_in_version.get("url")
+            provenance_info = provenance_in_version.get("provenance")
+
+        for version in all_versions.values():
+            if not version.get("deprecated"):
+                all_deprecated = False
+                break
+
+        npm_package_info = {
+            "package_only_name": package,
+            "package_version": package_version,
+            "deprecated_in_version": if_deprecated,
+            "provenance_in_version": has_provenance,
+            "all_deprecated": all_deprecated,
+            "provenance_url": provenance_url,
+            "provenance_info": provenance_info,
+            "status_code": 200,
+        }
+
+        return npm_package_info
+
+    def check_maven(package, package_version):
         return {
             "package_only_name": package,
             "package_version": package_version,
-            "error": "Failed to fetch package data",
-            "status_code": response.status_code if response else "No Response",
+            "status_code": 404,
+            "error": "Maven does not have a registry",
         }
 
-    data = response.json()
-
-    if_deprecated = False
-    has_provenance = False
-    provenance_url = None
-    provenance_info = None
-    all_deprecated = True
-
-    version_info = data.get("versions", {}).get(package_version, {})
-    all_versions = data.get("versions", {})
-
-    deprecated_in_version = version_info.get("deprecated", "")
-    provenance_in_version = version_info.get("dist", {}).get("attestations", "")
-
-    if deprecated_in_version:
-        if_deprecated = True
-
-    if provenance_in_version:
-        has_provenance = True
-        provenance_url = provenance_in_version.get("url")
-        provenance_info = provenance_in_version.get("provenance")
-
-    for version in all_versions.values():
-        if not version.get("deprecated"):
-            all_deprecated = False
-            break
-
-    npm_package_info = {
-        "package_only_name": package,
-        "package_version": package_version,
-        "deprecated_in_version": if_deprecated,
-        "provenance_in_version": has_provenance,
-        "all_deprecated": all_deprecated,
-        "provenance_url": provenance_url,
-        "provenance_info": provenance_info,
-        "status_code": 200,
-    }
-
-    return npm_package_info
+    if pm in ("yarn-berry", "yarn-classic", "pnpm", "npm"):
+        return check_npm(package, package_version)
+    elif pm == "maven":
+        # maven doesn't have this
+        return check_maven(package, package_version)
+    else:
+        # log stuff
+        # blow up
+        logging.error(f"Package manager {pm} not supported.")
 
 
 def api_constructor(package_name, repository):
@@ -166,6 +185,7 @@ def check_existence(package_name, repository):
     data = response.json()
 
     if status_code != 200:
+        print(f"Error: {data.get('message', 'No message')}")
         archived = None
         is_fork = None
         repo_link = f"https://github.com/{simplified_path}".lower()
@@ -399,21 +419,22 @@ def check_name_match(package_name, repository):
     return match_info
 
 
-def analyze_package_data(package, repo_url, check_match=False):
+def analyze_package_data(package, repo_url, pm, check_match=False):
     package_info = {
         "deprecated": None,
         "provenance": None,
-        "npm_package_info": None,
+        "package_info": None,
         "github_exists": None,
         "match_info": None,
     }
 
     try:
-        package_name_npm, package_version_npm = package.rsplit("@", 1)
-        npm_package_infos = check_deprecated_and_provenance(package_name_npm, package_version_npm)
-        package_info["deprecated"] = npm_package_infos.get("deprecated_in_version")
-        package_info["provenance"] = npm_package_infos.get("provenance_in_version")
-        package_info["npm_package_info"] = npm_package_infos
+        # TODO: check if this needs to be different because of differences between npm, maven, etc
+        package_name, package_version = package.rsplit("@", 1)
+        package_infos = check_deprecated_and_provenance(package_name, package_version, pm)
+        package_info["deprecated"] = package_infos.get("deprecated_in_version")
+        package_info["provenance"] = package_infos.get("provenance_in_version")
+        package_info["package_info"] = package_infos
 
         if "Could not find" in repo_url:
             package_info["github_exists"] = {"github_url": "No_repo_info_found"}
@@ -425,12 +446,14 @@ def analyze_package_data(package, repo_url, check_match=False):
             if github_info.get("github_exists"):
                 repo_url_to_use = github_info.get("redirected_repo") or repo_url
                 if check_match:
+                    # TODO: why do we only check this is provenance is false??
+                    # TODO: maven currently not supported for this because of the above
                     if package_info["provenance"] == False:
                         if github_info.get("is_fork") == True or github_info.get("archived") == True:
                             package_info["match_info"] = check_name_match_for_fork(package, repo_url_to_use)
                         else:
                             package_info["match_info"] = check_name_match(package, repo_url_to_use)
-                    elif package_info["provenance"] == True:
+                    else:
                         package_info["match_info"] = {
                             "has_provenance": True,
                             "match": True,
@@ -449,7 +472,7 @@ def analyze_package_data(package, repo_url, check_match=False):
     return package_info, None
 
 
-def get_static_data(folder, packages_data, check_match=False):
+def get_static_data(folder, packages_data, pm, check_match=False):
     print("Analyzing package static data...")
     package_all = {}
     errors = {}
@@ -459,7 +482,7 @@ def get_static_data(folder, packages_data, check_match=False):
             # print(f"Analyzing {package}")
             tqdm.write(f"{package}")
             repo_url = repo_urls.get("github", "")
-            analyzed_data, error = analyze_package_data(package, repo_url, check_match=check_match)
+            analyzed_data, error = analyze_package_data(package, repo_url, pm, check_match=check_match)
             pbar.update(1)
 
             if error:

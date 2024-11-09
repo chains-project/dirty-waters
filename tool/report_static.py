@@ -7,6 +7,16 @@ import subprocess
 from datetime import datetime
 import pandas as pd
 
+# Mapping smell to package managers that support it
+SUPPORTED_SMELLS = {
+    "no_source_code": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
+    "github_404": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
+    "release_tag_not_found": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
+    "deprecated": ["yarn-classic", "yarn-berry", "pnpm", "npm"],
+    "forked_package": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
+    "provenance": ["yarn-classic", "yarn-berry", "pnpm", "npm"],
+}
+
 
 def load_data(filename):
     """Load data from a JSON file got from static analysis."""
@@ -33,9 +43,9 @@ def create_dataframe(data):
 
         row = {
             "package_name": package_name,
-            "deprecated_in_version": package_data["npm_package_info"].get("deprecated_in_version"),
-            "provenance_in_version": package_data["npm_package_info"].get("provenance_in_version"),
-            "all_deprecated": package_data["npm_package_info"].get("all_deprecated", None),
+            "deprecated_in_version": package_data.get("package_info", {}).get("deprecated_in_version"),
+            "provenance_in_version": package_data.get("package_info", {}).get("provenance_in_version"),
+            "all_deprecated": package_data.get("package_info", {}).get("all_deprecated", None),
             "github_url": github_exists_data.get("github_url", "Could not find repo from package registry"),
             "github_exists": github_exists_data.get("github_exists", None),
             "github_redirected": github_exists_data.get("github_redirected", None),
@@ -58,7 +68,7 @@ def create_dataframe(data):
     return df.set_index("package_name")
 
 
-def write_summary(df, project_name, release_version, filename, mode="w"):
+def write_summary(df, project_name, release_version, package_manager, filename, mode="w"):
     """
     Write a summary of the static analysis results to a markdown file.
     """
@@ -88,7 +98,7 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
     forked_package_df = df[df["is_fork"] == True]
 
     common_counts = {
-        "### Total packages in the supply chain:": len(df),
+        "### Total packages in the supply chain": len(df),
     }
 
     warning_counts = {
@@ -96,7 +106,9 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
             df["github_url"] == "No_repo_info_found"
         ).sum(),
         ":no_entry: Packages with Github URLs that are 404(⚠️⚠️⚠️)": (df["github_exists"] == False).sum(),
-        ":wrench: Packages with inaccessible GitHub tags(⚠️⚠️⚠️)": (df["release_tag_exists"] == False).sum(),
+        ":wrench: Packages with accessible source code repos but inaccessible GitHub tags(⚠️⚠️⚠️)": (
+            release_tag_not_found_df.shape[0]
+        ),
         ":x: Packages that are deprecated(⚠️⚠️)": (df["deprecated_in_version"] == True).sum(),
         ":cactus: Packages that are forks(⚠️⚠️)": (df["is_fork"] == True).sum(),
         ":black_square_button: Packages without provenance(⚠️)": (df["provenance_in_version"] == False).sum(),
@@ -134,18 +146,18 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
 
         # md_file.write(f"#### Other info")
 
-        md_file.write(
-            f"""
+        if package_manager not in SUPPORTED_SMELLS["no_source_code"]:
+            md_file.write(
+                f"""
 <details>
     <summary>Other info:</summary>
-     \n- Source code repo is not hosted on github:  {not_on_github_counts} \n
+    \n- Source code repo is not hosted on github:  {not_on_github_counts} \n
 </details>
-                      
-                      """
-        )
+                        
+                        """
+            )
+            md_file.write("\n\n")
 
-        md_file.write("\n\n")
-        # md_file.write("\n---\n")
         md_file.write("\n### Fine grained information\n")
         md_file.write(
             "\n:dolphin: For further information about software supply chain smells in your project, take a look at the following tables.\n"
@@ -163,23 +175,31 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
             markdown_text = combined_repo_problems_df.reset_index().to_markdown(index=False)
             md_file.write(markdown_text)
             md_file.write("\n</details>")
+        elif package_manager not in SUPPORTED_SMELLS["github_404"]:
+            md_file.write(
+                f"\nThe package manager ({package_manager}) does not support checking for not found source code links.\n"
+            )
         else:
-            md_file.write("No package doesn't have source code repo.\n")
+            md_file.write("All analyzed packages have a source code repo.\n")
 
         if not release_tag_not_found_df.empty:
             md_file.write(
                 f"""
 
 <details>
-    <summary>List of packages with inaccessible tags({(df["release_tag_exists"] == False).sum()}) </summary>
+    <summary>List of packages with available source code repos but with inaccessible tags({(release_tag_not_found_df.shape[0])})</summary>
         """
             )
             md_file.write("\n\n\n")
             markdown_text = release_tag_not_found_df.reset_index().to_markdown(index=False)
             md_file.write(markdown_text)
             md_file.write("\n</details>")
+        elif package_manager not in SUPPORTED_SMELLS["release_tag_not_found"]:
+            md_file.write(
+                f"\nThe package manager ({package_manager}) does not support checking for inaccessible tags.\n"
+            )
         else:
-            md_file.write("\nNo package with inaccessible tags.\n")
+            md_file.write("\nAll packages have accessible tags.\n")
 
         if not version_deprecated_df.empty:
             md_file.write(
@@ -192,8 +212,12 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
             markdown_text = version_deprecated_df.reset_index().to_markdown(index=False)
             md_file.write(markdown_text)
             md_file.write("\n</details>")
+        elif package_manager not in SUPPORTED_SMELLS["deprecated"]:
+            md_file.write(
+                f"\nThe package manager ({package_manager}) does not support checking for deprecated packages.\n"
+            )
         else:
-            md_file.write("No deprecated package found.\n")
+            md_file.write("\nNo deprecated package found.\n")
 
         if not forked_package_df.empty:
             md_file.write(
@@ -207,8 +231,14 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
             markdown_text = forked_package_df.reset_index().to_markdown(index=False)
             md_file.write(markdown_text)
             md_file.write("\n</details>\n")
+        elif package_manager not in SUPPORTED_SMELLS["forked_package"]:
+            md_file.write(
+                f"\nThe package manager ({package_manager}) does not support checking for forked packages.\n"
+            )
         else:
             md_file.write("\nNo package is from fork.\n")
+
+        # TODO: missing provenance in the report
 
         md_file.write("\n### Call to Action:\n")
         md_file.write(
@@ -242,11 +272,11 @@ def write_summary(df, project_name, release_version, filename, mode="w"):
         md_file.write(f"- Project Version: {release_version}\n")
 
 
-def get_s_summary(data, project_name, release_version, summary_filename):
+def get_s_summary(data, project_name, release_version, package_manager, summary_filename):
     """
     Get a summary of the static analysis results.
     """
 
     df = create_dataframe(data)
-    write_summary(df, project_name, release_version, filename=summary_filename, mode="w")
+    write_summary(df, project_name, release_version, package_manager, filename=summary_filename, mode="w")
     print(f"Report created at {summary_filename}")
