@@ -22,6 +22,6 @@
 
     in
     {
-      devShells.x86_64-linux.default = pkgs.mkShell { packages = [ pythonEnv ]; };
+      devShells.x86_64-linux.default = pkgs.mkShell { packages = [ pythonEnv pkgs.maven ]; };
     };
 }
