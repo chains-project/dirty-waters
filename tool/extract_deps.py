@@ -395,19 +395,27 @@ def extract_deps_from_maven(pom_xml_content):
 
     # TODO: missing plugins; see https://github.com/chains-project/dirty-waters/issues/37#issuecomment-2470852399
     retrieval_commands = [
-        [ # "Regular" dependencies
-            ["mvn", "dependency:tree", "-Dverbose", "-DoutputType=json", "-DoutputFile=/dev/stdout", "-f", temp_pom_path],
+        [  # "Regular" dependencies
+            [
+                "mvn",
+                "dependency:tree",
+                "-Dverbose",
+                "-DoutputType=json",
+                "-DoutputFile=/dev/stdout",
+                "-f",
+                temp_pom_path,
+            ],
             ["grep", "-v", "\\[INFO"],
-            ["jq", '[.children | .. | {version, groupId, artifactId}?] | unique']
+            ["jq", "[.children | .. | {version, groupId, artifactId}?] | unique"],
         ],
-        [ # Plugin dependencies
+        [  # Plugin dependencies
             ["mvn", "dependency:resolve-plugins", "-f", temp_pom_path],
             ["sed", "-n", "/The following plugins/,$p"],
             ["tail", "+2"],
             ["head", "-n", "-8"],
             ["sed", "s/\\[INFO\\] *//"],
-            ["uniq"]
-        ]
+            ["uniq"],
+        ],
     ]
 
     try:
@@ -417,10 +425,7 @@ def extract_deps_from_maven(pom_xml_content):
         dependencies = json.loads(retrieved_deps)
         # retrieved_plugins is a byte string, with each plugin separated by a newline
         plugins = retrieved_plugins.decode("utf-8").splitlines()
-        parsed_deps = [
-            f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}"
-            for dep in dependencies
-        ]
+        parsed_deps = [f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}" for dep in dependencies]
         parsed_plugins = [
             # replace plugin suffixes with a @ separator;
             # the suffixes are not needed for the plugin name
@@ -432,7 +437,7 @@ def extract_deps_from_maven(pom_xml_content):
         for plugin in parsed_plugins:
             if "@" not in plugin:
                 print(f"[WARNING] Plugin without version: {plugin}")
-        
+
         # Using a set to avoid duplicates
         resolutions = set(parsed_deps + parsed_plugins)
         deps_list_data = {"resolutions": resolutions, "patches": []}
