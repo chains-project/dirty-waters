@@ -393,9 +393,8 @@ def extract_deps_from_maven(pom_xml_content):
     with open(temp_pom_path, "w") as f:
         f.write(pom_xml_content)
 
-    # TODO: missing plugins; see https://github.com/chains-project/dirty-waters/issues/37#issuecomment-2470852399
-    retrieval_commands = [
-        [  # "Regular" dependencies
+    retrieval_commands = {
+        "regular": [  # "Regular" dependencies
             [
                 "mvn",
                 "dependency:tree",
@@ -408,7 +407,7 @@ def extract_deps_from_maven(pom_xml_content):
             ["grep", "-v", "\\[INFO"],
             ["jq", "[.children | .. | {version, groupId, artifactId}?] | unique"],
         ],
-        [  # Plugin dependencies
+        "plugins": [  # Plugin dependencies
             ["mvn", "dependency:resolve-plugins", "-f", temp_pom_path],
             ["sed", "-n", "/The following plugins/,$p"],
             ["tail", "+2"],
@@ -416,11 +415,11 @@ def extract_deps_from_maven(pom_xml_content):
             ["sed", "s/\\[INFO\\] *//"],
             ["uniq"],
         ],
-    ]
+    }
 
     try:
-        retrieved_deps = run_commands_in_sequence(retrieval_commands[0])
-        retrieved_plugins = run_commands_in_sequence(retrieval_commands[1])
+        retrieved_deps = run_commands_in_sequence(retrieval_commands["regular"])
+        retrieved_plugins = run_commands_in_sequence(retrieval_commands["plugins"])
         # Parse the JSON output and construct the resolutions list
         dependencies = json.loads(retrieved_deps)
         # retrieved_plugins is a byte string, with each plugin separated by a newline
