@@ -369,7 +369,7 @@ def extract_deps_from_maven(pom_xml_content):
         dict: A dictionary containing the extracted dependencies.
     """
 
-    def run_commands_in_sequence(commands, initial_input = None):
+    def run_commands_in_sequence(commands, initial_input=None):
         """
         Runs a sequence of commands where the output of one is piped to the next.
 
@@ -397,18 +397,15 @@ def extract_deps_from_maven(pom_xml_content):
     commands = [
         ["mvn", "dependency:tree", "-Dverbose", "-DoutputType=json", "-DoutputFile=/dev/stdout", "-f", temp_pom_path],
         ["grep", "-v", "\\[INFO"],
-        ["jq", '[.children | .. | {version, groupId, artifactId}?] | unique']
+        ["jq", "[.children | .. | {version, groupId, artifactId}?] | unique"],
     ]
 
     try:
         result = run_commands_in_sequence(commands)
         # Parse the JSON output and construct the resolutions list
         dependencies = json.loads(result)
-        resolutions = [
-            f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}"
-            for dep in dependencies
-        ]
-        
+        resolutions = [f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}" for dep in dependencies]
+
         deps_list_data = {"resolutions": resolutions, "patches": []}
         # TODO: confirm resolutions and patches?
         return deps_list_data
@@ -420,7 +417,7 @@ def extract_deps_from_maven(pom_xml_content):
             str(e),
         )
         return {"resolutions": [], "patches": []}
-            
+
 
 def deps_versions(deps_versions_info_list):
     """
