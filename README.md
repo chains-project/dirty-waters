@@ -21,15 +21,18 @@ dirty-waters is developed as part of the [Chains research project](https://chain
 ## NPM Support
 
 ### Installation
-To set up the Dirty-Waters, follow these steps:
+
+To set up `dirty-waters`, follow these steps:
 
 1. Clone the repository:
+
 ```
 git clone https://github.com/chains-project/dirty-waters.git
 cd dirty-waters
 ```
 
 2. Set up a virtual environment and install dependencies:
+
 ```
 python3 -m venv venv
 source venv/bin/activate
@@ -40,6 +43,7 @@ cd tool
 In alternative, you may also use the Nix flake present in this repository.
 
 3. Set up the GitHub API token (ideally, in a `.env` file):
+
 ```
 export GITHUB_API_TOKEN=<your_token>
 ```
@@ -47,12 +51,13 @@ export GITHUB_API_TOKEN=<your_token>
 ### Usage
 
 Run the tool using the following command structure:
+
 ```
 python main.py -p <project_repo_name> -v <release_version_old> -s -pm <package_manager> [-vn <release_version_new>] [-d]
 ```
 
-
 #### Arguments:
+
 ```
 usage: main.py [-h] -p PROJECT_REPO_NAME -v RELEASE_VERSION_OLD [-vn RELEASE_VERSION_NEW] -s [-d] -pm
                {yarn-classic,yarn-berry,pnpm} [--pnpm-scope]
@@ -75,9 +80,10 @@ options:
                         command. Configure the scope in tool_config.py file.
 ```
 
-
 #### Example usage:
+
 1. Software supply chain smell analysis:
+
 ```
 python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry
 ```
@@ -85,17 +91,16 @@ python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry
 - Example output: [Software Supply Chain Smells Report Example](https://github.com/chains-project/dirty-waters/blob/main/example_reports/software_supply_chain_smells_report_example.md)
 
 2. Differential analysis:
+
 ```
 python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -vn v11.12.0 -s -d -pm yarn-berry
 ```
 
 Notes:
+
 - `-v` should be the version of GitHub release, e.g. for [this release](https://github.com/MetaMask/metamask-extension/releases/tag/v11.1.0), the value should be `v11.11.0`, not `Version 11.11.0` or `11.11.0`.
 - The `-s` flag is required for all analyses.
 - When using `-d` for differential analysis, both `-v` and `-vn` must be specified.
-
-
-
 
 ## Java Support
 
@@ -106,9 +111,35 @@ Notes:
 Usage:
 Example reports: TODO add link
 
-## Academic Work
-- [Dirty-Waters: Detecting Software Supply Chain Smells](https://arxiv.org/abs/2410.16049)
+### Notes
 
+#### Inaccessible Tags
+
+Sometimes, the release version specified in a lockfile/pom/similar is not necessarily the same
+as the tag used in the repository. This can happen for a variety of reasons. We have
+compiled several tag formats which were deemed reasonable to lookup, if the exact tag
+specified in the lockfile/pom/similar is not found. These formats are the following:
+
+- `<tag>`
+- `v<tag>`
+- `r-<tag>`
+- `release-<tag>`
+- `parent-<tag>`
+- `<package_name>@<tag>`
+- `<package_name>-v<tag>`
+- `<package_name>_v<tag>`
+- `<package_name>-<tag>`
+- `<package_name>_<tag>`
+
+Note than this does not mean that if `dirty-waters` does not find a tag, it doesn't exist:
+it means that it either doesn't exist, or that its format is not one of the above.
+
+This list may be expanded in the future. If you feel that a relevant format is missing, please
+open an issue and/or a pull request!
+
+## Academic Work
+
+- [Dirty-Waters: Detecting Software Supply Chain Smells](https://arxiv.org/abs/2410.16049)
 
 ## Other issues not handled by dirty-waters
 

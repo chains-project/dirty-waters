@@ -15,16 +15,26 @@ def tag_format(tag, package_name):
     tag_formats = [
         f"{tag}",
         f"v{tag}",
+        f"r{tag}",
+        f"release-{tag}",
+        f"parent-{tag}",
         f"{package_name}@{tag}",
         f"{package_name}-v{tag}",
+        f"{package_name}_v{tag}",
         f"{package_name}-{tag}",
+        f"{package_name}_{tag}",
     ]
 
-    if "/" in package_name:
+    if "/" in package_name: # NPM-based
         only_package_name = package_name.split("/")[1]
+    elif ":" in package_name: # Maven based
+        only_package_name = package_name.split(":")[1].split("@")[0]
+
+    if only_package_name:
         tag_formats.append(f"{only_package_name}@{tag}")
         tag_formats.append(f"{only_package_name}-v{tag}")
         tag_formats.append(f"{only_package_name}-{tag}")
+        tag_formats.append(f"{only_package_name}_{tag}")
 
     return tag_formats
 
