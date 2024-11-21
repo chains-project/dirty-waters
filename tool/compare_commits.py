@@ -25,9 +25,9 @@ def tag_format(tag, package_name):
         f"{package_name}_{tag}",
     ]
 
-    if "/" in package_name: # NPM-based
+    if "/" in package_name:  # NPM-based
         only_package_name = package_name.split("/")[1]
-    elif ":" in package_name: # Maven based
+    elif ":" in package_name:  # Maven based
         only_package_name = package_name.split(":")[1].split("@")[0]
 
     if only_package_name:
