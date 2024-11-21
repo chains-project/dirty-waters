@@ -382,7 +382,6 @@ def extract_deps_from_maven(pom_xml_content):
         """
         input_data = initial_input
         for command in commands:
-            print(f"[INFO] Running: {' '.join(command)}")
             process = subprocess.run(command, input=input_data, check=True, capture_output=True)
             input_data = process.stdout  # Pass the output to the next command
         return input_data
@@ -431,7 +430,6 @@ def extract_deps_from_maven(pom_xml_content):
             plugin.replace(":jar:", "@").replace(":maven-plugin:", "@").replace(":pom:", "@")
             for plugin in plugins
         ]
-        # print(f"[INFO] Parsed plugin dependencies: {parsed_plugins}")
         # print all parsed plugins which still don't have a @
         for plugin in parsed_plugins:
             if "@" not in plugin:
@@ -440,7 +438,7 @@ def extract_deps_from_maven(pom_xml_content):
         # Using a set to avoid duplicates
         resolutions = set(parsed_deps + parsed_plugins)
         deps_list_data = {"resolutions": resolutions, "patches": []}
-        # TODO: confirm resolutions and patches?
+        # TODO: confirm resolutions?
         return deps_list_data
 
     except subprocess.CalledProcessError as e:
