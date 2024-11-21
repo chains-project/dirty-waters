@@ -142,7 +142,7 @@ def api_constructor(package_name, repository):
                 version = parts[1]
 
     except (ValueError, TypeError, AttributeError) as e:
-        error_message = f"Error: {str(e)}"
+        error_message = f"[INFO][api_constructor] Error: {str(e)}"
     except Exception as e:
         error_message = f"Unexpected error: {str(e)}"
 
@@ -185,7 +185,7 @@ def check_existence(package_name, repository):
     data = response.json()
 
     if status_code != 200:
-        print(f"Error: {data.get('message', 'No message')}")
+        print(f"[WARNING] No repo found for {package_name} in {repo_link}")
         archived = None
         is_fork = None
         repo_link = f"https://github.com/{simplified_path}".lower()
@@ -217,12 +217,15 @@ def check_existence(package_name, repository):
         if len(have_no_tags_data) == 0:
             release_tag_exists = False
             release_tag_url = None
-            tag_related_info = "No tag found in the repo"
+            tag_related_info = "No tag was found in the repo"
             status_code_release_tag = have_no_tags_response_status_code
 
         else:
             tag_possible_formats = construct_tag_format(version, package_full_name)
-
+            
+            # Making the default case not finding the tag
+            tag_related_info = "The given tag was not found in the repo"
+            status_code_release_tag = 404
             if tag_possible_formats:
                 for tag_format in tag_possible_formats:
                     tag_url = f"{repo_api}/git/ref/tags/{tag_format}"
@@ -233,9 +236,8 @@ def check_existence(package_name, repository):
                         tag_related_info = f"Tag {tag_format} is found in the repo"
                         status_code_release_tag = response.status_code
                         break
-                    else:
-                        tag_related_info = "Tags are not found in the repo"
-                        status_code_release_tag = response.status_code
+            if status_code_release_tag == 404:
+                print(f"[INFO] No tags found for {package_name} in {repo_api}")
 
     github_info = {
         "github_api": repo_api,
