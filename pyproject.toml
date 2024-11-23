@@ -24,6 +24,7 @@ dependencies = [
     'cattrs == 24.1.2',
     'certifi == 2024.8.30',
     'charset-normalizer == 3.4.0',
+    'cryptography == 43.0.3',
     'exceptiongroup == 1.2.2',
     'idna == 3.10',
     'numpy == 2.1.2',
