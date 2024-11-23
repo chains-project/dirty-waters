@@ -23,31 +23,33 @@ headers = {
 
 MAX_WAIT_TIME = 15 * 60
 
+
 def validate_provenance(attestation_data):
     for attestation in attestation_data:
         print(f"Validating attestation with predicate type: {attestation['predicateType']}")
-        
+
         bundle = attestation["bundle"]
-        
+
         # Verify the signature
         dsse_envelope = bundle["dsseEnvelope"]
         payload = base64.b64decode(dsse_envelope["payload"]).decode()
         signature = dsse_envelope["signatures"][0]["sig"]
         public_key_hint = dsse_envelope["signatures"][0]["keyid"]
-        
+
         if not validate_signature(public_key_hint, payload, signature):
             print("Failed to verify signature.")
             return False
-        
+
         # Validate transparency log entry
         tlog_entries = bundle["verificationMaterial"]["tlogEntries"]
         for entry in tlog_entries:
             if not validate_log_entry(entry):
                 print("Transparency log entry validation failed.")
                 return False
-        
+
         print(f"Attestation {attestation['predicateType']} validated successfully!")
     return True
+
 
 def check_deprecated_and_provenance(package, package_version, pm):
     """
