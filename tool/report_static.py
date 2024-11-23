@@ -269,9 +269,7 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
             md_file.write(markdown_text)
             md_file.write("\n</details>\n")
         elif package_manager not in SUPPORTED_SMELLS["provenance"]:
-            md_file.write(
-                f"\nThe package manager ({package_manager}) does not support checking for provenance.\n"
-            )
+            md_file.write(f"\nThe package manager ({package_manager}) does not support checking for provenance.\n")
         else:
             md_file.write("\nAll packages have provenance.\n")
 
