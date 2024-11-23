@@ -9,7 +9,7 @@ import requests
 
 import tool_config
 from compare_commits import tag_format as construct_tag_format
-
+from utils import validate_signature, validate_log_entry
 
 github_token = os.getenv("GITHUB_API_TOKEN")
 
@@ -23,6 +23,31 @@ headers = {
 
 MAX_WAIT_TIME = 15 * 60
 
+def validate_provenance(attestation_data):
+    for attestation in attestation_data:
+        print(f"Validating attestation with predicate type: {attestation['predicateType']}")
+        
+        bundle = attestation["bundle"]
+        
+        # Verify the signature
+        dsse_envelope = bundle["dsseEnvelope"]
+        payload = base64.b64decode(dsse_envelope["payload"]).decode()
+        signature = dsse_envelope["signatures"][0]["sig"]
+        public_key_hint = dsse_envelope["signatures"][0]["keyid"]
+        
+        if not validate_signature(public_key_hint, payload, signature):
+            print("Failed to verify signature.")
+            return False
+        
+        # Validate transparency log entry
+        tlog_entries = bundle["verificationMaterial"]["tlogEntries"]
+        for entry in tlog_entries:
+            if not validate_log_entry(entry):
+                print("Transparency log entry validation failed.")
+                return False
+        
+        print(f"Attestation {attestation['predicateType']} validated successfully!")
+    return True
 
 def check_deprecated_and_provenance(package, package_version, pm):
     """
@@ -46,6 +71,7 @@ def check_deprecated_and_provenance(package, package_version, pm):
 
         if_deprecated = False
         has_provenance = False
+        verified_provenance = False
         provenance_url = None
         provenance_info = None
         all_deprecated = True
@@ -64,6 +90,15 @@ def check_deprecated_and_provenance(package, package_version, pm):
             provenance_url = provenance_in_version.get("url")
             provenance_info = provenance_in_version.get("provenance")
 
+            # Now, also validate the provenance, using the provenance_in_version object
+            if provenance_in_version:
+                verified_provenance = validate_provenance(provenance_in_version)
+                print(f"[INFO] Provenance verification result: {verified_provenance}")
+                time.sleep(2)
+            else:
+                print("[INFO] No provenance information found.")
+                time.sleep(2)
+
         for version in all_versions.values():
             if not version.get("deprecated"):
                 all_deprecated = False
@@ -75,6 +110,7 @@ def check_deprecated_and_provenance(package, package_version, pm):
             "deprecated_in_version": if_deprecated,
             "provenance_in_version": has_provenance,
             "all_deprecated": all_deprecated,
+            "verified_provenance": verified_provenance,
             "provenance_url": provenance_url,
             "provenance_info": provenance_info,
             "status_code": 200,
