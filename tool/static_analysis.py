@@ -91,13 +91,9 @@ def check_deprecated_and_provenance(package, package_version, pm):
             provenance_info = provenance_in_version.get("provenance")
 
             # Now, also validate the provenance, using the provenance_in_version object
-            if provenance_in_version:
-                verified_provenance = validate_provenance(provenance_in_version)
-                print(f"[INFO] Provenance verification result: {verified_provenance}")
-                time.sleep(2)
-            else:
-                print("[INFO] No provenance information found.")
-                time.sleep(2)
+            verified_provenance = validate_provenance(provenance_in_version)
+            print(f"[INFO] Provenance verification result: {verified_provenance}")
+            time.sleep(2)
 
         for version in all_versions.values():
             if not version.get("deprecated"):
