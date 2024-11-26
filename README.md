@@ -31,6 +31,7 @@ cd dirty-waters
 
 2. Set up a virtual environment and install dependencies:
 
+
 ```bash
 python3 -m venv venv
 source venv/bin/activate
@@ -50,9 +51,6 @@ export GITHUB_API_TOKEN=<your_token>
 
 Run the tool using the following command structure:
 
-```bash
-python main.py -p <project_repo_name> -v <release_version_old> -s -pm <package_manager> [-vn <release_version_new>] [-d]
-```
 
 ### Arguments:
 
@@ -78,6 +76,7 @@ options:
   --pnpm-scope          Extract dependencies from pnpm with a specific scope using 'pnpm list --filter <scope> --depth Infinity' command. Configure the scope in tool_config.py
                         file.
 ```
+
 
 ### Example usage:
 
@@ -114,6 +113,33 @@ Notes:
 | Pnpm            | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  |
 | Npm             | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  |
 | Maven           | Yes                       | Yes                                | Yes            | No                    | Yes               | No                   |
+
+
+### Notes
+
+#### Inaccessible Tags
+
+Sometimes, the release version specified in a lockfile/pom/similar is not necessarily the same
+as the tag used in the repository. This can happen for a variety of reasons. We have
+compiled several tag formats which were deemed reasonable to lookup, if the exact tag
+specified in the lockfile/pom/similar is not found. These formats are the following:
+
+- `<tag>`
+- `v<tag>`
+- `r-<tag>`
+- `release-<tag>`
+- `parent-<tag>`
+- `<package_name>@<tag>`
+- `<package_name>-v<tag>`
+- `<package_name>_v<tag>`
+- `<package_name>-<tag>`
+- `<package_name>_<tag>`
+
+Note than this does not mean that if `dirty-waters` does not find a tag, it doesn't exist:
+it means that it either doesn't exist, or that its format is not one of the above.
+
+This list may be expanded in the future. If you feel that a relevant format is missing, please
+open an issue and/or a pull request!
 
 ## Academic Work
 

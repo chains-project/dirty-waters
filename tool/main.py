@@ -127,23 +127,24 @@ def get_lockfile(project_repo_name, release_version, package_manager):
         str: The name of the project repository.
     """
 
+    LOOKING_FOR = {
+        "yarn-classic": "yarn.lock",
+        "yarn-berry": "yarn.lock",
+        "pnpm": "pnpm-lock.yaml",
+        "npm": "package-lock.json",
+        "maven": "pom.xml",
+    }
+
     tool_config.setup_cache("demo")
     # logging.info("Cache [demo_cache] setup complete")
 
-    logging.info("Getting lockfile for %s@%s", project_repo_name, release_version)
-    logging.info("Package manager: %s", package_manager)
+    try:
+        lockfile_name = LOOKING_FOR[package_manager]
+        logging.info(f"Getting {lockfile_name} for %s@%s", project_repo_name, release_version)
+        logging.info(f"Package manager: {package_manager}")
 
-    print(f"Getting lockfile for {project_repo_name}@{release_version}")
-
-    if package_manager == "yarn-classic" or package_manager == "yarn-berry":
-        lockfile_name = "yarn.lock"
-    elif package_manager == "pnpm":
-        lockfile_name = "pnpm-lock.yaml"
-    elif package_manager == "npm":
-        lockfile_name = "package-lock.json"
-    elif package_manager == "maven":
-        lockfile_name = "pom.xml"
-    else:
+        print(f"Getting {lockfile_name} for {project_repo_name}@{release_version}")
+    except KeyError:
         logging.error("Invalid package manager or lack of lockfile: %s", package_manager)
         raise ValueError("Invalid package manager or lack of lockfile.")
 
@@ -154,7 +155,7 @@ def get_lockfile(project_repo_name, release_version, package_manager):
         data = response.json()
         download_url = data.get("download_url")
         lock_content = requests.get(download_url, timeout=60).text
-        print(f"Got the lockfile from {download_url}.")
+        print(f"Got the {lockfile_name} file from {download_url}.")
     else:
         logging.error(f"Failed to get {lockfile_name}.")
         raise ValueError(f"Failed to get {lockfile_name}.")

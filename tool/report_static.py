@@ -120,16 +120,12 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
     }
 
     warning_counts = {
-        ":heavy_exclamation_mark: Packages with no Source Code URL(⚠️⚠️⚠️)": (
-            df["github_url"] == "No_repo_info_found"
-        ).sum(),
-        ":no_entry: Packages with Github URLs that are 404(⚠️⚠️⚠️)": (df["github_exists"] == False).sum(),
-        ":wrench: Packages with accessible source code repos but inaccessible GitHub tags(⚠️⚠️⚠️)": (
-            release_tag_not_found_df.shape[0]
-        ),
-        ":x: Packages that are deprecated(⚠️⚠️)": (df["deprecated_in_version"] == True).sum(),
-        ":cactus: Packages that are forks(⚠️⚠️)": (df["is_fork"] == True).sum(),
-        ":black_square_button: Packages without provenance(⚠️)": (df["provenance_in_version"] == False).sum(),
+        "no_source_code": f":heavy_exclamation_mark: Packages with no Source Code URL(⚠️⚠️⚠️) {(df["github_url"] == "No_repo_info_found").sum()}",
+        "github_404": f":no_entry: Packages with Github URLs that are 404(⚠️⚠️⚠️) {(df['github_exists'] == False).sum()}",
+        "release_tag_not_found": f":wrench: Packages with accessible source code repos but inaccessible GitHub tags(⚠️⚠️⚠️) {(release_tag_not_found_df.shape[0])}",
+        "deprecated": f":x: Packages that are deprecated(⚠️⚠️) {(df['deprecated_in_version'] == True).sum()}",
+        "forked_package": f":cactus: Packages that are forks(⚠️⚠️) {(df['is_fork'] == True).sum()}",
+        "provenance": f":black_square_button: Packages without provenance(⚠️) {(df['provenance_in_version'] == False).sum()}",
     }
 
     not_on_github_counts = (df["github_url"] == "Not_github_repo").sum()
@@ -159,7 +155,8 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
         md_file.write("\n")
 
         for key, val in warning_counts.items():
-            md_file.write(f"\n{key}: {val}\n")
+            if package_manager in SUPPORTED_SMELLS[key]:
+                md_file.write(f"\n{val}\n")
         md_file.write("\n")
 
         # md_file.write(f"#### Other info")

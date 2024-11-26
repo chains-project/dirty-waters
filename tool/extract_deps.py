@@ -368,54 +368,81 @@ def extract_deps_from_maven(pom_xml_content):
     Returns:
         dict: A dictionary containing the extracted dependencies.
     """
+
+    def run_commands_in_sequence(commands, initial_input=None):
+        """
+        Runs a sequence of commands where the output of one is piped to the next.
+
+        Args:
+            commands (List[List[str]]): A list of command arguments to be executed in sequence.
+            initial_input (bytes): The initial input to be passed to the first command (optional).
+
+        Returns:
+            bytes: The output of the final command in the sequence.
+        """
+        input_data = initial_input
+        for command in commands:
+            process = subprocess.run(command, input=input_data, check=True, capture_output=True)
+            input_data = process.stdout  # Pass the output to the next command
+        return input_data
+
+    # First, pasting the content of the pom.xml file onto a temporary file
+    # This is needed, since (AFAIK) the maven dependency plugin does not accept input from stdin
+    temp_pom_path = "/tmp/pom.xml"
+    with open(temp_pom_path, "w") as f:
+        f.write(pom_xml_content)
+
+    retrieval_commands = {
+        "regular": [  # "Regular" dependencies
+            [
+                "mvn",
+                "dependency:tree",
+                "-Dverbose",
+                "-DoutputType=json",
+                "-DoutputFile=/dev/stdout",
+                "-f",
+                temp_pom_path,
+            ],
+            ["grep", "-v", "\\[INFO"],
+            ["jq", "[.children | .. | {version, groupId, artifactId}?] | unique"],
+        ],
+        "plugins": [  # Plugin dependencies
+            ["mvn", "dependency:resolve-plugins", "-f", temp_pom_path],
+            ["sed", "-n", "/The following plugins/,$p"],
+            ["tail", "+2"],
+            ["head", "-n", "-8"],
+            ["sed", "s/\\[INFO\\] *//"],
+            ["uniq"],
+        ],
+    }
+
     try:
-        deps_list = []
-        properties = {}
+        retrieved_deps = run_commands_in_sequence(retrieval_commands["regular"])
+        retrieved_plugins = run_commands_in_sequence(retrieval_commands["plugins"])
+        # Parse the JSON output and construct the resolutions list
+        dependencies = json.loads(retrieved_deps)
+        # retrieved_plugins is a byte string, with each plugin separated by a newline
+        plugins = retrieved_plugins.decode("utf-8").splitlines()
+        parsed_deps = [f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}" for dep in dependencies]
+        parsed_plugins = [
+            # replace plugin suffixes with a @ separator;
+            # the suffixes are not needed for the plugin name
+            plugin.replace(":jar:", "@").replace(":maven-plugin:", "@").replace(":pom:", "@")
+            for plugin in plugins
+        ]
+        # print all parsed plugins which still don't have a @
+        for plugin in parsed_plugins:
+            if "@" not in plugin:
+                print(f"[WARNING] Plugin without version: {plugin}")
 
-        # Extract properties
-        prop_pattern = r"<properties>(.*?)</properties>"
-        prop_matches = re.findall(prop_pattern, pom_xml_content, re.DOTALL)
-        for prop_content in prop_matches:
-            # print(f"Properties content: {prop_content}")
-            prop_items = re.findall(r"<([^>]+)>(.*?)</\1>", prop_content, re.DOTALL)
-            properties.update(dict(prop_items))
-
-        # Extract parent version if exists
-        parent_version_pattern = r"<parent>.*?<version>(.*?)</version>.*?</parent>"
-        parent_version_match = re.search(parent_version_pattern, pom_xml_content, re.DOTALL)
-        if parent_version_match:
-            properties["project.version"] = parent_version_match.group(1)
-
-        # Extract parent artifactId if exists
-        parent_artifactId_pattern = r"<parent>.*?<artifactId>(.*?)</artifactId>.*?</parent>"
-        parent_artifactId_match = re.search(parent_artifactId_pattern, pom_xml_content, re.DOTALL)
-        if parent_artifactId_match:
-            properties["project.artifactId"] = parent_artifactId_match.group(1)
-
-        # Extract parent groupId if exists
-        parent_groupId_pattern = r"<parent>.*?<groupId>(.*?)</groupId>.*?</parent>"
-        parent_groupId_match = re.search(parent_groupId_pattern, pom_xml_content, re.DOTALL)
-        if parent_groupId_match:
-            properties["project.groupId"] = parent_groupId_match.group(1)
-
-        pattern = r"<dependency>.*?<groupId>(.*?)</groupId>.*?<artifactId>(.*?)</artifactId>.*?<version>(.*?)</version>.*?</dependency>"
-        matches = re.findall(pattern, pom_xml_content, re.DOTALL)
-
-        for group_id, artifact_id, version in matches:
-            # Resolve property placeholders
-            if group_id.startswith("${"):
-                group_id = properties.get(group_id[2:-1], group_id)
-            if artifact_id.startswith("${"):
-                artifact_id = properties.get(artifact_id[2:-1], artifact_id)
-            if version.startswith("${"):
-                version = properties.get(version[2:-1], version)
-            deps_list.append(f"{group_id}:{artifact_id}@{version}")
-
-        deps_list_data = {"resolutions": deps_list, "patches": []}
-
+        # Using a set to avoid duplicates
+        resolutions = set(parsed_deps + parsed_plugins)
+        deps_list_data = {"resolutions": resolutions, "patches": []}
+        # TODO: confirm resolutions?
         return deps_list_data
 
-    except (IOError, ValueError, KeyError) as e:
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred: {e}")
         logging.error(
             "An error occurred while extracting dependencies from pom.xml file: %s",
             str(e),
