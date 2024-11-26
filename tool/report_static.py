@@ -51,6 +51,7 @@ def create_dataframe(data):
             "github_redirected": github_exists_data.get("github_redirected", None),
             "archived": github_exists_data.get("archived", None),
             "is_fork": github_exists_data.get("is_fork", None),
+            "parent_repo_link": github_exists_data.get("parent_repo_link", None),
             "forked_from": github_exists_data.get("parent_repo_link", "-"),
             "open_issues_count": github_exists_data.get("open_issues_count", "-"),
             "is_match": match_data.get("match", None),
@@ -92,10 +93,27 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
             "status_code_for_release_tag",
         ],
     ]
-
     # all_deprecated_df = df[df["all_deprecated"] is True]
-    version_deprecated_df = df[df["deprecated_in_version"] == True]
-    forked_package_df = df[df["is_fork"] == True]
+    version_deprecated_df = df.loc[
+        df["deprecated_in_version"] == True,
+        [
+            "deprecated_in_version",
+            "all_deprecated",
+        ],
+    ]
+    forked_package_df = df.loc[
+        df["is_fork"] == True,
+        [
+            "is_fork",
+            "parent_repo_link",
+        ],
+    ]
+    provenance_df = df.loc[
+        df["provenance_in_version"] == False,
+        [
+            "provenance_in_version",
+        ],
+    ]
 
     common_counts = {
         "### Total packages in the supply chain": len(df),
@@ -235,7 +253,22 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
         else:
             md_file.write("\nNo package is from fork.\n")
 
-        # TODO: missing provenance in the report
+        # TODO: they're printing irrelevant information in each table, I think
+        if not provenance_df.empty:
+            md_file.write(
+                f"""
+<details>
+    <summary>List of packages without provenance({(df["provenance_in_version"] == False).sum()})</summary>
+        """
+            )
+            md_file.write("\n\n\n")
+            markdown_text = provenance_df.reset_index().to_markdown(index=False)
+            md_file.write(markdown_text)
+            md_file.write("\n</details>\n")
+        elif package_manager not in SUPPORTED_SMELLS["provenance"]:
+            md_file.write(f"\nThe package manager ({package_manager}) does not support checking for provenance.\n")
+        else:
+            md_file.write("\nAll packages have provenance.\n")
 
         md_file.write("\n### Call to Action:\n")
         md_file.write(

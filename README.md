@@ -4,65 +4,61 @@ Dirty-waters automatically finds software supply chain issues in software projec
 
 Reference: [Dirty-Waters: Detecting Software Supply Chain Smells](http://arxiv.org/pdf/2410.16049), Technical report 2410.16049, arXiv, 2024.
 
-By using dirty-waters, you identify the shady areas of your supply chain, which would be natural target for attackers to exploit.
+By using `dirty-waters`, you identify the shady areas of your supply chain, which would be natural target for attackers to exploit.
 
-Kinds of problems identified by dirty-waters
+Kinds of problems identified by `dirty-waters`:
 
-* Dependencies with no link to source code repositories (high severity)
-* Dependencies with no tag / commit sha for release, impossible to have reproducible builds (high severity)
-* Deprecated Dependencies (medium severity)
-* Depends on a fork (medium severity)
-* Dependencies with no build attestation (low severity)
+- Dependencies with no link to source code repositories (high severity)
+- Dependencies with no tag / commit sha for release, impossible to have reproducible builds (high severity)
+- Deprecated Dependencies (medium severity)
+- Depends on a fork (medium severity)
+- Dependencies with no build attestation (low severity)
 
-Additionally, dirty-waters gives a supplier view on the dependency trees (who owns the different dependencies?)
+Additionally, `dirty-waters` gives a supplier view on the dependency trees (who owns the different dependencies?)
 
-dirty-waters is developed as part of the [Chains research project](https://chains.proj.kth.se/).
+`dirty-waters` is developed as part of the [Chains research project](https://chains.proj.kth.se/).
 
-## NPM Support
-
-### Installation
+## Installation
 
 To set up `dirty-waters`, follow these steps:
 
 1. Clone the repository:
 
-```
+```bash
 git clone https://github.com/chains-project/dirty-waters.git
 cd dirty-waters
 ```
 
 2. Set up a virtual environment and install dependencies:
 
-```
+
+```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 cd tool
 ```
 
-In alternative, you may also use the Nix flake present in this repository.
+In alternative to virtual environments, you may also use the Nix flake present in this repository.
 
 3. Set up the GitHub API token (ideally, in a `.env` file):
 
-```
+```bash
 export GITHUB_API_TOKEN=<your_token>
 ```
 
-### Usage
+## Usage
 
 Run the tool using the following command structure:
 
-```
-python main.py -p <project_repo_name> -v <release_version_old> -s -pm <package_manager> [-vn <release_version_new>] [-d]
-```
 
-#### Arguments:
+### Arguments:
 
 ```
-usage: main.py [-h] -p PROJECT_REPO_NAME -v RELEASE_VERSION_OLD [-vn RELEASE_VERSION_NEW] -s [-d] -pm
-               {yarn-classic,yarn-berry,pnpm} [--pnpm-scope]
+usage: main.py [-h] -p PROJECT_REPO_NAME -v RELEASE_VERSION_OLD [-vn RELEASE_VERSION_NEW] -s [-d] [-n] -pm {yarn-classic,yarn-berry,pnpm,npm,maven} [--pnpm-scope]
 
 options:
+  -h, --help            show this help message and exit
   -p PROJECT_REPO_NAME, --project-repo-name PROJECT_REPO_NAME
                         Specify the project repository name. Example: MetaMask/metamask-extension
   -v RELEASE_VERSION_OLD, --release-version-old RELEASE_VERSION_OLD
@@ -73,22 +69,24 @@ options:
                         Run static analysis and generate a markdown report of the project
   -d, --differential-analysis
                         Run differential analysis and generate a markdown report of the project
-  -pm {yarn-classic,yarn-berry,pnpm,npm}, --package-manager {yarn-classic,yarn-berry,pnpm,npm}
+  -n, --name-match      Compare the package names with the name in the in the package.json file. This option will slow down the execution time due to the API rate limit of
+                        code search.
+  -pm {yarn-classic,yarn-berry,pnpm,npm,maven}, --package-manager {yarn-classic,yarn-berry,pnpm,npm,maven}
                         The package manager used in the project.
-  --pnpm-scope          Extract dependencies from pnpm with a specific scope
-                        using 'pnpm list --filter <scope> --depth Infinity'
-                        command. Configure the scope in tool_config.py file.
+  --pnpm-scope          Extract dependencies from pnpm with a specific scope using 'pnpm list --filter <scope> --depth Infinity' command. Configure the scope in tool_config.py
+                        file.
 ```
 
-#### Example usage:
 
-1. Software supply chain smell analysis:
+### Example usage:
 
-```
+1. Static analysis:
+
+```bash
 python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry
 ```
 
-- Example output: [Software Supply Chain Smells Report Example](https://github.com/chains-project/dirty-waters/blob/main/example_reports/software_supply_chain_smells_report_example.md)
+- Example output: [Static Analysis Report Example](example_reports/static_analysis_report_example.md)
 
 2. Differential analysis:
 
@@ -96,20 +94,26 @@ python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry
 python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -vn v11.12.0 -s -d -pm yarn-berry
 ```
 
+- Example output: [Differential Analysis Report Example](example_reports/differential_analysis_report_example.md)
+
 Notes:
 
 - `-v` should be the version of GitHub release, e.g. for [this release](https://github.com/MetaMask/metamask-extension/releases/tag/v11.1.0), the value should be `v11.11.0`, not `Version 11.11.0` or `11.11.0`.
 - The `-s` flag is required for all analyses.
 - When using `-d` for differential analysis, both `-v` and `-vn` must be specified.
 
-## Java Support
+## Software Supply Chain Smell Support
 
-### Installation
+`dirty-waters` currently supports package managers within the JavaScript and Java ecosystems. However, due to some constraints associated with the nature of the package managers, the tool may not be able to detect all the smells in the project. The following table shows the supported package managers and their associated smells:
 
-### Usage
+| Package Manager | No Source Code Repository | Invalid Source Code Repository URL | No Release Tag | Deprecated Dependency | Depends on a Fork | No Build Attestation |
+| --------------- | ------------------------- | ---------------------------------- | -------------- | --------------------- | ----------------- | -------------------- |
+| Yarn Classic    | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  |
+| Yarn Berry      | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  |
+| Pnpm            | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  |
+| Npm             | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  |
+| Maven           | Yes                       | Yes                                | Yes            | No                    | Yes               | No                   |
 
-Usage:
-Example reports: TODO add link
 
 ### Notes
 
@@ -143,9 +147,9 @@ open an issue and/or a pull request!
 
 ## Other issues not handled by dirty-waters
 
-* Missing dependencies: simply run mvn/pip/... install :)
-* Bloated dependencies: we recommend [DepClean](https://github.com/ASSERT-KTH/depclean) for Java, [depcheck](https://github.com/depcheck/depcheck) for NPM
-* Version constraint inconsistencies: we recommend [pipdeptree](https://github.com/tox-dev/pipdeptree) for Python
+- Missing dependencies: simply run mvn/pip/... install :)
+- Bloated dependencies: we recommend [DepClean](https://github.com/ASSERT-KTH/depclean) for Java, [depcheck](https://github.com/depcheck/depcheck) for NPM
+- Version constraint inconsistencies: we recommend [pipdeptree](https://github.com/tox-dev/pipdeptree) for Python
 
 ## License
 
