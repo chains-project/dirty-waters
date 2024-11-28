@@ -23,18 +23,27 @@ def tag_format(tag, package_name):
         f"{package_name}_v{tag}",
         f"{package_name}-{tag}",
         f"{package_name}_{tag}",
+        # Below: further tag formats found in the AROMA paper, table 3: https://dl.acm.org/doi/pdf/10.1145/3643764
+        f"release/{tag}",
+        f"{tag}-release",
+        f"v.{tag}",
     ]
 
     if "/" in package_name:  # NPM-based
         only_package_name = package_name.split("/")[1]
     elif ":" in package_name:  # Maven based
         only_package_name = package_name.split(":")[1].split("@")[0]
+        # p1, p2, p3 from AROMA
+        artifact_id_parts = only_package_name.split("-")
 
     if only_package_name:
         tag_formats.append(f"{only_package_name}@{tag}")
         tag_formats.append(f"{only_package_name}-v{tag}")
         tag_formats.append(f"{only_package_name}-{tag}")
         tag_formats.append(f"{only_package_name}_{tag}")
+    if artifact_id_parts and len(artifact_id_parts) > 1:
+        # p1, p2, p3 from AROMA
+        tag_formats.extend(["-".join(artifact_id_parts[:i + 1]) + tag for i in range(len(artifact_id_parts))])
 
     return tag_formats
 
