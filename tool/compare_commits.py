@@ -43,7 +43,8 @@ def tag_format(tag, package_name):
         tag_formats.append(f"{only_package_name}_{tag}")
     if artifact_id_parts and len(artifact_id_parts) > 1:
         # p1, p2, p3 from AROMA
-        tag_formats.extend(["-".join(artifact_id_parts[: i + 1]) + tag for i in range(len(artifact_id_parts))])
+        # needs to be reversed with [::-1] because p1 is actually the last element, p2 the 2nd to last, etc
+        tag_formats.extend(["-".join(artifact_id_parts[::-1][: i + 1]) + tag for i in range(len(artifact_id_parts))])
 
     return tag_formats
 
