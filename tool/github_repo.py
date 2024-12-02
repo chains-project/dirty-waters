@@ -99,26 +99,32 @@ def process_package(
                 # package is in the form of group_id:artifact_id@version -- we need all 3
                 name, version = package.split("@")
                 group_id, artifact_id = name.split(":")
-                command = [
-                    "mvn",
-                    "help:evaluate",
-                    "-Dexpression=project.scm.url",
-                    f"-Dartifact={group_id}:{artifact_id}:{version}",
-                    "-q",
-                    "-DforceStdout",
-                ]
-                result = subprocess.run(
-                    command,
-                    capture_output=True,
-                    text=True,
-                    check=True,
-                    timeout=TIMEOUT,
-                )
+                results_urls = []
+                for url_expression in ["scm.url", "url", "scm.connection", "scm.developerConnection"]:
+                    command = [
+                        "mvn",
+                        "help:evaluate",
+                        f"-Dexpression=project.{url_expression}",
+                        f"-Dartifact={group_id}:{artifact_id}:{version}",
+                        "-q",
+                        "-DforceStdout",
+                    ]
+                    results_urls.append(subprocess.run(
+                        command,
+                        capture_output=True,
+                        text=True,
+                        check=True,
+                        timeout=TIMEOUT,
+                    ))
 
             else:
                 raise ValueError(f"Unsupported package manager: {pm}")
 
-            repo_info = result.stdout if result.stdout else result.stderr
+            if result: # in case we only check for source code repo in 1 place
+                repo_info = result.stdout if result.stdout else result.stderr
+            else: # in other cases, such as maven
+                # NOTE: very hacky, ideally will write better code soon :)))
+                repo_info = '||'.join([result.stdout if result.stdout else result.stderr for result in results_urls])
             # print(f"Repo info for {package}: {repo_info}")
             c.execute(
                 "INSERT OR IGNORE INTO pkg_github_repo_output (package, github) VALUES (?,?)",
@@ -149,16 +155,20 @@ def process_package(
         repos_output_json[package] = {"github": "Could not find"}
         undefined.append(f"Undefined for {package}, {repo_info}")
     else:
-        url = extract_repo_url(repo_info)
-        # print(f"[INFO] Found GitHub URL for {package}: {url}")
-        repos_output_json[package] = {"github": url}
-        if url:
-            repos_output.append(url)
-            if url not in same_repos_deps:
-                same_repos_deps[url] = []
-            same_repos_deps[url].append(package)
-        else:
-            some_errors.append(f"No GitHub URL for {package}\n{repo_info}")
+        print("---")
+        repo_info = repo_info.split("||")
+        for repo in repo_info:
+            # TODOL haven't looked at this code
+            url = extract_repo_url(repo)
+            repos_output_json[package] = {"github": url}
+            if url and url != "not github":
+                repos_output.append(url)
+                same_repos_deps.get(url, []).append(package)
+                #print(f"[INFO] Found GitHub URL for {package}: {url}")
+                break # found a github URL, can leave
+            else:
+                some_errors.append(f"No GitHub URL for {package}, tried {repo}")
+                print(f"No GitHub URL for {package}, tried {repo}")
 
 
 def get_github_repo_url(folder, dep_list, pm):
