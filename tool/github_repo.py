@@ -109,22 +109,24 @@ def process_package(
                         "-q",
                         "-DforceStdout",
                     ]
-                    results_urls.append(subprocess.run(
-                        command,
-                        capture_output=True,
-                        text=True,
-                        check=True,
-                        timeout=TIMEOUT,
-                    ))
+                    results_urls.append(
+                        subprocess.run(
+                            command,
+                            capture_output=True,
+                            text=True,
+                            check=True,
+                            timeout=TIMEOUT,
+                        )
+                    )
 
             else:
                 raise ValueError(f"Unsupported package manager: {pm}")
 
-            if result: # in case we only check for source code repo in 1 place
+            if result:  # in case we only check for source code repo in 1 place
                 repo_info = result.stdout if result.stdout else result.stderr
-            else: # in other cases, such as maven
+            else:  # in other cases, such as maven
                 # NOTE: very hacky, ideally will write better code soon :)))
-                repo_info = '||'.join([result.stdout if result.stdout else result.stderr for result in results_urls])
+                repo_info = "||".join([result.stdout if result.stdout else result.stderr for result in results_urls])
             # print(f"Repo info for {package}: {repo_info}")
             c.execute(
                 "INSERT OR IGNORE INTO pkg_github_repo_output (package, github) VALUES (?,?)",
@@ -164,8 +166,8 @@ def process_package(
             if url and url != "not github":
                 repos_output.append(url)
                 same_repos_deps.get(url, []).append(package)
-                #print(f"[INFO] Found GitHub URL for {package}: {url}")
-                break # found a github URL, can leave
+                # print(f"[INFO] Found GitHub URL for {package}: {url}")
+                break  # found a github URL, can leave
             else:
                 some_errors.append(f"No GitHub URL for {package}, tried {repo}")
                 print(f"No GitHub URL for {package}, tried {repo}")
