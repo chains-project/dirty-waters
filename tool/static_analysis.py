@@ -6,6 +6,8 @@ import urllib.parse
 from tqdm import tqdm
 
 import requests
+import subprocess
+import re
 
 import tool_config
 from compare_commits import tag_format as construct_tag_format
@@ -95,6 +97,51 @@ def check_deprecated_and_provenance(package, package_version, pm):
     elif pm == "maven":
         # maven doesn't have this
         return check_maven(package, package_version)
+    else:
+        # log stuff
+        # blow up
+        logging.error(f"Package manager {pm} not supported.")
+
+
+def check_code_signature(package_name, package_version, pm):
+    # TODO: caching this somehow would be nice
+    # TODO: find a package where we can check this, because with spoon everything is fine
+    def parse_pgp_signature(output):
+        # Regular expression to extract the PGP signature section
+        pgp_signature_pattern = re.compile(
+            r"PGP signature:\n(?:[ \t]*.+\n)*?[ \t]*status:\s*(\w+)", re.MULTILINE
+        )
+
+        match = pgp_signature_pattern.search(output)
+        if match:
+            # Extract the status
+            status = match.group(1).strip().lower()
+            return {
+                "pgp_signature_present": True,
+                "pgp_signature_valid": status == "valid"
+            }
+
+        # If no match is found, return no PGP signature present
+        return {
+            "pgp_signature_present": False,
+            "pgp_signature_valid": False
+        }
+
+    if pm == "maven":
+        # Construct the command
+        command = f"mvn org.simplify4u.plugins:pgpverify-maven-plugin:show -Dartifact={package_name}:{package_version}"
+
+        # Run the command
+        output = subprocess.run(command, shell=True, capture_output=True, text=True)
+
+        # Then, parse the output, and return it
+        return parse_pgp_signature(output.stdout)
+    elif pm in ("yarn-berry", "yarn-classic", "pnpm", "npm"):
+        # TODO: Implement this
+        return {
+            "pgp_signature_present": False,
+            "pgp_signature_valid": False
+        }
     else:
         # log stuff
         # blow up
@@ -437,6 +484,9 @@ def analyze_package_data(package, repo_url, pm, check_match=False):
         package_info["deprecated"] = package_infos.get("deprecated_in_version")
         package_info["provenance"] = package_infos.get("provenance_in_version")
         package_info["package_info"] = package_infos
+
+        # Code signature checks
+        package_info["code_signature"] = check_code_signature(package_name, package_version, pm)
 
         if "Could not find" in repo_url:
             package_info["github_exists"] = {"github_url": "No_repo_info_found"}
