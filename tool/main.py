@@ -173,6 +173,7 @@ def get_lockfile(project_repo_name, release_version, package_manager):
 
     return lock_content, default_branch, project_repo_name
 
+
 def clone_repo(project_repo_name, release_version):
     """
     Clone the repository for the given project and release version.
@@ -186,7 +187,7 @@ def clone_repo(project_repo_name, release_version):
     """
 
     repo_url = f"https://github.com/{project_repo_name}.git"
-    
+
     # Clone to /tmp folder; if it is already cloned, an error will be raised
     try:
         Repo.clone_from(repo_url, f"/tmp/{project_repo_name}")
