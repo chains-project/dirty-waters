@@ -358,12 +358,12 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name):
     return deps_list_data
 
 
-def extract_deps_from_maven(pom_xml_content):
+def extract_deps_from_maven(repo_path):
     """
-    Extract dependencies from a Maven pom.xml file.
+    Extract dependencies from a Maven package, given the path to its locally cloned repo.
 
     Args:
-        pom_xml_content (str): The content of the pom.xml file.
+        repo_path (str): The path to the locally cloned Maven package.
 
     Returns:
         dict: A dictionary containing the extracted dependencies.
@@ -386,11 +386,9 @@ def extract_deps_from_maven(pom_xml_content):
             input_data = process.stdout  # Pass the output to the next command
         return input_data
 
-    # First, pasting the content of the pom.xml file onto a temporary file
-    # This is needed, since (AFAIK) the maven dependency plugin does not accept input from stdin
-    temp_pom_path = "/tmp/pom.xml"
-    with open(temp_pom_path, "w") as f:
-        f.write(pom_xml_content)
+    # First, switch to the repository directory
+    current_dir = os.getcwd()
+    os.chdir(repo_path)
 
     retrieval_commands = {
         "regular": [  # "Regular" dependencies
@@ -400,18 +398,20 @@ def extract_deps_from_maven(pom_xml_content):
                 "-Dverbose",
                 "-DoutputType=json",
                 "-DoutputFile=/dev/stdout",
-                "-f",
-                temp_pom_path,
             ],
-            ["grep", "-v", "\\[INFO"],
-            ["jq", "[.children | .. | {version, groupId, artifactId}?] | unique"],
+            ["grep", "-v", "^\\[\\(INFO\\|WARNING\\)"],
+            # Below: In some cases, for parent packages which need to access child pom files, the above returns several JSON objects
+            # This requires it to be "slurped" into a single JSON array, as the next command expects a single JSON object
+            ["jq", "--slurp", "[.[] | .children[]?] | unique | map({version, groupId, artifactId})"],
         ],
         "plugins": [  # Plugin dependencies
-            ["mvn", "dependency:resolve-plugins", "-f", temp_pom_path],
+            ["mvn", "dependency:resolve-plugins"],
             ["sed", "-n", "/The following plugins/,$p"],
             ["tail", "+2"],
             ["head", "-n", "-8"],
             ["sed", "s/\\[INFO\\] *//"],
+            # Below: very hacky, ensures we're only keeping lines which match the format "groupId:artifactId:packaging:version"
+            ["grep", "-E", "^[^:[:space:]]+:[^:[:space:]]+:[^:[:space:]]+:[^:[:space:]]+$"],
             ["uniq"],
         ],
     }
@@ -419,6 +419,8 @@ def extract_deps_from_maven(pom_xml_content):
     try:
         retrieved_deps = run_commands_in_sequence(retrieval_commands["regular"])
         retrieved_plugins = run_commands_in_sequence(retrieval_commands["plugins"])
+        # Go back to the original directory
+        os.chdir(current_dir)
         # Parse the JSON output and construct the resolutions list
         dependencies = json.loads(retrieved_deps)
         # retrieved_plugins is a byte string, with each plugin separated by a newline
