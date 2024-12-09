@@ -122,7 +122,9 @@ Notes:
 Sometimes, the release version specified in a lockfile/pom/similar is not necessarily the same
 as the tag used in the repository. This can happen for a variety of reasons. We have
 compiled several tag formats which were deemed reasonable to lookup, if the exact tag
-specified in the lockfile/pom/similar is not found. These formats are the following:
+specified in the lockfile/pom/similar is not found. They come from a combination of [AROMA](https://dl.acm.org/doi/pdf/10.1145/3643764)'s
+work and our own research on this subject.
+These formats are the following:
 
 - `<tag>`
 - `v<tag>`
@@ -134,6 +136,10 @@ specified in the lockfile/pom/similar is not found. These formats are the follow
 - `<package_name>_v<tag>`
 - `<package_name>-<tag>`
 - `<package_name>_<tag>`
+- `release/<tag>`
+- `<tag>-release`
+- `v.<tag>`
+- `p1-p2-p3<tag>`
 
 Note than this does not mean that if `dirty-waters` does not find a tag, it doesn't exist:
 it means that it either doesn't exist, or that its format is not one of the above.
