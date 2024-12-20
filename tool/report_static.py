@@ -122,20 +122,30 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
     # Only include sections for enabled checks
     warning_counts = {}
     if enabled_checks.get("source_code"):
-        warning_counts["no_source_code"] = f":heavy_exclamation_mark: Packages with no Source Code URL(⚠️⚠️⚠️) {(df['github_url'] == 'No_repo_info_found').sum()}"
-        warning_counts["github_404"] = f":no_entry: Packages with Github URLs that are 404(⚠️⚠️⚠️) {(df['github_exists'] == False).sum()}"
-    
+        warning_counts["no_source_code"] = (
+            f":heavy_exclamation_mark: Packages with no Source Code URL(⚠️⚠️⚠️) {(df['github_url'] == 'No_repo_info_found').sum()}"
+        )
+        warning_counts["github_404"] = (
+            f":no_entry: Packages with Github URLs that are 404(⚠️⚠️⚠️) {(df['github_exists'] == False).sum()}"
+        )
+
     if enabled_checks.get("release_tags"):
-        warning_counts["release_tag_not_found"] = f":wrench: Packages with accessible source code repos but inaccessible GitHub tags(⚠️⚠️⚠️) {(release_tag_not_found_df.shape[0])}"
-    
+        warning_counts["release_tag_not_found"] = (
+            f":wrench: Packages with accessible source code repos but inaccessible GitHub tags(⚠️⚠️⚠️) {(release_tag_not_found_df.shape[0])}"
+        )
+
     if enabled_checks.get("deprecated"):
-        warning_counts["deprecated"] = f":x: Packages that are deprecated(⚠️⚠️) {(df['deprecated_in_version'] == True).sum()}"
-    
+        warning_counts["deprecated"] = (
+            f":x: Packages that are deprecated(⚠️⚠️) {(df['deprecated_in_version'] == True).sum()}"
+        )
+
     if enabled_checks.get("forks"):
         warning_counts["forked_package"] = f":cactus: Packages that are forks(⚠️⚠️) {(df['is_fork'] == True).sum()}"
-    
+
     if enabled_checks.get("provenance"):
-        warning_counts["provenance"] = f":black_square_button: Packages without provenance(⚠️) {(df['provenance_in_version'] == False).sum()}"
+        warning_counts["provenance"] = (
+            f":black_square_button: Packages without provenance(⚠️) {(df['provenance_in_version'] == False).sum()}"
+        )
 
     not_on_github_counts = (df["github_url"] == "Not_github_repo").sum()
 
@@ -330,5 +340,13 @@ def get_s_summary(data, project_name, release_version, package_manager, enabled_
     """
 
     df = create_dataframe(data)
-    write_summary(df, project_name, release_version, package_manager, filename=summary_filename, enabled_checks=enabled_checks, mode="w")
+    write_summary(
+        df,
+        project_name,
+        release_version,
+        package_manager,
+        filename=summary_filename,
+        enabled_checks=enabled_checks,
+        mode="w",
+    )
     print(f"Report created at {summary_filename}")

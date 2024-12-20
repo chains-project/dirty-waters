@@ -90,9 +90,9 @@ def get_args():
         action="store_true",
         help="Extract dependencies from pnpm with a specific scope using 'pnpm list --filter <scope> --depth Infinity' command. Configure the scope in tool_config.py file.",
     )
-    
+
     # Add new smell check arguments
-    smell_group = parser.add_argument_group('smell checks')
+    smell_group = parser.add_argument_group("smell checks")
     smell_group.add_argument(
         "--check-source-code",
         action="store_true",
@@ -263,7 +263,9 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
     return deps_list_all, dep_with_many_versions, patches_info
 
 
-def static_analysis_all(folder_path, project_repo_name, release_version, package_manager, check_match=False, enabled_checks=None):
+def static_analysis_all(
+    folder_path, project_repo_name, release_version, package_manager, check_match=False, enabled_checks=None
+):
     """
     Perform static analysis on the given project and release version.
 
@@ -281,11 +283,7 @@ def static_analysis_all(folder_path, project_repo_name, release_version, package
     repo_url_info = github_repo.get_github_repo_url(folder_path, deps_list, package_manager)
 
     static_results, errors = static_analysis.get_static_data(
-        folder_path, 
-        repo_url_info, 
-        package_manager, 
-        check_match=check_match,
-        enabled_checks=enabled_checks
+        folder_path, repo_url_info, package_manager, check_match=check_match, enabled_checks=enabled_checks
     )
     logging.info("Errors: %s", errors)
 
@@ -495,17 +493,19 @@ def perform_differential_analysis(old_results, new_results, project_info):
 def main():
     """Main flow to run the software supply chain smell analysis."""
     dw_args = get_args()
-    
+
     # Determine which checks are enabled
     enabled_checks = {}
-    any_check_specified = any([
-        dw_args.check_source_code,
-        dw_args.check_release_tags,
-        dw_args.check_deprecated,
-        dw_args.check_forks,
-        dw_args.check_provenance
-    ])
-    
+    any_check_specified = any(
+        [
+            dw_args.check_source_code,
+            dw_args.check_release_tags,
+            dw_args.check_deprecated,
+            dw_args.check_forks,
+            dw_args.check_provenance,
+        ]
+    )
+
     if any_check_specified:
         # Check if release tags is enabled without source code
         if any([dw_args.check_release_tags, dw_args.check_forks]) and not dw_args.check_source_code:
@@ -513,13 +513,13 @@ def main():
                 "The --check-release-tags and --check-forks flags require --check-source-code to be enabled. "
                 "Release tags can only be checked if we can first verify the source code repository."
             )
-            
+
         enabled_checks = {
             "source_code": dw_args.check_source_code,
             "release_tags": dw_args.check_release_tags,
             "deprecated": dw_args.check_deprecated,
             "forks": dw_args.check_forks,
-            "provenance": dw_args.check_provenance
+            "provenance": dw_args.check_provenance,
         }
     else:
         # If no checks specified, enable all by default
@@ -528,7 +528,7 @@ def main():
             "release_tags": True,
             "deprecated": True,
             "forks": True,
-            "provenance": True
+            "provenance": True,
         }
 
     project_info = setup_project_info(dw_args)
@@ -539,8 +539,8 @@ def main():
     )
 
     # Pass enabled_checks to static analysis
-    project_info['enabled_checks'] = enabled_checks
-    
+    project_info["enabled_checks"] = enabled_checks
+
     old_analysis_results = perform_static_analysis(project_info, is_old_version=True)
     generate_static_report(old_analysis_results, project_info, is_old_version=True)
 

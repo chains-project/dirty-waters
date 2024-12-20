@@ -28,7 +28,7 @@ DEFAULT_ENABLED_CHECKS = {
     "release_tags": True,
     "deprecated": True,
     "forks": True,
-    "provenance": True
+    "provenance": True,
 }
 
 
@@ -432,7 +432,7 @@ def check_name_match(package_name, repository):
 def analyze_package_data(package, repo_url, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS):
     """
     Analyze package data with configurable smell checks.
-    
+
     Args:
         package: Package to analyze
         repo_url: Repository URL
@@ -443,7 +443,7 @@ def analyze_package_data(package, repo_url, pm, check_match=False, enabled_check
     package_info = {}
     try:
         package_name, package_version = package.rsplit("@", 1)
-        
+
         # Only check deprecation and provenance if enabled
         if enabled_checks["deprecated"] or enabled_checks["provenance"]:
             package_infos = check_deprecated_and_provenance(package_name, package_version, pm)
@@ -467,7 +467,10 @@ def analyze_package_data(package, repo_url, pm, check_match=False, enabled_check
         if check_match and package_info["github_exists"] and package_info["github_exists"].get("github_exists"):
             repo_url_to_use = github_info.get("redirected_repo") or repo_url
             if package_info["provenance"] == False:
-                if package_info["github_exists"].get("is_fork") == True or package_info["github_exists"].get("archived") == True:
+                if (
+                    package_info["github_exists"].get("is_fork") == True
+                    or package_info["github_exists"].get("archived") == True
+                ):
                     package_info["match_info"] = check_name_match_for_fork(package, repo_url_to_use)
                 else:
                     package_info["match_info"] = check_name_match(package, repo_url_to_use)
@@ -495,7 +498,9 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
             # print(f"Analyzing {package}")
             tqdm.write(f"{package}")
             repo_url = repo_urls.get("github", "")
-            analyzed_data = analyze_package_data(package, repo_url, pm, check_match=check_match, enabled_checks=enabled_checks)
+            analyzed_data = analyze_package_data(
+                package, repo_url, pm, check_match=check_match, enabled_checks=enabled_checks
+            )
             error = analyzed_data.get("error", None)
             pbar.update(1)
 
