@@ -90,7 +90,7 @@ python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry
 
 2. Differential analysis:
 
-```
+```bash
 python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -vn v11.12.0 -s -d -pm yarn-berry
 ```
 
