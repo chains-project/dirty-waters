@@ -287,7 +287,7 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
             md_file.write(f"\nThe package manager ({package_manager}) does not support checking for provenance.\n")
         else:
             md_file.write("\nAll packages have provenance.\n")
-        
+
         if not code_signature_df.empty:
             md_file.write(
                 f"""

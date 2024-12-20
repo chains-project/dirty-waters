@@ -183,14 +183,10 @@ def get_repo_from_SA(dep_file_1, dep_file_2, SA_old, SA_new):
             differences[dep]["category"] = "Upgraded package"
             # Check code signature changes
             signature_changes = compare_code_signatures(
-                dep, 
-                versions['chosen_v1'], 
-                versions['chosen_v2'], 
-                SA_old, 
-                SA_new
+                dep, versions["chosen_v1"], versions["chosen_v2"], SA_old, SA_new
             )
             differences[dep]["signature_changes"] = signature_changes
-            
+
             # If there are signature changes, add it to the category
             if signature_changes["has_changes"]:
                 differences[dep]["category"] = "Upgraded package with signature changes"
@@ -357,21 +353,23 @@ def compare_code_signatures(pkg_name, old_version, new_version, SA_1, SA_2):
     """Compare code signatures between versions of a package."""
     old_pkg = f"{pkg_name}@{old_version}"
     new_pkg = f"{pkg_name}@{new_version}"
-    
+
     old_signature = SA_1.get(old_pkg, {}).get("code_signature", {})
     new_signature = SA_2.get(new_pkg, {}).get("code_signature", {})
-    
+
     changes = {
         "old_signature_present": old_signature.get("pgp_signature_present", False),
         "new_signature_present": new_signature.get("pgp_signature_present", False),
         "old_signature_valid": old_signature.get("pgp_signature_valid", False),
         "new_signature_valid": new_signature.get("pgp_signature_valid", False),
-        "has_changes": False
+        "has_changes": False,
     }
-    
+
     # Check if there are any changes in signature status
-    if (changes["old_signature_present"] != changes["new_signature_present"] or
-        changes["old_signature_valid"] != changes["new_signature_valid"]):
+    if (
+        changes["old_signature_present"] != changes["new_signature_present"]
+        or changes["old_signature_valid"] != changes["new_signature_valid"]
+    ):
         changes["has_changes"] = True
-        
+
     return changes

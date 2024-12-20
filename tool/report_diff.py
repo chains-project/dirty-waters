@@ -208,12 +208,7 @@ def generate_diff_report(data, project_repo_name, release_version_old, release_v
                 """
             )
             f.write("\n\n\n")
-            selected_columns = [
-                "package_name",
-                "old_version",
-                "new_version",
-                "signature_changes"
-            ]
+            selected_columns = ["package_name", "old_version", "new_version", "signature_changes"]
             signature_changes_df = signature_changes[selected_columns]
             f.write(signature_changes_df.to_markdown(index=False))
             f.write("\n")

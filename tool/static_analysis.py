@@ -108,24 +108,16 @@ def check_code_signature(package_name, package_version, pm):
     # TODO: find a package where we can check this, because with spoon everything is fine
     def parse_pgp_signature(output):
         # Regular expression to extract the PGP signature section
-        pgp_signature_pattern = re.compile(
-            r"PGP signature:\n(?:[ \t]*.+\n)*?[ \t]*status:\s*(\w+)", re.MULTILINE
-        )
+        pgp_signature_pattern = re.compile(r"PGP signature:\n(?:[ \t]*.+\n)*?[ \t]*status:\s*(\w+)", re.MULTILINE)
 
         match = pgp_signature_pattern.search(output)
         if match:
             # Extract the status
             status = match.group(1).strip().lower()
-            return {
-                "pgp_signature_present": True,
-                "pgp_signature_valid": status == "valid"
-            }
+            return {"pgp_signature_present": True, "pgp_signature_valid": status == "valid"}
 
         # If no match is found, return no PGP signature present
-        return {
-            "pgp_signature_present": False,
-            "pgp_signature_valid": False
-        }
+        return {"pgp_signature_present": False, "pgp_signature_valid": False}
 
     if pm == "maven":
         # Construct the command
@@ -138,10 +130,7 @@ def check_code_signature(package_name, package_version, pm):
         return parse_pgp_signature(output.stdout)
     elif pm in ("yarn-berry", "yarn-classic", "pnpm", "npm"):
         # TODO: Implement this
-        return {
-            "pgp_signature_present": False,
-            "pgp_signature_valid": False
-        }
+        return {"pgp_signature_present": False, "pgp_signature_valid": False}
     else:
         # log stuff
         # blow up
