@@ -113,7 +113,7 @@ Notes:
 
 ### Smell Check Options
 
-By default, all supported checks for the given package manager are performed.
+By default, all supported checks for the given package manager are performed in static analysis.
 You can specify individual checks using the following flags (note that if at least one flag
 is passed, instead of all checks being performed, only the flagged ones will be):
 
@@ -132,6 +132,8 @@ python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry --c
 ```
 
 This run will only check for dependencies with no link to source code repositories and dependencies with no tag/commit sha for release.
+
+For **differential analysis**, it is currently not possible to specify individual checks -- all checks will be performed.
 
 ### Notes
 
