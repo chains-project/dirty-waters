@@ -90,6 +90,34 @@ def get_args():
         action="store_true",
         help="Extract dependencies from pnpm with a specific scope using 'pnpm list --filter <scope> --depth Infinity' command. Configure the scope in tool_config.py file.",
     )
+    
+    # Add new smell check arguments
+    smell_group = parser.add_argument_group('smell checks')
+    smell_group.add_argument(
+        "--check-source-code",
+        action="store_true",
+        help="Check for dependencies with no link to source code repositories",
+    )
+    smell_group.add_argument(
+        "--check-release-tags",
+        action="store_true",
+        help="Check for dependencies with no tag/commit sha for release",
+    )
+    smell_group.add_argument(
+        "--check-deprecated",
+        action="store_true",
+        help="Check for deprecated dependencies",
+    )
+    smell_group.add_argument(
+        "--check-forks",
+        action="store_true",
+        help="Check for dependencies that are forks",
+    )
+    smell_group.add_argument(
+        "--check-provenance",
+        action="store_true",
+        help="Check for dependencies with no build attestation",
+    )
 
     arguments = parser.parse_args()
 
@@ -235,7 +263,7 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
     return deps_list_all, dep_with_many_versions, patches_info
 
 
-def static_analysis_all(folder_path, project_repo_name, release_version, package_manager, check_match=False):
+def static_analysis_all(folder_path, project_repo_name, release_version, package_manager, check_match=False, enabled_checks=None):
     """
     Perform static analysis on the given project and release version.
 
@@ -245,6 +273,7 @@ def static_analysis_all(folder_path, project_repo_name, release_version, package
         release_version (str): The release version of the project.
         package_manager (str): The package manager used in the project.
         check_match (bool): Whether to check for package name matches.
+        enabled_checks (dict): Dictionary of enabled smell checks.
     """
     deps_list, dep_with_many_versions, patches_info = get_deps(
         folder_path, project_repo_name, release_version, package_manager
@@ -252,12 +281,13 @@ def static_analysis_all(folder_path, project_repo_name, release_version, package
     repo_url_info = github_repo.get_github_repo_url(folder_path, deps_list, package_manager)
 
     static_results, errors = static_analysis.get_static_data(
-        folder_path, repo_url_info, package_manager, check_match=check_match
+        folder_path, 
+        repo_url_info, 
+        package_manager, 
+        check_match=check_match,
+        enabled_checks=enabled_checks
     )
     logging.info("Errors: %s", errors)
-
-    # rv_name = release_version.replace("/", "_")
-    # write_to_file(f"{rv_name}_repo_info.json", folder_path, repo_url_info)
 
     return static_results, deps_list, dep_with_many_versions, patches_info
 
@@ -392,6 +422,7 @@ def perform_static_analysis(project_info, is_old_version):
         version,
         project_info["package_manager"],
         project_info["check_match"],
+        project_info["enabled_checks"],
     )
 
     write_to_file(
@@ -416,6 +447,7 @@ def generate_static_report(analysis_results, project_info, is_old_version):
         project_info["repo_name"],
         version,
         project_info["package_manager"],
+        project_info["enabled_checks"],
         summary_filename=summary_file,
     )
 
@@ -462,8 +494,43 @@ def perform_differential_analysis(old_results, new_results, project_info):
 
 def main():
     """Main flow to run the software supply chain smell analysis."""
-
     dw_args = get_args()
+    
+    # Determine which checks are enabled
+    enabled_checks = {}
+    any_check_specified = any([
+        dw_args.check_source_code,
+        dw_args.check_release_tags,
+        dw_args.check_deprecated,
+        dw_args.check_forks,
+        dw_args.check_provenance
+    ])
+    
+    if any_check_specified:
+        # Check if release tags is enabled without source code
+        if any([dw_args.check_release_tags, dw_args.check_forks]) and not dw_args.check_source_code:
+            raise ValueError(
+                "The --check-release-tags and --check-forks flags require --check-source-code to be enabled. "
+                "Release tags can only be checked if we can first verify the source code repository."
+            )
+            
+        enabled_checks = {
+            "source_code": dw_args.check_source_code,
+            "release_tags": dw_args.check_release_tags,
+            "deprecated": dw_args.check_deprecated,
+            "forks": dw_args.check_forks,
+            "provenance": dw_args.check_provenance
+        }
+    else:
+        # If no checks specified, enable all by default
+        enabled_checks = {
+            "source_code": True,
+            "release_tags": True,
+            "deprecated": True,
+            "forks": True,
+            "provenance": True
+        }
+
     project_info = setup_project_info(dw_args)
     setup_directories_and_logging(project_info)
 
@@ -471,6 +538,9 @@ def main():
         f"Software supply chain smells analysis for {project_info['repo_name']} for version {project_info['old_version']}..."
     )
 
+    # Pass enabled_checks to static analysis
+    project_info['enabled_checks'] = enabled_checks
+    
     old_analysis_results = perform_static_analysis(project_info, is_old_version=True)
     generate_static_report(old_analysis_results, project_info, is_old_version=True)
 

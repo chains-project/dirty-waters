@@ -23,6 +23,14 @@ headers = {
 
 MAX_WAIT_TIME = 15 * 60
 
+DEFAULT_ENABLED_CHECKS = {
+    "source_code": True,
+    "release_tags": True,
+    "deprecated": True,
+    "forks": True,
+    "provenance": True
+}
+
 
 def check_deprecated_and_provenance(package, package_version, pm):
     """
@@ -421,60 +429,63 @@ def check_name_match(package_name, repository):
     return match_info
 
 
-def analyze_package_data(package, repo_url, pm, check_match=False):
-    package_info = {
-        "deprecated": None,
-        "provenance": None,
-        "package_info": None,
-        "github_exists": None,
-        "match_info": None,
-    }
-
+def analyze_package_data(package, repo_url, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS):
+    """
+    Analyze package data with configurable smell checks.
+    
+    Args:
+        package: Package to analyze
+        repo_url: Repository URL
+        pm: Package manager
+        check_match: Whether to check name matches
+        enabled_checks: Dictionary of enabled smell checks
+    """
+    package_info = {}
     try:
-        # TODO: check if this needs to be different because of differences between npm, maven, etc
         package_name, package_version = package.rsplit("@", 1)
-        package_infos = check_deprecated_and_provenance(package_name, package_version, pm)
-        package_info["deprecated"] = package_infos.get("deprecated_in_version")
-        package_info["provenance"] = package_infos.get("provenance_in_version")
-        package_info["package_info"] = package_infos
+        
+        # Only check deprecation and provenance if enabled
+        if enabled_checks["deprecated"] or enabled_checks["provenance"]:
+            package_infos = check_deprecated_and_provenance(package_name, package_version, pm)
+            if enabled_checks["deprecated"]:
+                package_info["deprecated"] = package_infos.get("deprecated_in_version")
+            if enabled_checks["provenance"]:
+                package_info["provenance"] = package_infos.get("provenance_in_version")
+            package_info["package_info"] = package_infos
 
-        if "Could not find" in repo_url:
-            package_info["github_exists"] = {"github_url": "No_repo_info_found"}
-        elif "not github" in repo_url:
-            package_info["github_exists"] = {"github_url": "Not_github_repo"}
-        else:
-            github_info = check_existence(package, repo_url)
-            package_info["github_exists"] = github_info
-            if github_info.get("github_exists"):
-                repo_url_to_use = github_info.get("redirected_repo") or repo_url
-                if check_match:
-                    # TODO: why do we only check this is provenance is false??
-                    # TODO: maven currently not supported for this because of the above
-                    if package_info["provenance"] == False:
-                        if github_info.get("is_fork") == True or github_info.get("archived") == True:
-                            package_info["match_info"] = check_name_match_for_fork(package, repo_url_to_use)
-                        else:
-                            package_info["match_info"] = check_name_match(package, repo_url_to_use)
-                    else:
-                        package_info["match_info"] = {
-                            "has_provenance": True,
-                            "match": True,
-                            "repo_name": repo_url_to_use,
-                        }
+        # Only check source code and forks if enabled
+        if enabled_checks["source_code"] or enabled_checks["forks"]:
+            if "Could not find" in repo_url:
+                package_info["github_exists"] = {"github_url": "No_repo_info_found"}
+            elif "not github" in repo_url:
+                package_info["github_exists"] = {"github_url": "Not_github_repo"}
+            else:
+                github_info = check_existence(package, repo_url)
+                package_info["github_exists"] = github_info
 
-    except (ValueError, TypeError, AttributeError) as e:
-        return None, {
-            "error_type": type(e).__name__,
-            "message": str(e),
-            "repo_url": repo_url,
-            "package": package,
-            "package_info": package_info,
-        }
+        # Only check name matches if enabled and relevant
+        if check_match and package_info["github_exists"] and package_info["github_exists"].get("github_exists"):
+            repo_url_to_use = github_info.get("redirected_repo") or repo_url
+            if package_info["provenance"] == False:
+                if package_info["github_exists"].get("is_fork") == True or package_info["github_exists"].get("archived") == True:
+                    package_info["match_info"] = check_name_match_for_fork(package, repo_url_to_use)
+                else:
+                    package_info["match_info"] = check_name_match(package, repo_url_to_use)
+            else:
+                package_info["match_info"] = {
+                    "has_provenance": True,
+                    "match": True,
+                    "repo_name": repo_url,
+                }
 
-    return package_info, None
+    except Exception as e:
+        logging.error(f"Error analyzing package {package}: {str(e)}")
+        package_info["error"] = str(e)
+
+    return package_info
 
 
-def get_static_data(folder, packages_data, pm, check_match=False):
+def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS):
     print("Analyzing package static data...")
     package_all = {}
     errors = {}
@@ -484,7 +495,8 @@ def get_static_data(folder, packages_data, pm, check_match=False):
             # print(f"Analyzing {package}")
             tqdm.write(f"{package}")
             repo_url = repo_urls.get("github", "")
-            analyzed_data, error = analyze_package_data(package, repo_url, pm, check_match=check_match)
+            analyzed_data = analyze_package_data(package, repo_url, pm, check_match=check_match, enabled_checks=enabled_checks)
+            error = analyzed_data.get("error", None)
             pbar.update(1)
 
             if error:
