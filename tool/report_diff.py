@@ -163,8 +163,12 @@ def generate_diff_report(data, project_repo_name, release_version_old, release_v
     new_reviewer_commits = df_author_new_reviewer.shape[0]
     both_new_commits = df_author_both_new.shape[0]
 
+    signature_changes = df_all[df_all["category"] == "Upgraded package with signature changes"]
+    signature_changes_number = signature_changes["package_name"].nunique()
+
     counts = {
         ":heavy_exclamation_mark: Downgraded packages": downgraded_number,
+        ":lock: Packages with signature changes": signature_changes_number,
         ":alien: Commits made by both New Authors and Reviewers": both_new_commits,
         ":neutral_face: Commits made by New Authors": new_author_commits,
         ":see_no_evil: Commits approved by New Reviewers": new_reviewer_commits,
@@ -191,6 +195,27 @@ def generate_diff_report(data, project_repo_name, release_version_old, release_v
             )
             f.write("\n\n\n")
             f.write(df_down_selected_without_index.to_markdown(index=True))
+            f.write("\n")
+            f.write("</details>")
+            f.write("\n")
+
+        if signature_changes_number > 0:
+            f.write("\n")
+            f.write(
+                f"""
+    <details>
+        <summary>Packages with signature changes</summary>
+                """
+            )
+            f.write("\n\n\n")
+            selected_columns = [
+                "package_name",
+                "old_version",
+                "new_version",
+                "signature_changes"
+            ]
+            signature_changes_df = signature_changes[selected_columns]
+            f.write(signature_changes_df.to_markdown(index=False))
             f.write("\n")
             f.write("</details>")
             f.write("\n")
