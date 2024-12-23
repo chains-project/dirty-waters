@@ -130,32 +130,23 @@ def check_code_signature(package_name, package_version, pm):
         try:
             response = requests.get(f"https://registry.npmjs.org/{package}", timeout=20)
             response.raise_for_status()
-            
+
             data = response.json()
             version_info = data.get("versions", {}).get(package_version, {})
-            
+
             # Check for signature in dist metadata
             dist_info = version_info.get("dist", {})
             signatures = dist_info.get("signatures", [])
-            
+
             if signatures:
                 valid_signatures = [sig for sig in signatures if sig.get("keyid") and sig.get("sig")]
-                return {
-                    "signature_present": True,
-                    "signature_valid": len(valid_signatures) > 0
-                }
-            
-            return {
-                "signature_present": False,
-                "signature_valid": False
-            }
-            
+                return {"signature_present": True, "signature_valid": len(valid_signatures) > 0}
+
+            return {"signature_present": False, "signature_valid": False}
+
         except requests.RequestException as e:
             logging.error(f"Error checking NPM signature: {str(e)}")
-            return {
-                "signature_present": False,
-                "signature_valid": False
-            }
+            return {"signature_present": False, "signature_valid": False}
 
     if pm == "maven":
         return check_maven_signature(package_name, package_version)
