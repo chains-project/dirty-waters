@@ -48,8 +48,8 @@ def create_dataframe(data):
             "deprecated_in_version": package_data.get("package_info", {}).get("deprecated_in_version"),
             "provenance_in_version": package_data.get("package_info", {}).get("provenance_in_version"),
             "all_deprecated": package_data.get("package_info", {}).get("all_deprecated", None),
-            "pgp_signature_present": package_data.get("package_info", {}).get("pgp_signature_present"),
-            "pgp_signature_valid": package_data.get("package_info", {}).get("pgp_signature_valid"),
+            "signature_present": package_data.get("code_signature").get("signature_present"),
+            "signature_valid": package_data.get("code_signature").get("signature_valid"),
             "github_url": github_exists_data.get("github_url", "Could not find repo from package registry"),
             "github_exists": github_exists_data.get("github_exists", None),
             "github_redirected": github_exists_data.get("github_redirected", None),
@@ -119,15 +119,15 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
         ],
     ]
     code_signature_df = df.loc[
-        df["pgp_signature_present"] == False,
+        df["signature_present"] == False,
         [
-            "pgp_signature_present",
+            "signature_present",
         ],
     ]
     invalid_code_signature_df = df.loc[
-        df["pgp_signature_valid"] == False,
+        (df["signature_present"] == True) & (df["signature_valid"] == False),
         [
-            "pgp_signature_valid",
+            "signature_valid",
         ],
     ]
 
@@ -141,8 +141,8 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
         "release_tag_not_found": f":wrench: Packages with accessible source code repos but inaccessible GitHub tags(⚠️⚠️⚠️) {(release_tag_not_found_df.shape[0])}",
         "deprecated": f":x: Packages that are deprecated(⚠️⚠️) {(df['deprecated_in_version'] == True).sum()}",
         "forked_package": f":cactus: Packages that are forks(⚠️⚠️) {(df['is_fork'] == True).sum()}",
-        "code_signature": f":lock: Packages with no code signature(⚠️⚠️) {(df['pgp_signature_present'] == False).sum()}",
-        "invalid_code_signature": f":pencil: Packages with an existing but invalid code signature(⚠️⚠️) {((df['pgp_signature_present'] == True) & (df['pgp_signature_valid'] == False)).sum()}",
+        "code_signature": f":lock: Packages with no code signature(⚠️⚠️) {(code_signature_df.shape[0])}",
+        "invalid_code_signature": f":pencil: Packages with an existing but invalid code signature(⚠️⚠️) {((invalid_code_signature_df.shape[0]))}",
         "provenance": f":black_square_button: Packages without provenance(⚠️) {(df['provenance_in_version'] == False).sum()}",
     }
 
@@ -292,7 +292,7 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
             md_file.write(
                 f"""
 <details>
-    <summary>List of packages without code signature({(df["pgp_signature_present"] == False).sum()})</summary>
+    <summary>List of packages without code signature({(code_signature_df.shape[0])})</summary>
         """
             )
             md_file.write("\n\n\n")
@@ -308,7 +308,7 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
             md_file.write(
                 f"""
 <details>
-    <summary>List of packages with an existing but invalid code signature({(df["pgp_signature_present"] == True) & (df["pgp_signature_valid"] == False).sum()})</summary>
+    <summary>List of packages with an existing but invalid code signature({(invalid_code_signature_df.shape[0])})</summary>
         """
             )
             md_file.write("\n\n\n")

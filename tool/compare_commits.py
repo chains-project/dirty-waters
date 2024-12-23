@@ -29,9 +29,9 @@ def tag_format(tag, package_name):
         f"v.{tag}",
     ]
 
+    only_package_name, artifact_id_parts = None, None
     if "/" in package_name:  # NPM-based
         only_package_name = package_name.split("/")[1]
-        artifact_id_parts = None
     elif ":" in package_name:  # Maven based
         only_package_name = package_name.split(":")[1].split("@")[0]
         # p1, p2, p3 from AROMA

@@ -358,10 +358,10 @@ def compare_code_signatures(pkg_name, old_version, new_version, SA_1, SA_2):
     new_signature = SA_2.get(new_pkg, {}).get("code_signature", {})
 
     changes = {
-        "old_signature_present": old_signature.get("pgp_signature_present", False),
-        "new_signature_present": new_signature.get("pgp_signature_present", False),
-        "old_signature_valid": old_signature.get("pgp_signature_valid", False),
-        "new_signature_valid": new_signature.get("pgp_signature_valid", False),
+        "old_signature_present": old_signature.get("signature_present", False),
+        "new_signature_present": new_signature.get("signature_present", False),
+        "old_signature_valid": old_signature.get("signature_valid", False),
+        "new_signature_valid": new_signature.get("signature_valid", False),
         "has_changes": False,
     }
 
