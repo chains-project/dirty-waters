@@ -3,6 +3,7 @@ cattrs==24.1.2
 certifi==2024.8.30
 charset-normalizer==3.4.0
 exceptiongroup==1.2.2
+GitPython
 idna==3.10
 numpy==2.1.2
 pandas==2.2.3
