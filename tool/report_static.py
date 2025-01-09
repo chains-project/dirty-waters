@@ -15,6 +15,8 @@ SUPPORTED_SMELLS = {
     "deprecated": ["yarn-classic", "yarn-berry", "pnpm", "npm"],
     "forked_package": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
     "provenance": ["yarn-classic", "yarn-berry", "pnpm", "npm"],
+    "code_signature": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
+    "invalid_code_signature": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
 }
 
 
@@ -46,6 +48,8 @@ def create_dataframe(data):
             "deprecated_in_version": package_data.get("package_info", {}).get("deprecated_in_version"),
             "provenance_in_version": package_data.get("package_info", {}).get("provenance_in_version"),
             "all_deprecated": package_data.get("package_info", {}).get("all_deprecated", None),
+            "signature_present": package_data.get("code_signature").get("signature_present"),
+            "signature_valid": package_data.get("code_signature").get("signature_valid"),
             "github_url": github_exists_data.get("github_url", "Could not find repo from package registry"),
             "github_exists": github_exists_data.get("github_exists", None),
             "github_redirected": github_exists_data.get("github_redirected", None),
@@ -114,6 +118,18 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
             "provenance_in_version",
         ],
     ]
+    code_signature_df = df.loc[
+        df["signature_present"] == False,
+        [
+            "signature_present",
+        ],
+    ]
+    invalid_code_signature_df = df.loc[
+        (df["signature_present"] == True) & (df["signature_valid"] == False),
+        [
+            "signature_valid",
+        ],
+    ]
 
     common_counts = {
         "### Total packages in the supply chain": len(df),
@@ -125,6 +141,8 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
         "release_tag_not_found": f":wrench: Packages with accessible source code repos but inaccessible GitHub tags(⚠️⚠️⚠️) {(release_tag_not_found_df.shape[0])}",
         "deprecated": f":x: Packages that are deprecated(⚠️⚠️) {(df['deprecated_in_version'] == True).sum()}",
         "forked_package": f":cactus: Packages that are forks(⚠️⚠️) {(df['is_fork'] == True).sum()}",
+        "code_signature": f":lock: Packages with no code signature(⚠️⚠️) {(code_signature_df.shape[0])}",
+        "invalid_code_signature": f":pencil: Packages with an existing but invalid code signature(⚠️⚠️) {((invalid_code_signature_df.shape[0]))}",
         "provenance": f":black_square_button: Packages without provenance(⚠️) {(df['provenance_in_version'] == False).sum()}",
     }
 
@@ -269,6 +287,38 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
             md_file.write(f"\nThe package manager ({package_manager}) does not support checking for provenance.\n")
         else:
             md_file.write("\nAll packages have provenance.\n")
+
+        if not code_signature_df.empty:
+            md_file.write(
+                f"""
+<details>
+    <summary>List of packages without code signature({(code_signature_df.shape[0])})</summary>
+        """
+            )
+            md_file.write("\n\n\n")
+            markdown_text = code_signature_df.reset_index().to_markdown(index=False)
+            md_file.write(markdown_text)
+            md_file.write("\n</details>\n")
+        elif package_manager not in SUPPORTED_SMELLS["code_signature"]:
+            md_file.write(f"\nThe package manager ({package_manager}) does not support checking for code signature.\n")
+        else:
+            md_file.write("\nAll packages have code signature.\n")
+
+        if not invalid_code_signature_df.empty:
+            md_file.write(
+                f"""
+<details>
+    <summary>List of packages with an existing but invalid code signature({(invalid_code_signature_df.shape[0])})</summary>
+        """
+            )
+            md_file.write("\n\n\n")
+            markdown_text = invalid_code_signature_df.reset_index().to_markdown(index=False)
+            md_file.write(markdown_text)
+            md_file.write("\n</details>\n")
+        elif package_manager not in SUPPORTED_SMELLS["code_signature"]:
+            md_file.write(f"\nThe package manager ({package_manager}) does not support checking for code signature.\n")
+        else:
+            md_file.write("\nAll packages have valid code signature.\n")
 
         md_file.write("\n### Call to Action:\n")
         md_file.write(
