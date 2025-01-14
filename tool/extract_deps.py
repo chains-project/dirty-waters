@@ -22,6 +22,7 @@ RESOLVE_PLUGINS_GOAL = append_dependency_goal("resolve-plugins")
 RESOLVE_LOG = "/tmp/deps.log"
 RESOLVE_PLUGINS_LOG = "/tmp/plugins.log"
 
+
 def extract_deps_from_pnpm_lockfile(pnpm_lockfile_yaml):
     """
     Extract dependencies from a pnpm-lock.yaml file.
