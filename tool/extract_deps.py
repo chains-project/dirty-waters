@@ -410,7 +410,7 @@ def extract_deps_from_maven(repo_path):
             "-Dsort=true",
             f"-DoutputFile={RESOLVE_LOG}",
         ],
-        "plugins": [ # Plugin dependencies
+        "plugins": [  # Plugin dependencies
             "mvn",
             RESOLVE_PLUGINS_GOAL,
             "-Dsort=true",
@@ -427,13 +427,9 @@ def extract_deps_from_maven(repo_path):
         retrieved_plugins = parse_mvn_dependency_logs(RESOLVE_PLUGINS_LOG)
         # Go back to the original directory
         os.chdir(current_dir)
-        parsed_deps = [
-            f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}"
-            for dep in retrieved_deps
-        ]
+        parsed_deps = [f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}" for dep in retrieved_deps]
         parsed_plugins = [
-            f"{plugin['groupId']}:{plugin['artifactId']}@{plugin['version']}"
-            for plugin in retrieved_plugins
+            f"{plugin['groupId']}:{plugin['artifactId']}@{plugin['version']}" for plugin in retrieved_plugins
         ]
 
         # Using a set to avoid duplicates
