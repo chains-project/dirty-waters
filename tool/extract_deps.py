@@ -15,6 +15,12 @@ from tool_config import PNPM_LIST_COMMAND
 
 logger = logging.getLogger(__name__)
 
+MVN_DEPENDENCY_PLUGIN = "org.apache.maven.plugins:maven-dependency-plugin:3.8.1"
+append_dependency_goal = lambda goal: f"{MVN_DEPENDENCY_PLUGIN}:{goal}"
+RESOLVE_GOAL = append_dependency_goal("resolve")
+RESOLVE_PLUGINS_GOAL = append_dependency_goal("resolve-plugins")
+RESOLVE_LOG = "/tmp/deps.log"
+RESOLVE_PLUGINS_LOG = "/tmp/plugins.log"
 
 def extract_deps_from_pnpm_lockfile(pnpm_lockfile_yaml):
     """
