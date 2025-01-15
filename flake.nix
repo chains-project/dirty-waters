@@ -1,7 +1,7 @@
 {
   description = "Construct development shell from requirements.txt";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
 
   inputs.pyproject-nix.url = "github:nix-community/pyproject.nix";
 
