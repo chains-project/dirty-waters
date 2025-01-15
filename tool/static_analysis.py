@@ -32,6 +32,7 @@ DEFAULT_ENABLED_CHECKS = {
     "deprecated": True,
     "forks": True,
     "provenance": True,
+    "code_signature": True,
 }
 
 
