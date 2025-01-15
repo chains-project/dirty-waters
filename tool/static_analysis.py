@@ -11,6 +11,7 @@ import re
 
 import tool_config
 from compare_commits import tag_format as construct_tag_format
+import logging
 
 
 github_token = os.getenv("GITHUB_API_TOKEN")
