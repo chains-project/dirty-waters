@@ -116,7 +116,7 @@ def check_code_signature(package_name, package_version, pm):
     # TODO: find a package where we can check this, because with spoon everything is fine
     def check_maven_signature(package_name, package_version):
         # Construct the command
-        command = f"mvn org.simplify4u.plugins:pgpverify-maven-plugin:show -Dartifact={package_name}:{package_version}"
+        command = f"mvn org.simplify4u.plugins:pgpverify-maven-plugin:1.18.2:show -Dartifact={package_name}:{package_version}"
 
         # Run the command
         output = subprocess.run(command, shell=True, capture_output=True, text=True)
