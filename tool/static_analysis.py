@@ -6,6 +6,8 @@ import urllib.parse
 from tqdm import tqdm
 
 import requests
+import subprocess
+import re
 
 import tool_config
 from compare_commits import tag_format as construct_tag_format
@@ -103,6 +105,61 @@ def check_deprecated_and_provenance(package, package_version, pm):
     elif pm == "maven":
         # maven doesn't have this
         return check_maven(package, package_version)
+    else:
+        # log stuff
+        # blow up
+        logging.error(f"Package manager {pm} not supported.")
+
+
+def check_code_signature(package_name, package_version, pm):
+    # TODO: caching this somehow would be nice
+    # TODO: find a package where we can check this, because with spoon everything is fine
+    def check_maven_signature(package_name, package_version):
+        # Construct the command
+        command = f"mvn org.simplify4u.plugins:pgpverify-maven-plugin:show -Dartifact={package_name}:{package_version}"
+
+        # Run the command
+        output = subprocess.run(command, shell=True, capture_output=True, text=True)
+
+        # Regular expression to extract the PGP signature section
+        pgp_signature_pattern = re.compile(r"PGP signature:\n(?:[ \t]*.+\n)*?[ \t]*status:\s*(\w+)", re.MULTILINE)
+        match = pgp_signature_pattern.search(output.stdout)
+        if match:
+            # Extract the status
+            status = match.group(1).strip().lower()
+            return {"signature_present": True, "signature_valid": status == "valid"}
+
+        # If no match is found, return no PGP signature present
+        return {"signature_present": False, "signature_valid": False}
+
+    def check_npm_signature(package, package_version):
+        # NOTE: for future reference, NPM migrated from PGP signatures to ECDSA registry signatures
+        # PGP-based registry signatures were deprecated on April 25th, 2023
+        try:
+            response = requests.get(f"https://registry.npmjs.org/{package}", timeout=20)
+            response.raise_for_status()
+
+            data = response.json()
+            version_info = data.get("versions", {}).get(package_version, {})
+
+            # Check for signature in dist metadata
+            dist_info = version_info.get("dist", {})
+            signatures = dist_info.get("signatures", [])
+
+            if signatures:
+                valid_signatures = [sig for sig in signatures if sig.get("keyid") and sig.get("sig")]
+                return {"signature_present": True, "signature_valid": len(valid_signatures) > 0}
+
+            return {"signature_present": False, "signature_valid": False}
+
+        except requests.RequestException as e:
+            logging.error(f"Error checking NPM signature: {str(e)}")
+            return {"signature_present": False, "signature_valid": False}
+
+    if pm == "maven":
+        return check_maven_signature(package_name, package_version)
+    elif pm in ("yarn-berry", "yarn-classic", "pnpm", "npm"):
+        return check_npm_signature(package_name, package_version)
     else:
         # log stuff
         # blow up
@@ -452,6 +509,10 @@ def analyze_package_data(package, repo_url, pm, check_match=False, enabled_check
             if enabled_checks["provenance"]:
                 package_info["provenance"] = package_infos.get("provenance_in_version")
             package_info["package_info"] = package_infos
+        
+        # Only check code signature if enabled
+        if enabled_checks["code_signature"]:
+            package_info["code_signature"] = check_code_signature(package_name, package_version, pm)
 
         # Only check source code and forks if enabled
         if enabled_checks["source_code"] or enabled_checks["forks"]:
@@ -496,7 +557,7 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
     with tqdm(total=len(packages_data), desc="Analyzing packages") as pbar:
         for package, repo_urls in packages_data.items():
             # print(f"Analyzing {package}")
-            tqdm.write(f"{package}")
+            tqdm.write(f"[INFO] Currently analyzing {package}")
             repo_url = repo_urls.get("github", "")
             analyzed_data = analyze_package_data(
                 package, repo_url, pm, check_match=check_match, enabled_checks=enabled_checks

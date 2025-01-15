@@ -7,6 +7,7 @@ import argparse
 import logging
 import os
 import requests
+from git import Repo
 
 # from dotenv import load_dotenv
 
@@ -118,6 +119,11 @@ def get_args():
         action="store_true",
         help="Check for dependencies with no build attestation",
     )
+    smell_group.add_argument(
+        "--check-code-signature",
+        action="store_true",
+        help="Check for dependencies with missing/invalid code signature",
+    )
 
     arguments = parser.parse_args()
 
@@ -201,6 +207,37 @@ def get_lockfile(project_repo_name, release_version, package_manager):
     return lock_content, default_branch, project_repo_name
 
 
+def clone_repo(project_repo_name, release_version):
+    """
+    Clone the repository for the given project and release version.
+
+    Args:
+        project_repo_name (str): The name of the project repository.
+        release_version (str): The release version of the project.
+
+    Returns:
+        str: The path to the cloned repository.
+    """
+
+    repo_url = f"https://github.com/{project_repo_name}.git"
+
+    # Clone to /tmp folder; if it is already cloned, an error will be raised
+    try:
+        Repo.clone_from(repo_url, f"/tmp/{project_repo_name}")
+    except Exception as e:
+        # If the repo is already cloned, just fetch the latest changes
+        print(f"[INFO] Repo already cloned. Fetching the latest changes...")
+        repo = Repo(f"/tmp/{project_repo_name}")
+
+        # Fetch the latest changes
+        repo.remotes.origin.fetch()
+    # Checkout to the release version
+    repo = Repo(f"/tmp/{project_repo_name}")
+    repo.git.checkout(release_version)
+
+    return f"/tmp/{project_repo_name}"
+
+
 def get_deps(folder_path, project_repo_name, release_version, package_manager):
     """
     Get the dependencies for the given project and release version.
@@ -238,8 +275,13 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
         deps_list_all = extract_deps.extract_deps_from_npm(npm_file)
 
     elif package_manager == "maven":
-        pom_xml_content, _, _ = get_lockfile(project_repo_name, release_version, package_manager)
-        deps_list_all = extract_deps.extract_deps_from_maven(pom_xml_content)
+        # Maven is more complex, because of child packages in the repo/pom; this requires to clone the whole repo
+        # TODO: Issue: not sure if this works with child projects -- probably not?
+        # Example: parent package A has a child package B; we want to run it on package B, but cloning won't work here (?)
+        # And even if it did, we still need to, inside the project, navigate to the child package and run the analysis there
+        # So this is a side case not yet handled
+        repo_path = clone_repo(project_repo_name, release_version)
+        deps_list_all = extract_deps.extract_deps_from_maven(repo_path)
 
     logging.info("Number of dependencies: %d", len(deps_list_all.get("resolutions", {})))
     logging.info("Number of patches: %d", len(deps_list_all.get("patches", {})))
@@ -503,6 +545,7 @@ def main():
             dw_args.check_deprecated,
             dw_args.check_forks,
             dw_args.check_provenance,
+            dw_args.check_code_signature
         ]
     )
 
@@ -520,6 +563,7 @@ def main():
             "deprecated": dw_args.check_deprecated,
             "forks": dw_args.check_forks,
             "provenance": dw_args.check_provenance,
+            "code_signature": dw_args.check_code_signature,
         }
     else:
         # If no checks specified, enable all by default
@@ -529,6 +573,7 @@ def main():
             "deprecated": True,
             "forks": True,
             "provenance": True,
+            "code_signature": True,
         }
 
     project_info = setup_project_info(dw_args)
