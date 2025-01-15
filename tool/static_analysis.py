@@ -511,7 +511,7 @@ def analyze_package_data(package, repo_url, pm, check_match=False, enabled_check
             if enabled_checks["provenance"]:
                 package_info["provenance"] = package_infos.get("provenance_in_version")
             package_info["package_info"] = package_infos
-        
+
         # Only check code signature if enabled
         if enabled_checks["code_signature"]:
             package_info["code_signature"] = check_code_signature(package_name, package_version, pm)

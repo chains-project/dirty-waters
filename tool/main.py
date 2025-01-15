@@ -545,7 +545,7 @@ def main():
             dw_args.check_deprecated,
             dw_args.check_forks,
             dw_args.check_provenance,
-            dw_args.check_code_signature
+            dw_args.check_code_signature,
         ]
     )
 

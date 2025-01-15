@@ -159,15 +159,12 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
         warning_counts["forked_package"] = f":cactus: Packages that are forks(⚠️⚠️) {(df['is_fork'] == True).sum()}"
 
     if enabled_checks.get("code_signature"):
-        warning_counts["code_signature"] = (
-            f":lock: Packages without code signature(⚠️⚠️) {(code_signature_df.shape[0])}"
-        )
+        warning_counts["code_signature"] = f":lock: Packages without code signature(⚠️⚠️) {(code_signature_df.shape[0])}"
 
     if enabled_checks.get("provenance"):
         warning_counts["provenance"] = (
             f":black_square_button: Packages without provenance(⚠️) {(df['provenance_in_version'] == False).sum()}"
         )
-    
 
     not_on_github_counts = (df["github_url"] == "Not_github_repo").sum()
 
