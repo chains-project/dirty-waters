@@ -1,6 +1,6 @@
 [project]
 name = "dirty-waters"
-version = "0.30.0"
+version = "0.31.0"
 description = "Automatically detect software supply chain smells and issues"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -43,9 +43,6 @@ exclude = [ ".bzr", ".direnv", ".eggs", ".git", ".git-rewrite", ".hg", ".mypy_ca
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 target-version = "py310"
 
-[tool.setuptools.package-dir]
-"" = "."
-
 [tool.ruff.lint]
 ignore = [ "C901", "E501", "E741",]
 select = [ "C", "E", "F", "I", "W",]
@@ -55,13 +52,16 @@ unfixable = []
 [tool.ruff.flake8-quotes]
 docstring-quotes = "double"
 
-[tool.setuptools.packages.find]
-where = [ ".",]
-include = [ "tool*",]
-exclude = [ "tests*", "docs*", "example_reports*",]
+[tool.setuptools.package-dir]
+"" = "."
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10
 
 [tool.ruff.lint.isort]
 known-first-party = [ "tool",]
+
+[tool.setuptools.packages.find]
+where = [ ".",]
+include = [ "tool*",]
+exclude = [ "tests*", "docs*", "example_reports*",]
