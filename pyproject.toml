@@ -1,47 +1,30 @@
 [project]
 name = "dirty-waters"
-version = "0.1.1"
-authors = [
-    {name = "Raphina Liu", email = "raphina@kth.se"},
-    {name = "Diogo Gaspar", email = "dgaspar@kth.se"},
-    {name = "Martin Monperrus", email = "monperrus@kth.se"}
-]
+version = "0.30.0"
 description = "Automatically detect software supply chain smells and issues"
 readme = "README.md"
 requires-python = ">=3.12"
-license = {text = "MIT"}
-keywords = ["software supply chain", "ssc", "dependencies", "npm"]
-classifiers = [
-    "Intended Audience :: Developers",
-    "Topic :: Software Development :: Build Tools",
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-]
+keywords = [ "software supply chain", "ssc", "dependencies", "npm",]
+classifiers = [ "Intended Audience :: Developers", "Topic :: Software Development :: Build Tools", "Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent",]
+dependencies = [ "attrs == 24.2.0", "cattrs == 24.1.2", "certifi == 2024.8.30", "charset-normalizer == 3.4.0", "exceptiongroup == 1.2.2", "GitPython == 3.1.43", "idna == 3.10", "numpy == 2.1.2", "pandas == 2.2.3", "platformdirs == 4.3.6", "python-dateutil == 2.9.0.post0", "pytz == 2024.2", "requests == 2.32.3", "requests-cache == 1.2.1", "six == 1.16.0", "tabulate == 0.9.0", "tqdm == 4.66.5", "typing_extensions == 4.12.2", "tzdata == 2024.2", "url-normalize == 1.4.3", "urllib3 == 2.2.3",]
+[[project.authors]]
+name = "Raphina Liu"
+email = "raphina@kth.se"
 
-dependencies = [
-    'attrs == 24.2.0',
-    'cattrs == 24.1.2',
-    'certifi == 2024.8.30',
-    'charset-normalizer == 3.4.0',
-    'exceptiongroup == 1.2.2',
-    'GitPython == 3.1.43',
-    'idna == 3.10',
-    'numpy == 2.1.2',
-    'pandas == 2.2.3',
-    'platformdirs == 4.3.6',
-    'python-dateutil == 2.9.0.post0',
-    'pytz == 2024.2',
-    'requests == 2.32.3',
-    'requests-cache == 1.2.1',
-    'six == 1.16.0',
-    'tabulate == 0.9.0',
-    'tqdm == 4.66.5',
-    'typing_extensions == 4.12.2',
-    'tzdata == 2024.2',
-    'url-normalize == 1.4.3',
-    'urllib3 == 2.2.3',
-]
+[[project.authors]]
+name = "Diogo Gaspar"
+email = "dgaspar@kth.se"
+
+[[project.authors]]
+name = "Martin Monperrus"
+email = "monperrus@kth.se"
+
+[build-system]
+requires = [ "setuptools",]
+build-backend = "setuptools.build_meta"
+
+[project.license]
+text = "MIT"
 
 [project.urls]
 Homepage = "https://github.com/chains-project/dirty-waters"
@@ -50,69 +33,35 @@ Homepage = "https://github.com/chains-project/dirty-waters"
 [project.scripts]
 dirty-waters = "tool.main:main"
 
-[tool.setuptools]
-package-dir = {"" = "."}
-
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["tool*"]
-exclude = ["tests*", "docs*", "example_reports*"]
-
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
-
 [tool.black]
 line-length = 119
-include = '\.pyi?$'
+include = "\\.pyi?$"
 
 [tool.ruff]
-# Never enforce `E501` (line length violations).
-lint.ignore = ["C901", "E501", "E741"]
-lint.select = ["C", "E", "F", "I", "W"]
 line-length = 119
-
-# Allow autofix for all enabled rules (when `--fix`) is provided.
-lint.fixable = ["ALL"]
-lint.unfixable = []
-
-# Exclude a variety of commonly ignored directories.
-exclude = [
-    ".bzr",
-    ".direnv",
-    ".eggs",
-    ".git",
-    ".git-rewrite",
-    ".hg",
-    ".mypy_cache",
-    ".nox",
-    ".pants.d",
-    ".pytype",
-    ".ruff_cache",
-    ".svn",
-    ".tox",
-    ".venv",
-    "__pypackages__",
-    "_build",
-    "buck-out",
-    "build",
-    "dist",
-    "node_modules",
-    "venv",
-]
-
-# Allow unused variables when underscore-prefixed.
+exclude = [ ".bzr", ".direnv", ".eggs", ".git", ".git-rewrite", ".hg", ".mypy_cache", ".nox", ".pants.d", ".pytype", ".ruff_cache", ".svn", ".tox", ".venv", "__pypackages__", "_build", "buck-out", "build", "dist", "node_modules", "venv",]
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-
-# Assume Python 3.10.
 target-version = "py310"
 
-[tool.ruff.lint.mccabe]
-# Unlike Flake8, default to a complexity level of 10.
-max-complexity = 10
+[tool.setuptools.package-dir]
+"" = "."
 
-[tool.ruff.lint.isort]
-known-first-party = ["tool"]
+[tool.ruff.lint]
+ignore = [ "C901", "E501", "E741",]
+select = [ "C", "E", "F", "I", "W",]
+fixable = [ "ALL",]
+unfixable = []
 
 [tool.ruff.flake8-quotes]
 docstring-quotes = "double"
+
+[tool.setuptools.packages.find]
+where = [ ".",]
+include = [ "tool*",]
+exclude = [ "tests*", "docs*", "example_reports*",]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.isort]
+known-first-party = [ "tool",]
