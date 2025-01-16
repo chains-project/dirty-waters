@@ -30,11 +30,11 @@ jobs:
         with:
           file_to_bump: "./pyproject.toml"
           bump_type: "minor"
-      - name: Commit version bump
-        run: |
-          git add pyproject.toml
-          git commit -m "Bump version to ${{ steps.bump_version.outputs.new_version }}"
-          git push
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Bump version to ${{ steps.bump_version.outputs.new_version }}"
+          branch: ${{ github.head_ref }}
       - name: Get new version
         id: get_version
         run: |
