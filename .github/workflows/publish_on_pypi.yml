@@ -20,10 +20,9 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
-      - name: Configure Git
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
       - name: Version bump
         uses: monperrus/pyproject-bump-pypi@main
         id: bump_version
