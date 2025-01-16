@@ -103,13 +103,13 @@ Notes:
 
 `dirty-waters` currently supports package managers within the JavaScript and Java ecosystems. However, due to some constraints associated with the nature of the package managers, the tool may not be able to detect all the smells in the project. The following table shows the supported package managers and their associated smells:
 
-| Package Manager | No Source Code Repository | Invalid Source Code Repository URL | No Release Tag | Deprecated Dependency | Depends on a Fork | No Build Attestation |
-| --------------- | ------------------------- | ---------------------------------- | -------------- | --------------------- | ----------------- | -------------------- |
-| Yarn Classic    | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  |
-| Yarn Berry      | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  |
-| Pnpm            | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  |
-| Npm             | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  |
-| Maven           | Yes                       | Yes                                | Yes            | No                    | Yes               | No                   |
+| Package Manager | No Source Code Repository | Invalid Source Code Repository URL | No Release Tag | Deprecated Dependency | Depends on a Fork | No Build Attestation | No/Invalid Code Signature |
+| --------------- | ------------------------- | ---------------------------------- | -------------- | --------------------- | ----------------- | -------------------- | ------------------------- |
+| Yarn Classic    | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  | Yes                       |
+| Yarn Berry      | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  | Yes                       |
+| Pnpm            | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  | Yes                       |
+| Npm             | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  | Yes                       |
+| Maven           | Yes                       | Yes                                | Yes            | No                    | Yes               | No                   | Yes                       |
 
 ### Smell Check Options
 
@@ -122,6 +122,7 @@ is passed, instead of all checks being performed, only the flagged ones will be)
 - `--check-deprecated`: Check for deprecated dependencies
 - `--check-forks`: Check for dependencies that are forks
 - `--check-provenance`: Check for dependencies with no build attestation
+- `--check-code-signature`: Check for dependencies with no/invalid code signature
 
 **Note**: The `--check-release-tags` and `--check-forks` flags require `--check-source-code` to be enabled, as release tags can only be checked if we can first verify the source code repository.
 
