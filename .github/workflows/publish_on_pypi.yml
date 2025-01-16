@@ -27,16 +27,16 @@ jobs:
         with:
           file_to_bump: "./pyproject.toml"
           bump_type: "minor"
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Bump version to ${{ steps.bump_version.outputs.new_version }}"
-          branch: ${{ github.head_ref }}
       - name: Get new version
         id: get_version
         run: |
           VERSION=$(grep -m1 'version = ' pyproject.toml | cut -d '"' -f2)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Bump version to ${{ steps.get_version.outputs.version }}"
+          branch: ${{ github.head_ref }}
       - name: Create and push tag
         run: |
           git tag v${{ steps.get_version.outputs.version }}
