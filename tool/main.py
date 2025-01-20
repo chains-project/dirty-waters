@@ -9,8 +9,6 @@ import os
 import requests
 from git import Repo
 
-# from dotenv import load_dotenv
-
 
 import extract_deps
 import github_repo
@@ -24,7 +22,6 @@ import tool_config
 import report_static
 import report_diff
 
-# load_dotenv()
 github_token = os.getenv("GITHUB_API_TOKEN")
 if not github_token:
     raise ValueError("GitHub API token(GITHUB_API_TOKEN) is not set in the environment variables.")
@@ -34,6 +31,7 @@ headers = {
     "Accept": "application/vnd.github.v3+json",
 }
 
+cache_manager = tool_config.get_cache_manager()
 
 def get_args():
     """
@@ -168,10 +166,8 @@ def get_lockfile(project_repo_name, release_version, package_manager):
         "npm": "package-lock.json",
         "maven": "pom.xml",
     }
-
-    tool_config.setup_cache("demo")
-    # logging.info("Cache [demo_cache] setup complete")
-
+    
+    cache_manager._setup_requests_cache()
     try:
         lockfile_name = LOOKING_FOR[package_manager]
         logging.info(f"Getting {lockfile_name} for %s@%s", project_repo_name, release_version)
@@ -186,6 +182,9 @@ def get_lockfile(project_repo_name, release_version, package_manager):
     response = requests.get(file_url, headers=headers, timeout=20)
 
     if response.status_code == 200:
+        response = requests.get(file_url, headers=headers, timeout=20)
+        response.raise_for_status()
+        
         data = response.json()
         download_url = data.get("download_url")
         lock_content = requests.get(download_url, timeout=60).text
@@ -293,14 +292,6 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
         "Number of dependencies with different resolutions: %d",
         len(dep_with_many_versions),
     )
-
-    rv_name = release_version.replace("/", "_")
-
-    # write_to_file(f"{rv_name}_deps_list_all.json", folder_path, deps_list_all)
-    # write_to_file(
-    #     f"{rv_name}_dep_with_many_versions.json", folder_path, dep_with_many_versions
-    # )
-    # write_to_file(f"{rv_name}_patches_info.json", folder_path, patches_info)
 
     return deps_list_all, dep_with_many_versions, patches_info
 

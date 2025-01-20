@@ -9,10 +9,9 @@ import requests
 import subprocess
 import re
 
-import tool_config
+from tool_config import get_cache_manager
 from compare_commits import tag_format as construct_tag_format
 import logging
-
 
 github_token = os.getenv("GITHUB_API_TOKEN")
 
@@ -21,7 +20,8 @@ headers = {
     "Accept": "application/vnd.github.v3+json",
 }
 
-# tool_config.setup_cache("static")
+
+cache_manager = get_cache_manager()
 
 
 MAX_WAIT_TIME = 15 * 60
@@ -422,8 +422,7 @@ def check_name_match_for_fork(package_name, repository):
 
 
 def check_name_match(package_name, repository):
-    tool_config.setup_cache("check_name")
-    # logging.info("Cache [check_name_cache] setup complete")
+    cache_manager._setup_requests_cache()
 
     _, repo_name, _, _, _, _ = api_constructor(package_name, repository)
     original_package_name = package_name.rsplit("@", 1)[0]
@@ -503,21 +502,53 @@ def analyze_package_data(package, repo_url, pm, check_match=False, enabled_check
     try:
         package_name, package_version = package.rsplit("@", 1)
 
-        # Only check deprecation and provenance if enabled
-        if enabled_checks["deprecated"] or enabled_checks["provenance"]:
+        # Try to get from cache first
+        cached_analysis = cache_manager.package_cache.get_package_analysis(package_name, package_version, pm)
+        
+        # Initialize missing_checks to track what needs to be analyzed
+        missing_checks = {}
+        
+        if cached_analysis:
+            print(f"[INFO] Found cached analysis for {package}")
+            package_info = cached_analysis
+            
+            # Check which enabled checks are missing from cache
+            for check, enabled in enabled_checks.items():
+                if enabled:
+                    if check == "deprecated" and "deprecated" not in cached_analysis:
+                        missing_checks["deprecated"] = True
+                    elif check == "provenance" and "provenance" not in cached_analysis:
+                        missing_checks["provenance"] = True
+                    elif check == "code_signature" and "code_signature" not in cached_analysis:
+                        missing_checks["code_signature"] = True
+                    elif check == "source_code" and "github_exists" not in cached_analysis:
+                        missing_checks["source_code"] = True
+                    elif check == "forks" and (
+                        "github_exists" not in cached_analysis
+                        or "is_fork" not in cached_analysis.get("github_exists", {})
+                    ):
+                        missing_checks["forks"] = True
+                        
+            if not missing_checks:
+                print(f"[INFO] Using complete cached analysis for {package}")
+                return package_info
+            print(f"[INFO] Found partial cached analysis for {package}, analyzing missing checks: {list(missing_checks.keys())}")
+        else:
+            print(f"[INFO] No cached analysis for {package}, analyzing all enabled checks")
+            missing_checks = enabled_checks
+
+        if (missing_checks.get("deprecated") or missing_checks.get("provenance")):
             package_infos = check_deprecated_and_provenance(package_name, package_version, pm)
-            if enabled_checks["deprecated"]:
+            if missing_checks.get("deprecated"):
                 package_info["deprecated"] = package_infos.get("deprecated_in_version")
-            if enabled_checks["provenance"]:
+            if missing_checks.get("provenance"):
                 package_info["provenance"] = package_infos.get("provenance_in_version")
             package_info["package_info"] = package_infos
 
-        # Only check code signature if enabled
-        if enabled_checks["code_signature"]:
+        if missing_checks.get("code_signature"):
             package_info["code_signature"] = check_code_signature(package_name, package_version, pm)
 
-        # Only check source code and forks if enabled
-        if enabled_checks["source_code"] or enabled_checks["forks"]:
+        if missing_checks.get("source_code") or missing_checks.get("forks"):
             if "Could not find" in repo_url:
                 package_info["github_exists"] = {"github_url": "No_repo_info_found"}
             elif "not github" in repo_url:
@@ -526,14 +557,11 @@ def analyze_package_data(package, repo_url, pm, check_match=False, enabled_check
                 github_info = check_existence(package, repo_url)
                 package_info["github_exists"] = github_info
 
-        # Only check name matches if enabled and relevant
-        if check_match and package_info["github_exists"] and package_info["github_exists"].get("github_exists"):
+        if check_match and package_info.get("github_exists") and package_info["github_exists"].get("github_exists"):
             repo_url_to_use = github_info.get("redirected_repo") or repo_url
-            if package_info["provenance"] == False:
-                if (
-                    package_info["github_exists"].get("is_fork") == True
-                    or package_info["github_exists"].get("archived") == True
-                ):
+            if package_info.get("provenance") == False:
+                if (package_info["github_exists"].get("is_fork") == True or 
+                    package_info["github_exists"].get("archived") == True):
                     package_info["match_info"] = check_name_match_for_fork(package, repo_url_to_use)
                 else:
                     package_info["match_info"] = check_name_match(package, repo_url_to_use)
@@ -544,8 +572,11 @@ def analyze_package_data(package, repo_url, pm, check_match=False, enabled_check
                     "repo_name": repo_url,
                 }
 
+        # Cache the updated analysis
+        cache_manager.package_cache.cache_package_analysis(package_name, package_version, pm, package_info)
+
     except Exception as e:
-        logging.error(f"Error analyzing package {package}: {str(e)}")
+        print(f"[ERROR] Analyzing package {package}: {str(e)}")
         package_info["error"] = str(e)
 
     return package_info
@@ -571,14 +602,6 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
                 errors[package] = error
             else:
                 package_all[package] = analyzed_data
-
-    # filepaths
-
-    # file_path = os.path.join(folder, "all_info.json")
-    # error_path = os.path.join(folder, "errors.json")
-
-    # save_results_to_file(file_path, package_all)
-    # save_results_to_file(error_path, errors)
 
     return package_all, errors
 

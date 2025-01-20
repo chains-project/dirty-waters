@@ -6,25 +6,13 @@ import sqlite3
 import logging
 from pathlib import Path
 from tqdm import tqdm
-
-# from datetime import datetime
-
+from tool_config import get_cache_manager
+from typing import List
 
 TIMEOUT = 60
 
-script_dir = Path(__file__).parent.absolute()
-database_file = script_dir / "database" / "github_repo_info_all.db"
-
-conn = sqlite3.connect(database_file)
-c = conn.cursor()
-
-c.execute(
-    """CREATE TABLE IF NOT EXISTS pkg_github_repo_output (
-                package TEXT PRIMARY KEY,
-                github TEXT)"""
-)
-
-conn.commit()
+cache_manager = get_cache_manager()
+GITHUB_URL_PATTERN = re.compile(r"(github.*)", re.IGNORECASE)
 
 
 def write_output(folder_path, filename, data):
@@ -42,11 +30,32 @@ def write_output(folder_path, filename, data):
             json.dump(data, f, indent=2)
 
 
-def extract_repo_url(repo_info):
-    pattern = r"(github.*)"
-    match = re.search(pattern, repo_info, re.IGNORECASE)
+def extract_repo_url(repo_info: str) -> str:
+    """Extract GitHub repository URL from repository information."""
+    match = GITHUB_URL_PATTERN.search(repo_info)
     return match.group(1) if match else "not github"
 
+
+def get_package_command(pm: str, package: str) -> List[str]:
+    """Get the appropriate command for the package manager."""
+    if pm == "yarn-berry" or pm == "yarn-classic":
+        return ["yarn", "info", package, "repository.url"]
+    elif pm == "pnpm":
+        return ["pnpm", "info", package, "repository.url"]
+    elif pm == "npm":
+        return ["npm", "info", package, "repository.url"]
+    elif pm == "maven":
+        name, version = package.split("@")
+        group_id, artifact_id = name.split(":")
+        return [
+            "mvn",
+            "help:evaluate",
+            "-Dexpression=project.scm.url",
+            f"-Dartifact={group_id}:{artifact_id}:{version}",
+            "-q",
+            "-DforceStdout",
+        ]
+    raise ValueError(f"Unsupported package manager: {pm}")
 
 def process_package(
     package,
@@ -57,74 +66,20 @@ def process_package(
     some_errors,
     repos_output_json,
 ):
-    c.execute("SELECT github FROM pkg_github_repo_output WHERE package = ?", (package,))
-    db_result = c.fetchone()
+    repo_info = cache_manager.repo_cache.get_repo_info(package)
 
-    if db_result:
-        repo_info = db_result[0]
-
-    else:
+    if not repo_info:
         try:
-            if pm == "yarn-berry" or pm == "yarn-classic":
-                command = ["yarn", "info", package, "repository.url"]
-                result = subprocess.run(
-                    command,
-                    capture_output=True,
-                    text=True,
-                    check=True,
-                    timeout=TIMEOUT,
-                )
-
-            elif pm == "pnpm":
-                command = ["pnpm", "info", package, "repository.url"]
-                result = subprocess.run(
-                    command,
-                    capture_output=True,
-                    text=True,
-                    check=True,
-                    timeout=TIMEOUT,
-                )
-
-            elif pm == "npm":
-                command = ["npm", "info", package, "repository.url"]
-                result = subprocess.run(
-                    command,
-                    capture_output=True,
-                    text=True,
-                    check=True,
-                    timeout=TIMEOUT,
-                )
-
-            elif pm == "maven":
-                # package is in the form of group_id:artifact_id@version -- we need all 3
-                name, version = package.split("@")
-                group_id, artifact_id = name.split(":")
-                command = [
-                    "mvn",
-                    "help:evaluate",
-                    "-Dexpression=project.scm.url",
-                    f"-Dartifact={group_id}:{artifact_id}:{version}",
-                    "-q",
-                    "-DforceStdout",
-                ]
-                result = subprocess.run(
-                    command,
-                    capture_output=True,
-                    text=True,
-                    check=True,
-                    timeout=TIMEOUT,
-                )
-
-            else:
-                raise ValueError(f"Unsupported package manager: {pm}")
-
-            repo_info = result.stdout if result.stdout else result.stderr
-            # print(f"Repo info for {package}: {repo_info}")
-            c.execute(
-                "INSERT OR IGNORE INTO pkg_github_repo_output (package, github) VALUES (?,?)",
-                (package, repo_info),
+            command = get_package_command(pm, package)            
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                check=True,
+                timeout=TIMEOUT,
             )
-            conn.commit()
+            repo_info = result.stdout if result.stdout else result.stderr
+            cache_manager.repo_cache.cache_repo_info(package, repo_info)
 
         except subprocess.TimeoutExpired:
             logging.error(
@@ -136,7 +91,6 @@ def process_package(
             logging.error(f"Command {command} failed for package {package}: {e}")
             repo_info = None
 
-    # TODO: npm?
     package = package.replace("@npm:", "@")
 
     if (

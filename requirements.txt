@@ -10,6 +10,7 @@ pandas==2.2.3
 platformdirs==4.3.6
 python-dateutil==2.9.0.post0
 pytz==2024.2
+PyYAML==6.0.2
 requests==2.32.3
 requests-cache==1.2.1
 six==1.16.0
