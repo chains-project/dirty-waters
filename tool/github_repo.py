@@ -57,6 +57,7 @@ def get_package_command(pm: str, package: str) -> List[str]:
         ]
     raise ValueError(f"Unsupported package manager: {pm}")
 
+
 def process_package(
     package,
     pm,
@@ -70,7 +71,7 @@ def process_package(
 
     if not repo_info:
         try:
-            command = get_package_command(pm, package)            
+            command = get_package_command(pm, package)
             result = subprocess.run(
                 command,
                 capture_output=True,

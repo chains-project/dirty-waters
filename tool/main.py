@@ -33,6 +33,7 @@ headers = {
 
 cache_manager = tool_config.get_cache_manager()
 
+
 def get_args():
     """
     Get command line arguments.
@@ -166,7 +167,7 @@ def get_lockfile(project_repo_name, release_version, package_manager):
         "npm": "package-lock.json",
         "maven": "pom.xml",
     }
-    
+
     cache_manager._setup_requests_cache()
     try:
         lockfile_name = LOOKING_FOR[package_manager]
@@ -184,7 +185,7 @@ def get_lockfile(project_repo_name, release_version, package_manager):
     if response.status_code == 200:
         response = requests.get(file_url, headers=headers, timeout=20)
         response.raise_for_status()
-        
+
         data = response.json()
         download_url = data.get("download_url")
         lock_content = requests.get(download_url, timeout=60).text

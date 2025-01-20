@@ -193,7 +193,6 @@ def extract_deps_from_v1_yarn(yarn_lock_file):
         return {"resolutions": [], "patches": []}
 
 
-
 def get_pnpm_dep_tree(folder_path, version_tag, project_repo_name):
     """
     Get pnpm dependency tree for the given project.
@@ -370,7 +369,7 @@ def get_pom_hash(repo_path):
     pom_path = Path(repo_path) / "pom.xml"
     if not pom_path.exists():
         return None
-    
+
     with open(pom_path, "rb") as f:
         return hashlib.sha256(f.read()).hexdigest()
 
@@ -389,34 +388,30 @@ def extract_deps_from_maven(repo_path):
     def parse_mvn_dependency_logs(log_file):
         """
         Parse Maven dependency resolution logs to extract dependency information.
-        
+
         Args:
             log_file (str): Path to the Maven dependency resolution log file
-        
+
         Returns:
             list: List of dictionaries containing dependency information
         """
         dependencies = []
-        
+
         try:
-            with open(log_file, 'r') as f:
+            with open(log_file, "r") as f:
                 for line in f:
-                    parts = line.strip().split(':')
+                    parts = line.strip().split(":")
                     if len(parts) >= 3:  # Minimum required parts, [2] would be type
-                        dep_info = {
-                            'groupId': parts[0],
-                            'artifactId': parts[1],
-                            'version': parts[3].split()[0]
-                        }
+                        dep_info = {"groupId": parts[0], "artifactId": parts[1], "version": parts[3].split()[0]}
                         dependencies.append(dep_info)
-                        
+
         except FileNotFoundError:
             logging.error("Dependency log file not found: %s", log_file)
         except Exception as e:
             logging.error("Error parsing dependency log: %s", str(e))
-            
+
         return dependencies
-    
+
     # Generate a cache key based on the repo path and pom.xml hash
     pom_hash = get_pom_hash(repo_path)
     if not pom_hash:
@@ -427,7 +422,7 @@ def extract_deps_from_maven(repo_path):
     if cached_deps:
         print(f"[INFO] Using cached Maven dependencies for {repo_path}")
         return cached_deps
-        
+
     # If we reach here, we need to resolve dependencies
     current_dir = os.getcwd()
     os.chdir(repo_path)
@@ -451,14 +446,14 @@ def extract_deps_from_maven(repo_path):
         # Run Maven commands to resolve dependencies
         subprocess.run(retrieval_commands["regular"], check=True)
         subprocess.run(retrieval_commands["plugins"], check=True)
-        
+
         # Parse the dependency logs
         retrieved_deps = parse_mvn_dependency_logs(RESOLVE_LOG)
         retrieved_plugins = parse_mvn_dependency_logs(RESOLVE_PLUGINS_LOG)
-        
+
         # Go back to original directory
         os.chdir(current_dir)
-        
+
         # Format the dependencies
         parsed_deps = [f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}" for dep in retrieved_deps]
         parsed_plugins = [
@@ -466,14 +461,11 @@ def extract_deps_from_maven(repo_path):
         ]
 
         # Create the result
-        deps_list_data = {
-            "resolutions": list(set(parsed_deps + parsed_plugins)),
-            "patches": []
-        }
-        
+        deps_list_data = {"resolutions": list(set(parsed_deps + parsed_plugins)), "patches": []}
+
         # Cache the results
         cache_manager.maven_cache.cache_dependencies(repo_path, pom_hash, deps_list_data)
-        
+
         return deps_list_data
 
     except subprocess.CalledProcessError as e:
