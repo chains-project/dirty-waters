@@ -676,26 +676,47 @@ cache_manager = CacheManager()
 def get_cache_manager():
     return cache_manager
 
-
-def setup_logger(log_file_path):
+def setup_logger(log_file_path, debug=False):
     """
     Setup the logger for the analysis.
     """
+    class CustomFormatter(logging.Formatter):
+        """Custom formatter, includes color coding for log levels."""
+        grey = "\x1b[38;20m"
+        green = "\x1b[38;2;0;200;0m"
+        yellow = "\x1b[38;2;255;255;0m"
+        red = "\x1b[38;2;255;0;0m"
+        bold_red = "\x1b[1;31m"
+        reset = "\x1b[0m"
+        fmt = "%(asctime)s:%(name)s:%(levelname)s:%(message)s"
+
+        FORMATS = {
+            logging.DEBUG: grey + fmt + reset,
+            logging.INFO: green + fmt + reset,
+            logging.WARNING: yellow + fmt + reset,
+            logging.ERROR: red + fmt + reset,
+            logging.CRITICAL: bold_red + fmt + reset,
+        }
+
+        def format(self, record):
+            log_fmt = self.FORMATS.get(record.levelno)
+            formatter = logging.Formatter(log_fmt)
+            return formatter.format(record)
 
     # Set up the logger
-    logger = logging.getLogger("dw_analysis")
+    logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
     # Create a console handler
     console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.INFO)
+    console_handler.setLevel(logging.WARNING if not debug else logging.INFO)
 
     # Create a file handler
     file_handler = logging.FileHandler(log_file_path)
     file_handler.setLevel(logging.INFO)
 
     # Create a formatter and set it for both handlers
-    formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    formatter = CustomFormatter()
     console_handler.setFormatter(formatter)
     file_handler.setFormatter(formatter)
 

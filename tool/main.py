@@ -90,6 +90,11 @@ def get_args():
         action="store_true",
         help="Extract dependencies from pnpm with a specific scope using 'pnpm list --filter <scope> --depth Infinity' command. Configure the scope in tool_config.py file.",
     )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Enable debug mode.",
+    )
 
     # Add new smell check arguments
     smell_group = parser.add_argument_group("smell checks")
@@ -127,22 +132,6 @@ def get_args():
     arguments = parser.parse_args()
 
     return arguments
-
-
-def logging_setup(log_file_path):
-    """
-    Setup logging configuration.
-
-    Args:
-        log_file_path (str): The path to the log file.
-    """
-    logging.basicConfig(
-        filename=log_file_path,
-        level=logging.INFO,
-        filemode="w",
-        format="%(asctime)s %(levelname)-8s %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-    )
 
 
 def get_lockfile(project_repo_name, release_version, package_manager):
@@ -421,7 +410,7 @@ def setup_project_info(args):
     }
 
 
-def setup_directories_and_logging(project_info):
+def setup_directories_and_logging(project_info, debug):
     """Set up necessary directories and logging."""
 
     dir_path = tool_config.PathManager()
@@ -431,7 +420,7 @@ def setup_directories_and_logging(project_info):
     project_info["diff_folder"] = diff_folder
 
     log_file_path = result_folder_path / "analysis.log"
-    logging_setup(log_file_path)
+    tool_config.setup_logger(log_file_path, debug)
 
 
 def perform_static_analysis(project_info, is_old_version):
@@ -569,7 +558,7 @@ def main():
         }
 
     project_info = setup_project_info(dw_args)
-    setup_directories_and_logging(project_info)
+    setup_directories_and_logging(project_info, dw_args.debug)
 
     print(
         f"Software supply chain smells analysis for {project_info['repo_name']} for version {project_info['old_version']}..."
