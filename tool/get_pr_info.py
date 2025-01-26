@@ -5,11 +5,11 @@ import json
 import time
 import copy
 import logging
+from tool_config import get_cache_manager, make_github_request
 
+cache_manager = get_cache_manager()
 
 GITHUB_TOKEN = os.getenv("GITHUB_API_TOKEN")
-# if not GITHUB_TOKEN:
-#     raise ValueError("GitHub API token is not set in the environment variables.")
 
 headers = {
     "Authorization": f"Bearer {GITHUB_TOKEN}",
@@ -17,17 +17,6 @@ headers = {
 }
 
 url = "https://api.github.com/graphql"
-
-
-conn = sqlite3.connect("database/github_pr_data.db")
-c = conn.cursor()
-
-c.execute(
-    """CREATE TABLE IF NOT EXISTS pr_info_sample
-             (package TEXT, commit_sha TEXT, commit_node_id TEXT, pr_data TEXT)"""
-)
-
-conn.commit()
 
 
 def fetch_pull_requests(commit_node_id):
@@ -103,25 +92,8 @@ def fetch_pull_requests(commit_node_id):
         "nodeId": f"{commit_node_id}",
         "first": 5,
     }
-
-    body = json.dumps({"query": query, "variables": variables})
-
-    response = requests.post(url, data=body, headers=headers)
-
-    if response.status_code != 200:
-        # retry 10 sec later and try 5 times
-        for i in range(5):
-            print(f"Retrying in 10 seconds...")
-            time.sleep(10)
-            response = requests.post(url, data=body, headers=headers)
-            if response.status_code == 200:
-                break
-        else:
-            raise Exception(response.status_code, response.text)
-
-    pr_info = response.json()
-
-    return pr_info
+    body = {"query": query, "variables": variables}
+    return make_github_request(url, method="POST", json_data=body, headers=headers, max_retries=5)
 
 
 def get_pr_info(data):
@@ -133,7 +105,7 @@ def get_pr_info(data):
 
     for package, info in commits_data.items():
         repo_name = info.get("repo_name")
-        print(f"Checking PR info in {package}'s repository: ", repo_name)
+        logging.info(f"Checking PR info in {package}'s repository: {repo_name}")
         authors = info.get("authors", [])
 
         for author in authors:
@@ -141,23 +113,18 @@ def get_pr_info(data):
             commit_node_id = author.get("node_id")
             commit_url = author.get("commit_url")
 
-            c.execute(
-                "SELECT pr_data FROM pr_info_sample WHERE commit_node_id=?",
-                (commit_node_id,),
-            )
-            result = c.fetchone()
-
-            if result:
-                pr_info = json.loads(result[0])
-            else:
+            pr_data = cache_manager.github_cache.get_pr_info(commit_node_id)
+            if not pr_data:
                 if commit_node_id:
                     pr_info = fetch_pull_requests(commit_node_id)
-
-                    c.execute(
-                        "INSERT INTO pr_info_sample (package, commit_sha, commit_node_id, pr_data) VALUES (?, ?, ?, ?)",
-                        (package, commit_sha, commit_node_id, json.dumps(pr_info)),
-                    )
-                    conn.commit()
+                    cache_manager.github_cache.cache_pr_info({
+                        "package": package,
+                        "commit_sha": commit_sha,
+                        "commit_node_id": commit_node_id,
+                        "pr_info": pr_info,
+                    })
+            else:
+                pr_info = pr_data["pr_info"]
 
             all_info = {
                 "package": package,
