@@ -157,13 +157,11 @@ def get_lockfile(project_repo_name, release_version, package_manager):
         "maven": "pom.xml",
     }
 
-    cache_manager._setup_requests_cache()
+    cache_manager._setup_requests_cache(cache_name="get_lockfile")
     try:
         lockfile_name = LOOKING_FOR[package_manager]
-        logging.info(f"Getting {lockfile_name} for %s@%s", project_repo_name, release_version)
+        logging.info(f"Getting {lockfile_name} for {project_repo_name}@{release_version}")
         logging.info(f"Package manager: {package_manager}")
-
-        print(f"Getting {lockfile_name} for {project_repo_name}@{release_version}")
     except KeyError:
         logging.error("Invalid package manager or lack of lockfile: %s", package_manager)
         raise ValueError("Invalid package manager or lack of lockfile.")
@@ -172,13 +170,10 @@ def get_lockfile(project_repo_name, release_version, package_manager):
     response = requests.get(file_url, headers=headers, timeout=20)
 
     if response.status_code == 200:
-        response = requests.get(file_url, headers=headers, timeout=20)
-        response.raise_for_status()
-
         data = response.json()
         download_url = data.get("download_url")
         lock_content = requests.get(download_url, timeout=60).text
-        print(f"Got the {lockfile_name} file from {download_url}.")
+        logging.info(f"Got the {lockfile_name} file from {download_url}.")
     else:
         logging.error(f"Failed to get {lockfile_name}.")
         raise ValueError(f"Failed to get {lockfile_name}.")
@@ -238,7 +233,7 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
         # Example: parent package A has a child package B; we want to run it on package B, but cloning won't work here (?)
         # And even if it did, we still need to, inside the project, navigate to the child package and run the analysis there
         # So this is a side case not yet handled
-        repo_path = clone_repo(project_repo_name, release_version)
+        repo_path = tool_config.clone_repo(project_repo_name, release_version)
         deps_list_all = extract_deps.extract_deps_from_maven(repo_path)
 
     logging.info("Number of dependencies: %d", len(deps_list_all.get("resolutions", {})))
@@ -534,7 +529,7 @@ def main():
     project_info = setup_project_info(dw_args)
     setup_directories_and_logging(project_info, dw_args.debug)
 
-    print(
+    logging.info(
         f"Software supply chain smells analysis for {project_info['repo_name']} for version {project_info['old_version']}..."
     )
 
@@ -554,4 +549,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    print("Analysis completed.")
+    logging.info("Analysis completed.")
