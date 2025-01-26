@@ -400,4 +400,4 @@ def get_s_summary(data, project_name, release_version, package_manager, enabled_
         enabled_checks=enabled_checks,
         mode="w",
     )
-    print(f"Report created at {summary_filename}")
+    print(f"Report from static analysis created at {summary_filename}")

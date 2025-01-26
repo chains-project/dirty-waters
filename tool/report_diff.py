@@ -1,5 +1,6 @@
 import pandas as pd
 from datetime import datetime
+import logging
 
 
 def process_data(data):
@@ -14,7 +15,8 @@ def process_data(data):
         new_version = info.get("tag2", "")
         repo_link = info.get("repo_link", "")
 
-        commits = info.get("authors", [])
+        # The 'or' is to handle the case where the information returned is None
+        commits = info.get("authors", []) or []
 
         if not commits:
             record.append(
@@ -116,7 +118,7 @@ def filter_df(df):
 
 
 def generate_diff_report(data, project_repo_name, release_version_old, release_version_new, output_file):
-    print(f"Generating differential report for {project_repo_name}")
+    logging.info(f"Generating differential report for {project_repo_name}")
     record, record_list, author_list = process_data(data)
 
     df_all = create_dataframe(record)
@@ -265,4 +267,4 @@ def generate_diff_report(data, project_repo_name, release_version_old, release_v
         # md_file.write(f"- Tool version: {tool_commit_hash}\n")
         f.write(f"- project Name: {project_repo_name}\n")
         f.write(f"- Compared project Versions: {release_version_old} & {release_version_new}\n")
-    print(f"Report generated at {output_file}")
+    print(f"Report from differential analysis generated at {output_file}")
