@@ -291,6 +291,7 @@ def differential_analysis(
     patches_new,
     patches_old,
     project_repo_name,
+    package_manager
 ):
     """
     Perform differential analysis on the given project and release versions.
@@ -304,7 +305,7 @@ def differential_analysis(
         patches_new (dict): The patches info for the new release version.
         patches_old (dict): The patches info for the old release version.
         project_repo_name (str): The name of the project repository.
-
+        package_manager (str): The package manager used in the project.
     Returns:
         tuple: A tuple containing the following:
             - compare_differences (dict): The comparison results for the dependencies.
@@ -325,7 +326,10 @@ def differential_analysis(
         _,
     ) = compare_packages.differential(old_rv_dep_versions, new_rv_dep_versions, sa_1, sa_2)
 
-    changed_patches, _ = compare_packages.changed_patch(patches_old, patches_new)
+    if package_manager != "maven":
+        changed_patches, _ = compare_packages.changed_patch(patches_old, patches_new)
+    else:
+        changed_patches = {}
 
     authors = compare_commits.get_commit_results(
         headers,
@@ -453,6 +457,7 @@ def perform_differential_analysis(old_results, new_results, project_info):
         new_results[3],
         old_results[3],  # patches_info
         project_info["repo_name"],
+        project_info["package_manager"]
     )
 
     # Write differential analysis results to files
