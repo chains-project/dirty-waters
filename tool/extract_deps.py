@@ -42,7 +42,7 @@ def extract_deps_from_pnpm_lockfile(pnpm_lockfile_yaml):
     yaml_version = yaml_data.get("lockfileVersion")
     if yaml_version != "9.0":
         logging.error("Invalid pnpm lockfile version: %s", yaml_version)
-        print("The pnpm lockfile version is not supported(yet): ", yaml_version)
+        logging.error("The pnpm lockfile version is not supported(yet): ", yaml_version)
         # end the process
         sys.exit(1)
 
@@ -246,7 +246,7 @@ def get_pnpm_dep_tree(folder_path, version_tag, project_repo_name):
         logging.info("Getting pnpm dependency tree by running %s", PNPM_LIST_COMMAND)
 
         command = PNPM_LIST_COMMAND
-        print("Getting pnpm dependency tree...")
+        logging.info("Getting pnpm dependency tree...")
         result = subprocess.run(
             command,
             check=True,
@@ -272,7 +272,7 @@ def get_pnpm_dep_tree(folder_path, version_tag, project_repo_name):
         return result.stdout.splitlines(), folder_path
 
     except subprocess.CalledProcessError as e:
-        print(f"An error occurred: {e}")
+        logging.error(f"An error occurred: {e}")
         sys.exit(1)
 
     finally:
@@ -308,8 +308,9 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name):
     logging.info("Extracting dependencies from pnpm list output")
 
     for line in tree:
+        # TODO: what's this?
         if "ledger-live-desktop" in line or "production dependency, optional only, dev only" in line:
-            print("ledger-live-desktop found")
+            logging.info("ledger-live-desktop found")
             continue
 
         match = dep_pattern.search(line)
@@ -317,7 +318,7 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name):
             dep_name = match.group(1).strip()
             dep_version = match.group(2).strip()
             dependencies[dep_name].append(dep_version)
-            print("dependency found", dep_name)
+            logging.info("dependency found", dep_name)
 
         # logging.info(f"Number of dependencies({version_tag}): {len(dependencies)}")
 
@@ -420,7 +421,7 @@ def extract_deps_from_maven(repo_path):
 
     cached_deps = cache_manager.maven_cache.get_dependencies(repo_path, pom_hash)
     if cached_deps:
-        print(f"[INFO] Using cached Maven dependencies for {repo_path}")
+        logging.info(f"Using cached Maven dependencies for {repo_path}")
         return cached_deps
 
     # If we reach here, we need to resolve dependencies
