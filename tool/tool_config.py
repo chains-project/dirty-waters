@@ -787,7 +787,7 @@ def make_github_request(
             else:
                 # Handle other errors
                 if not silent:
-                    logging.error(f"Request failed: {e}")
+                    logging.warning(f"Request failed: {e}")
                 if attempt == max_retries - 1:
                     return None
                 time.sleep(retry_delay * (attempt + 1))
