@@ -1,6 +1,13 @@
 import re
 import logging
 
+MESSAGE_TO_VERSIONS_MAPPING = {
+    "newly_added": "Newly added package",
+    "deleted": "Deleted package",
+    "upgraded": "Upgraded package",
+    "downgraded": "Downgraded package",
+    "no_change": "No change",
+}
 
 def parse_dependencies(file_path):
     dependencies = {}
@@ -96,63 +103,48 @@ def is_version_greater(v1, v2):
 
 
 def category_dependencies(dep_file_1, dep_file_2):
+    def categorize_dependency(v1, v2, allv1, allv2):
+        if v1 is None or v2 is None:
+            if not allv1:
+                return "newly_added", allv1, allv2
+            elif not allv2:
+                return "deleted", allv1, allv2
+        else:
+            if is_version_greater(v2, v1):
+                return "upgraded", v1, v2
+            elif is_version_greater(v1, v2):
+                return "downgraded", v1, v2
+            else:
+                return "no_change", v1, v2
+        return None
+
     differences = choose_compare_version(dep_file_1, dep_file_2)
-    newly_added_pkg = {}
-    deleted_pkg = {}
-    upgraded_pkg = {}
-    downgraded_pkg = {}
-    no_change_pkg = {}
+    gathered_categories = {
+        "newly_added": {},
+        "deleted": {},
+        "upgraded": {},
+        "downgraded": {},
+        "no_change": {},
+    }
 
     for dep, versions in differences.items():
         v1, v2 = versions["chosen_v1"], versions["chosen_v2"]
         allv1, allv2 = versions["version1"], versions["version2"]
 
-        if v1 is None or v2 is None:
-            if not allv1:
-                differences[dep]["message"] = "Newly added package"
-                newly_added_pkg[dep] = {
-                    "version1": allv1,
-                    "version2": allv2,
-                    "message": "Newly added package",
-                }
-            elif not allv2:
-                differences[dep]["message"] = "Deleted package"
-                deleted_pkg[dep] = {
-                    "version1": allv1,
-                    "version2": allv2,
-                    "message": "Deleted package",
-                }
-
-        else:
-            if is_version_greater(v2, v1):
-                differences[dep]["message"] = "Upgraded package"
-                upgraded_pkg[dep] = {
-                    "version1": v1,
-                    "version2": v2,
-                    "message": "Upgraded package",
-                }
-            elif is_version_greater(v1, v2):
-                differences[dep]["message"] = "Downgraded package"
-                downgraded_pkg[dep] = {
-                    "version1": v1,
-                    "version2": v2,
-                    "message": "Downgraded package",
-                }
-            else:
-                differences[dep]["message"] = "No change"
-                no_change_pkg[dep] = {
-                    "version1": v1,
-                    "version2": v2,
-                    "message": "No change",
-                }
+        categorized_dependency = categorize_dependency(v1, v2, allv1, allv2)
+        if categorized_dependency:
+            category, v1, v2 = categorized_dependency
+            message = MESSAGE_TO_VERSIONS_MAPPING[category]
+            differences[dep]["message"] = message
+            gathered_categories[category][dep] = {
+                "version1": v1,
+                "version2": v2,
+                "message": message,
+            }
 
     return (
         differences,
-        newly_added_pkg,
-        deleted_pkg,
-        upgraded_pkg,
-        downgraded_pkg,
-        no_change_pkg,
+        *gathered_categories.values(),
     )
 
 
@@ -301,6 +293,7 @@ def get_repo_from_SA(dep_file_1, dep_file_2, SA_old, SA_new):
 
 
 def changed_patch(package_data_old, package_data_new):
+    logging.info("Comparing patches...")
     patches_change = {}
     no_change_patches = {}
     if package_data_old and package_data_new:
