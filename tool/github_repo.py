@@ -67,7 +67,7 @@ def process_package(
     some_errors,
     repos_output_json,
 ):
-    repo_info = cache_manager.repo_cache.get_repo_info(package)
+    repo_info = cache_manager.github_cache.get_github_url(package)
 
     if not repo_info:
         try:
@@ -80,17 +80,18 @@ def process_package(
                 timeout=TIMEOUT,
             )
             repo_info = result.stdout if result.stdout else result.stderr
-            cache_manager.repo_cache.cache_repo_info(package, repo_info)
+            cache_manager.github_cache.cache_github_url(package, repo_info)
 
         except subprocess.TimeoutExpired:
-            logging.error(
+            logging.warning(
                 f"Command {command} timed out after {TIMEOUT} seconds for package {package}",
             )
             repo_info = None
 
         except subprocess.CalledProcessError as e:
-            logging.error(f"Command {command} failed for package {package}: {e}")
-            repo_info = None
+            logging.warning(f"Command {command} failed for package {package}: {e}")
+            repo_info = "ERR!"
+            cache_manager.github_cache.cache_github_url(package, repo_info)
 
     package = package.replace("@npm:", "@")
 
@@ -105,7 +106,6 @@ def process_package(
         undefined.append(f"Undefined for {package}, {repo_info}")
     else:
         url = extract_repo_url(repo_info)
-        # print(f"[INFO] Found GitHub URL for {package}: {url}")
         repos_output_json[package] = {"github": url}
         if url:
             repos_output.append(url)
@@ -123,7 +123,7 @@ def get_github_repo_url(folder, dep_list, pm):
     same_repos_deps = {}  # Dict to store packages with same GitHub URL
     repos_output_json = {}  # Dict to store packages with GitHub URL
 
-    print("Getting GitHub URLs of packages...")
+    logging.info("Getting GitHub URLs of packages...")
     total_packages_to_process = len(dep_list.get("resolutions", []))
     # have not process patches
     with tqdm(total=total_packages_to_process, desc="Getting GitHub URLs") as pbar:
