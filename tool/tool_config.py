@@ -643,6 +643,44 @@ cache_manager = CacheManager()
 def get_cache_manager():
     return cache_manager
 
+CLONE_OPTIONS = {
+    "blobless": "--filter=blob:none",
+}
+
+def clone_repo(project_repo_name, release_version=None, blobless=False):
+    """
+    Clone the repository for the given project and release version.
+
+    Args:
+        project_repo_name (str): The name of the project repository.
+        release_version (str): The release version of the project.
+        blobless (bool): Whether to clone the repository without blobs.
+
+    Returns:
+        str: The path to the cloned repository.
+    """
+
+    repo_url = f"https://github.com/{project_repo_name}.git"
+
+    # Clone to /tmp folder; if it is already cloned, an error will be raised
+    try:
+        options = [CLONE_OPTIONS["blobless"]] if blobless else []
+        Repo.clone_from(repo_url, f"/tmp/{project_repo_name}", multi_options=options)
+    except Exception as e:
+        # If the repo is already cloned, just fetch the latest changes
+        logging.info(f"Repo already cloned. Fetching the latest changes...")
+        repo = Repo(f"/tmp/{project_repo_name}")
+
+        # Fetch the latest changes
+        repo.remotes.origin.fetch()
+    # Checkout to the release version if provided
+    if release_version:
+        repo = Repo(f"/tmp/{project_repo_name}")
+        repo.git.checkout(release_version)
+
+    return f"/tmp/{project_repo_name}"
+
+
 def setup_logger(log_file_path, debug=False):
     """
     Setup the logger for the analysis.
