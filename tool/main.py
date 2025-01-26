@@ -196,37 +196,6 @@ def get_lockfile(project_repo_name, release_version, package_manager):
     return lock_content, default_branch, project_repo_name
 
 
-def clone_repo(project_repo_name, release_version):
-    """
-    Clone the repository for the given project and release version.
-
-    Args:
-        project_repo_name (str): The name of the project repository.
-        release_version (str): The release version of the project.
-
-    Returns:
-        str: The path to the cloned repository.
-    """
-
-    repo_url = f"https://github.com/{project_repo_name}.git"
-
-    # Clone to /tmp folder; if it is already cloned, an error will be raised
-    try:
-        Repo.clone_from(repo_url, f"/tmp/{project_repo_name}")
-    except Exception as e:
-        # If the repo is already cloned, just fetch the latest changes
-        print(f"[INFO] Repo already cloned. Fetching the latest changes...")
-        repo = Repo(f"/tmp/{project_repo_name}")
-
-        # Fetch the latest changes
-        repo.remotes.origin.fetch()
-    # Checkout to the release version
-    repo = Repo(f"/tmp/{project_repo_name}")
-    repo.git.checkout(release_version)
-
-    return f"/tmp/{project_repo_name}"
-
-
 def get_deps(folder_path, project_repo_name, release_version, package_manager):
     """
     Get the dependencies for the given project and release version.
