@@ -9,7 +9,7 @@ import requests
 import subprocess
 import re
 
-from tool_config import get_cache_manager
+from tool_config import get_cache_manager, make_github_request
 from compare_commits import tag_format as construct_tag_format
 import logging
 
@@ -19,7 +19,6 @@ headers = {
     "Authorization": f"Bearer {github_token}",
     "Accept": "application/vnd.github.v3+json",
 }
-
 
 cache_manager = get_cache_manager()
 
@@ -231,18 +230,16 @@ def check_existence(package_name, repository):
     github_redirected = False
     now_repo_url = None
     open_issues_count = None
+    status_code = 404
 
-    response = make_github_request(repo_api, headers=headers)
-    status_code = response.status_code
-    data = response.json()
-
-    if status_code != 200:
-        print(f"[WARNING] No repo found for {package_name} in {repo_link}")
+    data = make_github_request(repo_api)
+    if not data:
+        logging.warning(f"No repo found for {package_name} in {repo_link}")
         archived = None
         is_fork = None
         repo_link = f"https://github.com/{simplified_path}".lower()
-
-    if status_code == 200:
+    else:
+        status_code = 200
         github_exists = True
         open_issues_count = data["open_issues"]
         if data["archived"]:
@@ -267,29 +264,26 @@ def check_existence(package_name, repository):
         have_no_tags_data = have_no_tags_response.json()
 
         if len(have_no_tags_data) == 0:
-            release_tag_exists = False
             release_tag_url = None
             tag_related_info = "No tag was found in the repo"
             status_code_release_tag = have_no_tags_response_status_code
-
         else:
             tag_possible_formats = construct_tag_format(version, package_full_name)
 
             # Making the default case not finding the tag
             tag_related_info = "The given tag was not found in the repo"
-            status_code_release_tag = 404
             if tag_possible_formats:
                 for tag_format in tag_possible_formats:
                     tag_url = f"{repo_api}/git/ref/tags/{tag_format}"
-                    response = make_github_request(tag_url, headers=headers)
-                    if response.status_code == 200:
+                    response = make_github_request(tag_url, silent=True)
+                    if response:
                         release_tag_exists = True
                         release_tag_url = tag_url
                         tag_related_info = f"Tag {tag_format} is found in the repo"
-                        status_code_release_tag = response.status_code
+                        status_code_release_tag = 200
                         break
-            if status_code_release_tag == 404:
-                print(f"[INFO] No tags found for {package_name} in {repo_api}")
+            if not release_tag_exists:
+                logging.info(f"No tags found for {package_name} in {repo_api}")
 
     github_info = {
         "github_api": repo_api,
@@ -333,10 +327,10 @@ def get_api_content(api, headers):
         requests.Timeout,
         json.JSONDecodeError,
     ) as e:
-        print(f"Request error: {str(e)} for URL: {api}")
+        logging.error(f"Request error: {str(e)} for URL: {api}")
         return None
     except Exception as e:
-        print(f"Unexpected error: {str(e)} for URL: {api}")
+        logging.error(f"Unexpected error: {str(e)} for URL: {api}")
         return None
 
 
@@ -407,7 +401,7 @@ def check_name_match_for_fork(package_name, repository):
 
 
 def check_name_match(package_name, repository):
-    cache_manager._setup_requests_cache()
+    cache_manager._setup_requests_cache(cache_name="static_analysis")
 
     _, repo_name, _, _, _, _ = api_constructor(package_name, repository)
     original_package_name = package_name.rsplit("@", 1)[0]
@@ -422,8 +416,8 @@ def check_name_match(package_name, repository):
 
     response = requests.get(url, headers=headers, timeout=20)
 
-    if not response.from_cache:
-        time.sleep(6)
+    # if not response.from_cache:
+    #     time.sleep(6)
 
     status_code = response.status_code
 
@@ -444,9 +438,6 @@ def check_name_match(package_name, repository):
                 if item["name"] == "package.json":
                     package_api_in_packages = item["url"]
                     is_match = True
-
-    else:
-        is_match = False
 
     if not is_match:
         unmatch_info = {
@@ -494,7 +485,7 @@ def analyze_package_data(package, repo_url, pm, check_match=False, enabled_check
         missing_checks = {}
 
         if cached_analysis:
-            print(f"[INFO] Found cached analysis for {package}")
+            logging.info(f"Found cached analysis for {package}")
             package_info = cached_analysis
 
             # Check which enabled checks are missing from cache
@@ -515,13 +506,13 @@ def analyze_package_data(package, repo_url, pm, check_match=False, enabled_check
                         missing_checks["forks"] = True
 
             if not missing_checks:
-                print(f"[INFO] Using complete cached analysis for {package}")
+                logging.info(f"Using complete cached analysis for {package}")
                 return package_info
-            print(
-                f"[INFO] Found partial cached analysis for {package}, analyzing missing checks: {list(missing_checks.keys())}"
+            logging.info(
+                f"Found partial cached analysis for {package}, analyzing missing checks: {list(missing_checks.keys())}"
             )
         else:
-            print(f"[INFO] No cached analysis for {package}, analyzing all enabled checks")
+            logging.info(f"No cached analysis for {package}, analyzing all enabled checks")
             missing_checks = enabled_checks
 
         if missing_checks.get("deprecated") or missing_checks.get("provenance"):
@@ -565,21 +556,20 @@ def analyze_package_data(package, repo_url, pm, check_match=False, enabled_check
         cache_manager.package_cache.cache_package_analysis(package_name, package_version, pm, package_info)
 
     except Exception as e:
-        print(f"[ERROR] Analyzing package {package}: {str(e)}")
+        logging.error(f"Analyzing package {package}: {str(e)}")
         package_info["error"] = str(e)
 
     return package_info
 
 
 def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS):
-    print("Analyzing package static data...")
+    logging.info("Analyzing package static data...")
     package_all = {}
     errors = {}
 
     with tqdm(total=len(packages_data), desc="Analyzing packages") as pbar:
         for package, repo_urls in packages_data.items():
-            # print(f"Analyzing {package}")
-            tqdm.write(f"[INFO] Currently analyzing {package}")
+            logging.info(f"Currently analyzing {package}")
             repo_url = repo_urls.get("github", "")
             analyzed_data = analyze_package_data(
                 package, repo_url, pm, check_match=check_match, enabled_checks=enabled_checks
