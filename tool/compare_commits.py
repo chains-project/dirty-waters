@@ -1,15 +1,9 @@
 import requests
 import logging
 import os
-from tool_config import setup_cache
+from tool_config import get_cache_manager, make_github_request
 
-github_token = os.getenv("GITHUB_API_TOKEN")
-
-headers = {
-    "Authorization": f"Bearer {github_token}",
-    "Accept": "application/vnd.github.v3+json",
-}
-
+cache_manager = get_cache_manager()
 
 def tag_format(tag, package_name):
     tag_formats = [
@@ -49,158 +43,201 @@ def tag_format(tag, package_name):
 
     return tag_formats
 
+def find_existing_tags(tag_formats, repo_name):
+    for tag_format in tag_formats:
+        tag_url = f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_format}"
+        response = make_github_request(tag_url, silent=True)
+        if response:
+            return tag_format
+    return None
 
-def get_commit_authors(headers, packages_data):
-    logging.info("Getting commits...")
+def get_commit_info(commit):
+    if commit.get("committer") is None:
+        committer_login = "No committer info"
+        return None
 
+    sha = commit.get("sha")
+    node_id = commit.get("node_id")
+    commit_url = commit.get("url")
+    author_data = commit.get("commit").get("author")
+    author_name = author_data.get("name")
+    author_email = author_data.get("email")
+    author_info = commit.get("author")
+
+    if author_info is None:
+        author_login = "No author info"
+        author_type = "No author info"
+        author_id = "No author info"
+    else:
+        author_login = commit.get("author").get("login", "No_author_login")
+        author_id = commit.get("author").get("id", "No_author_id")
+        author_type = commit.get("author").get("type", "No_author_type")
+
+    return {
+        "sha": sha,
+        "node_id": node_id,
+        "commit_url": commit_url,
+        "name": author_name,
+        "email": author_email,
+        "login": author_login,
+        "a_type": author_type,
+        "id": author_id,
+    }
+
+def get_authors_from_response(url, data, package_info):
+    result = {
+        "repo": package_info.get("repo_pure"),
+        "repo_name": package_info.get("repo_name"),
+        "category": package_info.get("message"),
+        "compare_url": url,
+    }
+
+    authors_info = []
+    commits = data.get("commits")
+    if commits:
+        for commit in commits:
+            # Retrieve commit info from cache
+            commit_info = cache_manager.commit_comparison_cache.get_authors_from_url(commit.get("url"))
+            if not commit_info:
+                commit_info = get_commit_info(commit)
+                cache_manager.commit_comparison_cache.cache_authors_from_url(commit.get("url"), commit_info)
+            
+            if commit_info:
+                authors_info.append(commit_info)
+        result.update({
+            "authors": authors_info,
+            "tag1": package_info.get("chosen_v1"),
+            "tag2": package_info.get("chosen_v2"),
+        })
+    else:
+        result.update({
+            "tag1": package_info.get("version1"),
+            "tag2": package_info.get("version2"),
+            "commits_info_message": "No commits found",
+            "status_code": 200,
+        })
+
+    return result
+
+def get_authors_from_tags(tag1, tag2, package, package_info):
+    repo_name = package_info.get("repo_name")
+    tag_formats_old = tag_format(tag1, package)
+    existing_tag_format_old = find_existing_tags(tag_formats_old, repo_name)
+    tag_formats_new = tag_format(tag2, package)
+    existing_tag_format_new = find_existing_tags(tag_formats_new, repo_name)
+    category = package_info.get("message")
+
+    compare_url = f"https://api.github.com/repos/{repo_name}/compare/{existing_tag_format_old}...{existing_tag_format_new}"
+    response = make_github_request(compare_url, max_retries=2)
+
+    if not response:
+        status_old = "GitHub old tag not found"
+        status_new = "GitHub new tag not found"
+        old_tag_found, new_tag_found = False, False
+        if existing_tag_format_old:
+            status_old = existing_tag_format_old
+            old_tag_found = True
+        for tag_old in tag_formats_old:
+            old_tag_url = f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_old}"
+            response = requests.get(old_tag_url)
+            if response.status_code == 200:
+                status_old = tag_old
+                old_tag_found = True
+                break
+        
+        if not old_tag_found:
+            for tag_new in tag_formats_new:
+                new_tag_url = f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_new}"
+                response = requests.get(new_tag_url)
+                if response.status_code == 200:
+                    status_new = tag_new
+                    new_tag_found = True
+                    break
+
+        return {
+            "tag1": existing_tag_format_old if existing_tag_format_old else tag_formats_old[-1],
+            "tag2": existing_tag_format_new if existing_tag_format_new else tag_formats_new[-1],
+            "status_old": status_old,
+            "status_new": status_new,
+            "category": "Upgraded package",
+            "repo_name": package_info.get("repo_name"),
+        }
+
+    return get_authors_from_response(compare_url, response, package_info)
+
+def get_patch_authors(repo_name, patch_name, path, release_version_sha, headers):
+    url = f"https://api.github.com/repos/{repo_name}/commits?path=.yarn/patches/{path}&sha={release_version_sha}"
+    patch_info = {
+        "patch_name": patch_name,
+        "repo_name": repo_name,
+        "commit_url": url,
+    }
+    
+    response = make_github_request(url, headers=headers)
+    authors_info = []
+    if response:
+        for commit in response:
+            sha = commit.get("sha")
+            node_id = commit.get("node_id")
+            commit_url = commit.get("url")
+            author_data = commit.get("commit").get("author")
+            author_name = author_data.get("name")
+            author_email = author_data.get("email")
+            author_info = commit.get("author")
+            author_type = author_data.get("type")
+            if author_info is None:
+                author_login = "null"
+            else:
+                author_login = commit.get("author").get("login")
+                author_id = commit.get("author").get("id")
+            if commit.get("committer") is None:
+                committer_login = "null"
+            else:
+                committer_login = commit.get("committer").get("login")
+                committer_id = commit.get("committer").get("id")
+                committer_type = commit.get("committer").get("type")
+
+                authors_info.append(
+                    {
+                        "sha": sha,
+                        "node_id": node_id,
+                        "commit_url": commit_url,
+                        "name": author_name,
+                        "email": author_email,
+                        "login": author_login,
+                        "a_type": author_type,
+                        "id": author_id,
+                        "committer_login": committer_login,
+                        "committer_id": committer_id,
+                        "c_type": committer_type,
+                    }
+                )
+        patch_info.update({
+            "category": "patch",
+            "authors": authors_info,
+        })
+    else:
+        patch_info.update({
+            "authors": None,
+            "error": True,
+            "error_message": response.status_code,
+        })
+
+    return patch_info
+
+def get_commit_authors(packages_data):
+    logging.info("Getting commits for packages...")
     authors_per_package = {}
     for package, package_info in packages_data.items():
         if package_info.get("compare_message") == "COMPARE":
-            print(f"Getting commits of {package}...")
-            repo = package_info.get("repo_pure")
-            repo_name = package_info.get("repo_name")
-            category = package_info.get("message")
-
-            tag1 = package_info.get("version1")
-            tag2 = package_info.get("version2")
-
             tag1_chosen = package_info.get("chosen_v1")
             tag2_chosen = package_info.get("chosen_v2")
-
-            authors_info = []
-
-            comparison_found = False
-            compare_urls = []
-
-            tag_formats_new = tag_format(tag2_chosen, package)
-            tag_formats_old = tag_format(tag1_chosen, package)
-
-            for tag_format_old, tag_format_new in zip(tag_formats_old, tag_formats_new):
-                compare_urls.append(
-                    f"https://api.github.com/repos/{repo_name}/compare/{tag_format_old}...{tag_format_new}"
-                )
-
-                for compare_url in compare_urls:
-                    # try:
-                    response = requests.get(compare_url, headers=headers)
-                    if response.status_code == 200:
-                        comparison_found = True
-                        break
-
-                old_tag_urls = []
-                new_tag_urls = []
-
-                if comparison_found is False:
-                    for tag_old in tag_formats_old:
-                        old_tag_urls.append(f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_old}")
-                    for tag_new in tag_formats_new:
-                        new_tag_urls.append(f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_new}")
-
-                    for old_tag_url in old_tag_urls:
-                        try:
-                            response = requests.get(old_tag_url, headers=headers)
-                            if response.status_code == 200:
-                                status_old = tag_old
-                                break
-                            else:
-                                status_old = "GitHub old tag not found"
-                                category = "Upgraded package"
-                        except (ValueError, KeyError) as e:
-                            logging.error("Error: %s", str(e))
-                            print(f"Error: {e}")
-                            # Error_old = f"{e}"
-                            continue
-
-                    for new_tag_url in new_tag_urls:
-                        try:
-                            response = requests.get(new_tag_url, headers=headers)
-                            if response.status_code == 200:
-                                status_new = tag_new
-                                break
-                            else:
-                                status_new = "GitHub new tag not found"
-                                category = "Upgraded package"
-                        except (ValueError, KeyError) as e:
-                            logging.error("Error: %s", str(e))
-                            print(f"Error: {e}")
-                            continue
-
-                    authors_per_package[package] = {
-                        "repo_name": repo_name,
-                        "tag1": tag_old,
-                        "status_old": status_old,
-                        "tag2": tag_new,
-                        "status_new": status_new,
-                        "category": category,
-                    }
-
-                else:
-                    response_json = response.json()
-                    commits = response_json.get("commits")
-
-                    if commits:
-                        for commit in commits:
-                            sha = commit.get("sha")
-                            node_id = commit.get("node_id")
-                            commit_url = commit.get("url")
-                            author_data = commit.get("commit").get("author")
-                            author_name = author_data.get("name")
-                            author_email = author_data.get("email")
-                            author_info = commit.get("author")
-
-                            if author_info is None:
-                                author_login = "No author info"
-                                author_type = "No author info"
-                                author_id = "No author info"
-                            else:
-                                author_login = commit.get("author").get("login", "No_author_login")
-                                author_id = commit.get("author").get("id", "No_author_id")
-                                author_type = commit.get("author").get("type", "No_author_type")
-
-                            if commit.get("committer") is None:
-                                committer_login = "No committer info"
-                            else:
-                                committer_login = commit.get("committer").get("login", None)
-                                committer_id = commit.get("committer").get("id", None)
-                                committer_type = commit.get("committer").get("type", None)
-
-                                authors_info.append(
-                                    {
-                                        "sha": sha,
-                                        "node_id": node_id,
-                                        "commit_url": commit_url,
-                                        "name": author_name,
-                                        "email": author_email,
-                                        "login": author_login,
-                                        "a_type": author_type,
-                                        "id": author_id,
-                                        "committer_login": committer_login,
-                                        "committer_id": committer_id,
-                                        "c_type": committer_type,
-                                    }
-                                )
-
-                        authors_per_package[package] = {
-                            "repo": repo,
-                            "repo_name": repo_name,
-                            "tag1": tag1_chosen,
-                            "tag2": tag2_chosen,
-                            "category": category,
-                            "compare_url": compare_url,
-                            "authors": authors_info,
-                        }
-
-                    else:
-                        authors_per_package[package] = {
-                            "repo": repo,
-                            "repo_name": repo_name,
-                            "tag1": tag1,
-                            "tag2": tag2,
-                            "category": category,
-                            "compare_url": compare_url,
-                            "status_code": response.status_code,
-                            "commits_info_message": "No commits found",
-                        }
+            data = cache_manager.commit_comparison_cache.get_authors_from_tags(package, tag1_chosen, tag2_chosen)
+            if not data:
+                # Cache miss, get authors from GitHub
+                data = get_authors_from_tags(tag1_chosen, tag2_chosen, package, package_info)
+                cache_manager.commit_comparison_cache.cache_authors_from_tags(package, tag1_chosen, tag2_chosen, data)
+            authors_per_package[package] = data
 
         else:
             authors_per_package[package] = {
@@ -217,33 +254,30 @@ def get_commit_authors(headers, packages_data):
 
     return authors_per_package
 
-
 def get_patch_commits(headers, repo_name, release_version, patch_data):
     logging.info("Getting commits for patches...")
-
-    get_release_v_api = f"https://api.github.com/repos/{repo_name}/tags?per_page=100"
-
-    grv_response = requests.get(get_release_v_api, headers=headers)
-    grv_response_json = grv_response.json()
-
-    for release in grv_response_json:
-        if release.get("name") == release_version:
-            release_version_sha = release.get("commit").get("sha")
-            break
+    release_version_sha = cache_manager.github_cache.get_tag_to_sha(repo_name, release_version)
+    if not release_version_sha:
+        get_release_v_api = f"https://api.github.com/repos/{repo_name}/git/ref/tags/{release_version}"
+        response = requests.get(get_release_v_api, headers=headers)
+        if response.status_code == 200:
+            response_json = response.json()
+            release_version_sha = response_json.get("object").get("sha")
         else:
             release_version_sha = None
+        cache_manager.github_cache.cache_tag_to_sha(repo_name, release_version, "No release found" if release_version_sha is None else release_version_sha)
+    elif release_version_sha == "No release found":
+        release_version_sha = None
 
     authors_per_patches = {}
-
     for changed_patch, details in patch_data.items():
         authors_info = []
         path = details.get("patch_file_path")
         if path is None:
-            api = None
             authors_per_patches[changed_patch] = {
                 "patch_file_path": path,
                 "repo_name": repo_name,
-                "api": api,
+                "api": None,
                 "error": True,
                 "error_message": "No patch file path found",
             }
@@ -259,72 +293,20 @@ def get_patch_commits(headers, repo_name, release_version, patch_data):
             }
             continue
 
-        api = f"https://api.github.com/repos/{repo_name}/commits?path=.yarn/patches/{path}&sha={release_version_sha}"
-        response = requests.get(api, headers=headers)
-
-        if response.status_code == 200:
-            response_json = response.json()
-            for commit in response_json:
-                sha = commit.get("sha")
-                node_id = commit.get("node_id")
-                commit_url = commit.get("url")
-                author_data = commit.get("commit").get("author")
-                author_name = author_data.get("name")
-                author_email = author_data.get("email")
-                author_info = commit.get("author")
-                author_type = author_data.get("type")
-                if author_info is None:
-                    author_login = "null"
-                else:
-                    author_login = commit.get("author").get("login")
-                    author_id = commit.get("author").get("id")
-                if commit.get("committer") is None:
-                    committer_login = "null"
-                else:
-                    committer_login = commit.get("committer").get("login")
-                    committer_id = commit.get("committer").get("id")
-                    committer_type = commit.get("committer").get("type")
-
-                    authors_info.append(
-                        {
-                            "sha": sha,
-                            "node_id": node_id,
-                            "commit_url": commit_url,
-                            "name": author_name,
-                            "email": author_email,
-                            "login": author_login,
-                            "a_type": author_type,
-                            "id": author_id,
-                            "committer_login": committer_login,
-                            "committer_id": committer_id,
-                            "c_type": committer_type,
-                        }
-                    )
-        else:
-            authors_per_patches[changed_patch] = {
-                "patch_name": changed_patch,
-                "repo_name": repo_name,
-                "commit_url": api,
-                "authors": None,
-                "error": True,
-                "error_message": response.status_code,
-            }
-
-        authors_per_patches[changed_patch] = {
-            "patch_name": changed_patch,
-            "repo_name": repo_name,
-            "category": "patch",
-            "commit_url": api,
-            "authors": authors_info,
-        }
+        data = cache_manager.commit_comparison_cache.get_patch_authors(repo_name, path, release_version_sha) 
+        if not data:
+            # Cache miss, get authors from GitHub
+            data = get_patch_authors(repo_name, changed_patch, path, release_version_sha, headers)
+            cache_manager.commit_comparison_cache.cache_patch_authors(repo_name, path, release_version_sha, data)
+        authors_per_patches[changed_patch] = data
 
     return authors_per_patches
 
 
 def get_commit_results(api_headers, repo_name, release_version, patch_data, packages_data):
-    setup_cache("package_commits")
+    cache_manager._setup_requests_cache(cache_name="compare_commits")
     authors_per_patches_result = get_patch_commits(api_headers, repo_name, release_version, patch_data)
-    authors_per_package_result = get_commit_authors(headers, packages_data)
+    authors_per_package_result = get_commit_authors(packages_data)
     commit_results = {**authors_per_patches_result, **authors_per_package_result}
 
     return commit_results
