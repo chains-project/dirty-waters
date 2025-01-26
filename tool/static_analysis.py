@@ -216,21 +216,6 @@ def api_constructor(package_name, repository):
     return repo_api, simplified_path, package_full_name, name, version, error_message
 
 
-def make_github_request(url, headers):
-    """Make a GET request to the GitHub API."""
-
-    response = requests.get(url, headers=headers)
-
-    if response.status_code == 403 and int(response.headers.get("X-RateLimit-Remaining", 0)) <= 10:
-        reset_time = int(response.headers.get("X-RateLimit-Reset", 0))
-        sleep_time = min(reset_time - int(time.time()), MAX_WAIT_TIME)
-        print(f"\nRate limit reached. Waiting for {sleep_time} seconds.")
-        time.sleep(sleep_time)
-        print("\nResuming analysis...")
-        response = requests.get(url, headers=headers)
-    return response
-
-
 def check_existence(package_name, repository):
     """Check if the package exists in the repository."""
     repo_api, simplified_path, package_full_name, _, version, error_message = api_constructor(package_name, repository)
