@@ -36,27 +36,34 @@ def extract_repo_url(repo_info: str) -> str:
     return match.group(1) if match else "not github"
 
 
-def get_package_command(pm: str, package: str) -> List[str]:
-    """Get the appropriate command for the package manager."""
+def get_scm_commands(pm: str, package: str) -> List[str]:
+    """Get the appropriate command to find a package's source code locations for the package manager."""
     if pm == "yarn-berry" or pm == "yarn-classic":
-        return ["yarn", "info", package, "repository.url"]
+        return [["yarn", "info", package, "repository.url"]]
     elif pm == "pnpm":
-        return ["pnpm", "info", package, "repository.url"]
+        return [["pnpm", "info", package, "repository.url"]]
     elif pm == "npm":
-        return ["npm", "info", package, "repository.url"]
+        return [["npm", "info", package, "repository.url"]]
     elif pm == "maven":
         name, version = package.split("@")
         group_id, artifact_id = name.split(":")
         return [
-            "mvn",
-            "help:evaluate",
-            "-Dexpression=project.scm.url",
-            f"-Dartifact={group_id}:{artifact_id}:{version}",
-            "-q",
-            "-DforceStdout",
+            [
+                "mvn",
+                "help:evaluate",
+                f"-Dexpression={source_code_location}",
+                f"-Dartifact={group_id}:{artifact_id}:{version}",
+                "-q",
+                "-DforceStdout",
+            ]
+            for source_code_location in [
+                "project.scm.url",
+                "project.scm.connection",
+                "project.scm.developerConnection",
+                "project.url",
+            ]
         ]
     raise ValueError(f"Unsupported package manager: {pm}")
-
 
 def process_package(
     package,
@@ -67,53 +74,63 @@ def process_package(
     some_errors,
     repos_output_json,
 ):
-    repo_info = cache_manager.github_cache.get_github_url(package)
+    def check_if_valid_repo_info(repo_info):
+        if (
+            repo_info is None
+            or "Undefined" in repo_info
+            or "undefined" in repo_info
+            or "ERR!" in repo_info
+        ):
+            repos_output_json[package] = {"github": "Could not find"}
+            undefined.append(f"Undefined for {package}, {repo_info}")
+            return False
 
-    if not repo_info:
-        try:
-            command = get_package_command(pm, package)
-            result = subprocess.run(
-                command,
-                capture_output=True,
-                text=True,
-                check=True,
-                timeout=TIMEOUT,
-            )
-            repo_info = result.stdout if result.stdout else result.stderr
-            cache_manager.github_cache.cache_github_url(package, repo_info)
-
-        except subprocess.TimeoutExpired:
-            logging.warning(
-                f"Command {command} timed out after {TIMEOUT} seconds for package {package}",
-            )
-            repo_info = None
-
-        except subprocess.CalledProcessError as e:
-            logging.warning(f"Command {command} failed for package {package}: {e}")
-            repo_info = "ERR!"
-            cache_manager.github_cache.cache_github_url(package, repo_info)
-
-    package = package.replace("@npm:", "@")
-
-    if (
-        repo_info is None
-        or "Undefined" in repo_info
-        or "undefined" in repo_info
-        or "ERR!" in repo_info
-        # or "error" in repo_info
-    ):
-        repos_output_json[package] = {"github": "Could not find"}
-        undefined.append(f"Undefined for {package}, {repo_info}")
-    else:
         url = extract_repo_url(repo_info)
         repos_output_json[package] = {"github": url}
         if url:
             repos_output.append(url)
-            if url not in same_repos_deps:
-                same_repos_deps[url] = []
-            same_repos_deps[url].append(package)
+            same_repos_deps.get("url", []).append(package)
+            return True
         else:
             some_errors.append(f"No GitHub URL for {package}\n{repo_info}")
+            return False
+
+
+    repo_info = cache_manager.github_cache.get_github_url(package)
+    valid_repo_info = False
+    if not repo_info:
+        for command in get_scm_commands(pm, package):
+            try:
+                result = subprocess.run(
+                    command,
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                    timeout=TIMEOUT,
+                )
+                if result.stdout:
+                    repo_info = result.stdout
+                    valid_repo_info = check_if_valid_repo_info(repo_info)
+                    if valid_repo_info:
+                        break
+                    repo_info = None
+                else:
+                    repo_info = result.stderr
+            except subprocess.TimeoutExpired:
+                logging.warning(
+                    f"Command {command} timed out after {TIMEOUT} seconds for package {package}",
+                )
+                repo_info = None
+            except subprocess.CalledProcessError as e:
+                logging.warning(f"Command {command} failed for package {package}: {e}")
+                repo_info = "ERR!"
+
+        if repo_info:
+            # Must still run the check if all cases were errors
+            check_if_valid_repo_info(repo_info)
+        cache_manager.github_cache.cache_github_url(package, repo_info)
+    else:
+        check_if_valid_repo_info(repo_info)
 
 
 def get_github_repo_url(folder, dep_list, pm):
