@@ -268,8 +268,7 @@ def check_existence(package_name, repository):
             tag_related_info = "No tag was found in the repo"
             status_code_release_tag = have_no_tags_response_status_code
         else:
-            tag_possible_formats = construct_tag_format(version, package_full_name)
-
+            tag_possible_formats = construct_tag_format(version, package_full_name, repo_name=simplified_path)
             # Making the default case not finding the tag
             tag_related_info = "The given tag was not found in the repo"
             if tag_possible_formats:

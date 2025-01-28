@@ -5,23 +5,26 @@ from tool_config import get_cache_manager, make_github_request
 
 cache_manager = get_cache_manager()
 
-def tag_format(tag, package_name):
-    tag_formats = [
+def tag_format(tag, package_name, repo_name):
+    _, repo_name = repo_name.split("/") # splits owner and repo name
+    project_name = repo_name.split("-")[-1] # deals with lots of maven-<project_name> repos (e.g., surefire, etc)
+    print(f"package_name: {package_name}, repo_name: {repo_name}, project_name: {project_name}")
+    tag_formats = set([
         f"{tag}",
         f"v{tag}",
+        f"v_{tag}",
         f"r{tag}",
         f"release-{tag}",
         f"parent-{tag}",
-        f"{package_name}@{tag}",
-        f"{package_name}-v{tag}",
-        f"{package_name}_v{tag}",
-        f"{package_name}-{tag}",
-        f"{package_name}_{tag}",
         # Below: further tag formats found in the AROMA paper, table 3: https://dl.acm.org/doi/pdf/10.1145/3643764
         f"release/{tag}",
         f"{tag}-release",
         f"v.{tag}",
-    ]
+    ] + [
+        f"{name}{suffix}"
+        for name in [package_name, repo_name, project_name]
+        for suffix in [f"@{tag}", f"-v{tag}", f"_v{tag}", f"-{tag}", f"_{tag}"]
+    ])
 
     only_package_name, artifact_id_parts = None, None
     if "/" in package_name:  # NPM-based
@@ -32,14 +35,14 @@ def tag_format(tag, package_name):
         artifact_id_parts = only_package_name.split("-")
 
     if only_package_name:
-        tag_formats.append(f"{only_package_name}@{tag}")
-        tag_formats.append(f"{only_package_name}-v{tag}")
-        tag_formats.append(f"{only_package_name}-{tag}")
-        tag_formats.append(f"{only_package_name}_{tag}")
+        tag_formats.add(f"{only_package_name}@{tag}")
+        tag_formats.add(f"{only_package_name}-v{tag}")
+        tag_formats.add(f"{only_package_name}-{tag}")
+        tag_formats.add(f"{only_package_name}_{tag}")
     if artifact_id_parts and len(artifact_id_parts) > 1:
         # p1, p2, p3 from AROMA
         # needs to be reversed with [::-1] because p1 is actually the last element, p2 the 2nd to last, etc
-        tag_formats.extend(["-".join(artifact_id_parts[::-1][: i + 1]) + tag for i in range(len(artifact_id_parts))])
+        tag_formats.update(["-".join(artifact_id_parts[::-1][: i + 1]) + tag for i in range(len(artifact_id_parts))])
 
     return tag_formats
 
@@ -121,9 +124,9 @@ def get_authors_from_response(url, data, package_info):
 
 def get_authors_from_tags(tag1, tag2, package, package_info):
     repo_name = package_info.get("repo_name")
-    tag_formats_old = tag_format(tag1, package)
+    tag_formats_old = tag_format(tag1, package, repo_name)
     existing_tag_format_old = find_existing_tags(tag_formats_old, repo_name)
-    tag_formats_new = tag_format(tag2, package)
+    tag_formats_new = tag_format(tag2, package, repo_name)
     existing_tag_format_new = find_existing_tags(tag_formats_new, repo_name)
     category = package_info.get("message")
 

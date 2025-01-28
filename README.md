@@ -156,6 +156,8 @@ specified in the lockfile/pom/similar is not found. They come from a combination
 work and our own research on this subject.
 These formats are the following:
 
+<details> <summary>Tag formats</summary>
+
 - `<tag>`
 - `v<tag>`
 - `r-<tag>`
@@ -166,10 +168,31 @@ These formats are the following:
 - `<package_name>_v<tag>`
 - `<package_name>-<tag>`
 - `<package_name>_<tag>`
+- `<repo_name>@<tag>`
+- `<repo_name>-v<tag>`
+- `<repo_name>_v<tag>`
+- `<repo_name>-<tag>`
+- `<repo_name>_<tag>`
+- `<project_name>@<tag>`
+- `<project_name>-v<tag>`
+- `<project_name>_v<tag>`
+- `<project_name>-<tag>`
+- `<project_name>_<tag>`
 - `release/<tag>`
 - `<tag>-release`
 - `v.<tag>`
 - `p1-p2-p3<tag>`
+
+As examples of what `package_name`, `repo_name`, and `project_name` could be, `maven-surefire`
+is an interesting dependency:
+
+- `maven-surefire-common` is the package name
+- `maven-surefire` is the repo name (we remove the owner prefix)
+- `surefire` is the project name
+
+In particular, there are many `maven-*` dependencies whose tags follow these last conventions.
+
+</details>
 
 Note than this does not mean that if `dirty-waters` does not find a tag, it doesn't exist:
 it means that it either doesn't exist, or that its format is not one of the above.
