@@ -238,7 +238,7 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
             combined_repo_problems_df.index = range(1, len(combined_repo_problems_df) + 1)
             markdown_text = combined_repo_problems_df.reset_index().to_markdown(index=False)
             md_file.write(markdown_text)
-            md_file.write("\n</details>")
+            md_file.write("\n</details>\n")
         elif package_manager not in SUPPORTED_SMELLS["github_404"]:
             md_file.write(
                 f"\nThe package manager ({package_manager}) does not support checking for not found source code links.\n"
@@ -257,7 +257,7 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
             md_file.write("\n\n\n")
             markdown_text = release_tag_not_found_df.reset_index().to_markdown(index=False)
             md_file.write(markdown_text)
-            md_file.write("\n</details>")
+            md_file.write("\n</details>\n")
         elif package_manager not in SUPPORTED_SMELLS["release_tag_not_found"]:
             md_file.write(
                 f"\nThe package manager ({package_manager}) does not support checking for inaccessible tags.\n"
@@ -269,14 +269,14 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
             if not version_deprecated_df.empty:
                 md_file.write(
                     f"""
-    <details>
-        <summary>List of deprecated packages({(df['deprecated_in_version'] == True).sum()})</summary>
+<details>
+    <summary>List of deprecated packages({(df['deprecated_in_version'] == True).sum()})</summary>
             """
                 )
                 md_file.write("\n\n\n")
                 markdown_text = version_deprecated_df.reset_index().to_markdown(index=False)
                 md_file.write(markdown_text)
-                md_file.write("\n</details>")
+                md_file.write("\n</details>\n")
             elif package_manager not in SUPPORTED_SMELLS["deprecated"]:
                 md_file.write(
                     f"\nThe package manager ({package_manager}) does not support checking for deprecated packages.\n"
@@ -288,9 +288,8 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
             if not forked_package_df.empty:
                 md_file.write(
                     f"""
-
-    <details>
-        <summary>List of packages from fork({(df["is_fork"] == True).sum()}) </summary>
+<details>
+    <summary>List of packages from fork({(df["is_fork"] == True).sum()})</summary>
             """
                 )
                 md_file.write("\n\n\n")
@@ -308,8 +307,8 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
             if not provenance_df.empty:
                 md_file.write(
                     f"""
-    <details>
-        <summary>List of packages without provenance({(df["provenance_in_version"] == False).sum()})</summary>
+<details>
+    <summary>List of packages without provenance({(df["provenance_in_version"] == False).sum()})</summary>
             """
                 )
                 md_file.write("\n\n\n")
