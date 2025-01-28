@@ -8,7 +8,6 @@ cache_manager = get_cache_manager()
 def tag_format(tag, package_name, repo_name):
     _, repo_name = repo_name.split("/") # splits owner and repo name
     project_name = repo_name.split("-")[-1] # deals with lots of maven-<project_name> repos (e.g., surefire, etc)
-    print(f"package_name: {package_name}, repo_name: {repo_name}, project_name: {project_name}")
     tag_formats = set([
         f"{tag}",
         f"v{tag}",
