@@ -64,7 +64,7 @@ def get_scm_commands(pm: str, package: str) -> List[str]:
         return [
             [
                 "mvn",
-                "help:evaluate",
+                "org.apache.maven.plugins:maven-help-plugin:3.5.1:evaluate",
                 f"-Dexpression={source_code_location}",
                 f"-Dartifact={group_id}:{artifact_id}:{version}",
                 "-q",
