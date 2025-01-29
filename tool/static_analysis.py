@@ -12,6 +12,7 @@ import re
 from tool_config import get_cache_manager, make_github_request
 from compare_commits import tag_format as construct_tag_format
 import logging
+import xmltodict
 
 github_token = os.getenv("GITHUB_API_TOKEN")
 
@@ -113,7 +114,6 @@ def check_deprecated_and_provenance(package, package_version, pm):
 
 
 def check_code_signature(package_name, package_version, pm):
-    # TODO: caching this somehow would be nice
     # TODO: find a package where we can check this, because with spoon everything is fine
     def check_maven_signature(package_name, package_version):
         # Construct the command
@@ -214,8 +214,63 @@ def api_constructor(package_name, repository):
 
     return repo_api, simplified_path, package_full_name, name, version, error_message
 
+def check_parent_scm(package):
+    name, version = package.split("@")
+    group_id, artifact_id = name.split(":")
 
-def check_existence(package_name, repository):
+    existing_scm_data, repo_api, simplified_path, package_full_name = None, None, None, None
+    stopping = False
+    while not stopping:
+        # First, getting the parent's pom contents
+        command = [
+            "mvn",
+            "org.apache.maven.plugins:maven-help-plugin:3.5.1:evaluate",
+            "-Dexpression=project.parent",
+            f"-Dartifact={group_id}:{artifact_id}:{version}",
+            "-q",
+            "-DforceStdout",
+        ]
+        output = subprocess.run(command, capture_output=True, text=True)
+        parent_pom = output.stdout.strip()
+        if not parent_pom or "null" in parent_pom:
+            # If there's no parent, we stop
+            stopping = True
+        else:
+            parents_contents = xmltodict.parse(parent_pom)
+            parent_group_id, parent_artifact_id = [
+                parents_contents.get("project", {}).get("groupId", ""),
+                parents_contents.get("project", {}).get("artifactId", "")
+            ]
+            if not parent_group_id or not parent_artifact_id or parent_group_id != group_id:
+                # If the parent is lacking data we stop;
+                # If the parent doesn't share the same group, we went too far, so we stop too
+                stopping = True
+                break
+            parent_scm_locations = [
+                parents_contents.get("project", {}).get("scm", {}).get(location, "")
+                for location in ["url", "connection", "developerConnection"]
+            ] + [
+                parents_contents.get("project", {}).get("url", "")
+            ]
+            for location in parent_scm_locations:
+                if location:
+                    repo_api, simplified_path, package_full_name, _, _, _ = api_constructor(package, location)
+                    data = make_github_request(repo_api, max_retries=2)
+                    if data:
+                        stopping = True
+                        existing_scm_data = data
+                        break
+            if not stopping:
+                group_id, artifact_id = parent_group_id, parent_artifact_id
+
+    return {
+        "data": existing_scm_data,
+        "repo_api": repo_api,
+        "simplified_path": simplified_path,
+        "package_full_name": package_full_name,
+    }
+
+def check_existence(package_name, repository, package_manager):
     """Check if the package exists in the repository."""
     repo_api, simplified_path, package_full_name, _, version, error_message = api_constructor(package_name, repository)
 
@@ -232,13 +287,27 @@ def check_existence(package_name, repository):
     open_issues_count = None
     status_code = 404
 
-    data = make_github_request(repo_api)
+    data = make_github_request(repo_api, max_retries=2)
+    parent_scm_result = {}
     if not data:
+        if package_manager == "maven":
+            # There's the possibility of, in maven's case, assembly inheritance not having worked well;
+            # As such, if the package manager is maven, we'll try to "work our way up", and perform the same check in the parent
+            parent_scm_result = check_parent_scm(package_name)
+
+    if not data and not parent_scm_result["data"]:
+        # simplified_path = parent_scm_result.get("simplified_path", simplified_path)
+        # If we went up, and there's no still data, there really isn't a findable repository
         logging.warning(f"No repo found for {package_name} in {repo_link}")
         archived = None
         is_fork = None
         repo_link = f"https://github.com/{simplified_path}".lower()
     else:
+        data = data or parent_scm_result["data"]
+        simplified_path = parent_scm_result.get("simplified_path", simplified_path)
+        repo_api = parent_scm_result.get("repo_api", repo_api)
+        package_full_name = parent_scm_result.get("package_full_name", package_full_name)
+
         status_code = 200
         github_exists = True
         open_issues_count = data["open_issues"]
@@ -531,7 +600,7 @@ def analyze_package_data(package, repo_url, pm, check_match=False, enabled_check
             elif "not github" in repo_url:
                 package_info["github_exists"] = {"github_url": "Not_github_repo"}
             else:
-                github_info = check_existence(package, repo_url)
+                github_info = check_existence(package, repo_url, pm)
                 package_info["github_exists"] = github_info
 
         if check_match and package_info.get("github_exists") and package_info["github_exists"].get("github_exists"):
