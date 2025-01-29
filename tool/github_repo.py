@@ -32,9 +32,23 @@ def write_output(folder_path, filename, data):
 
 def extract_repo_url(repo_info: str) -> str:
     """Extract GitHub repository URL from repository information."""
+    if "https" not in repo_info:
+        # cases such as git@github:apache/maven-scm, we just remove the :
+        repo_info = repo_info.replace(":/", "/")
+    repo_info = repo_info.replace(":", "/")
     match = GITHUB_URL_PATTERN.search(repo_info)
-    return match.group(1) if match else "not github"
-
+    if not match:
+        return "not github"
+    
+    # if there is a match, there's still the possibility of the scm url having been
+    # put in a different form, e.g.,
+    # github.com/apache/maven-scm/tree/maven-scm-2.1.0/maven-scm-providers/maven-scm-providers-standard
+    # from here, we only want the URL up until the second-most directory after github.com
+    url = match.group(0)
+    parts = url.split("/")
+    joined = "/".join(parts[:3]) if len(parts) > 3 else url
+    joined = joined if not joined.endswith(".git") else joined[:-4]
+    return joined
 
 def get_scm_commands(pm: str, package: str) -> List[str]:
     """Get the appropriate command to find a package's source code locations for the package manager."""
