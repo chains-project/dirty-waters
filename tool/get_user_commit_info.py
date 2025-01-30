@@ -4,42 +4,23 @@ import os
 import sqlite3
 import time
 from pathlib import Path
-from tool_config import setup_cache
+from tool_config import get_cache_manager, make_github_request, clone_repo, get_last_page_info
+import git
+import logging
 
-script_dir = Path(__file__).parent.absolute()
-database_file = script_dir / "database" / "github_commit.db"
-# print("Database file: ", database_file)
-
-
-conn = sqlite3.connect(database_file)
-c = conn.cursor()
-
-c.execute(
-    """CREATE TABLE IF NOT EXISTS commit_data (
-             api_url TEXT PRIMARY KEY,
-             earliest_commit_sha TEXT,
-             repo_name TEXT,
-             package TEXT,
-             author_login TEXT,
-             author_commit_sha TEXT,
-             author_login_in_1st_commit TEXT,
-             author_id_in_1st_commit TEXT)"""
-)
-
-conn.commit()
+cache_manager = get_cache_manager()
 
 
-# logging.info("Cache [github_cache_cache] setup complete")
+def get_repo_author_commits(api_url):
+    # Since we can't return the commits in ascending date order, we'll just return the latest commit
+    # This response also holds the number of pages, so the last page will have the first commit
+    search_url = f"{api_url}&per_page=1"
+    last_page = get_last_page_info(search_url, max_retries=2, retry_delay=2, sleep_between_requests=2)
+    if not last_page:
+        return None
 
-
-github_token = os.getenv("GITHUB_API_TOKEN")
-# if not github_token:
-#     raise ValueError("GitHub API token is not set in the environment variables.")
-
-headers = {
-    "Authorization": f"Bearer {github_token}",
-    "Accept": "application/vnd.github.v3+json",
-}
+    last_page_url = f"{search_url}&page={last_page}"
+    return make_github_request(last_page_url, max_retries=2, retry_delay=2, sleep_between_requests=2)
 
 
 def get_user_first_commit_info(data):
@@ -52,23 +33,15 @@ def get_user_first_commit_info(data):
     Returns:
         dict: A dictionary with updated package information including first commit details.
     """
-    setup_cache("github_commits_info")
-
-    failed_api_urls = set()
-
-    earliest_commit_sha = None
-    author_login_in_commit = None
-    author_id_in_commit = None
-    first_time_commit = None
+    cache_manager._setup_requests_cache("get_user_commit_info")
+    logging.info("Getting user commit information")
 
     packages_data = copy.deepcopy(data)
-
     for package, info in packages_data.items():
-        print(f"Processing {package}")
         repo_name = info["repo_name"]
-
-        if info.get("authors"):
-            for author in info.get("authors"):
+        authors = info.get("authors")
+        if authors:
+            for author in authors:
                 author_login = author.get("login", "No_author_login")
                 commit_sha = author.get("sha", "No_commit_sha")
                 author_type = author.get("a_type", "No_author_type")
@@ -88,23 +61,17 @@ def get_user_first_commit_info(data):
                 if "[bot]" in author_login or author_type == "Bot":
                     commit_result["earliest_commit_sha"] = "It might be a bot"
                     commit_result["commit_notice"] = "Bot author detected"
-
                 else:
-                    api_url = f"https://api.github.com/search/commits?q=repo:{repo_name}+author:{author_login}+sort:author-date-asc"
-
-                    c.execute(
-                        "SELECT earliest_commit_sha, author_login_in_1st_commit, author_id_in_1st_commit FROM commit_data WHERE api_url = ?",
-                        (api_url,),
-                    )
-                    data = c.fetchone()
-
+                    api_url = f"https://api.github.com/repos/{repo_name}/commits?author={author_login}"
+                    data = cache_manager.user_commit_cache.get_user_commit(api_url)
                     if data:
+                        # Retrieved data from cache
                         (
                             earliest_commit_sha,
                             author_login_in_commit,
                             author_id_in_commit,
                         ) = data
-                        first_time_commit = True if earliest_commit_sha == commit_sha else False
+                        first_time_commit = earliest_commit_sha == commit_sha
 
                         commit_result.update(
                             {
@@ -116,87 +83,39 @@ def get_user_first_commit_info(data):
                                 "commit_notice": "Data retrieved from cache",
                             }
                         )
-
                     else:
-                        max_retries = 2
-                        base_wait_time = 2
-                        retries = 0
-                        success = False
-
-                        while retries < max_retries and not success and api_url not in failed_api_urls:
-                            response = requests.get(api_url, headers=headers)
-                            time.sleep(2)
-
-                            if response.status_code == 200:
-                                success = True
-                                commits_data = response.json()
-                                earliest_commit_sha = (
-                                    commits_data["items"][0]["sha"] if commits_data["items"] else None
-                                )
-
-                                author_login_in_commit = (
-                                    commits_data["items"][0]["author"]["login"] if commits_data["items"] else None
-                                )
-                                # author_type = commits_data['items'][0]['author']['__typename'] if commits_data['items'] else None
-
-                                author_id_in_commit = (
-                                    commits_data["items"][0]["author"]["id"] if commits_data["items"] else None
-                                )
-                                # api_url_cache[api_url] = earliest_commit_sha
-
-                                first_time_commit = True if earliest_commit_sha == commit_sha else False
-
-                                c.execute(
-                                    "INSERT INTO commit_data (api_url, earliest_commit_sha, repo_name, package, author_login, author_commit_sha, author_login_in_1st_commit, author_id_in_1st_commit) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                                    (
-                                        api_url,
-                                        earliest_commit_sha,
-                                        repo_name,
-                                        package,
-                                        author_login,
-                                        commit_sha,
-                                        author_login_in_commit,
-                                        author_id_in_commit,
-                                    ),
-                                )
-                                conn.commit()
-
-                                commit_result.update(
-                                    {
-                                        "api_url": api_url,  # "https://api.github.com/search/commits?q=repo:{repo_name}+author:{author_login}+sort:author-date-asc
-                                        "earliest_commit_sha": earliest_commit_sha,
-                                        "author_login_in_1st_commit": author_login_in_commit,
-                                        "author_id_in_1st_commit": author_id_in_commit,
-                                        "is_first_commit": first_time_commit,
-                                        "commit_notice": "Data retrieved from API",
-                                    }
-                                )
-
-                            else:
-                                print(f"Error: {response.status_code}")
-                                remaining = response.headers.get("X-RateLimit-Remaining")
-                                reset_time = response.headers.get("X-RateLimit-Reset")
-                                wait_time = max(int(reset_time) - int(time.time()), 0)
-                                print(f"Rate limit remaining: {remaining}")
-
-                                if remaining == "0":
-                                    time.sleep(wait_time)
-
-                                else:
-                                    time.sleep(base_wait_time)
-
-                                retries += 1
-                                print(f"Retrying...{retries}/{max_retries} for {api_url}")
-
-                        if not success:
+                        # Data not found in cache, need to make API request
+                        result = get_repo_author_commits(api_url)
+                        if result:
+                            earliest_commit = result[0]
+                            earliest_commit_sha = earliest_commit["sha"]
+                            author_login_in_commit = earliest_commit["author"]["login"]
+                            author_id_in_commit = earliest_commit["author"]["id"]
+                            first_time_commit = earliest_commit_sha == commit_sha
+                            cache_manager.user_commit_cache.cache_user_commit(
+                                api_url,
+                                earliest_commit_sha,
+                                repo_name,
+                                package,
+                                author_login,
+                                commit_sha,
+                                author_login_in_commit,
+                                author_id_in_commit,
+                            )
+                            commit_result.update(
+                                {
+                                    "api_url": api_url,
+                                    "earliest_commit_sha": earliest_commit_sha,
+                                    "author_login_in_1st_commit": author_login_in_commit,
+                                    "author_id_in_1st_commit": author_id_in_commit,
+                                    "is_first_commit": first_time_commit,
+                                    "commit_notice": "Data retrieved from API",
+                                }
+                            )
+                        else:
                             commit_result["commit_notice"] = f"Failed to retrieve data from API({api_url})"
-                            failed_api_urls.add(api_url)
-
                 author["commit_result"] = commit_result
-
         else:
             info["commit_result"] = None
-
-    conn.close()
 
     return packages_data

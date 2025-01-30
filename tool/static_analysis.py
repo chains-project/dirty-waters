@@ -9,10 +9,10 @@ import requests
 import subprocess
 import re
 
-import tool_config
+from tool_config import get_cache_manager, make_github_request
 from compare_commits import tag_format as construct_tag_format
 import logging
-
+import xmltodict
 
 github_token = os.getenv("GITHUB_API_TOKEN")
 
@@ -21,7 +21,7 @@ headers = {
     "Accept": "application/vnd.github.v3+json",
 }
 
-# tool_config.setup_cache("static")
+cache_manager = get_cache_manager()
 
 
 MAX_WAIT_TIME = 15 * 60
@@ -114,7 +114,6 @@ def check_deprecated_and_provenance(package, package_version, pm):
 
 
 def check_code_signature(package_name, package_version, pm):
-    # TODO: caching this somehow would be nice
     # TODO: find a package where we can check this, because with spoon everything is fine
     def check_maven_signature(package_name, package_version):
         # Construct the command
@@ -216,22 +215,62 @@ def api_constructor(package_name, repository):
     return repo_api, simplified_path, package_full_name, name, version, error_message
 
 
-def make_github_request(url, headers):
-    """Make a GET request to the GitHub API."""
+def check_parent_scm(package):
+    name, version = package.split("@")
+    group_id, artifact_id = name.split(":")
 
-    response = requests.get(url, headers=headers)
+    existing_scm_data, repo_api, simplified_path, package_full_name = None, None, None, None
+    stopping = False
+    while not stopping:
+        # First, getting the parent's pom contents
+        command = [
+            "mvn",
+            "org.apache.maven.plugins:maven-help-plugin:3.5.1:evaluate",
+            "-Dexpression=project.parent",
+            f"-Dartifact={group_id}:{artifact_id}:{version}",
+            "-q",
+            "-DforceStdout",
+        ]
+        output = subprocess.run(command, capture_output=True, text=True)
+        parent_pom = output.stdout.strip()
+        if not parent_pom or "null" in parent_pom:
+            # If there's no parent, we stop
+            stopping = True
+        else:
+            parents_contents = xmltodict.parse(parent_pom)
+            parent_group_id, parent_artifact_id = [
+                parents_contents.get("project", {}).get("groupId", ""),
+                parents_contents.get("project", {}).get("artifactId", ""),
+            ]
+            if not parent_group_id or not parent_artifact_id or parent_group_id != group_id:
+                # If the parent is lacking data we stop;
+                # If the parent doesn't share the same group, we went too far, so we stop too
+                stopping = True
+                break
+            parent_scm_locations = [
+                parents_contents.get("project", {}).get("scm", {}).get(location, "")
+                for location in ["url", "connection", "developerConnection"]
+            ] + [parents_contents.get("project", {}).get("url", "")]
+            for location in parent_scm_locations:
+                if location:
+                    repo_api, simplified_path, package_full_name, _, _, _ = api_constructor(package, location)
+                    data = make_github_request(repo_api, max_retries=2)
+                    if data:
+                        stopping = True
+                        existing_scm_data = data
+                        break
+            if not stopping:
+                group_id, artifact_id = parent_group_id, parent_artifact_id
 
-    if response.status_code == 403 and int(response.headers.get("X-RateLimit-Remaining", 0)) <= 10:
-        reset_time = int(response.headers.get("X-RateLimit-Reset", 0))
-        sleep_time = min(reset_time - int(time.time()), MAX_WAIT_TIME)
-        print(f"\nRate limit reached. Waiting for {sleep_time} seconds.")
-        time.sleep(sleep_time)
-        print("\nResuming analysis...")
-        response = requests.get(url, headers=headers)
-    return response
+    return {
+        "data": existing_scm_data,
+        "repo_api": repo_api,
+        "simplified_path": simplified_path,
+        "package_full_name": package_full_name,
+    }
 
 
-def check_existence(package_name, repository):
+def check_existence(package_name, repository, package_manager):
     """Check if the package exists in the repository."""
     repo_api, simplified_path, package_full_name, _, version, error_message = api_constructor(package_name, repository)
 
@@ -246,18 +285,30 @@ def check_existence(package_name, repository):
     github_redirected = False
     now_repo_url = None
     open_issues_count = None
+    status_code = 404
 
-    response = make_github_request(repo_api, headers=headers)
-    status_code = response.status_code
-    data = response.json()
+    data = make_github_request(repo_api, max_retries=2)
+    parent_scm_result = {}
+    if not data:
+        if package_manager == "maven":
+            # There's the possibility of, in maven's case, assembly inheritance not having worked well;
+            # As such, if the package manager is maven, we'll try to "work our way up", and perform the same check in the parent
+            parent_scm_result = check_parent_scm(package_name)
 
-    if status_code != 200:
-        print(f"[WARNING] No repo found for {package_name} in {repo_link}")
+    if not data and not parent_scm_result["data"]:
+        # simplified_path = parent_scm_result.get("simplified_path", simplified_path)
+        # If we went up, and there's no still data, there really isn't a findable repository
+        logging.warning(f"No repo found for {package_name} in {repo_link}")
         archived = None
         is_fork = None
         repo_link = f"https://github.com/{simplified_path}".lower()
+    else:
+        data = data or parent_scm_result["data"]
+        simplified_path = parent_scm_result.get("simplified_path", simplified_path)
+        repo_api = parent_scm_result.get("repo_api", repo_api)
+        package_full_name = parent_scm_result.get("package_full_name", package_full_name)
 
-    if status_code == 200:
+        status_code = 200
         github_exists = True
         open_issues_count = data["open_issues"]
         if data["archived"]:
@@ -282,29 +333,25 @@ def check_existence(package_name, repository):
         have_no_tags_data = have_no_tags_response.json()
 
         if len(have_no_tags_data) == 0:
-            release_tag_exists = False
             release_tag_url = None
             tag_related_info = "No tag was found in the repo"
             status_code_release_tag = have_no_tags_response_status_code
-
         else:
-            tag_possible_formats = construct_tag_format(version, package_full_name)
-
+            tag_possible_formats = construct_tag_format(version, package_full_name, repo_name=simplified_path)
             # Making the default case not finding the tag
             tag_related_info = "The given tag was not found in the repo"
-            status_code_release_tag = 404
             if tag_possible_formats:
                 for tag_format in tag_possible_formats:
                     tag_url = f"{repo_api}/git/ref/tags/{tag_format}"
-                    response = make_github_request(tag_url, headers=headers)
-                    if response.status_code == 200:
+                    response = make_github_request(tag_url, silent=True)
+                    if response:
                         release_tag_exists = True
                         release_tag_url = tag_url
                         tag_related_info = f"Tag {tag_format} is found in the repo"
-                        status_code_release_tag = response.status_code
+                        status_code_release_tag = 200
                         break
-            if status_code_release_tag == 404:
-                print(f"[INFO] No tags found for {package_name} in {repo_api}")
+            if not release_tag_exists:
+                logging.info(f"No tags found for {package_name} in {repo_api}")
 
     github_info = {
         "github_api": repo_api,
@@ -348,10 +395,10 @@ def get_api_content(api, headers):
         requests.Timeout,
         json.JSONDecodeError,
     ) as e:
-        print(f"Request error: {str(e)} for URL: {api}")
+        logging.error(f"Request error: {str(e)} for URL: {api}")
         return None
     except Exception as e:
-        print(f"Unexpected error: {str(e)} for URL: {api}")
+        logging.error(f"Unexpected error: {str(e)} for URL: {api}")
         return None
 
 
@@ -422,8 +469,7 @@ def check_name_match_for_fork(package_name, repository):
 
 
 def check_name_match(package_name, repository):
-    tool_config.setup_cache("check_name")
-    # logging.info("Cache [check_name_cache] setup complete")
+    cache_manager._setup_requests_cache(cache_name="static_analysis")
 
     _, repo_name, _, _, _, _ = api_constructor(package_name, repository)
     original_package_name = package_name.rsplit("@", 1)[0]
@@ -438,8 +484,8 @@ def check_name_match(package_name, repository):
 
     response = requests.get(url, headers=headers, timeout=20)
 
-    if not response.from_cache:
-        time.sleep(6)
+    # if not response.from_cache:
+    #     time.sleep(6)
 
     status_code = response.status_code
 
@@ -460,9 +506,6 @@ def check_name_match(package_name, repository):
                 if item["name"] == "package.json":
                     package_api_in_packages = item["url"]
                     is_match = True
-
-    else:
-        is_match = False
 
     if not is_match:
         unmatch_info = {
@@ -503,33 +546,66 @@ def analyze_package_data(package, repo_url, pm, check_match=False, enabled_check
     try:
         package_name, package_version = package.rsplit("@", 1)
 
-        # Only check deprecation and provenance if enabled
-        if enabled_checks["deprecated"] or enabled_checks["provenance"]:
+        # Try to get from cache first
+        cached_analysis = cache_manager.package_cache.get_package_analysis(package_name, package_version, pm)
+
+        # Initialize missing_checks to track what needs to be analyzed
+        missing_checks = {}
+
+        if cached_analysis:
+            logging.info(f"Found cached analysis for {package}")
+            package_info = cached_analysis
+
+            # Check which enabled checks are missing from cache
+            for check, enabled in enabled_checks.items():
+                if enabled:
+                    if check == "deprecated" and "deprecated" not in cached_analysis:
+                        missing_checks["deprecated"] = True
+                    elif check == "provenance" and "provenance" not in cached_analysis:
+                        missing_checks["provenance"] = True
+                    elif check == "code_signature" and "code_signature" not in cached_analysis:
+                        missing_checks["code_signature"] = True
+                    elif check == "source_code" and "github_exists" not in cached_analysis:
+                        missing_checks["source_code"] = True
+                    elif check == "forks" and (
+                        "github_exists" not in cached_analysis
+                        or "is_fork" not in cached_analysis.get("github_exists", {})
+                    ):
+                        missing_checks["forks"] = True
+
+            if not missing_checks:
+                logging.info(f"Using complete cached analysis for {package}")
+                return package_info
+            logging.info(
+                f"Found partial cached analysis for {package}, analyzing missing checks: {list(missing_checks.keys())}"
+            )
+        else:
+            logging.info(f"No cached analysis for {package}, analyzing all enabled checks")
+            missing_checks = enabled_checks
+
+        if missing_checks.get("deprecated") or missing_checks.get("provenance"):
             package_infos = check_deprecated_and_provenance(package_name, package_version, pm)
-            if enabled_checks["deprecated"]:
+            if missing_checks.get("deprecated"):
                 package_info["deprecated"] = package_infos.get("deprecated_in_version")
-            if enabled_checks["provenance"]:
+            if missing_checks.get("provenance"):
                 package_info["provenance"] = package_infos.get("provenance_in_version")
             package_info["package_info"] = package_infos
 
-        # Only check code signature if enabled
-        if enabled_checks["code_signature"]:
+        if missing_checks.get("code_signature"):
             package_info["code_signature"] = check_code_signature(package_name, package_version, pm)
 
-        # Only check source code and forks if enabled
-        if enabled_checks["source_code"] or enabled_checks["forks"]:
+        if missing_checks.get("source_code") or missing_checks.get("forks"):
             if "Could not find" in repo_url:
                 package_info["github_exists"] = {"github_url": "No_repo_info_found"}
             elif "not github" in repo_url:
                 package_info["github_exists"] = {"github_url": "Not_github_repo"}
             else:
-                github_info = check_existence(package, repo_url)
+                github_info = check_existence(package, repo_url, pm)
                 package_info["github_exists"] = github_info
 
-        # Only check name matches if enabled and relevant
-        if check_match and package_info["github_exists"] and package_info["github_exists"].get("github_exists"):
+        if check_match and package_info.get("github_exists") and package_info["github_exists"].get("github_exists"):
             repo_url_to_use = github_info.get("redirected_repo") or repo_url
-            if package_info["provenance"] == False:
+            if package_info.get("provenance") == False:
                 if (
                     package_info["github_exists"].get("is_fork") == True
                     or package_info["github_exists"].get("archived") == True
@@ -544,22 +620,24 @@ def analyze_package_data(package, repo_url, pm, check_match=False, enabled_check
                     "repo_name": repo_url,
                 }
 
+        # Cache the updated analysis
+        cache_manager.package_cache.cache_package_analysis(package_name, package_version, pm, package_info)
+
     except Exception as e:
-        logging.error(f"Error analyzing package {package}: {str(e)}")
+        logging.error(f"Analyzing package {package}: {str(e)}")
         package_info["error"] = str(e)
 
     return package_info
 
 
 def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS):
-    print("Analyzing package static data...")
+    logging.info("Analyzing package static data...")
     package_all = {}
     errors = {}
 
     with tqdm(total=len(packages_data), desc="Analyzing packages") as pbar:
         for package, repo_urls in packages_data.items():
-            # print(f"Analyzing {package}")
-            tqdm.write(f"[INFO] Currently analyzing {package}")
+            logging.info(f"Currently analyzing {package}")
             repo_url = repo_urls.get("github", "")
             analyzed_data = analyze_package_data(
                 package, repo_url, pm, check_match=check_match, enabled_checks=enabled_checks
@@ -571,14 +649,6 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
                 errors[package] = error
             else:
                 package_all[package] = analyzed_data
-
-    # filepaths
-
-    # file_path = os.path.join(folder, "all_info.json")
-    # error_path = os.path.join(folder, "errors.json")
-
-    # save_results_to_file(file_path, package_all)
-    # save_results_to_file(error_path, errors)
 
     return package_all, errors
 

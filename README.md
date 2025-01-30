@@ -53,7 +53,8 @@ Run the tool using the following command structure:
 ### Arguments:
 
 ```
-usage: main.py [-h] -p PROJECT_REPO_NAME -v RELEASE_VERSION_OLD [-vn RELEASE_VERSION_NEW] -s [-d] [-n] -pm {yarn-classic,yarn-berry,pnpm,npm,maven} [--pnpm-scope]
+usage: main.py [-h] -p PROJECT_REPO_NAME -v RELEASE_VERSION_OLD [-vn RELEASE_VERSION_NEW] -s [-d] [-n] -pm {yarn-classic,yarn-berry,pnpm,npm,maven} [--pnpm-scope] [--debug] [--check-source-code]
+               [--check-release-tags] [--check-deprecated] [--check-forks] [--check-provenance] [--check-code-signature]
 
 options:
   -h, --help            show this help message and exit
@@ -67,12 +68,20 @@ options:
                         Run static analysis and generate a markdown report of the project
   -d, --differential-analysis
                         Run differential analysis and generate a markdown report of the project
-  -n, --name-match      Compare the package names with the name in the in the package.json file. This option will slow down the execution time due to the API rate limit of
-                        code search.
+  -n, --name-match      Compare the package names with the name in the in the package.json file. This option will slow down the execution time due to the API rate limit of code search.
   -pm {yarn-classic,yarn-berry,pnpm,npm,maven}, --package-manager {yarn-classic,yarn-berry,pnpm,npm,maven}
                         The package manager used in the project.
-  --pnpm-scope          Extract dependencies from pnpm with a specific scope using 'pnpm list --filter <scope> --depth Infinity' command. Configure the scope in tool_config.py
-                        file.
+  --pnpm-scope          Extract dependencies from pnpm with a specific scope using 'pnpm list --filter <scope> --depth Infinity' command. Configure the scope in tool_config.py file.
+  --debug               Enable debug mode.
+
+smell checks:
+  --check-source-code   Check for dependencies with no link to source code repositories
+  --check-release-tags  Check for dependencies with no tag/commit sha for release
+  --check-deprecated    Check for deprecated dependencies
+  --check-forks         Check for dependencies that are forks
+  --check-provenance    Check for dependencies with no build attestation
+  --check-code-signature
+                        Check for dependencies with missing/invalid code signature
 ```
 
 ### Example usage:
@@ -147,6 +156,8 @@ specified in the lockfile/pom/similar is not found. They come from a combination
 work and our own research on this subject.
 These formats are the following:
 
+<details> <summary>Tag formats</summary>
+
 - `<tag>`
 - `v<tag>`
 - `r-<tag>`
@@ -157,10 +168,31 @@ These formats are the following:
 - `<package_name>_v<tag>`
 - `<package_name>-<tag>`
 - `<package_name>_<tag>`
+- `<repo_name>@<tag>`
+- `<repo_name>-v<tag>`
+- `<repo_name>_v<tag>`
+- `<repo_name>-<tag>`
+- `<repo_name>_<tag>`
+- `<project_name>@<tag>`
+- `<project_name>-v<tag>`
+- `<project_name>_v<tag>`
+- `<project_name>-<tag>`
+- `<project_name>_<tag>`
 - `release/<tag>`
 - `<tag>-release`
 - `v.<tag>`
 - `p1-p2-p3<tag>`
+
+As examples of what `package_name`, `repo_name`, and `project_name` could be, `maven-surefire`
+is an interesting dependency:
+
+- `maven-surefire-common` is the package name
+- `maven-surefire` is the repo name (we remove the owner prefix)
+- `surefire` is the project name
+
+In particular, there are many `maven-*` dependencies whose tags follow these last conventions.
+
+</details>
 
 Note than this does not mean that if `dirty-waters` does not find a tag, it doesn't exist:
 it means that it either doesn't exist, or that its format is not one of the above.

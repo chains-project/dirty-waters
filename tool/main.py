@@ -9,8 +9,6 @@ import os
 import requests
 from git import Repo
 
-# from dotenv import load_dotenv
-
 
 import extract_deps
 import github_repo
@@ -24,7 +22,6 @@ import tool_config
 import report_static
 import report_diff
 
-# load_dotenv()
 github_token = os.getenv("GITHUB_API_TOKEN")
 if not github_token:
     raise ValueError("GitHub API token(GITHUB_API_TOKEN) is not set in the environment variables.")
@@ -33,6 +30,8 @@ headers = {
     "Authorization": f"Bearer {github_token}",
     "Accept": "application/vnd.github.v3+json",
 }
+
+cache_manager = tool_config.get_cache_manager()
 
 
 def get_args():
@@ -91,6 +90,11 @@ def get_args():
         action="store_true",
         help="Extract dependencies from pnpm with a specific scope using 'pnpm list --filter <scope> --depth Infinity' command. Configure the scope in tool_config.py file.",
     )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Enable debug mode.",
+    )
 
     # Add new smell check arguments
     smell_group = parser.add_argument_group("smell checks")
@@ -130,22 +134,6 @@ def get_args():
     return arguments
 
 
-def logging_setup(log_file_path):
-    """
-    Setup logging configuration.
-
-    Args:
-        log_file_path (str): The path to the log file.
-    """
-    logging.basicConfig(
-        filename=log_file_path,
-        level=logging.INFO,
-        filemode="w",
-        format="%(asctime)s %(levelname)-8s %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-    )
-
-
 def get_lockfile(project_repo_name, release_version, package_manager):
     """
     Get the lockfile for the given project and release version.
@@ -169,15 +157,11 @@ def get_lockfile(project_repo_name, release_version, package_manager):
         "maven": "pom.xml",
     }
 
-    tool_config.setup_cache("demo")
-    # logging.info("Cache [demo_cache] setup complete")
-
+    cache_manager._setup_requests_cache(cache_name="get_lockfile")
     try:
         lockfile_name = LOOKING_FOR[package_manager]
-        logging.info(f"Getting {lockfile_name} for %s@%s", project_repo_name, release_version)
+        logging.info(f"Getting {lockfile_name} for {project_repo_name}@{release_version}")
         logging.info(f"Package manager: {package_manager}")
-
-        print(f"Getting {lockfile_name} for {project_repo_name}@{release_version}")
     except KeyError:
         logging.error("Invalid package manager or lack of lockfile: %s", package_manager)
         raise ValueError("Invalid package manager or lack of lockfile.")
@@ -189,7 +173,7 @@ def get_lockfile(project_repo_name, release_version, package_manager):
         data = response.json()
         download_url = data.get("download_url")
         lock_content = requests.get(download_url, timeout=60).text
-        print(f"Got the {lockfile_name} file from {download_url}.")
+        logging.info(f"Got the {lockfile_name} file from {download_url}.")
     else:
         logging.error(f"Failed to get {lockfile_name}.")
         raise ValueError(f"Failed to get {lockfile_name}.")
@@ -205,37 +189,6 @@ def get_lockfile(project_repo_name, release_version, package_manager):
         raise ValueError("Failed to get default branch")
 
     return lock_content, default_branch, project_repo_name
-
-
-def clone_repo(project_repo_name, release_version):
-    """
-    Clone the repository for the given project and release version.
-
-    Args:
-        project_repo_name (str): The name of the project repository.
-        release_version (str): The release version of the project.
-
-    Returns:
-        str: The path to the cloned repository.
-    """
-
-    repo_url = f"https://github.com/{project_repo_name}.git"
-
-    # Clone to /tmp folder; if it is already cloned, an error will be raised
-    try:
-        Repo.clone_from(repo_url, f"/tmp/{project_repo_name}")
-    except Exception as e:
-        # If the repo is already cloned, just fetch the latest changes
-        print(f"[INFO] Repo already cloned. Fetching the latest changes...")
-        repo = Repo(f"/tmp/{project_repo_name}")
-
-        # Fetch the latest changes
-        repo.remotes.origin.fetch()
-    # Checkout to the release version
-    repo = Repo(f"/tmp/{project_repo_name}")
-    repo.git.checkout(release_version)
-
-    return f"/tmp/{project_repo_name}"
 
 
 def get_deps(folder_path, project_repo_name, release_version, package_manager):
@@ -280,7 +233,7 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
         # Example: parent package A has a child package B; we want to run it on package B, but cloning won't work here (?)
         # And even if it did, we still need to, inside the project, navigate to the child package and run the analysis there
         # So this is a side case not yet handled
-        repo_path = clone_repo(project_repo_name, release_version)
+        repo_path = tool_config.clone_repo(project_repo_name, release_version)
         deps_list_all = extract_deps.extract_deps_from_maven(repo_path)
 
     logging.info("Number of dependencies: %d", len(deps_list_all.get("resolutions", {})))
@@ -293,14 +246,6 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
         "Number of dependencies with different resolutions: %d",
         len(dep_with_many_versions),
     )
-
-    rv_name = release_version.replace("/", "_")
-
-    # write_to_file(f"{rv_name}_deps_list_all.json", folder_path, deps_list_all)
-    # write_to_file(
-    #     f"{rv_name}_dep_with_many_versions.json", folder_path, dep_with_many_versions
-    # )
-    # write_to_file(f"{rv_name}_patches_info.json", folder_path, patches_info)
 
     return deps_list_all, dep_with_many_versions, patches_info
 
@@ -341,6 +286,7 @@ def differential_analysis(
     patches_new,
     patches_old,
     project_repo_name,
+    package_manager,
 ):
     """
     Perform differential analysis on the given project and release versions.
@@ -354,7 +300,7 @@ def differential_analysis(
         patches_new (dict): The patches info for the new release version.
         patches_old (dict): The patches info for the old release version.
         project_repo_name (str): The name of the project repository.
-
+        package_manager (str): The package manager used in the project.
     Returns:
         tuple: A tuple containing the following:
             - compare_differences (dict): The comparison results for the dependencies.
@@ -375,7 +321,10 @@ def differential_analysis(
         _,
     ) = compare_packages.differential(old_rv_dep_versions, new_rv_dep_versions, sa_1, sa_2)
 
-    changed_patches, _ = compare_packages.changed_patch(patches_old, patches_new)
+    if package_manager != "maven":
+        changed_patches, _ = compare_packages.changed_patch(patches_old, patches_new)
+    else:
+        changed_patches = {}
 
     authors = compare_commits.get_commit_results(
         headers,
@@ -429,7 +378,7 @@ def setup_project_info(args):
     }
 
 
-def setup_directories_and_logging(project_info):
+def setup_directories_and_logging(project_info, debug):
     """Set up necessary directories and logging."""
 
     dir_path = tool_config.PathManager()
@@ -439,7 +388,7 @@ def setup_directories_and_logging(project_info):
     project_info["diff_folder"] = diff_folder
 
     log_file_path = result_folder_path / "analysis.log"
-    logging_setup(log_file_path)
+    tool_config.setup_logger(log_file_path, debug)
 
 
 def perform_static_analysis(project_info, is_old_version):
@@ -503,6 +452,7 @@ def perform_differential_analysis(old_results, new_results, project_info):
         new_results[3],
         old_results[3],  # patches_info
         project_info["repo_name"],
+        project_info["package_manager"],
     )
 
     # Write differential analysis results to files
@@ -577,9 +527,9 @@ def main():
         }
 
     project_info = setup_project_info(dw_args)
-    setup_directories_and_logging(project_info)
+    setup_directories_and_logging(project_info, dw_args.debug)
 
-    print(
+    logging.info(
         f"Software supply chain smells analysis for {project_info['repo_name']} for version {project_info['old_version']}..."
     )
 
@@ -599,4 +549,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    print("Analysis completed.")
+    logging.info("Analysis completed.")
