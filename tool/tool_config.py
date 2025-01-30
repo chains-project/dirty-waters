@@ -187,7 +187,10 @@ class GitHubCache(Cache):
         c = conn.cursor()
 
         try:
-            c.execute("SELECT first_review_data, cached_at FROM pr_reviews WHERE repo_name = ? AND author = ?", (repo_name, author))
+            c.execute(
+                "SELECT first_review_data, cached_at FROM pr_reviews WHERE repo_name = ? AND author = ?",
+                (repo_name, author),
+            )
             result = c.fetchone()
             if result:
                 review_data, cached_at = result
@@ -263,7 +266,10 @@ class GitHubCache(Cache):
         conn = sqlite3.connect(self.db_path)
         c = conn.cursor()
         with sqlite3.connect(self.db_path) as conn:
-            c.execute("SELECT package, commit_sha, commit_node_id, pr_info, cached_at FROM pr_info WHERE commit_node_id = ?", (commit_node_id,))
+            c.execute(
+                "SELECT package, commit_sha, commit_node_id, pr_info, cached_at FROM pr_info WHERE commit_node_id = ?",
+                (commit_node_id,),
+            )
             result = c.fetchone()
 
             if result:
@@ -427,7 +433,7 @@ class CommitComparisonCache(Cache):
                 cached_at TIMESTAMP,
                 PRIMARY KEY (repo_name, patch_path, sha)
             )
-        """
+        """,
         ]
 
         for query in queries:
@@ -488,7 +494,8 @@ class CommitComparisonCache(Cache):
 
     def get_patch_authors(self, repo_name, patch_path, sha, max_age_days=30):
         results = self._execute_query(
-            "SELECT data, cached_at FROM patch_authors_from_sha WHERE repo_name = ? AND patch_path = ? AND sha = ?", (repo_name, patch_path, sha)
+            "SELECT data, cached_at FROM patch_authors_from_sha WHERE repo_name = ? AND patch_path = ? AND sha = ?",
+            (repo_name, patch_path, sha),
         )
         if results:
             data, cached_at = results[0]
@@ -540,14 +547,34 @@ class UserCommitCache(Cache):
         """
         )
 
-    def cache_user_commit(self, api_url, earliest_commit_sha, repo_name, package, author_login, author_commit_sha, author_login_in_1st_commit, author_id_in_1st_commit):
+    def cache_user_commit(
+        self,
+        api_url,
+        earliest_commit_sha,
+        repo_name,
+        package,
+        author_login,
+        author_commit_sha,
+        author_login_in_1st_commit,
+        author_id_in_1st_commit,
+    ):
         self._execute_query(
             """
             INSERT OR REPLACE INTO user_commit 
             (api_url, earliest_commit_sha, repo_name, package, author_login, author_commit_sha, author_login_in_1st_commit, author_id_in_1st_commit, cached_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """,
-            (api_url, earliest_commit_sha, repo_name, package, author_login, author_commit_sha, author_login_in_1st_commit, author_id_in_1st_commit, datetime.now().isoformat()),
+            (
+                api_url,
+                earliest_commit_sha,
+                repo_name,
+                package,
+                author_login,
+                author_commit_sha,
+                author_login_in_1st_commit,
+                author_id_in_1st_commit,
+                datetime.now().isoformat(),
+            ),
         )
 
     def get_user_commit(self, api_url, max_age_days=30):
@@ -643,9 +670,11 @@ cache_manager = CacheManager()
 def get_cache_manager():
     return cache_manager
 
+
 CLONE_OPTIONS = {
     "blobless": "--filter=blob:none",
 }
+
 
 def clone_repo(project_repo_name, release_version=None, blobless=False):
     """
@@ -685,8 +714,10 @@ def setup_logger(log_file_path, debug=False):
     """
     Setup the logger for the analysis.
     """
+
     class CustomFormatter(logging.Formatter):
         """Custom formatter, includes color coding for log levels."""
+
         grey = "\x1b[38;20m"
         green = "\x1b[38;2;0;200;0m"
         yellow = "\x1b[38;2;255;255;0m"
@@ -731,6 +762,7 @@ def setup_logger(log_file_path, debug=False):
 
     return logger
 
+
 def make_github_request(
     url: str,
     method: str = "GET",
@@ -740,11 +772,11 @@ def make_github_request(
     retry_delay: int = 2,
     timeout: int = 20,
     sleep_between_requests: int = 0,
-    silent: bool = False
+    silent: bool = False,
 ) -> Optional[Dict]:
     """
     Make a HTTP request with retry logic and rate limiting handling.
-    
+
     Args:
         url (str): HTTP URL
         method (str): HTTP method ("GET" or "POST")
@@ -754,30 +786,26 @@ def make_github_request(
         retry_delay (int): Base time to wait between retries in seconds
         timeout (int): Request timeout in seconds
         silent (bool): Whether to suppress error logging
-        
+
     Returns:
         Optional[Dict]: JSON response or None if request failed
     """
     for attempt in range(max_retries):
         try:
-            response = requests.request(
-                method=method,
-                url=url,
-                headers=headers,
-                json=json_data,
-                timeout=timeout
-            )
+            response = requests.request(method=method, url=url, headers=headers, json=json_data, timeout=timeout)
             response.raise_for_status()
             return response.json()
 
         except requests.exceptions.RequestException as e:
             time.sleep(sleep_between_requests)
-            if isinstance(e, requests.exceptions.HTTPError) and (e.response.status_code in [429, 403] or "rate limit" in e.response.text.lower()):
+            if isinstance(e, requests.exceptions.HTTPError) and (
+                e.response.status_code in [429, 403] or "rate limit" in e.response.text.lower()
+            ):
                 if attempt == max_retries - 1:
                     if not silent:
                         logging.error(f"Failed after {max_retries} attempts due to rate limiting: {e}")
                     return None
-                
+
                 # Get rate limit reset time and wait
                 reset_time = int(e.response.headers.get("X-RateLimit-Reset", 0))
                 wait_time = max(reset_time - int(time.time()), 0)
@@ -795,10 +823,12 @@ def make_github_request(
     return None
 
 
-def get_last_page_info(url: str, max_retries: int = 1, retry_delay: int = 2, sleep_between_requests: int = 0) -> Optional[int]:
+def get_last_page_info(
+    url: str, max_retries: int = 1, retry_delay: int = 2, sleep_between_requests: int = 0
+) -> Optional[int]:
     """
     Get the last page number from the response headers.
-    
+
     Args:
         url (str): URL to get the last page number
         max_retries (int): Maximum number

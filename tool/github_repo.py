@@ -39,7 +39,7 @@ def extract_repo_url(repo_info: str) -> str:
     match = GITHUB_URL_PATTERN.search(repo_info)
     if not match:
         return "not github"
-    
+
     # if there is a match, there's still the possibility of the scm url having been
     # put in a different form, e.g.,
     # github.com/apache/maven-scm/tree/maven-scm-2.1.0/maven-scm-providers/maven-scm-providers-standard
@@ -49,6 +49,7 @@ def extract_repo_url(repo_info: str) -> str:
     joined = "/".join(parts[:3]) if len(parts) > 3 else url
     joined = joined if not joined.endswith(".git") else joined[:-4]
     return joined
+
 
 def get_scm_commands(pm: str, package: str) -> List[str]:
     """Get the appropriate command to find a package's source code locations for the package manager."""
@@ -79,6 +80,7 @@ def get_scm_commands(pm: str, package: str) -> List[str]:
         ]
     raise ValueError(f"Unsupported package manager: {pm}")
 
+
 def process_package(
     package,
     pm,
@@ -89,12 +91,7 @@ def process_package(
     repos_output_json,
 ):
     def check_if_valid_repo_info(repo_info):
-        if (
-            repo_info is None
-            or "Undefined" in repo_info
-            or "undefined" in repo_info
-            or "ERR!" in repo_info
-        ):
+        if repo_info is None or "Undefined" in repo_info or "undefined" in repo_info or "ERR!" in repo_info:
             repos_output_json[package] = {"github": "Could not find"}
             undefined.append(f"Undefined for {package}, {repo_info}")
             return False
@@ -108,7 +105,6 @@ def process_package(
         else:
             some_errors.append(f"No GitHub URL for {package}\n{repo_info}")
             return False
-
 
     repo_info = cache_manager.github_cache.get_github_url(package)
     valid_repo_info = False

@@ -18,6 +18,7 @@ headers = {
 
 url = "https://api.github.com/graphql"
 
+
 def get_first_pr_info(repo_name, review_author_login):
     query = """
     query($query: String!, $type: SearchType!, $last: Int!)
@@ -95,7 +96,9 @@ def get_pr_review_info(data):
                         if not first_pr_info:
                             if review_author_login:
                                 first_pr_info = get_first_pr_info(repo_name, review_author_login)
-                                cache_manager.github_cache.cache_pr_review(package, repo_name, review_author_login, first_pr_info)
+                                cache_manager.github_cache.cache_pr_review(
+                                    package, repo_name, review_author_login, first_pr_info
+                                )
                         useful_info = first_pr_info.get("data", {}).get("search", {}).get("nodes", [])
                         first_review_info = useful_info[0] if useful_info else {}
                         all_useful_first_prr_info = first_review_info.get("reviews", {}).get("edges", [])

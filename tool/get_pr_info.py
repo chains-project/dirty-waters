@@ -117,12 +117,14 @@ def get_pr_info(data):
             if not pr_data:
                 if commit_node_id:
                     pr_info = fetch_pull_requests(commit_node_id)
-                    cache_manager.github_cache.cache_pr_info({
-                        "package": package,
-                        "commit_sha": commit_sha,
-                        "commit_node_id": commit_node_id,
-                        "pr_info": pr_info,
-                    })
+                    cache_manager.github_cache.cache_pr_info(
+                        {
+                            "package": package,
+                            "commit_sha": commit_sha,
+                            "commit_node_id": commit_node_id,
+                            "pr_info": pr_info,
+                        }
+                    )
             else:
                 pr_info = pr_data["pr_info"]
 

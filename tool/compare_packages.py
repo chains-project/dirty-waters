@@ -9,6 +9,7 @@ MESSAGE_TO_VERSIONS_MAPPING = {
     "no_change": "No change",
 }
 
+
 def parse_dependencies(file_path):
     dependencies = {}
     with open(file_path, "r") as file:

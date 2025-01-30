@@ -286,7 +286,7 @@ def differential_analysis(
     patches_new,
     patches_old,
     project_repo_name,
-    package_manager
+    package_manager,
 ):
     """
     Perform differential analysis on the given project and release versions.
@@ -452,7 +452,7 @@ def perform_differential_analysis(old_results, new_results, project_info):
         new_results[3],
         old_results[3],  # patches_info
         project_info["repo_name"],
-        project_info["package_manager"]
+        project_info["package_manager"],
     )
 
     # Write differential analysis results to files

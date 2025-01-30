@@ -5,25 +5,29 @@ from tool_config import get_cache_manager, make_github_request
 
 cache_manager = get_cache_manager()
 
+
 def tag_format(tag, package_name, repo_name):
-    _, repo_name = repo_name.split("/") # splits owner and repo name
-    project_name = repo_name.split("-")[-1] # deals with lots of maven-<project_name> repos (e.g., surefire, etc)
-    tag_formats = set([
-        f"{tag}",
-        f"v{tag}",
-        f"v_{tag}",
-        f"r{tag}",
-        f"release-{tag}",
-        f"parent-{tag}",
-        # Below: further tag formats found in the AROMA paper, table 3: https://dl.acm.org/doi/pdf/10.1145/3643764
-        f"release/{tag}",
-        f"{tag}-release",
-        f"v.{tag}",
-    ] + [
-        f"{name}{suffix}"
-        for name in [package_name, repo_name, project_name]
-        for suffix in [f"@{tag}", f"-v{tag}", f"_v{tag}", f"-{tag}", f"_{tag}"]
-    ])
+    _, repo_name = repo_name.split("/")  # splits owner and repo name
+    project_name = repo_name.split("-")[-1]  # deals with lots of maven-<project_name> repos (e.g., surefire, etc)
+    tag_formats = set(
+        [
+            f"{tag}",
+            f"v{tag}",
+            f"v_{tag}",
+            f"r{tag}",
+            f"release-{tag}",
+            f"parent-{tag}",
+            # Below: further tag formats found in the AROMA paper, table 3: https://dl.acm.org/doi/pdf/10.1145/3643764
+            f"release/{tag}",
+            f"{tag}-release",
+            f"v.{tag}",
+        ]
+        + [
+            f"{name}{suffix}"
+            for name in [package_name, repo_name, project_name]
+            for suffix in [f"@{tag}", f"-v{tag}", f"_v{tag}", f"-{tag}", f"_{tag}"]
+        ]
+    )
 
     only_package_name, artifact_id_parts = None, None
     if "/" in package_name:  # NPM-based
@@ -45,6 +49,7 @@ def tag_format(tag, package_name, repo_name):
 
     return tag_formats
 
+
 def find_existing_tags(tag_formats, repo_name):
     for tag_format in tag_formats:
         tag_url = f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_format}"
@@ -52,6 +57,7 @@ def find_existing_tags(tag_formats, repo_name):
         if response:
             return tag_format
     return None
+
 
 def get_commit_info(commit):
     if commit.get("committer") is None:
@@ -86,6 +92,7 @@ def get_commit_info(commit):
         "id": author_id,
     }
 
+
 def get_authors_from_response(url, data, package_info):
     result = {
         "repo": package_info.get("repo_pure"),
@@ -103,23 +110,28 @@ def get_authors_from_response(url, data, package_info):
             if not commit_info:
                 commit_info = get_commit_info(commit)
                 cache_manager.commit_comparison_cache.cache_authors_from_url(commit.get("url"), commit_info)
-            
+
             if commit_info:
                 authors_info.append(commit_info)
-        result.update({
-            "authors": authors_info,
-            "tag1": package_info.get("chosen_v1"),
-            "tag2": package_info.get("chosen_v2"),
-        })
+        result.update(
+            {
+                "authors": authors_info,
+                "tag1": package_info.get("chosen_v1"),
+                "tag2": package_info.get("chosen_v2"),
+            }
+        )
     else:
-        result.update({
-            "tag1": package_info.get("version1"),
-            "tag2": package_info.get("version2"),
-            "commits_info_message": "No commits found",
-            "status_code": 200,
-        })
+        result.update(
+            {
+                "tag1": package_info.get("version1"),
+                "tag2": package_info.get("version2"),
+                "commits_info_message": "No commits found",
+                "status_code": 200,
+            }
+        )
 
     return result
+
 
 def get_authors_from_tags(tag1, tag2, package, package_info):
     repo_name = package_info.get("repo_name")
@@ -129,7 +141,9 @@ def get_authors_from_tags(tag1, tag2, package, package_info):
     existing_tag_format_new = find_existing_tags(tag_formats_new, repo_name)
     category = package_info.get("message")
 
-    compare_url = f"https://api.github.com/repos/{repo_name}/compare/{existing_tag_format_old}...{existing_tag_format_new}"
+    compare_url = (
+        f"https://api.github.com/repos/{repo_name}/compare/{existing_tag_format_old}...{existing_tag_format_new}"
+    )
     response = make_github_request(compare_url, max_retries=2)
 
     if not response:
@@ -146,7 +160,7 @@ def get_authors_from_tags(tag1, tag2, package, package_info):
                 status_old = tag_old
                 old_tag_found = True
                 break
-        
+
         if not old_tag_found:
             for tag_new in tag_formats_new:
                 new_tag_url = f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_new}"
@@ -167,6 +181,7 @@ def get_authors_from_tags(tag1, tag2, package, package_info):
 
     return get_authors_from_response(compare_url, response, package_info)
 
+
 def get_patch_authors(repo_name, patch_name, path, release_version_sha, headers):
     url = f"https://api.github.com/repos/{repo_name}/commits?path=.yarn/patches/{path}&sha={release_version_sha}"
     patch_info = {
@@ -174,7 +189,7 @@ def get_patch_authors(repo_name, patch_name, path, release_version_sha, headers)
         "repo_name": repo_name,
         "commit_url": url,
     }
-    
+
     response = make_github_request(url, headers=headers)
     authors_info = []
     if response:
@@ -214,18 +229,23 @@ def get_patch_authors(repo_name, patch_name, path, release_version_sha, headers)
                         "c_type": committer_type,
                     }
                 )
-        patch_info.update({
-            "category": "patch",
-            "authors": authors_info,
-        })
+        patch_info.update(
+            {
+                "category": "patch",
+                "authors": authors_info,
+            }
+        )
     else:
-        patch_info.update({
-            "authors": None,
-            "error": True,
-            "error_message": response.status_code,
-        })
+        patch_info.update(
+            {
+                "authors": None,
+                "error": True,
+                "error_message": response.status_code,
+            }
+        )
 
     return patch_info
+
 
 def get_commit_authors(packages_data):
     logging.info("Getting commits for packages...")
@@ -256,6 +276,7 @@ def get_commit_authors(packages_data):
 
     return authors_per_package
 
+
 def get_patch_commits(headers, repo_name, release_version, patch_data):
     logging.info("Getting commits for patches...")
     release_version_sha = cache_manager.github_cache.get_tag_to_sha(repo_name, release_version)
@@ -267,7 +288,9 @@ def get_patch_commits(headers, repo_name, release_version, patch_data):
             release_version_sha = response_json.get("object").get("sha")
         else:
             release_version_sha = None
-        cache_manager.github_cache.cache_tag_to_sha(repo_name, release_version, "No release found" if release_version_sha is None else release_version_sha)
+        cache_manager.github_cache.cache_tag_to_sha(
+            repo_name, release_version, "No release found" if release_version_sha is None else release_version_sha
+        )
     elif release_version_sha == "No release found":
         release_version_sha = None
 
@@ -295,7 +318,7 @@ def get_patch_commits(headers, repo_name, release_version, patch_data):
             }
             continue
 
-        data = cache_manager.commit_comparison_cache.get_patch_authors(repo_name, path, release_version_sha) 
+        data = cache_manager.commit_comparison_cache.get_patch_authors(repo_name, path, release_version_sha)
         if not data:
             # Cache miss, get authors from GitHub
             data = get_patch_authors(repo_name, changed_patch, path, release_version_sha, headers)

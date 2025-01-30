@@ -10,6 +10,7 @@ import logging
 
 cache_manager = get_cache_manager()
 
+
 def get_repo_author_commits(api_url):
     # Since we can't return the commits in ascending date order, we'll just return the latest commit
     # This response also holds the number of pages, so the last page will have the first commit
@@ -20,6 +21,7 @@ def get_repo_author_commits(api_url):
 
     last_page_url = f"{search_url}&page={last_page}"
     return make_github_request(last_page_url, max_retries=2, retry_delay=2, sleep_between_requests=2)
+
 
 def get_user_first_commit_info(data):
     """
@@ -69,7 +71,7 @@ def get_user_first_commit_info(data):
                             author_login_in_commit,
                             author_id_in_commit,
                         ) = data
-                        first_time_commit = (earliest_commit_sha == commit_sha)
+                        first_time_commit = earliest_commit_sha == commit_sha
 
                         commit_result.update(
                             {
@@ -89,18 +91,27 @@ def get_user_first_commit_info(data):
                             earliest_commit_sha = earliest_commit["sha"]
                             author_login_in_commit = earliest_commit["author"]["login"]
                             author_id_in_commit = earliest_commit["author"]["id"]
-                            first_time_commit = (earliest_commit_sha == commit_sha)
+                            first_time_commit = earliest_commit_sha == commit_sha
                             cache_manager.user_commit_cache.cache_user_commit(
-                                api_url, earliest_commit_sha, repo_name, package, author_login, commit_sha, author_login_in_commit, author_id_in_commit
+                                api_url,
+                                earliest_commit_sha,
+                                repo_name,
+                                package,
+                                author_login,
+                                commit_sha,
+                                author_login_in_commit,
+                                author_id_in_commit,
                             )
-                            commit_result.update({
-                                "api_url": api_url,
-                                "earliest_commit_sha": earliest_commit_sha,
-                                "author_login_in_1st_commit": author_login_in_commit,
-                                "author_id_in_1st_commit": author_id_in_commit,
-                                "is_first_commit": first_time_commit,
-                                "commit_notice": "Data retrieved from API",
-                            })
+                            commit_result.update(
+                                {
+                                    "api_url": api_url,
+                                    "earliest_commit_sha": earliest_commit_sha,
+                                    "author_login_in_1st_commit": author_login_in_commit,
+                                    "author_id_in_1st_commit": author_id_in_commit,
+                                    "is_first_commit": first_time_commit,
+                                    "commit_notice": "Data retrieved from API",
+                                }
+                            )
                         else:
                             commit_result["commit_notice"] = f"Failed to retrieve data from API({api_url})"
                 author["commit_result"] = commit_result

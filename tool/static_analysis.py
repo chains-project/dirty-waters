@@ -214,6 +214,7 @@ def api_constructor(package_name, repository):
 
     return repo_api, simplified_path, package_full_name, name, version, error_message
 
+
 def check_parent_scm(package):
     name, version = package.split("@")
     group_id, artifact_id = name.split(":")
@@ -239,7 +240,7 @@ def check_parent_scm(package):
             parents_contents = xmltodict.parse(parent_pom)
             parent_group_id, parent_artifact_id = [
                 parents_contents.get("project", {}).get("groupId", ""),
-                parents_contents.get("project", {}).get("artifactId", "")
+                parents_contents.get("project", {}).get("artifactId", ""),
             ]
             if not parent_group_id or not parent_artifact_id or parent_group_id != group_id:
                 # If the parent is lacking data we stop;
@@ -249,9 +250,7 @@ def check_parent_scm(package):
             parent_scm_locations = [
                 parents_contents.get("project", {}).get("scm", {}).get(location, "")
                 for location in ["url", "connection", "developerConnection"]
-            ] + [
-                parents_contents.get("project", {}).get("url", "")
-            ]
+            ] + [parents_contents.get("project", {}).get("url", "")]
             for location in parent_scm_locations:
                 if location:
                     repo_api, simplified_path, package_full_name, _, _, _ = api_constructor(package, location)
@@ -269,6 +268,7 @@ def check_parent_scm(package):
         "simplified_path": simplified_path,
         "package_full_name": package_full_name,
     }
+
 
 def check_existence(package_name, repository, package_manager):
     """Check if the package exists in the repository."""
