@@ -187,6 +187,7 @@ def api_constructor(package_name, repository):
     error_message = None
 
     try:
+        package_name = package_name.replace("npm:", "")
         parts = package_name.split("@")
         package_full_name = None
         name = None
@@ -295,7 +296,7 @@ def check_existence(package_name, repository, package_manager):
             # As such, if the package manager is maven, we'll try to "work our way up", and perform the same check in the parent
             parent_scm_result = check_parent_scm(package_name)
 
-    if not data and not parent_scm_result["data"]:
+    if not data and not parent_scm_result.get("data"):
         # simplified_path = parent_scm_result.get("simplified_path", simplified_path)
         # If we went up, and there's no still data, there really isn't a findable repository
         logging.warning(f"No repo found for {package_name} in {repo_link}")
@@ -545,6 +546,7 @@ def analyze_package_data(package, repo_url, pm, check_match=False, enabled_check
     package_info = {}
     try:
         package_name, package_version = package.rsplit("@", 1)
+        package_version = package_version.replace("npm:", "")
 
         # Try to get from cache first
         cached_analysis = cache_manager.package_cache.get_package_analysis(package_name, package_version, pm)
