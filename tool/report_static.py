@@ -72,8 +72,185 @@ def create_dataframe(data):
 
     return df.set_index("package_name")
 
+def no_source_code(combined_repo_problems_df, md_file, amount, package_manager):
+    """
+    Create a section for packages with no source code.
+    """
 
-def write_summary(df, project_name, release_version, package_manager, filename, enabled_checks, mode="w"):
+    if not combined_repo_problems_df.empty:
+        md_file.write(
+            f"""
+<details>
+<summary>Source code links that could not be found({amount})</summary>
+    """
+        )
+        md_file.write("\n\n\n")
+        combined_repo_problems_df.index = range(1, len(combined_repo_problems_df) + 1)
+        markdown_text = combined_repo_problems_df.reset_index().to_markdown(index=False)
+        md_file.write(markdown_text)
+        md_file.write("\n</details>\n")
+    elif package_manager not in SUPPORTED_SMELLS["github_404"]:
+        md_file.write(
+            f"\nThe package manager ({package_manager}) does not support checking for not found source code links.\n"
+        )
+    else:
+        md_file.write("All analyzed packages have a source code repo.\n")
+        return False
+
+    return True
+        
+def release_tag_not_found(release_tag_not_found_df, md_file, amount, package_manager):
+    """
+    Create a section for packages with inaccessible release tags.
+    """
+
+    if not release_tag_not_found_df.empty:
+        md_file.write(
+            f"""
+<details>
+<summary>List of packages with available source code repos but with inaccessible tags({amount})</summary>
+    """
+        )
+
+        md_file.write("\n\n\n")
+        markdown_text = release_tag_not_found_df.reset_index().to_markdown(index=False)
+        md_file.write(markdown_text)
+        md_file.write("\n</details>\n")
+    elif package_manager not in SUPPORTED_SMELLS["release_tag_not_found"]:
+        md_file.write(
+            f"\nThe package manager ({package_manager}) does not support checking for inaccessible tags.\n"
+        )
+    else:
+        md_file.write("\nAll packages have accessible tags.\n")
+        return False
+
+    return True
+
+def deprecated(version_deprecated_df, md_file, amount, package_manager):
+    """
+    Create a section for deprecated packages.
+    """
+
+    if not version_deprecated_df.empty:
+        md_file.write(
+            f"""
+<details>
+<summary>List of deprecated packages({amount})</summary>
+    """
+        )
+        md_file.write("\n\n\n")
+        markdown_text = version_deprecated_df.reset_index().to_markdown(index=False)
+        md_file.write(markdown_text)
+        md_file.write("\n</details>\n")
+    elif package_manager not in SUPPORTED_SMELLS["deprecated"]:
+        md_file.write(
+            f"\nThe package manager ({package_manager}) does not support checking for deprecated packages.\n"
+        )
+    else:
+        md_file.write("\nNo deprecated package found.\n")
+        return False
+
+    return True
+
+def forked_package(forked_package_df, md_file, amount, package_manager):
+    """
+    Create a section for forked packages.
+    """
+
+    if not forked_package_df.empty:
+        md_file.write(
+            f"""
+<details>
+<summary>List of packages from fork({amount})</summary>
+    """
+        )
+        md_file.write("\n\n\n")
+        markdown_text = forked_package_df.reset_index().to_markdown(index=False)
+        md_file.write(markdown_text)
+        md_file.write("\n</details>\n")
+    elif package_manager not in SUPPORTED_SMELLS["forked_package"]:
+        md_file.write(
+            f"\nThe package manager ({package_manager}) does not support checking for forked packages.\n"
+        )
+    else:
+        md_file.write("\nNo package is from fork.\n")
+        return False
+
+    return True
+
+def provenance(provenance_df, md_file, amount, package_manager):
+    """
+    Create a section for packages without provenance.
+    """
+
+    if not provenance_df.empty:
+        md_file.write(
+            f"""
+<details>
+<summary>List of packages without provenance({amount})</summary>
+    """
+        )
+        md_file.write("\n\n\n")
+        markdown_text = provenance_df.reset_index().to_markdown(index=False)
+        md_file.write(markdown_text)
+        md_file.write("\n</details>\n")
+    elif package_manager not in SUPPORTED_SMELLS["provenance"]:
+        md_file.write(f"\nThe package manager ({package_manager}) does not support checking for provenance.\n")
+    else:
+        md_file.write("\nAll packages have provenance.\n")
+        return False
+
+    return True
+
+def code_signature(code_signature_df, md_file, amount, package_manager):
+    """
+    Create a section for packages without code signature.
+    """
+
+    if not code_signature_df.empty:
+        md_file.write(
+            f"""
+<details>
+<summary>List of packages without code signature({amount})</summary>
+    """
+        )
+        md_file.write("\n\n\n")
+        markdown_text = code_signature_df.reset_index().to_markdown(index=False)
+        md_file.write(markdown_text)
+        md_file.write("\n</details>\n")
+    elif package_manager not in SUPPORTED_SMELLS["code_signature"]:
+        md_file.write(f"\nThe package manager ({package_manager}) does not support checking for code signature.\n")
+    else:
+        md_file.write("\nAll packages have code signature.\n")
+        return False
+
+    return True
+
+def invalid_code_signature(invalid_code_signature_df, md_file, amount, package_manager):
+    """
+    Create a section for packages with invalid code signature.
+    """
+
+    if not invalid_code_signature_df.empty:
+        md_file.write(
+            f"""
+<details>
+<summary>List of packages with an existing but invalid code signature({amount})</summary>
+    """
+        )
+        md_file.write("\n\n\n")
+        markdown_text = invalid_code_signature_df.reset_index().to_markdown(index=False)
+        md_file.write(markdown_text)
+        md_file.write("\n</details>\n")
+    elif package_manager not in SUPPORTED_SMELLS["code_signature"]:
+        md_file.write(f"\nThe package manager ({package_manager}) does not support checking for code signature.\n")
+    else:
+        md_file.write("\nAll packages have valid code signature.\n")
+        return False
+
+    return True
+
+def write_summary(df, project_name, release_version, package_manager, filename, enabled_checks, gradual_report, mode="w"):
     """
     Write a summary of the static analysis results to a markdown file.
     """
@@ -173,8 +350,18 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
     source_sus = (df["github_url"] == "No_repo_info_found").sum() + (df["github_exists"] == False).sum()
 
     with open(filename, mode, encoding="utf-8") as md_file:
-        md_file.write(f"# Software Supply Chain Report of {project_name} - {release_version}\n\n")
+        preamble = f"""
+# Software Supply Chain Report of {project_name} - {release_version}
+"""
+        if gradual_report:
+            preamble += """
+\nThis report is a gradual report: that is, only the highest severity smell type with issues found within this project is reported.
+Gradual reports are enabled by default. You can disable this feature, and get a full report, by setting the `--gradual-report` flag to `false`.\n
+"""
+        else:
+            preamble += "\n"
 
+        md_file.write(preamble)
         # Section showing which checks were performed
         any_specific = any(enabled_checks.values())
         if any_specific:
@@ -212,147 +399,65 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
 
         # md_file.write(f"#### Other info")
 
-        if enabled_checks.get("source_code") and package_manager not in SUPPORTED_SMELLS["no_source_code"]:
-            md_file.write(
-                f"""
+        if enabled_checks.get("source_code") and package_manager in SUPPORTED_SMELLS["no_source_code"]:
+            if not gradual_report or not_on_github_counts > 0:
+                md_file.write(
+                    f"""
 <details>
     <summary>Other info:</summary>
-    \n- Source code repo is not hosted on github:  {not_on_github_counts} \n
+    \n- Source code repo is not hosted on GitTub:  {not_on_github_counts}\n
+    This could be due to the package being hosted on a different platform or the package not having a source code repo.\n
 </details>
-                        
-                        """
-            )
-            md_file.write("\n\n")
+                            
+                            """
+                )
 
         md_file.write("\n### Fine grained information\n")
         md_file.write(
             "\n:dolphin: For further information about software supply chain smells in your project, take a look at the following tables.\n"
         )
+        reports = {
+            "no_source_code": {
+                "enabled": enabled_checks.get("source_code"),
+                "function": lambda: no_source_code(combined_repo_problems_df, md_file, source_sus, package_manager),
+            },
+            "release_tag_not_found": {
+                "enabled": enabled_checks.get("release_tags"),
+                "function": lambda: release_tag_not_found(
+                    release_tag_not_found_df, md_file, release_tag_not_found_df.shape[0], package_manager
+                ),
+            },
+            "deprecated": {
+                "enabled": enabled_checks.get("deprecated"),
+                "function": lambda: deprecated(
+                    version_deprecated_df, md_file, (df['deprecated_in_version'] == True).sum(), package_manager
+                ),
+            },
+            "forked_package": {
+                "enabled": enabled_checks.get("forks"),
+                "function": lambda: forked_package(forked_package_df, md_file, (df["is_fork"] == True).sum(), package_manager),
+            },
+            "provenance": {
+                "enabled": enabled_checks.get("provenance"),
+                "function": lambda: provenance(provenance_df, md_file, (df["provenance_in_version"] == False).sum(), package_manager),
+            },
+            "code_signature": {
+                "enabled": enabled_checks.get("code_signature"),
+                "function": lambda: code_signature(code_signature_df, md_file, code_signature_df.shape[0], package_manager),
+            },
+            "invalid_code_signature": {
+                "enabled": enabled_checks.get("code_signature"),
+                "function": lambda: invalid_code_signature(invalid_code_signature_df, md_file, invalid_code_signature_df.shape[0], package_manager),
+            },
+        }
 
-        if not combined_repo_problems_df.empty:
-            md_file.write(
-                f"""
-<details>
-    <summary>Source code links that could not be found({source_sus})</summary>
-        """
-            )
-            md_file.write("\n\n\n")
-            combined_repo_problems_df.index = range(1, len(combined_repo_problems_df) + 1)
-            markdown_text = combined_repo_problems_df.reset_index().to_markdown(index=False)
-            md_file.write(markdown_text)
-            md_file.write("\n</details>\n")
-        elif package_manager not in SUPPORTED_SMELLS["github_404"]:
-            md_file.write(
-                f"\nThe package manager ({package_manager}) does not support checking for not found source code links.\n"
-            )
-        else:
-            md_file.write("All analyzed packages have a source code repo.\n")
-
-        if enabled_checks.get("release_tags") and not release_tag_not_found_df.empty:
-            md_file.write(
-                f"""
-
-<details>
-    <summary>List of packages with available source code repos but with inaccessible tags({(release_tag_not_found_df.shape[0])})</summary>
-        """
-            )
-            md_file.write("\n\n\n")
-            markdown_text = release_tag_not_found_df.reset_index().to_markdown(index=False)
-            md_file.write(markdown_text)
-            md_file.write("\n</details>\n")
-        elif package_manager not in SUPPORTED_SMELLS["release_tag_not_found"]:
-            md_file.write(
-                f"\nThe package manager ({package_manager}) does not support checking for inaccessible tags.\n"
-            )
-        else:
-            md_file.write("\nAll packages have accessible tags.\n")
-
-        if enabled_checks.get("deprecated"):
-            if not version_deprecated_df.empty:
-                md_file.write(
-                    f"""
-<details>
-    <summary>List of deprecated packages({(df['deprecated_in_version'] == True).sum()})</summary>
-            """
-                )
-                md_file.write("\n\n\n")
-                markdown_text = version_deprecated_df.reset_index().to_markdown(index=False)
-                md_file.write(markdown_text)
-                md_file.write("\n</details>\n")
-            elif package_manager not in SUPPORTED_SMELLS["deprecated"]:
-                md_file.write(
-                    f"\nThe package manager ({package_manager}) does not support checking for deprecated packages.\n"
-                )
-            else:
-                md_file.write("\nNo deprecated package found.\n")
-
-        if enabled_checks.get("forks"):
-            if not forked_package_df.empty:
-                md_file.write(
-                    f"""
-<details>
-    <summary>List of packages from fork({(df["is_fork"] == True).sum()})</summary>
-            """
-                )
-                md_file.write("\n\n\n")
-                markdown_text = forked_package_df.reset_index().to_markdown(index=False)
-                md_file.write(markdown_text)
-                md_file.write("\n</details>\n")
-            elif package_manager not in SUPPORTED_SMELLS["forked_package"]:
-                md_file.write(
-                    f"\nThe package manager ({package_manager}) does not support checking for forked packages.\n"
-                )
-            else:
-                md_file.write("\nNo package is from fork.\n")
-
-        if enabled_checks.get("provenance"):
-            if not provenance_df.empty:
-                md_file.write(
-                    f"""
-<details>
-    <summary>List of packages without provenance({(df["provenance_in_version"] == False).sum()})</summary>
-            """
-                )
-                md_file.write("\n\n\n")
-                markdown_text = provenance_df.reset_index().to_markdown(index=False)
-                md_file.write(markdown_text)
-                md_file.write("\n</details>\n")
-            elif package_manager not in SUPPORTED_SMELLS["provenance"]:
-                md_file.write(f"\nThe package manager ({package_manager}) does not support checking for provenance.\n")
-            else:
-                md_file.write("\nAll packages have provenance.\n")
-
-        if not code_signature_df.empty:
-            md_file.write(
-                f"""
-<details>
-    <summary>List of packages without code signature({(code_signature_df.shape[0])})</summary>
-        """
-            )
-            md_file.write("\n\n\n")
-            markdown_text = code_signature_df.reset_index().to_markdown(index=False)
-            md_file.write(markdown_text)
-            md_file.write("\n</details>\n")
-        elif package_manager not in SUPPORTED_SMELLS["code_signature"]:
-            md_file.write(f"\nThe package manager ({package_manager}) does not support checking for code signature.\n")
-        else:
-            md_file.write("\nAll packages have code signature.\n")
-
-        if not invalid_code_signature_df.empty:
-            md_file.write(
-                f"""
-<details>
-    <summary>List of packages with an existing but invalid code signature({(invalid_code_signature_df.shape[0])})</summary>
-        """
-            )
-            md_file.write("\n\n\n")
-            markdown_text = invalid_code_signature_df.reset_index().to_markdown(index=False)
-            md_file.write(markdown_text)
-            md_file.write("\n</details>\n")
-        elif package_manager not in SUPPORTED_SMELLS["code_signature"]:
-            md_file.write(f"\nThe package manager ({package_manager}) does not support checking for code signature.\n")
-        else:
-            md_file.write("\nAll packages have valid code signature.\n")
+        printed = False
+        for report in reports:
+            if reports[report]["enabled"]:
+                printed = reports[report]["function"]()
+            if gradual_report and printed:
+                md_file.write("\n")
+                break
 
         md_file.write("\n### Call to Action:\n")
         md_file.write(
@@ -386,7 +491,7 @@ def write_summary(df, project_name, release_version, package_manager, filename, 
         md_file.write(f"- Project Version: {release_version}\n")
 
 
-def get_s_summary(data, project_name, release_version, package_manager, enabled_checks, summary_filename):
+def get_s_summary(data, project_name, release_version, package_manager, enabled_checks, gradual_report, summary_filename):
     """
     Get a summary of the static analysis results.
     """
@@ -399,6 +504,7 @@ def get_s_summary(data, project_name, release_version, package_manager, enabled_
         package_manager,
         filename=summary_filename,
         enabled_checks=enabled_checks,
+        gradual_report=gradual_report,
         mode="w",
     )
     print(f"Report from static analysis created at {summary_filename}")

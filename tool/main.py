@@ -95,6 +95,11 @@ def get_args():
         action="store_true",
         help="Enable debug mode.",
     )
+    parser.add_argument(
+        "--no-gradual-report",
+        action="store_true",
+        help="Disable gradual report generation -- instead of one smell type per report, gradually descending by severity, report all.",
+    )
 
     # Add new smell check arguments
     smell_group = parser.add_argument_group("smell checks")
@@ -363,7 +368,7 @@ def write_to_file(filename, directory, data):
         json.dump(data, file, indent=4)
 
 
-def setup_project_info(args):
+def setup_project_info(args, any_check_specified):
     """Set up project information based on command-line arguments."""
 
     return {
@@ -375,10 +380,12 @@ def setup_project_info(args):
         "check_match": args.name_match,
         "package_manager": args.package_manager,
         "pnpm_scope": args.pnpm_scope,
+        "debug": args.debug,
+        "gradual_report": False if args.no_gradual_report or any_check_specified else True,
     }
 
 
-def setup_directories_and_logging(project_info, debug):
+def setup_directories_and_logging(project_info):
     """Set up necessary directories and logging."""
 
     dir_path = tool_config.PathManager()
@@ -388,7 +395,7 @@ def setup_directories_and_logging(project_info, debug):
     project_info["diff_folder"] = diff_folder
 
     log_file_path = result_folder_path / "analysis.log"
-    tool_config.setup_logger(log_file_path, debug)
+    tool_config.setup_logger(log_file_path, project_info["debug"])
 
 
 def perform_static_analysis(project_info, is_old_version):
@@ -437,6 +444,7 @@ def generate_static_report(analysis_results, project_info, is_old_version):
         version,
         project_info["package_manager"],
         project_info["enabled_checks"],
+        project_info["gradual_report"],
         summary_filename=summary_file,
     )
 
@@ -526,12 +534,14 @@ def main():
             "code_signature": True,
         }
 
-    project_info = setup_project_info(dw_args)
-    setup_directories_and_logging(project_info, dw_args.debug)
+    project_info = setup_project_info(dw_args, any_check_specified)
+    setup_directories_and_logging(project_info)
 
     logging.info(
         f"Software supply chain smells analysis for {project_info['repo_name']} for version {project_info['old_version']}..."
     )
+    if project_info["gradual_report"]:
+        logging.info("Gradual report generation is enabled.")
 
     # Pass enabled_checks to static analysis
     project_info["enabled_checks"] = enabled_checks
