@@ -72,6 +72,7 @@ def create_dataframe(data):
 
     return df.set_index("package_name")
 
+
 def no_source_code(combined_repo_problems_df, md_file, amount, package_manager):
     """
     Create a section for packages with no source code.
@@ -98,7 +99,8 @@ def no_source_code(combined_repo_problems_df, md_file, amount, package_manager):
         return False
 
     return True
-        
+
+
 def release_tag_not_found(release_tag_not_found_df, md_file, amount, package_manager):
     """
     Create a section for packages with inaccessible release tags.
@@ -117,14 +119,13 @@ def release_tag_not_found(release_tag_not_found_df, md_file, amount, package_man
         md_file.write(markdown_text)
         md_file.write("\n</details>\n")
     elif package_manager not in SUPPORTED_SMELLS["release_tag_not_found"]:
-        md_file.write(
-            f"\nThe package manager ({package_manager}) does not support checking for inaccessible tags.\n"
-        )
+        md_file.write(f"\nThe package manager ({package_manager}) does not support checking for inaccessible tags.\n")
     else:
         md_file.write("\nAll packages have accessible tags.\n")
         return False
 
     return True
+
 
 def deprecated(version_deprecated_df, md_file, amount, package_manager):
     """
@@ -152,6 +153,7 @@ def deprecated(version_deprecated_df, md_file, amount, package_manager):
 
     return True
 
+
 def forked_package(forked_package_df, md_file, amount, package_manager):
     """
     Create a section for forked packages.
@@ -169,14 +171,13 @@ def forked_package(forked_package_df, md_file, amount, package_manager):
         md_file.write(markdown_text)
         md_file.write("\n</details>\n")
     elif package_manager not in SUPPORTED_SMELLS["forked_package"]:
-        md_file.write(
-            f"\nThe package manager ({package_manager}) does not support checking for forked packages.\n"
-        )
+        md_file.write(f"\nThe package manager ({package_manager}) does not support checking for forked packages.\n")
     else:
         md_file.write("\nNo package is from fork.\n")
         return False
 
     return True
+
 
 def provenance(provenance_df, md_file, amount, package_manager):
     """
@@ -202,6 +203,7 @@ def provenance(provenance_df, md_file, amount, package_manager):
 
     return True
 
+
 def code_signature(code_signature_df, md_file, amount, package_manager):
     """
     Create a section for packages without code signature.
@@ -225,6 +227,7 @@ def code_signature(code_signature_df, md_file, amount, package_manager):
         return False
 
     return True
+
 
 def invalid_code_signature(invalid_code_signature_df, md_file, amount, package_manager):
     """
@@ -250,7 +253,10 @@ def invalid_code_signature(invalid_code_signature_df, md_file, amount, package_m
 
     return True
 
-def write_summary(df, project_name, release_version, package_manager, filename, enabled_checks, gradual_report, mode="w"):
+
+def write_summary(
+    df, project_name, release_version, package_manager, filename, enabled_checks, gradual_report, mode="w"
+):
     """
     Write a summary of the static analysis results to a markdown file.
     """
@@ -430,24 +436,32 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
             "deprecated": {
                 "enabled": enabled_checks.get("deprecated"),
                 "function": lambda: deprecated(
-                    version_deprecated_df, md_file, (df['deprecated_in_version'] == True).sum(), package_manager
+                    version_deprecated_df, md_file, (df["deprecated_in_version"] == True).sum(), package_manager
                 ),
             },
             "forked_package": {
                 "enabled": enabled_checks.get("forks"),
-                "function": lambda: forked_package(forked_package_df, md_file, (df["is_fork"] == True).sum(), package_manager),
+                "function": lambda: forked_package(
+                    forked_package_df, md_file, (df["is_fork"] == True).sum(), package_manager
+                ),
             },
             "provenance": {
                 "enabled": enabled_checks.get("provenance"),
-                "function": lambda: provenance(provenance_df, md_file, (df["provenance_in_version"] == False).sum(), package_manager),
+                "function": lambda: provenance(
+                    provenance_df, md_file, (df["provenance_in_version"] == False).sum(), package_manager
+                ),
             },
             "code_signature": {
                 "enabled": enabled_checks.get("code_signature"),
-                "function": lambda: code_signature(code_signature_df, md_file, code_signature_df.shape[0], package_manager),
+                "function": lambda: code_signature(
+                    code_signature_df, md_file, code_signature_df.shape[0], package_manager
+                ),
             },
             "invalid_code_signature": {
                 "enabled": enabled_checks.get("code_signature"),
-                "function": lambda: invalid_code_signature(invalid_code_signature_df, md_file, invalid_code_signature_df.shape[0], package_manager),
+                "function": lambda: invalid_code_signature(
+                    invalid_code_signature_df, md_file, invalid_code_signature_df.shape[0], package_manager
+                ),
             },
         }
 
@@ -491,7 +505,9 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         md_file.write(f"- Project Version: {release_version}\n")
 
 
-def get_s_summary(data, project_name, release_version, package_manager, enabled_checks, gradual_report, summary_filename):
+def get_s_summary(
+    data, project_name, release_version, package_manager, enabled_checks, gradual_report, summary_filename
+):
     """
     Get a summary of the static analysis results.
     """
