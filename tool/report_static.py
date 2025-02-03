@@ -445,12 +445,6 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                     forked_package_df, md_file, (df["is_fork"] == True).sum(), package_manager
                 ),
             },
-            "provenance": {
-                "enabled": enabled_checks.get("provenance"),
-                "function": lambda: provenance(
-                    provenance_df, md_file, (df["provenance_in_version"] == False).sum(), package_manager
-                ),
-            },
             "code_signature": {
                 "enabled": enabled_checks.get("code_signature"),
                 "function": lambda: code_signature(
@@ -461,6 +455,12 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                 "enabled": enabled_checks.get("code_signature"),
                 "function": lambda: invalid_code_signature(
                     invalid_code_signature_df, md_file, invalid_code_signature_df.shape[0], package_manager
+                ),
+            },
+            "provenance": {
+                "enabled": enabled_checks.get("provenance"),
+                "function": lambda: provenance(
+                    provenance_df, md_file, (df["provenance_in_version"] == False).sum(), package_manager
                 ),
             },
         }
