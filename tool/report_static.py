@@ -330,7 +330,7 @@ def write_summary(
 
     if enabled_checks.get("release_tags"):
         warning_counts["release_tag_not_found"] = (
-            f":wrench: Packages with inaccessible GitHub tag (⚠️⚠️⚠️) {(release_tag_not_found_df.shape[0])}"
+            f":wrench: Packages with inaccessible GitHub tag (⚠️⚠️) {(release_tag_not_found_df.shape[0])}"
         )
 
     if enabled_checks.get("deprecated"):
