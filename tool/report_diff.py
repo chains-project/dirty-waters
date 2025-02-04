@@ -122,7 +122,8 @@ def create_dataframe(
         "reviewer",
         "reviewer_type",
         "signature_changes",
-    ]):
+    ],
+):
     df = pd.DataFrame(record)
     # if empty, have the columns in the df regardless
     for col in default_columns:
@@ -137,6 +138,7 @@ def filter_df(df):
     df_both_first = df[(df["author_first"] == True) & (df["prr_first"] == True)]
 
     return df_author_first, df_review_first, df_both_first
+
 
 def print_check_info(df, summary, md_file, amount):
     if amount > 0:
@@ -153,7 +155,10 @@ def print_check_info(df, summary, md_file, amount):
         return True
     return False
 
-def generate_diff_report(data, project_repo_name, release_version_old, release_version_new, gradual_report, output_file):
+
+def generate_diff_report(
+    data, project_repo_name, release_version_old, release_version_new, gradual_report, output_file
+):
     logging.info(f"Generating differential report for {project_repo_name}")
     record, record_list, author_list = process_data(data)
 
@@ -289,13 +294,11 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         )
 
         f.write(f"---\n")
-        f.write(
-            f"\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/).\n"
-        )
+        f.write(f"\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/).\n")
         f.write(f"\nReport created on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
 
         # Tool version
-        tool_commit_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).strip().decode('utf-8')
+        tool_commit_hash = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).strip().decode("utf-8")
         f.write(f"- Tool version: {tool_commit_hash}\n")
         f.write(f"- Project Name: {project_repo_name}\n")
         f.write(f"- Compared project versions: {release_version_old} & {release_version_new}\n")
