@@ -104,8 +104,29 @@ def process_data(data):
     return record, record_list, author_list
 
 
-def create_dataframe(record):
+def create_dataframe(
+    record,
+    default_columns=[
+        "package_name",
+        "repo_name",
+        "repo_link",
+        "category",
+        "old_version",
+        "new_version",
+        "sha",
+        "author",
+        "author_first",
+        "merger",
+        "prr_first",
+        "reviewer",
+        "reviewer_type",
+        "signature_changes",
+    ]):
     df = pd.DataFrame(record)
+    # if empty, have the columns in the df regardless
+    for col in default_columns:
+        if col not in df.columns:
+            df[col] = None
     return df
 
 
@@ -151,7 +172,7 @@ def generate_diff_report(data, project_repo_name, release_version_old, release_v
     df_down_selected_without_index = df_down_selected.reset_index(drop=True)
 
     # We want a table that indexes the author
-    df_author = pd.DataFrame(record_list).set_index("author")
+    df_author = create_dataframe(record_list).set_index("author")
 
     new_order = ["sha"] + [col for col in df_author.columns if col != "sha"]
     df_author = df_author.reindex(columns=new_order)
