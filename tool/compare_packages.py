@@ -266,7 +266,6 @@ def get_repo_from_SA(dep_file_1, dep_file_2, SA_old, SA_new):
                 if dep_new_repo_url_accessibility is False or dep_new_repo_url_accessibility is None:
                     differences[dep]["v2_repo_accessibility"] = "Repo link not accessible"
                     differences[dep]["compare_message"] = "DO NOT COMPARE"
-
         else:
             differences[dep]["compare_message"] = "DO NOT COMPARE"
             dep_name_version_old = f"{dep}@{versions['chosen_v1']}"
@@ -282,6 +281,17 @@ def get_repo_from_SA(dep_file_1, dep_file_2, SA_old, SA_new):
                 differences[dep]["repo"] = repo_2
 
             differences[dep]["category"] = versions["message"]
+
+            if versions["message"] == "Downgraded package":
+                # Check code signature changes
+                signature_changes = compare_code_signatures(
+                    dep, versions["chosen_v1"], versions["chosen_v2"], SA_old, SA_new
+                )
+                differences[dep]["signature_changes"] = signature_changes
+
+                # If there are signature changes, add it to the category
+                if signature_changes["has_changes"]:
+                    differences[dep]["category"] = "Downgraded package with signature changes"
 
     return (
         differences,
