@@ -487,7 +487,11 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         \nFor packages without provenance:\n
         Open an issue in the dependency’s repository to request the inclusion of provenance and build attestation in the CI/CD pipeline. 
         \nFor packages that are forks\n
-        Inspect the package and its GitHub repository to verify the fork is not malicious.
+        Inspect the package and its GitHub repository to verify the fork is not malicious. \n
+        \nFor packages without code signature:\n
+        Open an issue in the dependency’s repository to request the inclusion of code signature in the CI/CD pipeline. \n
+        \nFor packages with invalid code signature:\n
+        It's recommended to verify the code signature and contact the maintainer to fix the issue. \n
 </details>
 
 
