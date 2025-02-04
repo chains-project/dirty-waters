@@ -371,8 +371,8 @@ def compare_code_signatures(pkg_name, old_version, new_version, SA_1, SA_2):
 
     # Check if there are any changes in signature status
     if (
-        changes["old_signature_present"] != changes["new_signature_present"]
-        or changes["old_signature_valid"] != changes["new_signature_valid"]
+        changes["old_signature_present"] and not changes["new_signature_present"]
+        or changes["old_signature_valid"] and not changes["new_signature_valid"]
     ):
         changes["has_changes"] = True
 
