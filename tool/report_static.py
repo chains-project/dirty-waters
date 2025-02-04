@@ -411,7 +411,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                     f"""
 <details>
     <summary>Other info:</summary>
-    \n- Source code repo is not hosted on GitTub:  {not_on_github_counts}\n
+    \n- Source code repo is not hosted on GitHub:  {not_on_github_counts}\n
     This could be due to the package being hosted on a different platform or the package not having a source code repo.\n
 </details>
                             
