@@ -362,15 +362,14 @@ def write_summary(
         if gradual_report:
             preamble += """
 \nThis report is a gradual report: that is, only the highest severity smell type with issues found within this project is reported.
-Gradual reports are enabled by default. You can disable this feature, and get a full report, by setting the `--gradual-report` flag to `false`.\n
+Gradual reports are enabled by default. You can disable this feature, and get a full report, by setting the `--gradual-report` flag to `false`.
 """
-        else:
-            preamble += "\n"
-
+        preamble += "\n"
         md_file.write(preamble)
+
         # Section showing which checks were performed
         any_specific = any(enabled_checks.values())
-        if any_specific:
+        if any_specific and not gradual_report:
             md_file.write("## Enabled Checks\n")
             md_file.write("The following checks were specifically requested:\n\n")
             for check, enabled in enabled_checks.items():
@@ -507,6 +506,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         md_file.write(f"- Tool version: {tool_commit_hash}\n")
         md_file.write(f"- Project Name: {project_name}\n")
         md_file.write(f"- Project Version: {release_version}\n")
+    print(f"Report from static analysis created at {filename}")
 
 
 def get_s_summary(
@@ -527,4 +527,3 @@ def get_s_summary(
         gradual_report=gradual_report,
         mode="w",
     )
-    print(f"Report from static analysis created at {summary_filename}")
