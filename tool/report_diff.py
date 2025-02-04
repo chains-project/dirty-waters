@@ -116,8 +116,22 @@ def filter_df(df):
 
     return df_author_first, df_review_first, df_both_first
 
+def print_check_info(df, summary, md_file, amount):
+    if amount > 0:
+        md_file.write("\n")
+        md_file.write(
+            f"""
+<details>
+    <summary>{summary} ({amount})</summary>
+        """
+        )
+        md_file.write("\n\n\n")
+        md_file.write(df.to_markdown(index=False))
+        md_file.write("\n</details>\n")
+        return True
+    return False
 
-def generate_diff_report(data, project_repo_name, release_version_old, release_version_new, output_file):
+def generate_diff_report(data, project_repo_name, release_version_old, release_version_new, gradual_report, output_file):
     logging.info(f"Generating differential report for {project_repo_name}")
     record, record_list, author_list = process_data(data)
 
@@ -168,38 +182,61 @@ def generate_diff_report(data, project_repo_name, release_version_old, release_v
     signature_changes = df_all[df_all["category"] == "Upgraded package with signature changes"]
     signature_changes_number = signature_changes["package_name"].nunique()
 
-    counts = {
-        ":heavy_exclamation_mark: Downgraded packages": downgraded_number,
-        ":lock: Packages with signature changes": signature_changes_number,
-        ":alien: Commits made by both New Authors and Reviewers": both_new_commits,
-        ":neutral_face: Commits made by New Authors": new_author_commits,
-        ":see_no_evil: Commits approved by New Reviewers": new_reviewer_commits,
+    reports = {
+        "signature_changes": {
+            "amount": signature_changes_number,
+            "df": signature_changes_df,
+            "summary": ":lock: Packages with signature changes (⚠️⚠️⚠️)",
+        },
+        "downgraded": {
+            "amount": downgraded_number,
+            "df": df_down_selected_without_index,
+            "summary": ":heavy_exclamation_mark: Downgraded packages (⚠️⚠️)",
+        },
+        "both_new": {
+            "amount": both_new_commits,
+            "df": cp_df_author_both_new,
+            "summary": ":alien: Commits made by both New Authors and Reviewers (⚠️⚠️)",
+        },
+        "new_reviewer": {
+            "amount": new_reviewer_commits,
+            "df": cp_df_author_new_reviewer,
+            "summary": ":see_no_evil: Commits approved by New Reviewers (⚠️⚠️)",
+        },
+        "new_author": {
+            "amount": new_author_commits,
+            "df": cp_df_author_new_author,
+            "summary": ":neutral_face: Commits made by New Authors (⚠️)",
+        },
     }
 
     # We write into a markdown file
     with open(output_file, "w", encoding="utf-8") as f:
-        f.write(f"# Differential Report of {project_repo_name} - {release_version_old} & {release_version_new}\n")
+        preamble = f"""
+# Software Supply Chain Report of {project_repo_name} - {release_version_old} &rarr; {release_version_new}
+"""
+        if gradual_report:
+            preamble += """
+\nThis report is a gradual report: that is, only the highest severity smell type with issues found within this project is reported.
+Gradual reports are enabled by default. You can disable this feature, and get a full report, by setting the `--gradual-report` flag to `false`.
+"""
+        preamble += "\n"
+        f.write(preamble)
+
+        for info in reports.values():
+            f.write(f"\n {info["summary"]}: ({info["amount"]})\n")
+
         f.write("\n")
-
-        for key, val in counts.items():
-            f.write(f"\n {key}: {val}\n")
-            f.write("\n")
-
         f.write("### Fine grained information\n")
+        f.write(
+            "\n:dolphin: For further information about software supply chain smells in your project, take a look at the following tables.\n"
+        )
 
-        if downgraded_number > 0:
-            f.write("\n")
-            f.write(
-                f"""
-<details>
-            <summary>Downgraded packages</summary>
-                        """
-            )
-            f.write("\n\n\n")
-            f.write(df_down_selected_without_index.to_markdown(index=True))
-            f.write("\n")
-            f.write("</details>")
-            f.write("\n")
+        for info in reports.values():
+            printed = print_check_info(info["df"], info["summary"], f, info["amount"])
+            if gradual_report and printed:
+                f.write("\n")
+                break
 
         if signature_changes_number > 0:
             f.write("\n")

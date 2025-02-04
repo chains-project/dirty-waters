@@ -486,6 +486,7 @@ def perform_differential_analysis(old_results, new_results, project_info):
         project_info["repo_name"],
         project_info["old_version_name"],
         project_info["new_version_name"],
+        project_info["gradual_report"],
         diff_summary,
     )
 
