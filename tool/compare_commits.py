@@ -144,7 +144,11 @@ def get_authors_from_tags(tag1, tag2, package, package_info):
     compare_url = (
         f"https://api.github.com/repos/{repo_name}/compare/{existing_tag_format_old}...{existing_tag_format_new}"
     )
-    response = make_github_request(compare_url, max_retries=2)
+    response = (
+        make_github_request(compare_url, max_retries=2)
+        if existing_tag_format_old and existing_tag_format_new
+        else None
+    )
 
     if not response:
         status_old = "GitHub old tag not found"
@@ -171,8 +175,8 @@ def get_authors_from_tags(tag1, tag2, package, package_info):
                     break
 
         return {
-            "tag1": existing_tag_format_old if existing_tag_format_old else tag_formats_old[-1],
-            "tag2": existing_tag_format_new if existing_tag_format_new else tag_formats_new[-1],
+            "tag1": existing_tag_format_old if existing_tag_format_old else list(tag_formats_old)[-1],
+            "tag2": existing_tag_format_new if existing_tag_format_new else list(tag_formats_new)[-1],
             "status_old": status_old,
             "status_new": status_new,
             "category": "Upgraded package",

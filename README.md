@@ -53,36 +53,57 @@ Run the tool using the following command structure:
 ### Arguments:
 
 ```
-usage: main.py [-h] -p PROJECT_REPO_NAME -v RELEASE_VERSION_OLD [-vn RELEASE_VERSION_NEW] -s [-d] [-n] -pm {yarn-classic,yarn-berry,pnpm,npm,maven} [--pnpm-scope] [--debug] [--check-source-code]
-               [--check-release-tags] [--check-deprecated] [--check-forks] [--check-provenance] [--check-code-signature]
+usage: main.py [-h] -p PROJECT_REPO_NAME -v RELEASE_VERSION_OLD
+               [-vn RELEASE_VERSION_NEW] -s [-d] [-n] -pm
+               {yarn-classic,yarn-berry,pnpm,npm,maven} [--pnpm-scope]
+               [--debug] [--no-gradual-report] [--check-source-code]
+               [--check-release-tags] [--check-deprecated] [--check-forks]
+               [--check-provenance] [--check-code-signature]
 
 options:
   -h, --help            show this help message and exit
   -p PROJECT_REPO_NAME, --project-repo-name PROJECT_REPO_NAME
-                        Specify the project repository name. Example: MetaMask/metamask-extension
+                        Specify the project repository name. Example:
+                        MetaMask/metamask-extension
   -v RELEASE_VERSION_OLD, --release-version-old RELEASE_VERSION_OLD
-                        The old release tag of the project repository. Example: v10.0.0
+                        The old release tag of the project repository.
+                        Example: v10.0.0
   -vn RELEASE_VERSION_NEW, --release-version-new RELEASE_VERSION_NEW
                         The new release version of the project repository.
   -s, --static-analysis
-                        Run static analysis and generate a markdown report of the project
+                        Run static analysis and generate a markdown report of
+                        the project
   -d, --differential-analysis
-                        Run differential analysis and generate a markdown report of the project
-  -n, --name-match      Compare the package names with the name in the in the package.json file. This option will slow down the execution time due to the API rate limit of code search.
+                        Run differential analysis and generate a markdown
+                        report of the project
+  -n, --name-match      Compare the package names with the name in the in the
+                        package.json file. This option will slow down the
+                        execution time due to the API rate limit of code
+                        search.
   -pm {yarn-classic,yarn-berry,pnpm,npm,maven}, --package-manager {yarn-classic,yarn-berry,pnpm,npm,maven}
                         The package manager used in the project.
-  --pnpm-scope          Extract dependencies from pnpm with a specific scope using 'pnpm list --filter <scope> --depth Infinity' command. Configure the scope in tool_config.py file.
+  --pnpm-scope          Extract dependencies from pnpm with a specific scope
+                        using 'pnpm list --filter <scope> --depth Infinity'
+                        command. Configure the scope in tool_config.py file.
   --debug               Enable debug mode.
+  --no-gradual-report   Disable gradual report generation -- instead of one
+                        smell type per report, gradually descending by
+                        severity, report all.
 
 smell checks:
-  --check-source-code   Check for dependencies with no link to source code repositories
-  --check-release-tags  Check for dependencies with no tag/commit sha for release
+  --check-source-code   Check for dependencies with no link to source code
+                        repositories
+  --check-release-tags  Check for dependencies with no tag/commit sha for
+                        release
   --check-deprecated    Check for deprecated dependencies
   --check-forks         Check for dependencies that are forks
   --check-provenance    Check for dependencies with no build attestation
   --check-code-signature
-                        Check for dependencies with missing/invalid code signature
+                        Check for dependencies with missing/invalid code
+                        signature
 ```
+
+Reports are gradual by default: that is, only the highest severity smell type with issues found within this project is reported. You can disable this feature, and get a full report, by setting the `--no-gradual-report` flag to `true`. Note that if you ask for specific checks to be performed, the gradual report feature will also be disabled.
 
 ### Example usage:
 

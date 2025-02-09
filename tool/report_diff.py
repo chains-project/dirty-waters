@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime
 import logging
+import subprocess
 
 
 def process_data(data):
@@ -104,8 +105,30 @@ def process_data(data):
     return record, record_list, author_list
 
 
-def create_dataframe(record):
+def create_dataframe(
+    record,
+    default_columns=[
+        "package_name",
+        "repo_name",
+        "repo_link",
+        "category",
+        "old_version",
+        "new_version",
+        "sha",
+        "author",
+        "author_first",
+        "merger",
+        "prr_first",
+        "reviewer",
+        "reviewer_type",
+        "signature_changes",
+    ],
+):
     df = pd.DataFrame(record)
+    # if empty, have the columns in the df regardless
+    for col in default_columns:
+        if col not in df.columns:
+            df[col] = None
     return df
 
 
@@ -117,7 +140,25 @@ def filter_df(df):
     return df_author_first, df_review_first, df_both_first
 
 
-def generate_diff_report(data, project_repo_name, release_version_old, release_version_new, output_file):
+def print_check_info(df, summary, md_file, amount):
+    if amount > 0:
+        md_file.write("\n")
+        md_file.write(
+            f"""
+<details>
+    <summary>{summary} ({amount})</summary>
+        """
+        )
+        md_file.write("\n\n\n")
+        md_file.write(df.to_markdown(index=False))
+        md_file.write("\n</details>\n")
+        return True
+    return False
+
+
+def generate_diff_report(
+    data, project_repo_name, release_version_old, release_version_new, gradual_report, output_file
+):
     logging.info(f"Generating differential report for {project_repo_name}")
     record, record_list, author_list = process_data(data)
 
@@ -137,7 +178,7 @@ def generate_diff_report(data, project_repo_name, release_version_old, release_v
     df_down_selected_without_index = df_down_selected.reset_index(drop=True)
 
     # We want a table that indexes the author
-    df_author = pd.DataFrame(record_list).set_index("author")
+    df_author = create_dataframe(record_list).set_index("author")
 
     new_order = ["sha"] + [col for col in df_author.columns if col != "sha"]
     df_author = df_author.reindex(columns=new_order)
@@ -165,106 +206,100 @@ def generate_diff_report(data, project_repo_name, release_version_old, release_v
     new_reviewer_commits = df_author_new_reviewer.shape[0]
     both_new_commits = df_author_both_new.shape[0]
 
-    signature_changes = df_all[df_all["category"] == "Upgraded package with signature changes"]
+    signature_changes = df_all[df_all["category"].str.contains("signature changes", case=False)]
+    signature_changes_df = signature_changes[["package_name", "old_version", "new_version", "signature_changes"]]
     signature_changes_number = signature_changes["package_name"].nunique()
 
-    counts = {
-        ":heavy_exclamation_mark: Downgraded packages": downgraded_number,
-        ":lock: Packages with signature changes": signature_changes_number,
-        ":alien: Commits made by both New Authors and Reviewers": both_new_commits,
-        ":neutral_face: Commits made by New Authors": new_author_commits,
-        ":see_no_evil: Commits approved by New Reviewers": new_reviewer_commits,
+    reports = {
+        "signature_changes": {
+            "amount": signature_changes_number,
+            "df": signature_changes_df,
+            "summary": ":lock: Packages with signature changes (⚠️⚠️⚠️)",
+        },
+        "downgraded": {
+            "amount": downgraded_number,
+            "df": df_down_selected_without_index,
+            "summary": ":heavy_exclamation_mark: Downgraded packages (⚠️⚠️)",
+        },
+        "both_new": {
+            "amount": both_new_commits,
+            "df": cp_df_author_both_new,
+            "summary": ":alien: Commits made by both New Authors and Reviewers (⚠️⚠️)",
+        },
+        "new_reviewer": {
+            "amount": new_reviewer_commits,
+            "df": cp_df_author_new_reviewer,
+            "summary": ":see_no_evil: Commits approved by New Reviewers (⚠️⚠️)",
+        },
+        "new_author": {
+            "amount": new_author_commits,
+            "df": cp_df_author_new_author,
+            "summary": ":neutral_face: Commits made by New Authors (⚠️)",
+        },
     }
 
     # We write into a markdown file
     with open(output_file, "w", encoding="utf-8") as f:
-        f.write(f"# Differential Report of {project_repo_name} - {release_version_old} & {release_version_new}\n")
+        preamble = f"""
+# Software Supply Chain Report of {project_repo_name} - {release_version_old} &rarr; {release_version_new}
+"""
+        if gradual_report:
+            preamble += """
+\nThis report is a gradual report: that is, only the highest severity smell type with issues found within this project is reported.
+Gradual reports are enabled by default. You can disable this feature, and get a full report, by setting the `--gradual-report` flag to `false`.
+"""
+        preamble += "\n"
+        f.write(preamble)
+
+        for info in reports.values():
+            f.write(f"\n {info["summary"]}: ({info["amount"]})\n")
+
         f.write("\n")
-
-        for key, val in counts.items():
-            f.write(f"\n {key}: {val}\n")
-            f.write("\n")
-
         f.write("### Fine grained information\n")
+        f.write(
+            "\n:dolphin: For further information about software supply chain smells in your project, take a look at the following tables.\n"
+        )
 
-        if downgraded_number > 0:
-            f.write("\n")
-            f.write(
-                f"""
+        for info in reports.values():
+            printed = print_check_info(info["df"], info["summary"], f, info["amount"])
+            if gradual_report and printed:
+                f.write("\n")
+                break
+
+        f.write("\n### Call to Action:\n")
+        f.write(
+            """
+                      
 <details>
-            <summary>Downgraded packages</summary>
-                        """
-            )
-            f.write("\n\n\n")
-            f.write(df_down_selected_without_index.to_markdown(index=True))
-            f.write("\n")
-            f.write("</details>")
-            f.write("\n")
+    <summary>👻What do I do now? </summary>
+        For packages with signature changes:  \n
+        This means that a dependency either had code signature and now does not, or that the signature was valid and now it's not.
+        This could be a security risk, and you should halt the project until you can verify the changes. \n
+        \nFor downgraded dependencies:  \n
+        1. Check the release notes of the new version to see if the downgrade is intentional. If the new version is more than one release ahead, verify whether any breaking changes in between apply to your project.
+        2. If the downgrade is unintentional, consider updating the package to a version that is compatible with your project.
+        \nFor commits made by both new authors and reviewers:  \n
+        1. Verify, as best as you can, that the new authors and reviewers are not malicious actors.
+        2. If you are unsure, consider reverting the changes.
+        \nFor commits approved by new reviewers:  \n
+        Verify, as best as you can, that the new reviewers are not malicious actors.
+        \nFor commits made by new authors:  \n
+        Verify, as best as you can, that the new authors are not malicious actors.
+        The fact that the reviewers are not new to the repository is a good sign.
+</details>
 
-        if signature_changes_number > 0:
-            f.write("\n")
-            f.write(
-                f"""
-    <details>
-        <summary>Packages with signature changes</summary>
-                """
-            )
-            f.write("\n\n\n")
-            selected_columns = ["package_name", "old_version", "new_version", "signature_changes"]
-            signature_changes_df = signature_changes[selected_columns]
-            f.write(signature_changes_df.to_markdown(index=False))
-            f.write("\n")
-            f.write("</details>")
-            f.write("\n")
 
-        if both_new_commits > 0:
-            f.write("\n")
-            f.write(
-                f"""
-<details>
-            <summary>Both Authors and Reviewers are new to the repository </summary>
-                """
-            )
-            f.write("\n\n\n")
-            f.write(cp_df_author_both_new.to_markdown(index=True))
-            f.write("\n")
-            f.write("</details>")
 
-        if new_author_commits > 0:
-            f.write("\n")
-            f.write(
-                f"""
-<details>
-            <summary>Authors are new to the repository </summary>
-                    """
-            )
-            f.write("\n\n\n")
-            f.write(cp_df_author_new_author.to_markdown(index=True))
-            f.write("\n")
-            f.write("</details>")
-
-        if new_reviewer_commits > 0:
-            f.write("\n")
-            f.write(
-                f"""
-<details>
-            <summary>Reviewers are new to the repository </summary>
-                """
-            )
-            f.write("\n\n\n")
-            f.write(cp_df_author_new_reviewer.to_markdown(index=True))
-            f.write("\n")
-            f.write("</details>")
+"""
+        )
 
         f.write(f"---\n")
-        f.write(
-            f"\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/) - version: commit.\n"
-        )
+        f.write(f"\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/).\n")
         f.write(f"\nReport created on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
 
         # Tool version
-        # tool_commit_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).strip().decode('utf-8')
-        # md_file.write(f"- Tool version: {tool_commit_hash}\n")
-        f.write(f"- project Name: {project_repo_name}\n")
-        f.write(f"- Compared project Versions: {release_version_old} & {release_version_new}\n")
+        tool_commit_hash = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).strip().decode("utf-8")
+        f.write(f"- Tool version: {tool_commit_hash}\n")
+        f.write(f"- Project Name: {project_repo_name}\n")
+        f.write(f"- Compared project versions: {release_version_old} & {release_version_new}\n")
     print(f"Report from differential analysis generated at {output_file}")
