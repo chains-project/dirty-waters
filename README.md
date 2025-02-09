@@ -55,10 +55,11 @@ Run the tool using the following command structure:
 ```
 usage: main.py [-h] -p PROJECT_REPO_NAME -v RELEASE_VERSION_OLD
                [-vn RELEASE_VERSION_NEW] -s [-d] [-n] -pm
-               {yarn-classic,yarn-berry,pnpm,npm,maven} [--pnpm-scope]
-               [--debug] [--no-gradual-report] [--check-source-code]
-               [--check-release-tags] [--check-deprecated] [--check-forks]
-               [--check-provenance] [--check-code-signature]
+               {yarn-classic,yarn-berry,pnpm,npm,maven}
+               [--pnpm-scope PNPM_SCOPE] [--debug] [--no-gradual-report]
+               [--check-source-code] [--check-release-tags]
+               [--check-deprecated] [--check-forks] [--check-provenance]
+               [--check-code-signature]
 
 options:
   -h, --help            show this help message and exit
@@ -82,7 +83,8 @@ options:
                         search.
   -pm {yarn-classic,yarn-berry,pnpm,npm,maven}, --package-manager {yarn-classic,yarn-berry,pnpm,npm,maven}
                         The package manager used in the project.
-  --pnpm-scope          Extract dependencies from pnpm with a specific scope
+  --pnpm-scope PNPM_SCOPE
+                        Extract dependencies from pnpm with a specific scope
                         using 'pnpm list --filter <scope> --depth Infinity'
                         command. Configure the scope in tool_config.py file.
   --debug               Enable debug mode.
