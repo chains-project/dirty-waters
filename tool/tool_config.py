@@ -17,11 +17,11 @@ import time
 from git import Repo
 
 # change this to the install command for your project
-PNPM_LIST_COMMAND = [
+PNPM_LIST_COMMAND = lambda scope: [
     "pnpm",
     "list",
     "--filter",
-    "ledger-live-desktop",
+    scope,
     "--depth",
     "Infinity",
 ]

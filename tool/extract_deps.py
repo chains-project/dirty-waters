@@ -193,7 +193,7 @@ def extract_deps_from_v1_yarn(yarn_lock_file):
         return {"resolutions": [], "patches": []}
 
 
-def get_pnpm_dep_tree(folder_path, version_tag, project_repo_name):
+def get_pnpm_dep_tree(folder_path, version_tag, project_repo_name, pnpm_scope):
     """
     Get pnpm dependency tree for the given project.
 
@@ -201,6 +201,7 @@ def get_pnpm_dep_tree(folder_path, version_tag, project_repo_name):
         folder_path (str): Path to the project folder
         version_tag (str): Version tag of the project
         project_repo_name (str): Name of the project repository
+        pnpm_scope (str): Scope of the pnpm package
 
     Returns:
         dict: Dependency tree
@@ -243,9 +244,9 @@ def get_pnpm_dep_tree(folder_path, version_tag, project_repo_name):
         if dir_if != dir_name:
             os.chdir(dir_name)
 
-        logging.info("Getting pnpm dependency tree by running %s", PNPM_LIST_COMMAND)
+        logging.info("Getting pnpm dependency tree by running %s", PNPM_LIST_COMMAND(pnpm_scope))
 
-        command = PNPM_LIST_COMMAND
+        command = PNPM_LIST_COMMAND(pnpm_scope)
         logging.info("Getting pnpm dependency tree...")
         result = subprocess.run(
             command,
@@ -281,13 +282,15 @@ def get_pnpm_dep_tree(folder_path, version_tag, project_repo_name):
             logging.info("Removed %s", dir_name)
 
 
-def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name):
+def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name, pnpm_scope):
     """
     Extract dependencies from a pnpm monorepo.
 
     Args:
         folder_path (str): Path to the monorepo folder
         version_tag (str): Version tag to use
+        project_repo_name (str): Name of the project repository
+        pnpm_scope (str): Scope of the pnpm package
 
     Returns:
         tuple: Lists of all dependencies and registry dependencies
@@ -297,7 +300,7 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name):
     workspace_dep = []
     patched_dep = []
 
-    tree, folder_path_for_this = get_pnpm_dep_tree(folder_path, version_tag, project_repo_name)
+    tree, folder_path_for_this = get_pnpm_dep_tree(folder_path, version_tag, project_repo_name, pnpm_scope)
 
     os.chdir("..")
     if tree is None:
@@ -308,7 +311,6 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name):
     logging.info("Extracting dependencies from pnpm list output")
 
     for line in tree:
-        # TODO: what's this?
         if "ledger-live-desktop" in line or "production dependency, optional only, dev only" in line:
             logging.info("ledger-live-desktop found")
             continue
