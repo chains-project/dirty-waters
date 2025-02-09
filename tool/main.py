@@ -215,7 +215,9 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
     if package_manager == "pnpm":
         if get_args().pnpm_scope:
             pnpm_scope = get_args().pnpm_scope
-            deps_list_all = extract_deps.extract_deps_from_pnpm_mono(folder_path, release_version, project_repo_name, pnpm_scope)
+            deps_list_all = extract_deps.extract_deps_from_pnpm_mono(
+                folder_path, release_version, project_repo_name, pnpm_scope
+            )
         else:
             yaml_lockfile, _, _ = get_lockfile(project_repo_name, release_version, package_manager)
             deps_list_all = extract_deps.extract_deps_from_pnpm_lockfile(yaml_lockfile)
