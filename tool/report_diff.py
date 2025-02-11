@@ -252,7 +252,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         f.write(preamble)
 
         for info in reports.values():
-            f.write(f"\n {info["summary"]}: ({info["amount"]})\n")
+            f.write(f"\n {info['summary']}: ({info['amount']})\n")
 
         f.write("\n")
         f.write("### Fine grained information\n")

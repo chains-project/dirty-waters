@@ -311,7 +311,8 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name, pnp
     logging.info("Extracting dependencies from pnpm list output")
 
     for line in tree:
-        if "ledger-live-desktop" in line or "production dependency, optional only, dev only" in line:
+        # if "ledger-live-desktop" in line or "production dependency, optional only, dev only" in line:
+        if pnpm_scope in line or "production dependency, optional only, dev only" in line:
             logging.info("ledger-live-desktop found")
             continue
 
@@ -320,7 +321,7 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name, pnp
             dep_name = match.group(1).strip()
             dep_version = match.group(2).strip()
             dependencies[dep_name].append(dep_version)
-            logging.info("dependency found", dep_name)
+            logging.info("dependency found: %s", dep_name)
 
         # logging.info(f"Number of dependencies({version_tag}): {len(dependencies)}")
 
