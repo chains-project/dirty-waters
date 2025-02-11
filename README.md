@@ -48,9 +48,8 @@ export GITHUB_API_TOKEN=<your_token>
 
 ## Usage
 
+### Command line
 Run the tool using the following command structure:
-
-### Arguments:
 
 ```
 usage: main.py [-h] -p PROJECT_REPO_NAME -v RELEASE_VERSION_OLD
@@ -107,8 +106,6 @@ smell checks:
 
 Reports are gradual by default: that is, only the highest severity smell type with issues found within this project is reported. You can disable this feature, and get a full report, by setting the `--no-gradual-report` flag to `true`. Note that if you ask for specific checks to be performed, the gradual report feature will also be disabled.
 
-### Example usage:
-
 1. Static analysis:
 
 ```bash
@@ -130,6 +127,10 @@ Notes:
 - `-v` should be the version of GitHub release, e.g. for [this release](https://github.com/MetaMask/metamask-extension/releases/tag/v11.1.0), the value should be `v11.11.0`, not `Version 11.11.0` or `11.11.0`.
 - The `-s` flag is required for all analyses.
 - When using `-d` for differential analysis, both `-v` and `-vn` must be specified.
+
+### Continuous integration
+
+See Github action at <https://github.com/chains-project/dirty-waters-action>
 
 ## Software Supply Chain Smell Support
 
