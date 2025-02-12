@@ -1,7 +1,7 @@
 # Software Supply Chain Report of abc/xyz - vd.e.f &rarr; vd.g.h
 
 This report is a gradual report: that is, only the highest severity smell type with issues found within this project is reported.
-Gradual reports are enabled by default. You can disable this feature, and get a full report, by setting the `--gradual-report` flag to `false`.
+Gradual reports are enabled by default. You can disable this feature, and get a full report, by using the `--no-gradual-report` flag.
 
 :lock: Packages with signature changes (⚠️⚠️⚠️): (0)
 
