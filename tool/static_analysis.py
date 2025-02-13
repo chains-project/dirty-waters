@@ -9,8 +9,8 @@ import requests
 import subprocess
 import re
 
-from tool_config import get_cache_manager, make_github_request
-from compare_commits import tag_format as construct_tag_format
+from tool.tool_config import get_cache_manager, make_github_request
+from tool.compare_commits import tag_format as construct_tag_format
 import logging
 import xmltodict
 

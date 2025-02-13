@@ -6,7 +6,7 @@ import sqlite3
 import logging
 from pathlib import Path
 from tqdm import tqdm
-from tool_config import get_cache_manager
+from tool.tool_config import get_cache_manager
 from typing import List
 
 TIMEOUT = 60
