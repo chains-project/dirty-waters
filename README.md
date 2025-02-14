@@ -6,13 +6,22 @@ Reference: [Dirty-Waters: Detecting Software Supply Chain Smells](http://arxiv.o
 
 By using `dirty-waters`, you identify the shady areas of your supply chain, which would be natural target for attackers to exploit.
 
-Kinds of problems identified by `dirty-waters`:
+`dirty-waters`'s static analyses report the following smells:
 
-- Dependencies with no link to source code repositories (high severity)
-- Dependencies with no tag / commit sha for release, impossible to have reproducible builds (high severity)
+- Dependencies with no/invalid link to source code repositories (high severity)
+- Dependencies with no tag/commit SHA for release, impossible to have reproducible builds (medium severity)
 - Deprecated Dependencies (medium severity)
 - Depends on a fork (medium severity)
+- Dependencies without/with invalid code signature (medium severity)
 - Dependencies with no build attestation (low severity)
+
+As for its differential analyses, `dirty-waters` reports the following smells:
+
+- Dependencies with code signature changes (high severity)
+- Downgraded dependencies (medium severity)
+- Dependencies with commits made by both new authors and reviewers (medium severity)
+- Dependencies with commits approved by new reviewers (medium severity)
+- Dependencies with new contributors (low severity)
 
 Additionally, `dirty-waters` gives a supplier view on the dependency trees (who owns the different dependencies?)
 
@@ -49,6 +58,7 @@ export GITHUB_API_TOKEN=<your_token>
 ## Usage
 
 ### Command line
+
 Run the tool using the following command structure:
 
 ```
@@ -140,7 +150,7 @@ See Github action at <https://github.com/chains-project/dirty-waters-action>
 
 ## Software Supply Chain Smell Support
 
-`dirty-waters` currently supports package managers within the JavaScript and Java ecosystems. However, due to some constraints associated with the nature of the package managers, the tool may not be able to detect all the smells in the project. The following table shows the supported package managers and their associated smells:
+`dirty-waters` currently supports package managers within the JavaScript and Java ecosystems. However, due to some constraints associated with the nature of the package managers, the tool may not be able to detect all the smells in the project. The following table shows the supported package managers and their associated smells, for static analysis:
 
 | Package Manager | No Source Code Repository | Invalid Source Code Repository URL | No Release Tag | Deprecated Dependency | Depends on a Fork | No Build Attestation | No/Invalid Code Signature |
 | --------------- | ------------------------- | ---------------------------------- | -------------- | --------------------- | ----------------- | -------------------- | ------------------------- |
@@ -149,6 +159,8 @@ See Github action at <https://github.com/chains-project/dirty-waters-action>
 | Pnpm            | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  | Yes                       |
 | Npm             | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  | Yes                       |
 | Maven           | Yes                       | Yes                                | Yes            | No                    | Yes               | No                   | Yes                       |
+
+All package managers support every smell in the differential analysis scenario.
 
 ### Smell Check Options
 
