@@ -6,9 +6,12 @@ import json
 import argparse
 import logging
 import os
+import sys
 import requests
 from git import Repo
 
+# Allows for tool to be recognized as a package to import from
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from tool import extract_deps
 from tool import github_repo
