@@ -10,17 +10,17 @@ import requests
 from git import Repo
 
 
-import extract_deps
-import github_repo
-import static_analysis
-import compare_packages
-import compare_commits
-import get_user_commit_info
-import get_pr_info
-import get_pr_review
-import tool_config
-import report_static
-import report_diff
+from tool import extract_deps
+from tool import github_repo
+from tool import static_analysis
+from tool import compare_packages
+from tool import compare_commits
+from tool import get_user_commit_info
+from tool import get_pr_info
+from tool import get_pr_review
+from tool import tool_config
+from tool import report_static
+from tool import report_diff
 
 github_token = os.getenv("GITHUB_API_TOKEN")
 if not github_token:

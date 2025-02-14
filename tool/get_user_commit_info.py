@@ -4,7 +4,7 @@ import os
 import sqlite3
 import time
 from pathlib import Path
-from tool_config import get_cache_manager, make_github_request, clone_repo, get_last_page_info
+from tool.tool_config import get_cache_manager, make_github_request, clone_repo, get_last_page_info
 import git
 import logging
 

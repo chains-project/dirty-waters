@@ -52,7 +52,7 @@ export GITHUB_API_TOKEN=<your_token>
 Run the tool using the following command structure:
 
 ```
-usage: main.py [-h] -p PROJECT_REPO_NAME -v RELEASE_VERSION_OLD
+usage: dirty-waters [-h] -p PROJECT_REPO_NAME -v RELEASE_VERSION_OLD
                [-vn RELEASE_VERSION_NEW] -s [-d] [-n] -pm
                {yarn-classic,yarn-berry,pnpm,npm,maven}
                [--pnpm-scope PNPM_SCOPE] [--debug] [--no-gradual-report]
@@ -109,7 +109,10 @@ Reports are gradual by default: that is, only the highest severity smell type wi
 1. Static analysis:
 
 ```bash
+# If manually cloned
 python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry
+# If installed via pip
+dirty-waters -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry
 ```
 
 - Example output: [Static Analysis Report Example](example_reports/static_analysis_report_example.md)
@@ -117,7 +120,10 @@ python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry
 2. Differential analysis:
 
 ```bash
+# If manually cloned
 python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -vn v11.12.0 -s -d -pm yarn-berry
+# If installed via pip
+dirty-waters -p MetaMask/metamask-extension -v v11.11.0 -vn v11.12.0 -s -d -pm yarn-berry
 ```
 
 - Example output: [Differential Analysis Report Example](example_reports/differential_analysis_report_example.md)
@@ -162,7 +168,7 @@ is passed, instead of all checks being performed, only the flagged ones will be)
 As an example of running specific checks:
 
 ```bash
-python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry --check-source-code --check-release-tags
+dirty-waters -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry --check-source-code --check-release-tags
 ```
 
 This run will only check for dependencies with no link to source code repositories and dependencies with no tag/commit sha for release.

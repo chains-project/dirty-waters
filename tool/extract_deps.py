@@ -15,7 +15,7 @@ import hashlib
 from pathlib import Path
 import yaml
 
-from tool_config import PNPM_LIST_COMMAND, get_cache_manager
+from tool.tool_config import PNPM_LIST_COMMAND, get_cache_manager
 
 logger = logging.getLogger(__name__)
 cache_manager = get_cache_manager()

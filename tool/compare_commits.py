@@ -1,7 +1,7 @@
 import requests
 import logging
 import os
-from tool_config import get_cache_manager, make_github_request
+from tool.tool_config import get_cache_manager, make_github_request
 
 cache_manager = get_cache_manager()
 

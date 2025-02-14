@@ -61,7 +61,5 @@ max-complexity = 10
 [tool.ruff.lint.isort]
 known-first-party = [ "tool",]
 
-[tool.setuptools.packages.find]
-where = [ ".",]
-include = [ "tool*",]
-exclude = [ "tests*", "docs*", "example_reports*",]
+[tool.setuptools]
+packages = [ "tool",]
