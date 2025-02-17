@@ -406,7 +406,7 @@ def extract_deps_from_maven(repo_path):
                 for line in f:
                     parts = line.strip().split(":")
                     if len(parts) >= 3:  # Minimum required parts, [2] would be type
-                        dep_info = {"groupId": parts[0], "artifactId": parts[1], "version": parts[3].split()[0]}
+                        dep_info = {"groupId": parts[0], "artifactId": parts[1], "version": parts[-1].split()[0]}
                         dependencies.append(dep_info)
 
         except FileNotFoundError:
