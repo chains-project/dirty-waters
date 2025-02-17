@@ -389,12 +389,13 @@ def extract_deps_from_maven(repo_path):
         dict: A dictionary containing the extracted dependencies.
     """
 
-    def parse_mvn_dependency_logs(log_file):
+    def parse_mvn_dependency_logs(log_file, plugins=False):
         """
         Parse Maven dependency resolution logs to extract dependency information.
 
         Args:
             log_file (str): Path to the Maven dependency resolution log file
+            plugins (bool): Whether we're dealing with resolve-plugin logs.
 
         Returns:
             list: List of dictionaries containing dependency information
@@ -406,7 +407,12 @@ def extract_deps_from_maven(repo_path):
                 for line in f:
                     parts = line.strip().split(":")
                     if len(parts) >= 3:  # Minimum required parts, [2] would be type
-                        dep_info = {"groupId": parts[0], "artifactId": parts[1], "version": parts[3].split()[0]}
+                        if plugins:
+                            # Version will always be the last here, no scope
+                            dep_info = {"groupId": parts[0], "artifactId": parts[1], "version": parts[-1].split()[0]}
+                        else:
+                            # Version will be the fourth one, after type; the last one is scope
+                            dep_info = {"groupId": parts[0], "artifactId": parts[1], "version": parts[3].split()[0]}
                         dependencies.append(dep_info)
 
         except FileNotFoundError:
@@ -453,7 +459,7 @@ def extract_deps_from_maven(repo_path):
 
         # Parse the dependency logs
         retrieved_deps = parse_mvn_dependency_logs(RESOLVE_LOG)
-        retrieved_plugins = parse_mvn_dependency_logs(RESOLVE_PLUGINS_LOG)
+        retrieved_plugins = parse_mvn_dependency_logs(RESOLVE_PLUGINS_LOG, plugins=True)
 
         # Go back to original directory
         os.chdir(current_dir)
