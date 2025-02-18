@@ -70,7 +70,7 @@ class CacheManager:
         self.package_cache = PackageAnalysisCache(cache_dir)
         self.commit_comparison_cache = CommitComparisonCache(cache_dir)
         self.user_commit_cache = UserCommitCache(cache_dir)
-        self.maven_cache = MavenDependencyCache(cache_dir)
+        self.extracted_deps_cache = DependencyExtractionCache(cache_dir)
 
     def _setup_requests_cache(self, cache_name="http_cache"):
         requests_cache.install_cache(
@@ -607,37 +607,37 @@ class UserCommitCache(Cache):
             conn.close()
 
 
-class MavenDependencyCache(Cache):
-    def __init__(self, cache_dir="cache/maven_deps"):
+class DependencyExtractionCache(Cache):
+    def __init__(self, cache_dir="cache/extracted_deps"):
         super().__init__(cache_dir, "maven_deps.db")
 
     def setup_db(self):
         self._execute_query(
             """
-            CREATE TABLE IF NOT EXISTS maven_dependencies (
+            CREATE TABLE IF NOT EXISTS extracted_dependencies (
                 repo_path TEXT,
-                pom_hash TEXT,
+                file_hash TEXT,
                 dependencies TEXT,
                 cached_at TIMESTAMP,
-                PRIMARY KEY (repo_path, pom_hash)
+                PRIMARY KEY (repo_path, file_hash)
             )
         """
         )
 
-    def cache_dependencies(self, repo_path, pom_hash, dependencies):
+    def cache_dependencies(self, repo_path, file_hash, dependencies):
         self._execute_query(
             """
-            INSERT OR REPLACE INTO maven_dependencies 
-            (repo_path, pom_hash, dependencies, cached_at)
+            INSERT OR REPLACE INTO extracted_dependencies 
+            (repo_path, file_hash, dependencies, cached_at)
             VALUES (?, ?, ?, ?)
         """,
-            (repo_path, pom_hash, json.dumps(dependencies), datetime.now().isoformat()),
+            (repo_path, file_hash, json.dumps(dependencies), datetime.now().isoformat()),
         )
 
-    def get_dependencies(self, repo_path, pom_hash, max_age_days=30):
+    def get_dependencies(self, repo_path, file_hash, max_age_days=30):
         results = self._execute_query(
-            "SELECT dependencies, cached_at FROM maven_dependencies WHERE repo_path = ? AND pom_hash = ?",
-            (repo_path, pom_hash),
+            "SELECT dependencies, cached_at FROM extracted_dependencies WHERE repo_path = ? AND file_hash = ?",
+            (repo_path, file_hash),
         )
         if results:
             deps_json, cached_at = results[0]
@@ -654,9 +654,9 @@ class MavenDependencyCache(Cache):
         try:
             if older_than_days:
                 cutoff = (datetime.now() - timedelta(days=older_than_days)).isoformat()
-                c.execute("DELETE FROM maven_dependencies WHERE cached_at < ?", (cutoff,))
+                c.execute("DELETE FROM extracted_dependencies WHERE cached_at < ?", (cutoff,))
             else:
-                c.execute("DELETE FROM maven_dependencies")
+                c.execute("DELETE FROM extracted_dependencies")
 
             conn.commit()
 
