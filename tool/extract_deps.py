@@ -507,7 +507,7 @@ def extract_deps_from_maven(repo_path):
         """
         dependencies = []
         current_parent = None
-        base_indent_level = 3 # 3 spaces is the base indent level
+        base_indent_level = 3  # 3 spaces is the base indent level
         try:
             with open(log_file, "r") as f:
                 lines = f.readlines()
@@ -517,22 +517,24 @@ def extract_deps_from_maven(repo_path):
                     if "The following plugins have been resolved:" in line:
                         parsing = True
                         continue
-                        
+
                     if "The following plugins have been" in line and parsing:
                         break
 
                     if parsing:
-                        indent_level = len(line) - len(line.lstrip(' ')) - base_indent_level
+                        indent_level = len(line) - len(line.lstrip(" ")) - base_indent_level
                         parts = line.strip().split(":")
                         if len(parts) >= 3:
                             dep_info = {
                                 "groupId": parts[0],
                                 "artifactId": parts[1],
                                 "version": parts[-1].split()[0],
-                                "parent": None
+                                "parent": None,
                             }
                             if indent_level == 0:
-                                current_parent = f"{dep_info['groupId']}:{dep_info['artifactId']}@{dep_info['version']}"
+                                current_parent = (
+                                    f"{dep_info['groupId']}:{dep_info['artifactId']}@{dep_info['version']}"
+                                )
                             else:
                                 dep_info["parent"] = current_parent
                                 dependencies.append(dep_info)
@@ -589,11 +591,19 @@ def extract_deps_from_maven(repo_path):
 
         # Format the dependencies
         parsed_deps = [
-            {"info": f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}", "parent": dep['parent'], "command": "resolve"}
+            {
+                "info": f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}",
+                "parent": dep["parent"],
+                "command": "resolve",
+            }
             for dep in retrieved_deps
         ]
         parsed_plugins = [
-            {"info": f"{plugin['groupId']}:{plugin['artifactId']}@{plugin['version']}", "parent": plugin['parent'], "command": "resolve-plugins"}
+            {
+                "info": f"{plugin['groupId']}:{plugin['artifactId']}@{plugin['version']}",
+                "parent": plugin["parent"],
+                "command": "resolve-plugins",
+            }
             for plugin in retrieved_plugins
         ]
 
