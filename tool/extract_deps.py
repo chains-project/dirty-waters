@@ -65,8 +65,12 @@ def extract_deps_from_pnpm_lockfile(repo_path, pnpm_lockfile_yaml):
         # pkg_name_with_resolution = set()
         deps_list_data = {}
 
-        package_keys = sorted(list(yaml_data.get("packages", {}).keys()))
-        patches = sorted(list(yaml_data.get("patchedDependencies", {}).keys()))
+        package_keys = list({
+            "info": info
+        } for info in sorted(yaml_data.get("packages", {}).keys()))
+        patches = list({
+            "info": info
+        } for info in sorted(yaml_data.get("patchedDependencies", {}).keys()))
 
         deps_list_data = {
             "resolutions": package_keys,
@@ -128,7 +132,9 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
                         pkg_name_with_resolution.add(f"{package_name}@{package_info['version']}")
 
             deps_list_data = {
-                "resolutions": sorted(list(pkg_name_with_resolution)),
+                "resolutions": list({
+                    "info": info
+                } for info in sorted(pkg_name_with_resolution)),
                 "patches": patches,
             }
 
@@ -181,6 +187,14 @@ def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):
                 else:
                     pkg_name_with_resolution.append(match.group(1).strip('"'))
 
+        deps_list_data = {
+            "resolutions": list({
+                "info": info
+            } for info in sorted(pkg_name_with_resolution)),
+            "patches": list({
+                "info": info
+            } for info in sorted(patches)),
+        }
 
         cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
 
@@ -232,6 +246,9 @@ def extract_deps_from_v1_yarn(repo_path, yarn_lock_file):
 
         extracted_info = sorted(extracted_info)
 
+        deps_list_data = {"resolutions": list({
+            "info": info
+        } for info in extracted_info), "patches": patches}
 
         cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
 
@@ -405,8 +422,12 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, repo_path, pnpm_scope)
         json.dump(all_deps, f, indent=4)
 
     deps_list_data = {
-        "resolutions": registry_dep,
-        "patches": patched_dep,
+        "resolutions": list({
+            "info": info
+        } for info in registry_dep),
+        "patches": list({
+            "info": info
+        } for info in patched_dep),
         "workspace": workspace_dep,
     }
 
@@ -528,13 +549,26 @@ def extract_deps_from_maven(repo_path):
         os.chdir(current_dir)
 
         # Format the dependencies
-        parsed_deps = [f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}" for dep in retrieved_deps]
+        parsed_deps = [
+            {
+                "info": f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}",
+                "command": "resolve"
+            }
+            for dep in retrieved_deps
+        ]
         parsed_plugins = [
-            f"{plugin['groupId']}:{plugin['artifactId']}@{plugin['version']}" for plugin in retrieved_plugins
+            {
+                "info": f"{plugin['groupId']}:{plugin['artifactId']}@{plugin['version']}",
+                "command": "resolve-plugins"
+            }
+            for plugin in retrieved_plugins
         ]
 
         # Create the result
-        deps_list_data = {"resolutions": list(set(parsed_deps + parsed_plugins)), "patches": []}
+        deps_list_data = {"resolutions": list({
+            item["info"]: item
+            for item in parsed_plugins + parsed_deps
+        }.values()), "patches": []}
 
         # Cache the results
         cache_manager.extracted_deps_cache.cache_dependencies(repo_path, pom_hash, deps_list_data)
@@ -559,7 +593,7 @@ def deps_versions(deps_versions_info_list):
     """
     deps_versions_dict = {}
     for pkg in deps_versions_info_list.get("resolutions"):
-        pkg_name, version = pkg.rsplit("@", 1)
+        pkg_name, version = pkg["info"].rsplit("@", 1)
 
         version = version.replace("npm:", "")
 
@@ -587,21 +621,21 @@ def get_patches_info(repo_path, yarn_lock_file):
     patches_info = {}
     for pkg_patches in deps_list.get("patches"):
         pattern = r"\.yarn/patches/(.*?\.patch).*version=([0-9.]+)&hash=([a-z0-9]+)"
-        match = re.search(pattern, pkg_patches)
+        match = re.search(pattern, pkg_patches["info"])
 
         if match:
             patch_file_path = match.group(1)
             version = match.group(2)
             hash_code = match.group(3)
 
-            patches_info[pkg_patches] = {
+            patches_info[pkg_patches["info"]] = {
                 "version": str(version),
                 "hash_code": str(hash_code),
                 "patch_file_path": str(patch_file_path),
             }
 
         else:
-            patches_info[pkg_patches] = {
+            patches_info[pkg_patches["info"]] = {
                 "version": None,
                 "hash_code": None,
                 "patch_file_path": None,

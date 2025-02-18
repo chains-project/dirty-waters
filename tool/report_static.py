@@ -50,6 +50,7 @@ def create_dataframe(data):
             "all_deprecated": package_data.get("package_info", {}).get("all_deprecated", None),
             "signature_present": package_data.get("code_signature").get("signature_present"),
             "signature_valid": package_data.get("code_signature").get("signature_valid"),
+            "command": package_data.get("command", None),
             "github_url": github_exists_data.get("github_url", "Could not find repo from package registry"),
             "github_exists": github_exists_data.get("github_exists", None),
             "github_redirected": github_exists_data.get("github_redirected", None),
@@ -261,8 +262,8 @@ def write_summary(
     Write a summary of the static analysis results to a markdown file.
     """
 
-    no_source_code_repo_df = df.loc[df["github_url"] == "No_repo_info_found", ["github_url", "github_exists"]]
-    github_repo_404_df = df.loc[df["github_exists"] == False, ["github_url", "github_exists"]]
+    no_source_code_repo_df = df.loc[df["github_url"] == "No_repo_info_found", ["github_url", "github_exists"] + ["command"] if package_manager == "maven" else []]
+    github_repo_404_df = df.loc[df["github_exists"] == False, ["github_url", "github_exists"] + ["command"] if package_manager == "maven" else []]
 
     combined_repo_problems_df = (
         pd.concat([no_source_code_repo_df, github_repo_404_df])
@@ -278,7 +279,7 @@ def write_summary(
             "github_url",
             "tag_related_info",
             "status_code_for_release_tag",
-        ],
+        ] + ["command"] if package_manager == "maven" else [],
     ]
     # all_deprecated_df = df[df["all_deprecated"] is True]
     version_deprecated_df = df.loc[
@@ -293,7 +294,7 @@ def write_summary(
         [
             "is_fork",
             "parent_repo_link",
-        ],
+        ] + ["command"] if package_manager == "maven" else []
     ]
     provenance_df = df.loc[
         df["provenance_in_version"] == False,
@@ -305,13 +306,13 @@ def write_summary(
         df["signature_present"] == False,
         [
             "signature_present",
-        ],
+        ] + ["command"] if package_manager == "maven" else []
     ]
     invalid_code_signature_df = df.loc[
         (df["signature_present"] == True) & (df["signature_valid"] == False),
         [
             "signature_valid",
-        ],
+        ] + ["command"] if package_manager == "maven" else []
     ]
 
     common_counts = {

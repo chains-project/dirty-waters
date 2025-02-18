@@ -641,6 +641,7 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
         for package, repo_urls in packages_data.items():
             logging.info(f"Currently analyzing {package}")
             repo_url = repo_urls.get("github", "")
+            command = repo_urls.get("command", None)
             analyzed_data = analyze_package_data(
                 package, repo_url, pm, check_match=check_match, enabled_checks=enabled_checks
             )
@@ -651,6 +652,7 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
                 errors[package] = error
             else:
                 package_all[package] = analyzed_data
+                package_all[package]["command"] = command
 
     return package_all, errors
 
