@@ -223,20 +223,20 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
             )
         else:
             yaml_lockfile, _, _ = get_lockfile(project_repo_name, release_version, package_manager)
-            deps_list_all = extract_deps.extract_deps_from_pnpm_lockfile(yaml_lockfile)
+            deps_list_all = extract_deps.extract_deps_from_pnpm_lockfile(project_repo_name, yaml_lockfile)
 
     # extract deps from lockfile
     elif package_manager == "yarn-classic" or package_manager == "yarn-berry":
         yarn_file, _, _ = get_lockfile(project_repo_name, release_version, package_manager)
         if package_manager == "yarn-classic":
-            deps_list_all = extract_deps.extract_deps_from_v1_yarn(yarn_file)
+            deps_list_all = extract_deps.extract_deps_from_v1_yarn(project_repo_name, yarn_file)
         elif package_manager == "yarn-berry":
-            deps_list_all = deps_list_all = extract_deps.extract_deps_from_yarn_berry(yarn_file)
-            patches_info = extract_deps.get_patches_info(yarn_file)
+            deps_list_all = deps_list_all = extract_deps.extract_deps_from_yarn_berry(project_repo_name, yarn_file)
+            patches_info = extract_deps.get_patches_info(project_repo_name, yarn_file)
 
     elif package_manager == "npm":
         npm_file, _, _ = get_lockfile(project_repo_name, release_version, package_manager)
-        deps_list_all = extract_deps.extract_deps_from_npm(npm_file)
+        deps_list_all = extract_deps.extract_deps_from_npm(project_repo_name, npm_file)
 
     elif package_manager == "maven":
         # Maven is more complex, because of child packages in the repo/pom; this requires to clone the whole repo

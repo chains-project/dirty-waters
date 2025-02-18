@@ -28,16 +28,23 @@ RESOLVE_LOG = "/tmp/deps.log"
 RESOLVE_PLUGINS_LOG = "/tmp/plugins.log"
 
 
-def extract_deps_from_pnpm_lockfile(pnpm_lockfile_yaml):
+def get_lockfile_hash(lockfile_content):
+    """Generate a hash of the lockfile to detect changes"""
+    return hashlib.sha256(str(lockfile_content).encode()).hexdigest()
+
+
+def extract_deps_from_pnpm_lockfile(repo_path, pnpm_lockfile_yaml):
     """
     Extract dependencies from a pnpm-lock.yaml file.
 
     Args:
+        repo_path (str): The project's source code repository.
         pnpm_lockfile_yaml (str): The content of the pnpm lock file.
 
     Returns:
         dict: A dictionary containing the extracted dependencies and patches.
     """
+
     yaml_data = yaml.safe_load(pnpm_lockfile_yaml)
     yaml_version = yaml_data.get("lockfileVersion")
     if yaml_version != "9.0":
@@ -46,17 +53,29 @@ def extract_deps_from_pnpm_lockfile(pnpm_lockfile_yaml):
         # end the process
         sys.exit(1)
 
+    lockfile_hash = get_lockfile_hash(yaml_data)
+    if not lockfile_hash:
+        logging.error("No lockfile found in %s", repo_path)
+        return {"resolutions": [], "patches": []}
+
+    cached_deps = cache_manager.extracted_deps_cache.get_dependencies(repo_path, lockfile_hash)
+    if cached_deps:
+        logging.info(f"Using cached dependencies for {repo_path}")
+        return cached_deps
+
     try:
         # pkg_name_with_resolution = set()
         deps_list_data = {}
 
-        package_keys = sorted(list(yaml_data.get("packages", {}).keys()))
-        patches = sorted(list(yaml_data.get("patchedDependencies", {}).keys()))
+        package_keys = list({"info": info} for info in sorted(yaml_data.get("packages", {}).keys()))
+        patches = list({"info": info} for info in sorted(yaml_data.get("patchedDependencies", {}).keys()))
 
         deps_list_data = {
             "resolutions": package_keys,
             "patches": patches,
         }
+
+        cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
 
         return deps_list_data
 
@@ -68,11 +87,12 @@ def extract_deps_from_pnpm_lockfile(pnpm_lockfile_yaml):
         return {"resolutions": [], "patches": []}
 
 
-def extract_deps_from_npm(npm_lock_file):
+def extract_deps_from_npm(repo_path, npm_lock_file):
     """
     Extract dependencies from a "package-lock.json" file.
 
     Args:
+        repo_path (str): The project's source code repository.
         npm_lock_file (dict): The content of the npm lock file.
 
     Returns:
@@ -81,6 +101,15 @@ def extract_deps_from_npm(npm_lock_file):
     """
 
     lock_file_json = json.loads(npm_lock_file)
+    lockfile_hash = get_lockfile_hash(lock_file_json)
+    if not lockfile_hash:
+        logging.error("No lockfile found in %s", repo_path)
+        return {"resolutions": [], "patches": []}
+
+    cached_deps = cache_manager.extracted_deps_cache.get_dependencies(repo_path, lockfile_hash)
+    if cached_deps:
+        logging.info(f"Using cached dependencies for {repo_path}")
+        return cached_deps
     try:
         patches = []
         pkg_name_with_resolution = set()
@@ -101,9 +130,11 @@ def extract_deps_from_npm(npm_lock_file):
                         pkg_name_with_resolution.add(f"{package_name}@{package_info['version']}")
 
             deps_list_data = {
-                "resolutions": sorted(list(pkg_name_with_resolution)),
+                "resolutions": list({"info": info} for info in sorted(pkg_name_with_resolution)),
                 "patches": patches,
             }
+
+            cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
 
         return deps_list_data
 
@@ -116,17 +147,28 @@ def extract_deps_from_npm(npm_lock_file):
     return {"resolutions": [], "patches": []}
 
 
-def extract_deps_from_yarn_berry(yarn_lock_file):
+def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):
     """
     # JavaScript
     Extract dependencies from a Yarn Berry lock file.
 
     Args:
+        repo_path (str): The project's source code repository.
         yarn_lock_file (str): The content of the Yarn Berry lock file.
 
     Returns:
         dict: A dictionary containing the extracted dependencies and patches.
     """
+    lockfile_hash = get_lockfile_hash(yarn_lock_file)
+    if not lockfile_hash:
+        logging.error("No lockfile found in %s", repo_path)
+        return {"resolutions": [], "patches": []}
+
+    cached_deps = cache_manager.extracted_deps_cache.get_dependencies(repo_path, lockfile_hash)
+    if cached_deps:
+        logging.info(f"Using cached dependencies for {repo_path}")
+        return cached_deps
+
     try:
         patches = []
         pkg_name_with_resolution = []
@@ -141,7 +183,12 @@ def extract_deps_from_yarn_berry(yarn_lock_file):
                 else:
                     pkg_name_with_resolution.append(match.group(1).strip('"'))
 
-        deps_list_data = {"resolutions": pkg_name_with_resolution, "patches": patches}
+        deps_list_data = {
+            "resolutions": list({"info": info} for info in sorted(pkg_name_with_resolution)),
+            "patches": list({"info": info} for info in sorted(patches)),
+        }
+
+        cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
 
         return deps_list_data
 
@@ -153,18 +200,28 @@ def extract_deps_from_yarn_berry(yarn_lock_file):
         return {"resolutions": [], "patches": []}
 
 
-def extract_deps_from_v1_yarn(yarn_lock_file):
+def extract_deps_from_v1_yarn(repo_path, yarn_lock_file):
     """
     # JavaScript
     Extract dependencies from a Yarn Classic lock file.
 
     Args:
+        repo_path (str): The project's source code repository.
         yarn_lock_file (str): The content of the Yarn Classic lock file.
 
     Returns:
         dict: A dictionary containing the extracted dependencies and patches.
     """
     # yarn-classic
+    lockfile_hash = get_lockfile_hash(yarn_lock_file)
+    if not lockfile_hash:
+        logging.error("No lockfile found in %s", repo_path)
+        return {"resolutions": [], "patches": []}
+
+    cached_deps = cache_manager.extracted_deps_cache.get_dependencies(repo_path, lockfile_hash)
+    if cached_deps:
+        logging.info(f"Using cached dependencies for {repo_path}")
+        return cached_deps
     try:
         extracted_info = []
         patches = []
@@ -181,7 +238,9 @@ def extract_deps_from_v1_yarn(yarn_lock_file):
 
         extracted_info = sorted(extracted_info)
 
-        deps_list_data = {"resolutions": extracted_info, "patches": patches}
+        deps_list_data = {"resolutions": list({"info": info} for info in extracted_info), "patches": patches}
+
+        cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
 
         return deps_list_data
 
@@ -193,26 +252,26 @@ def extract_deps_from_v1_yarn(yarn_lock_file):
         return {"resolutions": [], "patches": []}
 
 
-def get_pnpm_dep_tree(folder_path, version_tag, project_repo_name, pnpm_scope):
+def get_pnpm_dep_tree(folder_path, version_tag, repo_path, pnpm_scope):
     """
     Get pnpm dependency tree for the given project.
 
     Args:
         folder_path (str): Path to the project folder
         version_tag (str): Version tag of the project
-        project_repo_name (str): Name of the project repository
+        repo_path (str): Name of the project repository
         pnpm_scope (str): Scope of the pnpm package
 
     Returns:
         dict: Dependency tree
     """
     version_tag_name = version_tag.replace("/", "-")
-    project_repo_name_for_dir = project_repo_name.replace("/", "-")
+    repo_path_for_dir = repo_path.replace("/", "-")
     # for pnpm mono repo
-    dir_name = f"{project_repo_name_for_dir}-{version_tag_name}"
+    dir_name = f"{repo_path_for_dir}-{version_tag_name}"
 
     if not os.path.exists(dir_name):
-        repo_url = f"https://github.com/{project_repo_name}.git"
+        repo_url = f"https://github.com/{repo_path}.git"
         subprocess.run(
             [
                 "git",
@@ -226,7 +285,7 @@ def get_pnpm_dep_tree(folder_path, version_tag, project_repo_name, pnpm_scope):
             ],
             check=True,
         )
-        logging.info("Cloning %s Repository...", project_repo_name)
+        logging.info("Cloning %s Repository...", repo_path)
 
         # repo_name = repo_url.split("/")[-1].replace(".git", "")
 
@@ -282,14 +341,14 @@ def get_pnpm_dep_tree(folder_path, version_tag, project_repo_name, pnpm_scope):
             logging.info("Removed %s", dir_name)
 
 
-def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name, pnpm_scope):
+def extract_deps_from_pnpm_mono(folder_path, version_tag, repo_path, pnpm_scope):
     """
     Extract dependencies from a pnpm monorepo.
 
     Args:
         folder_path (str): Path to the monorepo folder
         version_tag (str): Version tag to use
-        project_repo_name (str): Name of the project repository
+        repo_path (str): Name of the project repository
         pnpm_scope (str): Scope of the pnpm package
 
     Returns:
@@ -300,7 +359,16 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name, pnp
     workspace_dep = []
     patched_dep = []
 
-    tree, folder_path_for_this = get_pnpm_dep_tree(folder_path, version_tag, project_repo_name, pnpm_scope)
+    tree, folder_path_for_this = get_pnpm_dep_tree(folder_path, version_tag, repo_path, pnpm_scope)
+    lockfile_hash = get_lockfile_hash(tree)  # not really a lockfile, but an approximation
+    if not lockfile_hash:
+        logging.error("No lockfile found in %s", repo_path)
+        return {"resolutions": [], "patches": []}
+
+    cached_deps = cache_manager.extracted_deps_cache.get_dependencies(project_repo_name, lockfile_hash)
+    if cached_deps:
+        logging.info(f"Using cached dependencies for {repo_path}")
+        return cached_deps
 
     os.chdir("..")
     if tree is None:
@@ -344,10 +412,12 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, project_repo_name, pnp
         json.dump(all_deps, f, indent=4)
 
     deps_list_data = {
-        "resolutions": registry_dep,
-        "patches": patched_dep,
+        "resolutions": list({"info": info} for info in registry_dep),
+        "patches": list({"info": info} for info in patched_dep),
         "workspace": workspace_dep,
     }
+
+    cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
 
     logging.info(
         "Number of packages from registry(%s): %d",
@@ -428,7 +498,7 @@ def extract_deps_from_maven(repo_path):
         logging.error("No pom.xml found in %s", repo_path)
         return {"resolutions": [], "patches": []}
 
-    cached_deps = cache_manager.maven_cache.get_dependencies(repo_path, pom_hash)
+    cached_deps = cache_manager.extracted_deps_cache.get_dependencies(repo_path, pom_hash)
     if cached_deps:
         logging.info(f"Using cached Maven dependencies for {repo_path}")
         return cached_deps
@@ -465,16 +535,23 @@ def extract_deps_from_maven(repo_path):
         os.chdir(current_dir)
 
         # Format the dependencies
-        parsed_deps = [f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}" for dep in retrieved_deps]
+        parsed_deps = [
+            {"info": f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}", "command": "resolve"}
+            for dep in retrieved_deps
+        ]
         parsed_plugins = [
-            f"{plugin['groupId']}:{plugin['artifactId']}@{plugin['version']}" for plugin in retrieved_plugins
+            {"info": f"{plugin['groupId']}:{plugin['artifactId']}@{plugin['version']}", "command": "resolve-plugins"}
+            for plugin in retrieved_plugins
         ]
 
         # Create the result
-        deps_list_data = {"resolutions": list(set(parsed_deps + parsed_plugins)), "patches": []}
+        deps_list_data = {
+            "resolutions": list({item["info"]: item for item in parsed_plugins + parsed_deps}.values()),
+            "patches": [],
+        }
 
         # Cache the results
-        cache_manager.maven_cache.cache_dependencies(repo_path, pom_hash, deps_list_data)
+        cache_manager.extracted_deps_cache.cache_dependencies(repo_path, pom_hash, deps_list_data)
 
         return deps_list_data
 
@@ -496,7 +573,7 @@ def deps_versions(deps_versions_info_list):
     """
     deps_versions_dict = {}
     for pkg in deps_versions_info_list.get("resolutions"):
-        pkg_name, version = pkg.rsplit("@", 1)
+        pkg_name, version = pkg["info"].rsplit("@", 1)
 
         version = version.replace("npm:", "")
 
@@ -508,36 +585,37 @@ def deps_versions(deps_versions_info_list):
     return deps_versions_dict
 
 
-def get_patches_info(yarn_lock_file):
+def get_patches_info(repo_path, yarn_lock_file):
     """
     Get patches information from a Yarn Berry lock file.
 
     Args:
+        repo_path (str): The project's source code repository.
         yarn_lock_file (str): The content of the Yarn Berry lock file.
 
     Returns:
         dict: Dictionary containing patch information
     """
-    deps_list = extract_deps_from_yarn_berry(yarn_lock_file)
+    deps_list = extract_deps_from_yarn_berry(repo_path, yarn_lock_file)
 
     patches_info = {}
     for pkg_patches in deps_list.get("patches"):
         pattern = r"\.yarn/patches/(.*?\.patch).*version=([0-9.]+)&hash=([a-z0-9]+)"
-        match = re.search(pattern, pkg_patches)
+        match = re.search(pattern, pkg_patches["info"])
 
         if match:
             patch_file_path = match.group(1)
             version = match.group(2)
             hash_code = match.group(3)
 
-            patches_info[pkg_patches] = {
+            patches_info[pkg_patches["info"]] = {
                 "version": str(version),
                 "hash_code": str(hash_code),
                 "patch_file_path": str(patch_file_path),
             }
 
         else:
-            patches_info[pkg_patches] = {
+            patches_info[pkg_patches["info"]] = {
                 "version": None,
                 "hash_code": None,
                 "patch_file_path": None,
