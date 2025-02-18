@@ -27,9 +27,11 @@ RESOLVE_PLUGINS_GOAL = append_dependency_goal("resolve-plugins")
 RESOLVE_LOG = "/tmp/deps.log"
 RESOLVE_PLUGINS_LOG = "/tmp/plugins.log"
 
+
 def get_lockfile_hash(lockfile_content):
     """Generate a hash of the lockfile to detect changes"""
     return hashlib.sha256(str(lockfile_content).encode()).hexdigest()
+
 
 def extract_deps_from_pnpm_lockfile(repo_path, pnpm_lockfile_yaml):
     """
@@ -50,7 +52,7 @@ def extract_deps_from_pnpm_lockfile(repo_path, pnpm_lockfile_yaml):
         logging.error("The pnpm lockfile version is not supported(yet): ", yaml_version)
         # end the process
         sys.exit(1)
-    
+
     lockfile_hash = get_lockfile_hash(yaml_data)
     if not lockfile_hash:
         logging.error("No lockfile found in %s", repo_path)
@@ -65,12 +67,8 @@ def extract_deps_from_pnpm_lockfile(repo_path, pnpm_lockfile_yaml):
         # pkg_name_with_resolution = set()
         deps_list_data = {}
 
-        package_keys = list({
-            "info": info
-        } for info in sorted(yaml_data.get("packages", {}).keys()))
-        patches = list({
-            "info": info
-        } for info in sorted(yaml_data.get("patchedDependencies", {}).keys()))
+        package_keys = list({"info": info} for info in sorted(yaml_data.get("packages", {}).keys()))
+        patches = list({"info": info} for info in sorted(yaml_data.get("patchedDependencies", {}).keys()))
 
         deps_list_data = {
             "resolutions": package_keys,
@@ -132,9 +130,7 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
                         pkg_name_with_resolution.add(f"{package_name}@{package_info['version']}")
 
             deps_list_data = {
-                "resolutions": list({
-                    "info": info
-                } for info in sorted(pkg_name_with_resolution)),
+                "resolutions": list({"info": info} for info in sorted(pkg_name_with_resolution)),
                 "patches": patches,
             }
 
@@ -188,12 +184,8 @@ def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):
                     pkg_name_with_resolution.append(match.group(1).strip('"'))
 
         deps_list_data = {
-            "resolutions": list({
-                "info": info
-            } for info in sorted(pkg_name_with_resolution)),
-            "patches": list({
-                "info": info
-            } for info in sorted(patches)),
+            "resolutions": list({"info": info} for info in sorted(pkg_name_with_resolution)),
+            "patches": list({"info": info} for info in sorted(patches)),
         }
 
         cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
@@ -246,9 +238,7 @@ def extract_deps_from_v1_yarn(repo_path, yarn_lock_file):
 
         extracted_info = sorted(extracted_info)
 
-        deps_list_data = {"resolutions": list({
-            "info": info
-        } for info in extracted_info), "patches": patches}
+        deps_list_data = {"resolutions": list({"info": info} for info in extracted_info), "patches": patches}
 
         cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
 
@@ -370,7 +360,7 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, repo_path, pnpm_scope)
     patched_dep = []
 
     tree, folder_path_for_this = get_pnpm_dep_tree(folder_path, version_tag, repo_path, pnpm_scope)
-    lockfile_hash = get_lockfile_hash(tree) # not really a lockfile, but an approximation
+    lockfile_hash = get_lockfile_hash(tree)  # not really a lockfile, but an approximation
     if not lockfile_hash:
         logging.error("No lockfile found in %s", repo_path)
         return {"resolutions": [], "patches": []}
@@ -422,12 +412,8 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, repo_path, pnpm_scope)
         json.dump(all_deps, f, indent=4)
 
     deps_list_data = {
-        "resolutions": list({
-            "info": info
-        } for info in registry_dep),
-        "patches": list({
-            "info": info
-        } for info in patched_dep),
+        "resolutions": list({"info": info} for info in registry_dep),
+        "patches": list({"info": info} for info in patched_dep),
         "workspace": workspace_dep,
     }
 
@@ -550,25 +536,19 @@ def extract_deps_from_maven(repo_path):
 
         # Format the dependencies
         parsed_deps = [
-            {
-                "info": f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}",
-                "command": "resolve"
-            }
+            {"info": f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}", "command": "resolve"}
             for dep in retrieved_deps
         ]
         parsed_plugins = [
-            {
-                "info": f"{plugin['groupId']}:{plugin['artifactId']}@{plugin['version']}",
-                "command": "resolve-plugins"
-            }
+            {"info": f"{plugin['groupId']}:{plugin['artifactId']}@{plugin['version']}", "command": "resolve-plugins"}
             for plugin in retrieved_plugins
         ]
 
         # Create the result
-        deps_list_data = {"resolutions": list({
-            item["info"]: item
-            for item in parsed_plugins + parsed_deps
-        }.values()), "patches": []}
+        deps_list_data = {
+            "resolutions": list({item["info"]: item for item in parsed_plugins + parsed_deps}.values()),
+            "patches": [],
+        }
 
         # Cache the results
         cache_manager.extracted_deps_cache.cache_dependencies(repo_path, pom_hash, deps_list_data)
