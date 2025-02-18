@@ -22,9 +22,9 @@ cache_manager = get_cache_manager()
 
 MVN_DEPENDENCY_PLUGIN = "org.apache.maven.plugins:maven-dependency-plugin:3.8.1"
 append_dependency_goal = lambda goal: f"{MVN_DEPENDENCY_PLUGIN}:{goal}"
-RESOLVE_GOAL = append_dependency_goal("resolve")
+TREE_GOAL = append_dependency_goal("tree")
 RESOLVE_PLUGINS_GOAL = append_dependency_goal("resolve-plugins")
-RESOLVE_LOG = "/tmp/deps.log"
+TREE_LOG = "/tmp/deps.json"
 RESOLVE_PLUGINS_LOG = "/tmp/plugins.log"
 
 
@@ -459,31 +459,83 @@ def extract_deps_from_maven(repo_path):
         dict: A dictionary containing the extracted dependencies.
     """
 
-    def parse_mvn_dependency_logs(log_file, plugins=False):
+    def parse_mvn_tree_logs(log_file):
         """
-        Parse Maven dependency resolution logs to extract dependency information.
+        Parse Maven dependency tree logs to extract dependency information.
 
         Args:
-            log_file (str): Path to the Maven dependency resolution log file
-            plugins (bool): Whether we're dealing with resolve-plugin logs.
+            log_file (str): Path to the Maven dependency tree log file
 
         Returns:
             list: List of dictionaries containing dependency information
         """
         dependencies = []
 
+        def parse_dependency(dep, parent=None):
+            dep_info = {
+                "groupId": dep["groupId"],
+                "artifactId": dep["artifactId"],
+                "version": dep["version"],
+                "parent": f"{parent['groupId']}:{parent['artifactId']}@{parent['version']}" if parent else None,
+            }
+            dependencies.append(dep_info)
+            for child in dep.get("children", []):
+                parse_dependency(child, dep_info)
+
         try:
             with open(log_file, "r") as f:
-                for line in f:
-                    parts = line.strip().split(":")
-                    if len(parts) >= 3:  # Minimum required parts, [2] would be type
-                        if plugins:
-                            # Version will always be the last here, no scope
-                            dep_info = {"groupId": parts[0], "artifactId": parts[1], "version": parts[-1].split()[0]}
-                        else:
-                            # Version will be the fourth one, after type; the last one is scope
-                            dep_info = {"groupId": parts[0], "artifactId": parts[1], "version": parts[3].split()[0]}
-                        dependencies.append(dep_info)
+                data = json.load(f)
+                for dep in data["children"]:
+                    parse_dependency(dep)
+
+        except FileNotFoundError:
+            logging.error("Dependency log file not found: %s", log_file)
+        except Exception as e:
+            logging.error("Error parsing dependency log: %s", str(e))
+
+        return dependencies
+
+    def parse_mvn_plugin_logs(log_file):
+        """
+        Parse Maven dependency resolution logs to extract dependency information.
+
+        Args:
+            log_file (str): Path to the Maven dependency resolution log file
+
+        Returns:
+            list: List of dictionaries containing dependency information
+        """
+        dependencies = []
+        current_parent = None
+        base_indent_level = 3 # 3 spaces is the base indent level
+        try:
+            with open(log_file, "r") as f:
+                lines = f.readlines()
+                parsing = False
+
+                for line in lines:
+                    if "The following plugins have been resolved:" in line:
+                        parsing = True
+                        continue
+                        
+                    if "The following plugins have been" in line and parsing:
+                        break
+
+                    if parsing:
+                        indent_level = len(line) - len(line.lstrip(' ')) - base_indent_level
+                        parts = line.strip().split(":")
+                        if len(parts) >= 3:
+                            dep_info = {
+                                "groupId": parts[0],
+                                "artifactId": parts[1],
+                                "version": parts[-1].split()[0],
+                                "parent": None
+                            }
+                            if indent_level == 0:
+                                current_parent = f"{dep_info['groupId']}:{dep_info['artifactId']}@{dep_info['version']}"
+                            else:
+                                dep_info["parent"] = current_parent
+                                dependencies.append(dep_info)
 
         except FileNotFoundError:
             logging.error("Dependency log file not found: %s", log_file)
@@ -510,9 +562,10 @@ def extract_deps_from_maven(repo_path):
     retrieval_commands = {
         "regular": [
             "mvn",
-            RESOLVE_GOAL,
-            "-Dsort=true",
-            f"-DoutputFile={RESOLVE_LOG}",
+            TREE_GOAL,
+            "-DoutputType=json",
+            "-Dverbose=true",
+            f"-DoutputFile={TREE_LOG}",
         ],
         "plugins": [
             "mvn",
@@ -528,19 +581,19 @@ def extract_deps_from_maven(repo_path):
         subprocess.run(retrieval_commands["plugins"], check=True)
 
         # Parse the dependency logs
-        retrieved_deps = parse_mvn_dependency_logs(RESOLVE_LOG)
-        retrieved_plugins = parse_mvn_dependency_logs(RESOLVE_PLUGINS_LOG, plugins=True)
+        retrieved_deps = parse_mvn_tree_logs(TREE_LOG)
+        retrieved_plugins = parse_mvn_plugin_logs(RESOLVE_PLUGINS_LOG)
 
         # Go back to original directory
         os.chdir(current_dir)
 
         # Format the dependencies
         parsed_deps = [
-            {"info": f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}", "command": "resolve"}
+            {"info": f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}", "parent": dep['parent'], "command": "resolve"}
             for dep in retrieved_deps
         ]
         parsed_plugins = [
-            {"info": f"{plugin['groupId']}:{plugin['artifactId']}@{plugin['version']}", "command": "resolve-plugins"}
+            {"info": f"{plugin['groupId']}:{plugin['artifactId']}@{plugin['version']}", "parent": plugin['parent'], "command": "resolve-plugins"}
             for plugin in retrieved_plugins
         ]
 

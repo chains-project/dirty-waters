@@ -83,6 +83,7 @@ def get_scm_commands(pm: str, package: str) -> List[str]:
 
 def process_package(
     package,
+    parent,
     command,
     pm,
     repos_output,
@@ -93,12 +94,12 @@ def process_package(
 ):
     def check_if_valid_repo_info(repo_info):
         if repo_info is None or "Undefined" in repo_info or "undefined" in repo_info or "ERR!" in repo_info:
-            repos_output_json[package] = {"github": "Could not find", "command": command}
+            repos_output_json[package] = {"github": "Could not find", "parent": parent, "command": command}
             undefined.append(f"Undefined for {package}, {repo_info}")
             return False
 
         url = extract_repo_url(repo_info)
-        repos_output_json[package] = {"github": url, "command": command}
+        repos_output_json[package] = {"github": url, "parent": parent, "command": command}
         if url:
             repos_output.append(url)
             same_repos_deps.get("url", []).append(package)
@@ -157,9 +158,11 @@ def get_github_repo_url(folder, dep_list, pm):
     with tqdm(total=total_packages_to_process, desc="Getting GitHub URLs") as pbar:
         for pkg_res in dep_list.get("resolutions"):
             package = pkg_res["info"]
+            parent = pkg_res.get("parent", None)
             command = pkg_res.get("command", None)
             process_package(
                 package,
+                parent,
                 command,
                 pm,
                 repos_output,
