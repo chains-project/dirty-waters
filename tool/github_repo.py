@@ -110,10 +110,10 @@ def process_package(
     repo_info = cache_manager.github_cache.get_github_url(package)
     valid_repo_info = False
     if not repo_info:
-        for command in get_scm_commands(pm, package):
+        for scm_command in get_scm_commands(pm, package):
             try:
                 result = subprocess.run(
-                    command,
+                    scm_command,
                     capture_output=True,
                     text=True,
                     check=True,
@@ -129,11 +129,11 @@ def process_package(
                     repo_info = result.stderr
             except subprocess.TimeoutExpired:
                 logging.warning(
-                    f"Command {command} timed out after {TIMEOUT} seconds for package {package}",
+                    f"Command {scm_command} timed out after {TIMEOUT} seconds for package {package}",
                 )
                 repo_info = None
             except subprocess.CalledProcessError as e:
-                logging.warning(f"Command {command} failed for package {package}: {e}")
+                logging.warning(f"Command {scm_command} failed for package {package}: {e}")
                 repo_info = "ERR!"
 
         if repo_info:
