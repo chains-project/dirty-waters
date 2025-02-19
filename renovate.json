@@ -1,6 +1,15 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    ":semanticCommitTypeAll(chore)"
+  ],
+  "digest": {
+    "enabled": false
+  },
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin"],
+      "automerge": false
+    }
   ]
 }
