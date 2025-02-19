@@ -29,6 +29,8 @@ Additionally, `dirty-waters` gives a supplier view on the dependency trees (who 
 
 ## Installation
 
+### Development
+
 To set up `dirty-waters`, follow these steps:
 
 1. Clone the repository:
@@ -55,6 +57,14 @@ In alternative to virtual environments, you may also use the Nix flake present i
 export GITHUB_API_TOKEN=<your_token>
 ```
 
+### Installation via pip
+
+You can also install `dirty-waters` via pip:
+
+```bash
+pip install dirty-waters
+```
+
 ## Usage
 
 ### Command line
@@ -62,8 +72,8 @@ export GITHUB_API_TOKEN=<your_token>
 Run the tool using the following command structure:
 
 ```
-usage: dirty-waters [-h] -p PROJECT_REPO_NAME -v RELEASE_VERSION_OLD
-               [-vn RELEASE_VERSION_NEW] -s [-d] [-n] -pm
+usage: main.py [-h] -p PROJECT_REPO_NAME [-v RELEASE_VERSION_OLD]
+               [-vn RELEASE_VERSION_NEW] [-d] [-n] -pm
                {yarn-classic,yarn-berry,pnpm,npm,maven}
                [--pnpm-scope PNPM_SCOPE] [--debug] [--no-gradual-report]
                [--check-source-code] [--check-release-tags]
@@ -77,12 +87,9 @@ options:
                         MetaMask/metamask-extension
   -v RELEASE_VERSION_OLD, --release-version-old RELEASE_VERSION_OLD
                         The old release tag of the project repository.
-                        Example: v10.0.0
+                        Defaults to HEAD. Example: v10.0.0
   -vn RELEASE_VERSION_NEW, --release-version-new RELEASE_VERSION_NEW
                         The new release version of the project repository.
-  -s, --static-analysis
-                        Run static analysis and generate a markdown report of
-                        the project
   -d, --differential-analysis
                         Run differential analysis and generate a markdown
                         report of the project
@@ -120,9 +127,9 @@ Reports are gradual by default: that is, only the highest severity smell type wi
 
 ```bash
 # If manually cloned
-python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry
+python3 main.py -p MetaMask/metamask-extension -pm yarn-berry
 # If installed via pip
-dirty-waters -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry
+dirty-waters -p MetaMask/metamask-extension -pm yarn-berry
 ```
 
 - Example output: [Static Analysis Report Example](example_reports/static_analysis_report_example.md)
@@ -131,9 +138,9 @@ dirty-waters -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry
 
 ```bash
 # If manually cloned
-python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -vn v11.12.0 -s -d -pm yarn-berry
+python3 main.py -p MetaMask/metamask-extension -v v11.11.0 -vn v11.12.0 -d -pm yarn-berry
 # If installed via pip
-dirty-waters -p MetaMask/metamask-extension -v v11.11.0 -vn v11.12.0 -s -d -pm yarn-berry
+dirty-waters -p MetaMask/metamask-extension -v v11.11.0 -vn v11.12.0 -d -pm yarn-berry
 ```
 
 - Example output: [Differential Analysis Report Example](example_reports/differential_analysis_report_example.md)
@@ -141,8 +148,7 @@ dirty-waters -p MetaMask/metamask-extension -v v11.11.0 -vn v11.12.0 -s -d -pm y
 Notes:
 
 - `-v` should be the version of GitHub release, e.g. for [this release](https://github.com/MetaMask/metamask-extension/releases/tag/v11.1.0), the value should be `v11.11.0`, not `Version 11.11.0` or `11.11.0`.
-- The `-s` flag is required for all analyses.
-- When using `-d` for differential analysis, both `-v` and `-vn` must be specified.
+- When using `-d` for differential analysis, `-vn` must be specified.
 
 ### Continuous integration
 
@@ -180,7 +186,7 @@ is passed, instead of all checks being performed, only the flagged ones will be)
 As an example of running specific checks:
 
 ```bash
-dirty-waters -p MetaMask/metamask-extension -v v11.11.0 -s -pm yarn-berry --check-source-code --check-release-tags
+dirty-waters -p MetaMask/metamask-extension -v v11.11.0 -pm yarn-berry --check-source-code --check-release-tags
 ```
 
 This run will only check for dependencies with no link to source code repositories and dependencies with no tag/commit sha for release.
