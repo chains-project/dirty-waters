@@ -54,20 +54,14 @@ def get_args():
     parser.add_argument(
         "-v",
         "--release-version-old",
-        required=True,
-        help="The old release tag of the project repository. Example: v10.0.0",
+        required=False,
+        default="HEAD",
+        help="The old release tag of the project repository. Defaults to HEAD. Example: v10.0.0",
     )
     parser.add_argument(
         "-vn",
         "--release-version-new",
         help="The new release version of the project repository.",
-    )
-    parser.add_argument(
-        "-s",
-        "--static-analysis",
-        required=True,
-        action="store_true",
-        help="Run static analysis and generate a markdown report of the project",
     )
     parser.add_argument(
         "-d",
