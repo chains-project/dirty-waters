@@ -29,40 +29,20 @@ Additionally, `dirty-waters` gives a supplier view on the dependency trees (who 
 
 ## Installation
 
-### Development
-
-To set up `dirty-waters`, follow these steps:
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/chains-project/dirty-waters.git
-cd dirty-waters
-```
-
-2. Set up a virtual environment and install dependencies:
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-cd tool
-```
-
-In alternative to virtual environments, you may also use the Nix flake present in this repository.
-
-3. Set up the GitHub API token (ideally, in a `.env` file):
-
-```bash
-export GITHUB_API_TOKEN=<your_token>
-```
-
 ### Installation via pip
 
-You can also install `dirty-waters` via pip:
+You can install `dirty-waters` via pip:
 
 ```bash
 pip install dirty-waters
+# or
+pipx install dirty-waters
+```
+
+Set up the GitHub API token (or with a `.env` file):
+
+```bash
+export GITHUB_API_TOKEN=<your_token>
 ```
 
 ## Usage
@@ -71,6 +51,12 @@ pip install dirty-waters
 
 Run the tool using the following command structure:
 
+```
+# analyzing the software supply chain of Maven project INRIA/spoon
+$ dirty-waters -p INRIA/spoon -pm maven
+```
+
+All configuration options
 ```
 usage: main.py [-h] -p PROJECT_REPO_NAME [-v RELEASE_VERSION_OLD]
                [-vn RELEASE_VERSION_NEW] [-d] [-n] -pm
@@ -149,6 +135,35 @@ Notes:
 
 - `-v` should be the version of GitHub release, e.g. for [this release](https://github.com/MetaMask/metamask-extension/releases/tag/v11.1.0), the value should be `v11.11.0`, not `Version 11.11.0` or `11.11.0`.
 - When using `-d` for differential analysis, `-vn` must be specified.
+
+### Development
+
+To set up `dirty-waters`, follow these steps:
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/chains-project/dirty-waters.git
+cd dirty-waters
+```
+
+2. Set up a virtual environment and install dependencies:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+cd tool
+```
+
+In alternative to virtual environments, you may also use the Nix flake present in this repository.
+
+3. Set up the GitHub API token (ideally, in a `.env` file):
+
+```bash
+export GITHUB_API_TOKEN=<your_token>
+```
+
 
 ### Continuous integration
 
