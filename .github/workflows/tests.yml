@@ -53,6 +53,8 @@ jobs:
         run: mkdir -p cache/
 
       - name: Run tests
+        env:
+          GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           pytest tests/ -v
 
