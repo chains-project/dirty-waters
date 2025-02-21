@@ -48,13 +48,13 @@ jobs:
           key: dirty-waters-cache-${{ runner.os }}-${{ github.event.before }}
 
       - name: Create cache directory
-        # Commenting out for the next run
-        # if: steps.restore-cache.outputs.cache-hit != 'true'
+        if: steps.restore-cache.outputs.cache-hit != 'true'
         shell: bash
         run: |
           cp -r .github/workflows/test_cache cache/
 
       - name: Run tests
+        id: analysis
         env:
           GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
