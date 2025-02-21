@@ -210,6 +210,10 @@ def generate_diff_report(
     signature_changes_df = signature_changes[["package_name", "old_version", "new_version", "signature_changes"]]
     signature_changes_number = signature_changes["package_name"].nunique()
 
+    common_counts = {
+        "### Total packages in the supply chain": len(data),
+    }
+
     reports = {
         "signature_changes": {
             "amount": signature_changes_number,
@@ -251,8 +255,25 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         preamble += "\n"
         f.write(preamble)
 
+        f.write(
+            """
+<details>
+    <summary>How to read the results :book: </summary>
+    \n Dirty-waters has analyzed your project dependencies and found different categories for each of them:\n
+    \n - ⚠️⚠️⚠️ : high severity \n
+    \n - ⚠️⚠️: medium severity \n
+    \n - ⚠️: low severity \n
+</details>
+        """
+        )
+
+        f.write("\n")
+
+        for key, value in common_counts.items():
+            f.write(f"\n {key}: {value}\n")
+
         for info in reports.values():
-            f.write(f"\n {info['summary']}: ({info['amount']})\n")
+            f.write(f"\n {info['summary']}: {info['amount']}\n")
 
         f.write("\n")
         f.write("### Fine grained information\n")
