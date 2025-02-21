@@ -96,16 +96,16 @@ class TestSmellDetection:
             "single_maven_spoon": (expected_dir / "spoon_v11.1.0.md").read_text(),
             "diff_maven_spoon": (expected_dir / "spoon_v11.1.1-beta-2_v11.1.1-beta-9_diff.md").read_text(),
             "single_yarn_berry": (expected_dir / "metamask_v11.10.0.md").read_text(),
-            "diff_yarn_berry": (expected_dir / "metamask_v11.11.0_v11.12.0_diff.md").read_text(),
+            "diff_yarn_berry": (expected_dir / "metamask_v11.1.0_v12.9.0_diff.md").read_text(),
             # TODO: missing expected outputs for the ones below
-            "single_yarn_classic": (expected_dir / "webpack_v5.98.0.md").read_text(),
-            "diff_yarn_classic": (expected_dir / "webpack_v5.50.0_v5.98.0_diff.md").read_text(),
-            "single_npm": (expected_dir / "gatsby_v5.14.0.md").read_text(),
-            "diff_npm": (expected_dir / "gatsby_v5.1.0_v5.14.0_diff.md").read_text(),
-            "single_pnpm": (expected_dir / "ledger-live-desktop_2.100.0.md").read_text(),
-            "diff_pnpm": (expected_dir / "ledger-live-desktop_2.95.0_2.100.0_diff.md").read_text(),
-            "single_maven_sbom_exe": (expected_dir / "sbom_exe_v0.14.1.md").read_text(),
-            "diff_maven_sbom_exe": (expected_dir / "sbom_exe_v0.13.0_v0.14.1_diff.md").read_text(),
+            # "single_yarn_classic": (expected_dir / "webpack_v5.98.0.md").read_text(),
+            # "diff_yarn_classic": (expected_dir / "webpack_v5.50.0_v5.98.0_diff.md").read_text(),
+            # "single_npm": (expected_dir / "gatsby_v5.14.0.md").read_text(),
+            # "diff_npm": (expected_dir / "gatsby_v5.1.0_v5.14.0_diff.md").read_text(),
+            # "single_pnpm": (expected_dir / "ledger-live-desktop_2.100.0.md").read_text(),
+            # "diff_pnpm": (expected_dir / "ledger-live-desktop_2.95.0_2.100.0_diff.md").read_text(),
+            # "single_maven_sbom_exe": (expected_dir / "sbom_exe_v0.14.1.md").read_text(),
+            # "diff_maven_sbom_exe": (expected_dir / "sbom_exe_v0.13.0_v0.14.1_diff.md").read_text(),
             # TODO: add expected outputs, and tests, for gradual report
             # TODO: add expected outputs, and tests, for enabling specific smell checks
         }
@@ -124,6 +124,7 @@ class TestSmellDetection:
             actual_smells == expected_smells
         ), f"Output mismatch for Spoon v11.1.0:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
+    @pytest.mark.skip(reason="Expected output not acquired yet")
     def test_static_maven_sbom_exe(self, expected_outputs):
         """Test outputs coming from static analysis, for Maven, for sbom.exe."""
         # Run tool
@@ -139,6 +140,7 @@ class TestSmellDetection:
             actual_smells == expected_smells
         ), f"Output mismatch for sbom.exe v0.14.1:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
+    @pytest.mark.skip(reason="Expected output not acquired yet")
     def test_static_npm(self, expected_outputs):
         """Test outputs coming from static analysis, for NPM."""
         # Run tool
@@ -154,6 +156,7 @@ class TestSmellDetection:
             actual_smells == expected_smells
         ), f"Output mismatch for Gatsby v5.14.0:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
+    @pytest.mark.skip(reason="Expected output not acquired yet")
     def test_static_yarn_classic(self, expected_outputs):
         """Test outputs coming from static analysis, for Yarn Classic."""
         # Run tool
@@ -186,6 +189,7 @@ class TestSmellDetection:
             actual_smells == expected_smells
         ), f"Output mismatch for MetaMask v11.10.0:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
+    @pytest.mark.skip(reason="Expected output not acquired yet")
     def test_static_pnpm(self, expected_outputs):
         """Test outputs coming from static analysis, for PNPM."""
         # Run tool
@@ -223,6 +227,7 @@ class TestSmellDetection:
             actual_smells == expected_smells
         ), f"Output mismatch for Spoon v11.1.1-beta-2 vs v11.1.1-beta-9:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
+    @pytest.mark.skip(reason="Expected output not acquired yet")
     def test_diff_maven_sbom_exe(self, expected_outputs):
         """Test outputs coming from diff analysis, for Maven, for sbom.exe."""
         # Run tool
@@ -240,6 +245,7 @@ class TestSmellDetection:
             actual_smells == expected_smells
         ), f"Output mismatch for sbom.exe v0.13.0 vs v0.14.1:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
+    @pytest.mark.skip(reason="Expected output not acquired yet")
     def test_diff_npm(self, expected_outputs):
         """Test outputs coming from diff analysis, for NPM."""
         # Run tool
@@ -257,6 +263,7 @@ class TestSmellDetection:
             actual_smells == expected_smells
         ), f"Output mismatch for Gatsby v5.1.0 vs v5.14.0:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
+    @pytest.mark.skip(reason="Expected output not acquired yet")
     def test_diff_yarn_classic(self, expected_outputs):
         """Test outputs coming from diff analysis, for Yarn Classic."""
         # Run tool
@@ -294,6 +301,7 @@ class TestSmellDetection:
             actual_smells == expected_smells
         ), f"Output mismatch for MetaMask v11.1.0 vs v12.9.0:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
+    @pytest.mark.skip(reason="Expected output not acquired yet")
     def test_diff_pnpm(self, expected_outputs):
         """Test outputs coming from diff analysis, for PNPM."""
         # Run tool
