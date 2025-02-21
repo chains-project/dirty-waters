@@ -3,10 +3,10 @@ name: Ruff Linter
 on:
   push:
     paths:
-      - '**.py'
+      - "**.py"
   pull_request:
     paths:
-      - '**.py'
+      - "**.py"
 
 jobs:
   ruff:
@@ -20,15 +20,15 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v5.4.0
         with:
-          python-version: '3.12'
-          
+          python-version: "3.12"
+
       - name: Install Ruff
         run: pip install ruff
-        
+
       - name: Run Ruff Check
         run: ruff check . --output-format=github
         continue-on-error: true
-        
+
       - name: Commit fixes
         uses: stefanzweifel/git-auto-commit-action@v5.1.0
         with:
