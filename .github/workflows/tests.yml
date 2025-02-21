@@ -50,13 +50,14 @@ jobs:
       - name: Create cache directory
         if: steps.restore-cache.outputs.cache-hit != 'true'
         shell: bash
-        run: mkdir -p cache/
+        run: |
+          cp -r .github/workflows/test_cache cache/
 
       - name: Run tests
         env:
           GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pytest tests/ -v
+          pytest tests/ -v -s
 
       - name: Save cache
         uses: actions/cache/save@v4.2.1
