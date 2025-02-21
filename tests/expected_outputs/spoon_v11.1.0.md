@@ -34,7 +34,7 @@ The following checks were specifically requested:
  ### Total packages in the supply chain: 420
 
 
-:heavy_exclamation_mark: Packages with no source code URL (⚠️⚠️⚠️): 2
+:heavy_exclamation_mark: Packages with no source code URL (⚠️⚠️⚠️): 1
 
 :no_entry: Packages with repo URL that is 404 (⚠️⚠️⚠️): 2
 
