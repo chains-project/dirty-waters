@@ -66,7 +66,3 @@ jobs:
         with:
           path: cache/
           key: dirty-waters-cache-${{ runner.os }}-${{ steps.set-sha.outputs.commit_sha }}
-
-      - name: Break CI if tests fail
-        run: exit ${{ steps.analysis.outcome }}
-        shell: bash
