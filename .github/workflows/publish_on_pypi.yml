@@ -2,7 +2,7 @@ name: Upload Python Package to PyPi
 
 on:
   workflow_run:
-    workflows: ["Run Black Formatter throughout the codebase", "Ruff Linter"]
+    workflows: ["Run Black Formatter throughout the codebase"]
     branches: [main]
     types:
       - completed
@@ -19,7 +19,7 @@ jobs:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
       - name: Version bump
-        uses: monperrus/pyproject-bump-pypi@1b3e492715aea6d48cf80c15b5222586d4a26e40
+        uses: monperrus/pyproject-bump-pypi@main
         id: bump_version
         with:
           file_to_bump: "./pyproject.toml"
