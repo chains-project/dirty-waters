@@ -32,7 +32,5 @@ jobs:
       - name: Commit fixes
         uses: stefanzweifel/git-auto-commit-action@v5.1.0
         with:
-          commit_message: 'style: fix code style issues with Ruff'
-          commit_user_name: 'GitHub Actions'
-          commit_user_email: 'actions@github.com'
-          commit_author: 'GitHub Actions <actions@github.com>'
+          commit_message: "style: fix code style issues with Ruff"
+          branch: ${{ github.head_ref }}
