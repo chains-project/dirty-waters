@@ -14,12 +14,12 @@ jobs:
       id-token: write
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
       - name: Version bump
-        uses: monperrus/pyproject-bump-pypi@main
+        uses: monperrus/pyproject-bump-pypi@1b3e492715aea6d48cf80c15b5222586d4a26e40
         id: bump_version
         with:
           file_to_bump: "./pyproject.toml"
@@ -30,7 +30,7 @@ jobs:
           VERSION=$(grep -m1 'version = ' pyproject.toml | cut -d '"' -f2)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v5.1.0
         with:
           commit_message: "Bump version to ${{ steps.get_version.outputs.version }}"
           branch: ${{ github.head_ref }}
