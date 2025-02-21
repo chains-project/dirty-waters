@@ -1,0 +1,68 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      ignore_cache:
+        description: "Ignore the repository cache for this run"
+        required: false
+        default: "false"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5.4.0
+        with:
+          python-version: "3.12.8"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          pip install -r requirements.txt
+
+      - name: Set commit SHA
+        # Required because of isolation issues in PRs
+        id: set-sha
+        shell: bash
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+            echo "commit_sha=$(jq -r .pull_request.head.sha $GITHUB_EVENT_PATH)" >> $GITHUB_OUTPUT
+          else
+            echo "commit_sha=$GITHUB_SHA" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Restore cache
+        uses: actions/cache/restore@v4.2.1
+        id: restore-cache
+        if: inputs.ignore_cache != 'true'
+        with:
+          path: cache/
+          key: dirty-waters-cache-${{ runner.os }}-${{ github.event.before }}
+
+      - name: Create cache directory
+        if: steps.restore-cache.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          cp -r .github/workflows/test_cache cache/
+
+      - name: Run tests
+        id: analysis
+        env:
+          GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pytest tests/ -v -s
+
+      - name: Save cache
+        uses: actions/cache/save@v4.2.1
+        if: always()
+        with:
+          path: cache/
+          key: dirty-waters-cache-${{ runner.os }}-${{ steps.set-sha.outputs.commit_sha }}

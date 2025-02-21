@@ -399,6 +399,28 @@ class PackageAnalysisCache(Cache):
         finally:
             conn.close()
 
+    def clear_package_by_version(self, package_name, version):
+        """Clear cached data for a specific package version"""
+        conn = sqlite3.connect(self.db_path)
+        c = conn.cursor()
+
+        try:
+            c.execute(
+                "SELECT COUNT(*) FROM package_analysis WHERE package_name = ? AND version = ?",
+                (package_name, version),
+            )
+            count = c.fetchone()[0]
+            if count == 0:
+                logging.info(f"No cached data found for {package_name} {version}")
+                return
+
+            c.execute("DELETE FROM package_analysis WHERE package_name = ? AND version = ?", (package_name, version))
+            conn.commit()
+            logging.info(f"Cleared cached data for {package_name} {version}")
+
+        finally:
+            conn.close()
+
 
 class CommitComparisonCache(Cache):
     def __init__(self, cache_dir="cache/commits"):

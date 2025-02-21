@@ -3,36 +3,34 @@ name: Ruff Linter
 on:
   push:
     paths:
-      - '**.py'
+      - "**.py"
   pull_request:
     paths:
-      - '**.py'
+      - "**.py"
 
 jobs:
   ruff:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
       - name: Install Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.4.0
         with:
-          python-version: '3.12'
-          
+          python-version: "3.12"
+
       - name: Install Ruff
         run: pip install ruff
-        
+
       - name: Run Ruff Check
         run: ruff check . --output-format=github
         continue-on-error: true
-        
+
       - name: Commit fixes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v5.1.0
         with:
-          commit_message: 'style: fix code style issues with Ruff'
-          commit_user_name: 'GitHub Actions'
-          commit_user_email: 'actions@github.com'
-          commit_author: 'GitHub Actions <actions@github.com>'
+          commit_message: "style: fix code style issues with Ruff"
+          branch: ${{ github.head_ref }}
