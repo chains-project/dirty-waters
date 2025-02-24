@@ -2,13 +2,43 @@ name: Upload Python Package to PyPi
 
 on:
   workflow_run:
-    workflows: ["Run Black Formatter throughout the codebase"]
-    branches: [main]
+    workflows: ["Run Tests", "Run Formatter"]
     types:
       - completed
+    branches:
+      - main
 
 jobs:
+  check-workflows:
+    runs-on: ubuntu-latest
+    outputs:
+      should_publish: ${{ steps.check.outputs.should_publish }}
+    steps:
+      - name: Check workflow conclusions
+        id: check
+        env:
+          COMMIT_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          tests_status=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/tests.yml/runs?branch=main" \
+            | jq --arg SHA "$COMMIT_SHA" '.workflow_runs[] | select(.head_sha==$SHA) | .conclusion')
+
+          formatter_status=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/formatter.yml/runs?branch=main" \
+            | jq --arg SHA "$COMMIT_SHA" '.workflow_runs[] | select(.head_sha==$SHA) | .conclusion')
+
+          # Tests must succeed, Formatter must either succeed or not exist (sometimes it's not triggered)
+          if [ "$tests_status" = "\"success\"" ] && ([ "$formatter_status" = "\"success\"" ] || [ -z "$formatter_status" ]); then
+            echo "should_publish=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_publish=false" >> $GITHUB_OUTPUT
+            echo "Tests status for commit $COMMIT_SHA: $tests_status"
+            echo "Formatter status for commit $COMMIT_SHA: $formatter_status"
+          fi
+
   deploy:
+    needs: check-workflows
+    if: needs.check-workflows.outputs.should_publish == 'true'
     runs-on: ubuntu-latest
     permissions:
       id-token: write

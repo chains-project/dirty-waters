@@ -1,4 +1,4 @@
-name: Run Black Formatter throughout the codebase
+name: Run Formatter
 
 on:
   push:
