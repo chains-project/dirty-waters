@@ -20,11 +20,11 @@ jobs:
           COMMIT_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
           tests_status=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/tests.yml/runs?branch=main" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/run-tests.yml/runs?branch=main" \
             | jq --arg SHA "$COMMIT_SHA" '.workflow_runs[] | select(.head_sha==$SHA) | .conclusion')
 
           formatter_status=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/formatter.yml/runs?branch=main" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/run-formatter.yml/runs?branch=main" \
             | jq --arg SHA "$COMMIT_SHA" '.workflow_runs[] | select(.head_sha==$SHA) | .conclusion')
 
           # Tests must succeed, Formatter must either succeed or not exist (sometimes it's not triggered)
