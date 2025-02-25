@@ -141,12 +141,12 @@ def get_useful_pr_info(commits_data):
 def get_commit_pr_info(commit_node_id: str, url: str = "https://api.github.com/graphql", headers: dict = None) -> dict:
     """
     Get pull request information associated with a specific commit.
-    
+
     Args:
         commit_node_id (str): The node ID of the commit to query.
         url (str, optional): The GraphQL API URL. Defaults to "https://api.github.com/graphql".
         headers (dict, optional): Headers to use for the request. Defaults to None.
-        
+
     Returns:
         dict: The response containing pull request information associated with the commit.
     """

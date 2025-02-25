@@ -8,10 +8,10 @@ cache_manager = get_cache_manager()
 def get_repo_author_commits(api_url: str) -> list:
     """
     Retrieve the earliest commit for a repository author.
-    
+
     Args:
         api_url (str): The GitHub API URL to query for commits.
-        
+
     Returns:
         list: A list containing the earliest commit information, or None if retrieval fails.
     """

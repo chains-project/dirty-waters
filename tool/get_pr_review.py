@@ -13,16 +13,18 @@ headers = {
 }
 
 
-def get_first_pr_info(repo_name: str, review_author_login: str, url: str = "https://api.github.com/graphql", headers: dict = None) -> dict:
+def get_first_pr_info(
+    repo_name: str, review_author_login: str, url: str = "https://api.github.com/graphql", headers: dict = None
+) -> dict:
     """
     Get information about the first pull request reviewed by a specific author in a repository.
-    
+
     Args:
         repo_name (str): The name of the repository.
         review_author_login (str): The GitHub login of the reviewer.
         url (str, optional): The GraphQL API URL. Defaults to "https://api.github.com/graphql".
         headers (dict, optional): Headers to use for the request. Defaults to None.
-        
+
     Returns:
         dict: The response containing information about the first PR reviewed by the author.
     """
@@ -78,10 +80,10 @@ def get_first_pr_info(repo_name: str, review_author_login: str, url: str = "http
 def get_pr_review_info(data: dict) -> dict:
     """
     Process the input data to extract and cache PR review information.
-    
+
     Args:
         data (dict): The input data containing package information.
-        
+
     Returns:
         dict: The processed data with PR review information.
     """
