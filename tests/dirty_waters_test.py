@@ -110,7 +110,7 @@ class TestSmellDetection:
             # TODO: add expected outputs, and tests, for enabling specific smell checks
         }
 
-    def test_static_maven_spoon(self, expected_outputs):
+    def test_static_maven_spoon(self, expected_outputs: Dict[str, str]):
         """Test outputs coming from static analysis, for Maven, for Spoon."""
         # Run tool
         actual_output = run_tool_cli(project="INRIA/spoon", version="v11.1.0", package_manager="maven")
@@ -125,7 +125,7 @@ class TestSmellDetection:
         ), f"Output mismatch for Spoon v11.1.0:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
     @pytest.mark.skip(reason="Expected output not acquired yet")
-    def test_static_maven_sbom_exe(self, expected_outputs):
+    def test_static_maven_sbom_exe(self, expected_outputs: Dict[str, str]):
         """Test outputs coming from static analysis, for Maven, for sbom.exe."""
         # Run tool
         actual_output = run_tool_cli(project="chains-project/sbom.exe", version="v0.14.1", package_manager="maven")
@@ -141,7 +141,7 @@ class TestSmellDetection:
         ), f"Output mismatch for sbom.exe v0.14.1:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
     @pytest.mark.skip(reason="Expected output not acquired yet")
-    def test_static_npm(self, expected_outputs):
+    def test_static_npm(self, expected_outputs: Dict[str, str]):
         """Test outputs coming from static analysis, for NPM."""
         # Run tool
         actual_output = run_tool_cli(project="gatsbyjs/gatsby", version="v5.14.0", package_manager="npm")
@@ -157,7 +157,7 @@ class TestSmellDetection:
         ), f"Output mismatch for Gatsby v5.14.0:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
     @pytest.mark.skip(reason="Expected output not acquired yet")
-    def test_static_yarn_classic(self, expected_outputs):
+    def test_static_yarn_classic(self, expected_outputs: Dict[str, str]):
         """Test outputs coming from static analysis, for Yarn Classic."""
         # Run tool
         actual_output = run_tool_cli(project="webpack/webpack", version="v5.98.0", package_manager="yarn-classic")
@@ -172,7 +172,7 @@ class TestSmellDetection:
             actual_smells == expected_smells
         ), f"Output mismatch for Webpack v5.98.0:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
-    def test_static_yarn_berry(self, expected_outputs):
+    def test_static_yarn_berry(self, expected_outputs: Dict[str, str]):
         """Test outputs coming from static analysis, for Yarn Berry."""
         # Run tool
         actual_output = run_tool_cli(
@@ -190,7 +190,7 @@ class TestSmellDetection:
         ), f"Output mismatch for MetaMask v11.10.0:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
     @pytest.mark.skip(reason="Expected output not acquired yet")
-    def test_static_pnpm(self, expected_outputs):
+    def test_static_pnpm(self, expected_outputs: Dict[str, str]):
         """Test outputs coming from static analysis, for PNPM."""
         # Run tool
         actual_output = run_tool_cli(
@@ -210,7 +210,7 @@ class TestSmellDetection:
             actual_smells == expected_smells
         ), f"Output mismatch for Ledger Live Desktop @2.100.0:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
-    def test_diff_maven_spoon(self, expected_outputs):
+    def test_diff_maven_spoon(self, expected_outputs: Dict[str, str]):
         """Test outputs coming from diff analysis, for Maven, for Spoon."""
         # Run tool
         actual_output = run_tool_cli(
@@ -228,7 +228,7 @@ class TestSmellDetection:
         ), f"Output mismatch for Spoon v11.1.1-beta-2 vs v11.1.1-beta-9:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
     @pytest.mark.skip(reason="Expected output not acquired yet")
-    def test_diff_maven_sbom_exe(self, expected_outputs):
+    def test_diff_maven_sbom_exe(self, expected_outputs: Dict[str, str]):
         """Test outputs coming from diff analysis, for Maven, for sbom.exe."""
         # Run tool
         actual_output = run_tool_cli(
@@ -246,7 +246,7 @@ class TestSmellDetection:
         ), f"Output mismatch for sbom.exe v0.13.0 vs v0.14.1:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
     @pytest.mark.skip(reason="Expected output not acquired yet")
-    def test_diff_npm(self, expected_outputs):
+    def test_diff_npm(self, expected_outputs: Dict[str, str]):
         """Test outputs coming from diff analysis, for NPM."""
         # Run tool
         actual_output = run_tool_cli(
@@ -264,7 +264,7 @@ class TestSmellDetection:
         ), f"Output mismatch for Gatsby v5.1.0 vs v5.14.0:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
     @pytest.mark.skip(reason="Expected output not acquired yet")
-    def test_diff_yarn_classic(self, expected_outputs):
+    def test_diff_yarn_classic(self, expected_outputs: Dict[str, str]):
         """Test outputs coming from diff analysis, for Yarn Classic."""
         # Run tool
         actual_output = run_tool_cli(
@@ -281,7 +281,7 @@ class TestSmellDetection:
             actual_smells == expected_smells
         ), f"Output mismatch for Webpack v5.50.0 vs v5.98.0:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
-    def test_diff_yarn_berry(self, expected_outputs):
+    def test_diff_yarn_berry(self, expected_outputs: Dict[str, str]):
         """Test outputs coming from diff analysis, for Yarn Berry."""
         # Run tool
         actual_output = run_tool_cli(
@@ -302,7 +302,7 @@ class TestSmellDetection:
         ), f"Output mismatch for MetaMask v11.1.0 vs v12.9.0:\nExpected: {expected_smells}\nGot: {actual_smells}"
 
     @pytest.mark.skip(reason="Expected output not acquired yet")
-    def test_diff_pnpm(self, expected_outputs):
+    def test_diff_pnpm(self, expected_outputs: Dict[str, str]):
         """Test outputs coming from diff analysis, for PNPM."""
         # Run tool
         actual_output = run_tool_cli(

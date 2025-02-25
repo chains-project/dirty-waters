@@ -1,17 +1,20 @@
-import requests
 import copy
-import os
-import sqlite3
-import time
-from pathlib import Path
-from tool.tool_config import get_cache_manager, make_github_request, clone_repo, get_last_page_info
-import git
+from tool.tool_config import get_cache_manager, make_github_request, get_last_page_info
 import logging
 
 cache_manager = get_cache_manager()
 
 
-def get_repo_author_commits(api_url):
+def get_repo_author_commits(api_url: str) -> list:
+    """
+    Retrieve the earliest commit for a repository author.
+    
+    Args:
+        api_url (str): The GitHub API URL to query for commits.
+        
+    Returns:
+        list: A list containing the earliest commit information, or None if retrieval fails.
+    """
     # Since we can't return the commits in ascending date order, we'll just return the latest commit
     # This response also holds the number of pages, so the last page will have the first commit
     search_url = f"{api_url}&per_page=1"
@@ -23,7 +26,7 @@ def get_repo_author_commits(api_url):
     return make_github_request(last_page_url, max_retries=2, retry_delay=2, sleep_between_requests=2)
 
 
-def get_user_first_commit_info(data):
+def get_user_first_commit_info(data: dict) -> dict:
     """
     Get the first commit information for each author in the given data.
 

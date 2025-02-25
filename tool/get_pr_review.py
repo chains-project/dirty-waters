@@ -1,8 +1,4 @@
-import requests
-import sqlite3
 import os
-from pathlib import Path
-import json
 import copy
 import logging
 from tool.tool_config import get_cache_manager, make_github_request
@@ -16,10 +12,20 @@ headers = {
     "Accept": "application/vnd.github.v4+json",
 }
 
-url = "https://api.github.com/graphql"
 
-
-def get_first_pr_info(repo_name, review_author_login):
+def get_first_pr_info(repo_name: str, review_author_login: str, url: str = "https://api.github.com/graphql", headers: dict = None) -> dict:
+    """
+    Get information about the first pull request reviewed by a specific author in a repository.
+    
+    Args:
+        repo_name (str): The name of the repository.
+        review_author_login (str): The GitHub login of the reviewer.
+        url (str, optional): The GraphQL API URL. Defaults to "https://api.github.com/graphql".
+        headers (dict, optional): Headers to use for the request. Defaults to None.
+        
+    Returns:
+        dict: The response containing information about the first PR reviewed by the author.
+    """
     query = """
     query($query: String!, $type: SearchType!, $last: Int!)
     {search(query: $query, type: $type, last: $last)
@@ -69,7 +75,16 @@ def get_first_pr_info(repo_name, review_author_login):
     return make_github_request(url, method="POST", json_data=body, headers=headers)
 
 
-def get_pr_review_info(data):
+def get_pr_review_info(data: dict) -> dict:
+    """
+    Process the input data to extract and cache PR review information.
+    
+    Args:
+        data (dict): The input data containing package information.
+        
+    Returns:
+        dict: The processed data with PR review information.
+    """
     logging.info("Getting PR review info...")
     pr_data = copy.deepcopy(data)
 
@@ -95,7 +110,7 @@ def get_pr_review_info(data):
                         first_pr_info = cache_manager.github_cache.get_pr_review(repo_name, review_author_login)
                         if not first_pr_info:
                             if review_author_login:
-                                first_pr_info = get_first_pr_info(repo_name, review_author_login)
+                                first_pr_info = get_first_pr_info(repo_name, review_author_login, headers=headers)
                                 cache_manager.github_cache.cache_pr_review(
                                     package, repo_name, review_author_login, first_pr_info
                                 )

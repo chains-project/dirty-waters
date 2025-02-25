@@ -1,8 +1,4 @@
-import requests
-import sqlite3
 import os
-import json
-import time
 import copy
 import logging
 from tool.tool_config import get_cache_manager, make_github_request
@@ -15,85 +11,6 @@ headers = {
     "Authorization": f"Bearer {GITHUB_TOKEN}",
     "Accept": "application/vnd.github.v4+json",
 }
-
-url = "https://api.github.com/graphql"
-
-
-def fetch_pull_requests(commit_node_id):
-    query = """
-    query Edges($nodeId: ID!, $first: Int) {
-    node(id: $nodeId) {
-        ... on Commit {
-        associatedPullRequests(first: $first) {
-            edges {
-            node {
-                author {
-                login
-                __typename
-                }
-                authorAssociation
-                autoMergeRequest {
-                mergeMethod
-                enabledBy {
-                    login
-                }
-                authorEmail
-                }
-                checksUrl
-                createdAt
-                mergeCommit {
-                author {
-                    name
-                    email
-                }
-                }
-                id
-                merged
-                mergedAt
-                mergedBy {
-                login
-                __typename
-                }
-                number
-                state
-                url
-                reviews(first: $first, states: APPROVED) {
-                edges {
-                    node {
-                    author {
-                        login
-                        __typename
-                    }
-                    id
-                    state
-                    createdAt
-                    publishedAt
-                    submittedAt
-                    updatedAt
-                    }
-                }
-                }
-                repository {
-                name
-                owner {
-                    login
-                    id
-                }
-                }
-            }
-            }
-        }
-        }
-    }
-    }
-    """
-
-    variables = {
-        "nodeId": f"{commit_node_id}",
-        "first": 5,
-    }
-    body = {"query": query, "variables": variables}
-    return make_github_request(url, method="POST", json_data=body, headers=headers, max_retries=5)
 
 
 def get_pr_info(data):
@@ -111,12 +28,11 @@ def get_pr_info(data):
         for author in authors:
             commit_sha = author.get("sha")
             commit_node_id = author.get("node_id")
-            commit_url = author.get("commit_url")
 
             pr_data = cache_manager.github_cache.get_pr_info(commit_node_id)
             if not pr_data:
                 if commit_node_id:
-                    pr_info = fetch_pull_requests(commit_node_id)
+                    pr_info = get_commit_pr_info(commit_node_id, headers=headers)
                     cache_manager.github_cache.cache_pr_info(
                         {
                             "package": package,
@@ -220,3 +136,58 @@ def get_useful_pr_info(commits_data):
                             author["commit_merged_info"].append(merged_info)
 
     return commits_data
+
+
+def get_commit_pr_info(commit_node_id: str, url: str = "https://api.github.com/graphql", headers: dict = None) -> dict:
+    """
+    Get pull request information associated with a specific commit.
+    
+    Args:
+        commit_node_id (str): The node ID of the commit to query.
+        url (str, optional): The GraphQL API URL. Defaults to "https://api.github.com/graphql".
+        headers (dict, optional): Headers to use for the request. Defaults to None.
+        
+    Returns:
+        dict: The response containing pull request information associated with the commit.
+    """
+    query = """
+    query($nodeId: ID!, $first: Int!) {
+      node(id: $nodeId) {
+        ... on Commit {
+          associatedPullRequests(first: $first) {
+            nodes {
+              id
+              number
+              title
+              state
+              author {
+                login
+                __typename
+              }
+              mergedBy {
+                login
+                __typename
+              }
+              reviews(first: 5) {
+                nodes {
+                  id
+                  state
+                  author {
+                    login
+                    __typename
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    """
+
+    variables = {
+        "nodeId": f"{commit_node_id}",
+        "first": 5,
+    }
+    body = {"query": query, "variables": variables}
+    return make_github_request(url, method="POST", json_data=body, headers=headers, max_retries=5)
