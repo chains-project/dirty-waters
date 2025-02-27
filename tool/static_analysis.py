@@ -640,7 +640,7 @@ def analyze_package_data(
                         cached_analysis.get(check, {}), SCHEMAS_FOR_CACHE_ANALYSIS[check]
                     )
 
-            if not any(not missing for missing in missing_checks.values()):
+            if all(not missing for missing in missing_checks.values()):
                 logging.info(f"Using complete cached analysis for {package}")
                 return package_info
             logging.info(
