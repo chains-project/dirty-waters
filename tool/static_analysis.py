@@ -40,14 +40,14 @@ SCHEMAS_FOR_CACHE_ANALYSIS = {
         "is_github": False,
         "github_api": "",
         "github_url": "",
-        "github_exists": False,
+        "github_exists": None,
         "github_redirected": None,
         "redirected_repo": "",
         "status_code": 200,
         "archived": None,
-        "is_fork": False,
+        "is_fork": None,
         "release_tag": {
-            "exists": False,
+            "exists": None,
             "tag_version": "",
             "url": "",
             "tag_related_info": "",
@@ -74,8 +74,8 @@ SCHEMAS_FOR_CACHE_ANALYSIS = {
         "error": "No error message.",
     },
     "code_signature": {
-        "signature_present": False,
-        "signature_valid": False,
+        "signature_present": None,
+        "signature_valid": None,
     },
 }
 
@@ -637,14 +637,14 @@ def analyze_package_data(
                     if check in ["release_tags", "forks"]:
                         check = "source_code"
                     missing_checks[check] = not cached_analysis_matches_schema(
-                        cached_analysis[check], SCHEMAS_FOR_CACHE_ANALYSIS[check]
+                        cached_analysis.get(check, {}), SCHEMAS_FOR_CACHE_ANALYSIS[check]
                     )
 
-            if not missing_checks:
+            if not any(not missing for missing in missing_checks.values()):
                 logging.info(f"Using complete cached analysis for {package}")
                 return package_info
             logging.info(
-                f"Found partial cached analysis for {package}, analyzing missing checks: {list(missing_checks.keys())}"
+                f"Found partial cached analysis for {package}, analyzing missing checks: {list(check for check, missing in missing_checks.items() if missing)}"
             )
         else:
             logging.info(f"No cached analysis for {package}, analyzing all enabled checks")
@@ -655,7 +655,7 @@ def analyze_package_data(
         for check in missing_checks:
             if not missing_checks[check]:
                 continue
-            package_info[check] = SCHEMAS_FOR_CACHE_ANALYSIS[check]
+            package_info[check] = SCHEMAS_FOR_CACHE_ANALYSIS[check].copy()
 
         if missing_checks.get("deprecated") or missing_checks.get("provenance"):
             package_infos = check_deprecated_and_provenance(package_name, package_version, pm)
