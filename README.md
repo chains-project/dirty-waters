@@ -57,11 +57,13 @@ $ dirty-waters -p INRIA/spoon -pm maven
 ```
 
 All configuration options
+
 ```
 usage: main.py [-h] -p PROJECT_REPO_NAME [-v RELEASE_VERSION_OLD]
                [-vn RELEASE_VERSION_NEW] [-d] [-n] -pm
                {yarn-classic,yarn-berry,pnpm,npm,maven}
-               [--pnpm-scope PNPM_SCOPE] [--debug] [--no-gradual-report]
+               [--pnpm-scope PNPM_SCOPE] [--debug]
+               [--gradual-report GRADUAL_REPORT | --no-gradual-report]
                [--check-source-code] [--check-release-tags]
                [--check-deprecated] [--check-forks] [--check-provenance]
                [--check-code-signature]
@@ -90,9 +92,10 @@ options:
                         using 'pnpm list --filter <scope> --depth Infinity'
                         command. Configure the scope in tool_config.py file.
   --debug               Enable debug mode.
-  --no-gradual-report   Disable gradual report generation -- instead of one
-                        smell type per report, gradually descending by
-                        severity, report all.
+  --gradual-report GRADUAL_REPORT
+                        Enable/disable gradual reporting (default: True)
+  --no-gradual-report   Disable gradual reporting (deprecated, use --gradual-
+                        report=false instead)
 
 smell checks:
   --check-source-code   Check for dependencies with no link to source code
@@ -107,7 +110,8 @@ smell checks:
                         signature
 ```
 
-Reports are gradual by default: that is, only the highest severity smell type with issues found within this project is reported. You can disable this feature, and get a full report, by setting the `--no-gradual-report` flag to `true`. Note that if you ask for specific checks to be performed, the gradual report feature will also be disabled.
+Reports are gradual by default: that is, only the highest severity smell type with issues found within this project is reported. You can disable this feature, and get a full report,
+by setting the --gradual-report flag to false.
 
 1. Static analysis:
 
@@ -163,7 +167,6 @@ In alternative to virtual environments, you may also use the Nix flake present i
 ```bash
 export GITHUB_API_TOKEN=<your_token>
 ```
-
 
 ### Continuous integration
 
