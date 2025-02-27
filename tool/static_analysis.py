@@ -271,8 +271,13 @@ def check_parent_scm(package):
     }
 
 
-def check_existence(package_name, repository, package_manager):
+def check_existence(package_name, repository, extract_message, package_manager):
     """Check if the package exists in the repository."""
+    if "Could not find repository" in extract_message:
+        return {"is_github": False, "github_url": "No_repo_info_found"}
+    elif "Not a GitHub repository" in extract_message:
+        return {"is_github": False, "github_url": repository}
+
     repo_api, simplified_path, package_full_name, _, version, error_message = api_constructor(package_name, repository)
 
     repo_link = f"https://github.com/{simplified_path}".lower()
@@ -355,6 +360,7 @@ def check_existence(package_name, repository, package_manager):
                 logging.info(f"No tags found for {package_name} in {repo_api}")
 
     github_info = {
+        "is_github": True,
         "github_api": repo_api,
         "github_url": repo_link,
         "github_exists": github_exists,
@@ -532,13 +538,14 @@ def check_name_match(package_name, repository):
     return match_info
 
 
-def analyze_package_data(package, repo_url, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS):
+def analyze_package_data(package, repo_url, extract_message, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS):
     """
     Analyze package data with configurable smell checks.
 
     Args:
         package: Package to analyze
         repo_url: Repository URL
+        extract_message: Message from repository URL extraction - is it or not a GitHub repository
         pm: Package manager
         check_match: Whether to check name matches
         enabled_checks: Dictionary of enabled smell checks
@@ -636,14 +643,14 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
     logging.info("Analyzing package static data...")
     package_all = {}
     errors = {}
-
     with tqdm(total=len(packages_data), desc="Analyzing packages") as pbar:
         for package, repo_urls in packages_data.items():
             logging.info(f"Currently analyzing {package}")
-            repo_url = repo_urls.get("github", "")
+            repo_url = repo_urls.get("url", "")
+            extract_repo_url_message = repo_urls.get("message", "")
             command = repo_urls.get("command", None)
             analyzed_data = analyze_package_data(
-                package, repo_url, pm, check_match=check_match, enabled_checks=enabled_checks
+                package, repo_url, extract_repo_url_message, pm, check_match=check_match, enabled_checks=enabled_checks
             )
             error = analyzed_data.get("error", None)
             pbar.update(1)

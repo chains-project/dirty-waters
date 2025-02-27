@@ -36,10 +36,10 @@ def create_dataframe(data):
     rows = []
 
     for package_name, package_data in data.items():
-        github_exists_data = package_data.get("github_exists", {}) or {}
+        source_code_data = package_data.get("source_code", {}) or {}
 
         match_data = package_data.get("match_info", {}) or {}
-        release_tag_exists_info = github_exists_data.get("release_tag", {}) or {}
+        release_tag_exists_info = source_code_data.get("release_tag", {}) or {}
 
         # Create a row for each package
 
@@ -51,16 +51,17 @@ def create_dataframe(data):
             "signature_present": package_data.get("code_signature").get("signature_present"),
             "signature_valid": package_data.get("code_signature").get("signature_valid"),
             "command": package_data.get("command", None),
-            "github_url": github_exists_data.get("github_url", "Could not find repo from package registry"),
-            "github_exists": github_exists_data.get("github_exists", None),
-            "github_redirected": github_exists_data.get("github_redirected", None),
-            "archived": github_exists_data.get("archived", None),
-            "is_fork": github_exists_data.get("is_fork", None),
-            "parent_repo_link": github_exists_data.get("parent_repo_link", None),
-            "forked_from": github_exists_data.get("parent_repo_link", "-"),
-            "open_issues_count": github_exists_data.get("open_issues_count", "-"),
+            "is_github": source_code_data.get("is_github", False),
+            "github_url": source_code_data.get("github_url", "Could not find repo from package registry"),
+            "github_exists": source_code_data.get("github_exists", None),
+            "github_redirected": source_code_data.get("github_redirected", None),
+            "archived": source_code_data.get("archived", None),
+            "is_fork": source_code_data.get("is_fork", None),
+            "parent_repo_link": source_code_data.get("parent_repo_link", None),
+            "forked_from": source_code_data.get("parent_repo_link", "-"),
+            "open_issues_count": source_code_data.get("open_issues_count", "-"),
             "is_match": match_data.get("match", None),
-            # "release_tag_exists_info": github_exists_data.get("release_tag", {}),
+            # "release_tag_exists_info": source_code_data.get("release_tag", {}),
             "release_tag_exists": release_tag_exists_info.get("exists", "-"),
             "tag_version": release_tag_exists_info.get("tag_version", "-"),
             "tag_url": release_tag_exists_info.get("url", "-"),
@@ -270,6 +271,11 @@ def write_summary(
         df["github_exists"] == False,
         ["github_url", "github_exists"] + ["command"] if package_manager == "maven" else [],
     ]
+    not_on_github_df = df.loc[
+        df["is_github"] == False,
+        ["github_url"] + ["command"] if package_manager == "maven" else [],
+    ].reset_index(drop=False).drop_duplicates(subset=["package_name"])
+    not_on_github_counts = not_on_github_df.shape[0]
 
     combined_repo_problems_df = (
         pd.concat([no_source_code_repo_df, github_repo_404_df])
@@ -378,8 +384,6 @@ def write_summary(
             f":black_square_button: Packages without build attestation (⚠️): {(df['provenance_in_version'] == False).sum()}"
         )
 
-    not_on_github_counts = (df["github_url"] == "Not_github_repo").sum()
-
     source_sus = (df["github_url"] == "No_repo_info_found").sum() + (df["github_exists"] == False).sum()
 
     with open(filename, mode, encoding="utf-8") as md_file:
@@ -432,17 +436,22 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         # md_file.write(f"#### Other info")
 
         if enabled_checks.get("source_code") and package_manager in SUPPORTED_SMELLS["no_source_code"]:
-            if not gradual_report or not_on_github_counts > 0:
+            if not_on_github_counts > 0:
                 md_file.write(
                     f"""
 <details>
     <summary>Other info:</summary>
     \n- Source code repo is not hosted on GitHub:  {not_on_github_counts}\n
-    This could be due to the package being hosted on a different platform or the package not having a source code repo.\n
-</details>
-                            
-                            """
+    This could be due, for example, to the package being hosted on a different platform.\n
+    This does not mean that the source code URL is invalid.\n
+    However, for non-GitHub repositories, not all checks can be performed currently.\n
+"""
                 )
+
+                not_on_github_df.index = range(1, len(not_on_github_df) + 1)
+                markdown_text = not_on_github_df.reset_index().to_markdown(index=False)
+                md_file.write(markdown_text)
+                md_file.write("\n</details>\n")
 
         md_file.write("\n### Fine grained information\n")
         md_file.write(
