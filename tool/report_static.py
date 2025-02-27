@@ -346,36 +346,36 @@ def write_summary(
     warning_counts = {}
     if enabled_checks.get("source_code"):
         warning_counts["no_source_code"] = (
-            f":heavy_exclamation_mark: Packages with no source code URL (⚠️⚠️⚠️): {(df['github_url'] == 'No_repo_info_found').sum()}"
+            f":heavy_exclamation_mark: Packages with no source code URL (⚠️⚠️⚠️): {no_source_code_repo_df.shape[0]}"
         )
         warning_counts["github_404"] = (
-            f":no_entry: Packages with repo URL that is 404 (⚠️⚠️⚠️): {(df['github_exists'] == False).sum()}"
+            f":no_entry: Packages with repo URL that is 404 (⚠️⚠️⚠️): {github_repo_404_df.shape[0]}"
         )
 
     if enabled_checks.get("release_tags"):
         warning_counts["release_tag_not_found"] = (
-            f":wrench: Packages with inaccessible GitHub tag (⚠️⚠️): {(release_tag_not_found_df.shape[0])}"
+            f":wrench: Packages with inaccessible GitHub tag (⚠️⚠️): {release_tag_not_found_df.shape[0]}"
         )
 
     if enabled_checks.get("deprecated"):
         warning_counts["deprecated"] = (
-            f":x: Packages that are deprecated (⚠️⚠️): {(df['deprecated_in_version'] == True).sum()}"
+            f":x: Packages that are deprecated (⚠️⚠️): {version_deprecated_df.shape[0]}"
         )
 
     if enabled_checks.get("forks"):
-        warning_counts["forked_package"] = f":cactus: Packages that are forks (⚠️⚠️): {(df['is_fork'] == True).sum()}"
+        warning_counts["forked_package"] = f":cactus: Packages that are forks (⚠️⚠️): {(forked_package_df.shape[0])}"
 
     if enabled_checks.get("code_signature"):
         warning_counts["code_signature"] = (
-            f":lock: Packages without code signature (⚠️⚠️): {(code_signature_df.shape[0])}"
+            f":lock: Packages without code signature (⚠️⚠️): {code_signature_df.shape[0]}"
         )
 
     if enabled_checks.get("provenance"):
         warning_counts["provenance"] = (
-            f":black_square_button: Packages without build attestation (⚠️): {(df['provenance_in_version'] == False).sum()}"
+            f":black_square_button: Packages without build attestation (⚠️): {provenance_df.shape[0]}"
         )
 
-    source_sus = (df["github_url"] == "No_repo_info_found").sum() + (df["github_exists"] == False).sum()
+    source_sus = no_source_code_repo_df.shape[0] + github_repo_404_df.shape[0]
 
     with open(filename, mode, encoding="utf-8") as md_file:
         preamble = f"""
