@@ -678,7 +678,7 @@ def analyze_package_data(
             update_package_info(package_info, "source_code", check_existence(package, repo_url, extract_message, pm))
 
         if check_match and package_info.get("source_code") and package_info["source_code"].get("github_exists"):
-            repo_url_to_use = github_info.get("redirected_repo") or repo_url
+            repo_url_to_use = package_info["source_code"].get("redirected_repo") or repo_url
             if package_info.get("provenance") == False:
                 if (
                     package_info["source_code"].get("is_fork") == True
