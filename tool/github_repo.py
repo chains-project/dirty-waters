@@ -94,7 +94,11 @@ def process_package(
 ):
     def check_if_valid_repo_info(repo_info):
         if repo_info is None or "Undefined" in repo_info or "undefined" in repo_info or "ERR!" in repo_info:
-            repos_output_json[package] = {"url": "Could not find", "message": "Could not find repository", "command": command}
+            repos_output_json[package] = {
+                "url": "Could not find",
+                "message": "Could not find repository",
+                "command": command,
+            }
             undefined.append(f"Undefined for {package}, {repo_info}")
             return False
 

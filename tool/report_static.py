@@ -271,10 +271,14 @@ def write_summary(
         df["github_exists"] == False,
         ["github_url", "github_exists"] + ["command"] if package_manager == "maven" else [],
     ]
-    not_on_github_df = df.loc[
-        df["is_github"] == False,
-        ["github_url"] + ["command"] if package_manager == "maven" else [],
-    ].reset_index(drop=False).drop_duplicates(subset=["package_name"])
+    not_on_github_df = (
+        df.loc[
+            df["is_github"] == False,
+            ["github_url"] + ["command"] if package_manager == "maven" else [],
+        ]
+        .reset_index(drop=False)
+        .drop_duplicates(subset=["package_name"])
+    )
     not_on_github_counts = not_on_github_df.shape[0]
 
     combined_repo_problems_df = (

@@ -79,12 +79,14 @@ SCHEMAS_FOR_CACHE_ANALYSIS = {
     },
 }
 
+
 def update_package_info(package_info, field, new_data):
     # Also updates in place
     if field not in package_info:
         package_info[field] = {}
     package_info[field].update(new_data)
     return package_info
+
 
 def check_deprecated_and_provenance(package, package_version, pm):
     """
@@ -588,7 +590,9 @@ def check_name_match(package_name, repository):
     return match_info
 
 
-def analyze_package_data(package, repo_url, extract_message, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS):
+def analyze_package_data(
+    package, repo_url, extract_message, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS
+):
     """
     Analyze package data with configurable smell checks.
 
@@ -600,6 +604,7 @@ def analyze_package_data(package, repo_url, extract_message, pm, check_match=Fal
         check_match: Whether to check name matches
         enabled_checks: Dictionary of enabled smell checks
     """
+
     def cached_analysis_matches_schema(cached_analysis, schema):
         for key, value in schema.items():
             if isinstance(value, dict):
@@ -631,7 +636,9 @@ def analyze_package_data(package, repo_url, extract_message, pm, check_match=Fal
                 if enabled:
                     if check in ["release_tags", "forks"]:
                         check = "source_code"
-                    missing_checks[check] = not cached_analysis_matches_schema(cached_analysis[check], SCHEMAS_FOR_CACHE_ANALYSIS[check])
+                    missing_checks[check] = not cached_analysis_matches_schema(
+                        cached_analysis[check], SCHEMAS_FOR_CACHE_ANALYSIS[check]
+                    )
 
             if not missing_checks:
                 logging.info(f"Using complete cached analysis for {package}")
@@ -641,7 +648,9 @@ def analyze_package_data(package, repo_url, extract_message, pm, check_match=Fal
             )
         else:
             logging.info(f"No cached analysis for {package}, analyzing all enabled checks")
-            missing_checks = {check: enabled for check, enabled in enabled_checks.items() if check not in ["forks", "release_tags"]}
+            missing_checks = {
+                check: enabled for check, enabled in enabled_checks.items() if check not in ["forks", "release_tags"]
+            }
 
         for check in missing_checks:
             if not missing_checks[check]:
