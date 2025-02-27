@@ -315,6 +315,7 @@ def write_summary(
         (
             [
                 "is_fork",
+                "github_url",
                 "parent_repo_link",
             ]
             + ["command"]
@@ -331,10 +332,7 @@ def write_summary(
     code_signature_df = df.loc[
         df["signature_present"] == False,
         (
-            [
-                "signature_present",
-            ]
-            + ["command"]
+            ["command"]
             if package_manager == "maven"
             else []
         ),
@@ -342,10 +340,7 @@ def write_summary(
     invalid_code_signature_df = df.loc[
         (df["signature_present"] == True) & (df["signature_valid"] == False),
         (
-            [
-                "signature_valid",
-            ]
-            + ["command"]
+            ["command"]
             if package_manager == "maven"
             else []
         ),
@@ -448,7 +443,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
     \n- Source code repo is not hosted on GitHub:  {not_on_github_counts}\n
     This could be due, for example, to the package being hosted on a different platform.\n
     This does not mean that the source code URL is invalid.\n
-    However, for non-GitHub repositories, not all checks can be performed currently.\n
+    However, for non-GitHub repositories, not all checks can currently be performed.\n
 """
                 )
 
