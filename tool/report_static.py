@@ -331,19 +331,11 @@ def write_summary(
     ]
     code_signature_df = df.loc[
         df["signature_present"] == False,
-        (
-            ["command"]
-            if package_manager == "maven"
-            else []
-        ),
+        (["command"] if package_manager == "maven" else []),
     ]
     invalid_code_signature_df = df.loc[
         (df["signature_present"] == True) & (df["signature_valid"] == False),
-        (
-            ["command"]
-            if package_manager == "maven"
-            else []
-        ),
+        (["command"] if package_manager == "maven" else []),
     ]
 
     common_counts = {
