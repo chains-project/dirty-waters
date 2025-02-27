@@ -86,7 +86,7 @@ class CacheManager:
         self.package_cache.clear_cache(older_than_days)
         self.commit_comparison_cache.clear_cache(older_than_days)
         self.user_commit_cache.clear_cache(older_than_days)
-        self.maven_cache.clear_cache(older_than_days)
+        self.extracted_deps_cache.clear_cache(older_than_days)
 
 
 class Cache:
@@ -319,15 +319,15 @@ class GitHubCache(Cache):
         try:
             if older_than_days:
                 cutoff = (datetime.now() - timedelta(days=older_than_days)).isoformat()
-                c.execute("DELETE FROM pr_reviews WHERE cached_at < ?", (cutoff,))
-                c.execute("DELETE FROM repo_info WHERE cached_at < ?", (cutoff,))
                 c.execute("DELETE FROM github_urls WHERE cached_at < ?", (cutoff,))
                 c.execute("DELETE FROM pr_info WHERE cached_at < ?", (cutoff,))
+                c.execute("DELETE FROM pr_reviews WHERE cached_at < ?", (cutoff,))
+                c.execute("DELETE FROM tag_to_sha WHERE cached_at < ?", (cutoff,))
             else:
-                c.execute("DELETE FROM pr_reviews")
-                c.execute("DELETE FROM repo_info")
                 c.execute("DELETE FROM github_urls")
                 c.execute("DELETE FROM pr_info")
+                c.execute("DELETE FROM pr_reviews")
+                c.execute("DELETE FROM tag_to_sha")
             conn.commit()
 
         finally:
