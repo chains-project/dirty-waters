@@ -50,6 +50,7 @@ def create_dataframe(data):
             "all_deprecated": package_data.get("package_info", {}).get("all_deprecated", None),
             "signature_present": package_data.get("code_signature").get("signature_present"),
             "signature_valid": package_data.get("code_signature").get("signature_valid"),
+            "parent": package_data.get("parent", None),
             "command": package_data.get("command", None),
             "github_url": github_exists_data.get("github_url", "Could not find repo from package registry"),
             "github_exists": github_exists_data.get("github_exists", None),
@@ -264,11 +265,11 @@ def write_summary(
 
     no_source_code_repo_df = df.loc[
         df["github_url"] == "No_repo_info_found",
-        ["github_url", "github_exists"] + ["command"] if package_manager == "maven" else [],
+        ["github_url", "github_exists"] + ["parent", "command"] if package_manager == "maven" else [],
     ]
     github_repo_404_df = df.loc[
         df["github_exists"] == False,
-        ["github_url", "github_exists"] + ["command"] if package_manager == "maven" else [],
+        ["github_url", "github_exists"] + ["parent", "command"] if package_manager == "maven" else [],
     ]
 
     combined_repo_problems_df = (
@@ -287,7 +288,7 @@ def write_summary(
                 "tag_related_info",
                 "status_code_for_release_tag",
             ]
-            + ["command"]
+            + ["parent", "command"]
             if package_manager == "maven"
             else []
         ),
@@ -307,7 +308,7 @@ def write_summary(
                 "is_fork",
                 "parent_repo_link",
             ]
-            + ["command"]
+            + ["parent", "command"]
             if package_manager == "maven"
             else []
         ),
@@ -324,7 +325,7 @@ def write_summary(
             [
                 "signature_present",
             ]
-            + ["command"]
+            + ["parent", "command"]
             if package_manager == "maven"
             else []
         ),
@@ -335,7 +336,7 @@ def write_summary(
             [
                 "signature_valid",
             ]
-            + ["command"]
+            + ["parent", "command"]
             if package_manager == "maven"
             else []
         ),
