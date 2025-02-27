@@ -633,20 +633,16 @@ def analyze_package_data(
 
             # Check which enabled checks are missing from cache
             for check, enabled in enabled_checks.items():
-                print(f"[DEBUG] check is {check} and enabled is {enabled}")
                 if enabled:
                     if check in ["release_tags", "forks"]:
                         check = "source_code"
                     missing_checks[check] = not cached_analysis_matches_schema(
                         cached_analysis.get(check, {}), SCHEMAS_FOR_CACHE_ANALYSIS[check]
                     )
-                    print(f"[DEBUG] missing_checks is {missing_checks}")
 
-            print(f"[DEBUG] After initial loop, missing_checks is {missing_checks}")
             if all(not missing for missing in missing_checks.values()):
                 logging.info(f"Using complete cached analysis for {package}")
                 return package_info
-            print(f"[DEBUG] After all check, missing_checks is {missing_checks}")
             logging.info(
                 f"Found partial cached analysis for {package}, analyzing missing checks: {list(check for check, missing in missing_checks.items() if missing)}"
             )
@@ -678,7 +674,7 @@ def analyze_package_data(
             update_package_info(package_info, "source_code", check_existence(package, repo_url, extract_message, pm))
 
         if check_match and package_info.get("source_code") and package_info["source_code"].get("github_exists"):
-            repo_url_to_use = package_info["source_code"].get("redirected_repo") or repo_url
+            repo_url_to_use = github_info.get("redirected_repo") or repo_url
             if package_info.get("provenance") == False:
                 if (
                     package_info["source_code"].get("is_fork") == True
@@ -701,7 +697,6 @@ def analyze_package_data(
         logging.error(f"Analyzing package {package}: {str(e)}")
         package_info["error"] = str(e)
 
-    print(f"[DEBUG] Going to return package_info as {package_info}")
     return package_info
 
 
@@ -722,13 +717,10 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
             pbar.update(1)
 
             if error:
-                print(f"[DEBUG] Error found, {error}")
                 errors[package] = error
             else:
-                print(f"[DEBUG] NO ERROR")
                 package_all[package] = analyzed_data
                 package_all[package]["command"] = command
-                print(f"[DEBUG] package_all[package] is {package_all[package]}")
 
     return package_all, errors
 
