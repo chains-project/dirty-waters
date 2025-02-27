@@ -289,7 +289,6 @@ def static_analysis_all(
     static_results, errors = static_analysis.get_static_data(
         folder_path, repo_url_info, package_manager, check_match=check_match, enabled_checks=enabled_checks
     )
-    print(f"[DEBUG] static_results are {static_results}")
     logging.info("Errors: %s", errors)
 
     return static_results, deps_list, dep_with_many_versions, patches_info
@@ -450,16 +449,8 @@ def generate_static_report(analysis_results, project_info, is_old_version):
 
     summary_file = project_info["result_folder_path"] / f"{version_name}_static_summary.md"
 
-    # temporarily get the analysis results by loading the json from the file
-    # # json_path comes from results/results_2025-02-27-13-22-56/sscs, ignore project_info["json_directory"]
-    # json_path = Path(f"results/results_2025-02-27-14-41-06/sscs/{version_name}") / f"{version_name}_static_results.json"
-    # with open(json_path, "r", encoding="utf-8") as file:
-    #     print(f"[DEBUG] Loading from {json_path}")
-    #     analysis_results = json.load(file)
-
     logging.info("Generating static analysis report for %s", version_name)
     report_static.get_s_summary(
-        # analysis_results,
         analysis_results[0],
         project_info["repo_name"],
         version,
