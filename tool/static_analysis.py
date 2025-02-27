@@ -35,6 +35,56 @@ DEFAULT_ENABLED_CHECKS = {
     "code_signature": True,
 }
 
+SCHEMAS_FOR_CACHE_ANALYSIS = {
+    "source_code": {
+        "is_github": False,
+        "github_api": "",
+        "github_url": "",
+        "github_exists": False,
+        "github_redirected": None,
+        "redirected_repo": "",
+        "status_code": 200,
+        "archived": None,
+        "is_fork": False,
+        "release_tag": {
+            "exists": False,
+            "tag_version": "",
+            "url": "",
+            "tag_related_info": "",
+            "status_code": 404,
+        },
+        "parent_repo_link": "",
+        "open_issues_count": 0,
+        "error": "No error message.",
+    },
+    "deprecated": {
+        "package_only_name": "",
+        "package_version": "",
+        "deprecated_in_version": "",
+        "provenance_in_version": "",
+        "all_deprecated": None,
+        "provenance_url": "",
+        "provenance_info": "",
+        "status_code": 404,
+    },
+    "provenance": {
+        "package_only_name": "",
+        "package_version": "",
+        "status_code": 404,
+        "error": "No error message.",
+    },
+    "code_signature": {
+        "signature_present": False,
+        "signature_valid": False,
+    },
+}
+
+def update_package_info(package_info, field, new_data):
+    # Also updates in place
+    if field not in package_info:
+        package_info[field] = {}
+    package_info[field].update(new_data)
+    return package_info
 
 def check_deprecated_and_provenance(package, package_version, pm):
     """
@@ -550,6 +600,17 @@ def analyze_package_data(package, repo_url, extract_message, pm, check_match=Fal
         check_match: Whether to check name matches
         enabled_checks: Dictionary of enabled smell checks
     """
+    def cached_analysis_matches_schema(cached_analysis, schema):
+        for key, value in schema.items():
+            if isinstance(value, dict):
+                if key not in cached_analysis:
+                    return False
+                if not cached_analysis_matches_schema(cached_analysis[key], value):
+                    return False
+            elif key not in cached_analysis:
+                return False
+        return True
+
     package_info = {}
     try:
         package_name, package_version = package.rsplit("@", 1)
@@ -568,19 +629,9 @@ def analyze_package_data(package, repo_url, extract_message, pm, check_match=Fal
             # Check which enabled checks are missing from cache
             for check, enabled in enabled_checks.items():
                 if enabled:
-                    if check == "deprecated" and "deprecated" not in cached_analysis:
-                        missing_checks["deprecated"] = True
-                    elif check == "provenance" and "provenance" not in cached_analysis:
-                        missing_checks["provenance"] = True
-                    elif check == "code_signature" and "code_signature" not in cached_analysis:
-                        missing_checks["code_signature"] = True
-                    elif check == "source_code" and "github_exists" not in cached_analysis:
-                        missing_checks["source_code"] = True
-                    elif check == "forks" and (
-                        "github_exists" not in cached_analysis
-                        or "is_fork" not in cached_analysis.get("github_exists", {})
-                    ):
-                        missing_checks["forks"] = True
+                    if check in ["release_tags", "forks"]:
+                        check = "source_code"
+                    missing_checks[check] = not cached_analysis_matches_schema(cached_analysis[check], SCHEMAS_FOR_CACHE_ANALYSIS[check])
 
             if not missing_checks:
                 logging.info(f"Using complete cached analysis for {package}")
@@ -590,34 +641,35 @@ def analyze_package_data(package, repo_url, extract_message, pm, check_match=Fal
             )
         else:
             logging.info(f"No cached analysis for {package}, analyzing all enabled checks")
-            missing_checks = enabled_checks
+            missing_checks = {check: enabled for check, enabled in enabled_checks.items() if check not in ["forks", "release_tags"]}
+
+        for check in missing_checks:
+            if not missing_checks[check]:
+                continue
+            package_info[check] = SCHEMAS_FOR_CACHE_ANALYSIS[check]
 
         if missing_checks.get("deprecated") or missing_checks.get("provenance"):
             package_infos = check_deprecated_and_provenance(package_name, package_version, pm)
             if missing_checks.get("deprecated"):
-                package_info["deprecated"] = package_infos.get("deprecated_in_version")
+                update_package_info(package_info, "deprecated", package_infos.get("deprecated_in_version", {}))
             if missing_checks.get("provenance"):
-                package_info["provenance"] = package_infos.get("provenance_in_version")
+                update_package_info(package_info, "provenance", package_infos.get("provenance_in_version", {}))
             package_info["package_info"] = package_infos
 
         if missing_checks.get("code_signature"):
-            package_info["code_signature"] = check_code_signature(package_name, package_version, pm)
+            update_package_info(
+                package_info, "code_signature", check_code_signature(package_name, package_version, pm)
+            )
 
-        if missing_checks.get("source_code") or missing_checks.get("forks"):
-            if "Could not find" in repo_url:
-                package_info["github_exists"] = {"github_url": "No_repo_info_found"}
-            elif "not github" in repo_url:
-                package_info["github_exists"] = {"github_url": "Not_github_repo"}
-            else:
-                github_info = check_existence(package, repo_url, pm)
-                package_info["github_exists"] = github_info
+        if missing_checks.get("source_code"):
+            update_package_info(package_info, "source_code", check_existence(package, repo_url, extract_message, pm))
 
-        if check_match and package_info.get("github_exists") and package_info["github_exists"].get("github_exists"):
+        if check_match and package_info.get("source_code") and package_info["source_code"].get("github_exists"):
             repo_url_to_use = github_info.get("redirected_repo") or repo_url
             if package_info.get("provenance") == False:
                 if (
-                    package_info["github_exists"].get("is_fork") == True
-                    or package_info["github_exists"].get("archived") == True
+                    package_info["source_code"].get("is_fork") == True
+                    or package_info["source_code"].get("archived") == True
                 ):
                     package_info["match_info"] = check_name_match_for_fork(package, repo_url_to_use)
                 else:
