@@ -196,8 +196,8 @@ class GitHubCache(Cache):
                 review_data, cached_at = result
                 cached_at = datetime.fromisoformat(cached_at)
 
-                # Return cached data if it's less than 7 days old
-                if datetime.now() - cached_at < timedelta(days=7):
+                # Return cached data if it's less than 30 days old
+                if datetime.now() - cached_at < timedelta(days=30):
                     return json.loads(review_data)
             return None
         finally:
@@ -234,8 +234,8 @@ class GitHubCache(Cache):
                 repo_url, cached_at = result
                 cached_at = datetime.fromisoformat(cached_at)
 
-                # URLs don't change often, so we can cache them for longer (30 days)
-                if datetime.now() - cached_at < timedelta(days=30):
+                # URLs don't change often, so we can cache them for longer (180 days)
+                if datetime.now() - cached_at < timedelta(days=180):
                     return repo_url
 
             return None
@@ -307,7 +307,7 @@ class GitHubCache(Cache):
             if result:
                 sha, cached_at = result
                 cached_at = datetime.fromisoformat(cached_at)
-                if datetime.now() - cached_at < timedelta(days=30):
+                if datetime.now() - cached_at < timedelta(days=180):
                     return sha
         return None
 
@@ -364,7 +364,7 @@ class PackageAnalysisCache(Cache):
             (package_name, version, package_manager, json.dumps(analysis_data), datetime.now().isoformat()),
         )
 
-    def get_package_analysis(self, package_name, version, package_manager, max_age_days=30):
+    def get_package_analysis(self, package_name, version, package_manager, max_age_days=180):
         """Get cached package analysis results"""
         results = self._execute_query(
             """SELECT analysis_data, cached_at 
@@ -471,7 +471,7 @@ class CommitComparisonCache(Cache):
             (package, tag1, tag2, json.dumps(data), datetime.now().isoformat()),
         )
 
-    def get_authors_from_tags(self, package, tag1, tag2, max_age_days=30):
+    def get_authors_from_tags(self, package, tag1, tag2, max_age_days=180):
         results = self._execute_query(
             "SELECT data, cached_at FROM commit_authors_from_tags WHERE package = ? AND tag1 = ? AND tag2 = ?",
             (package, tag1, tag2),
@@ -493,7 +493,7 @@ class CommitComparisonCache(Cache):
             (commit_url, json.dumps(data), datetime.now().isoformat()),
         )
 
-    def get_authors_from_url(self, commit_url, max_age_days=30):
+    def get_authors_from_url(self, commit_url, max_age_days=180):
         results = self._execute_query(
             "SELECT data, cached_at FROM commit_authors_from_url WHERE commit_url = ?", (commit_url,)
         )
@@ -514,7 +514,7 @@ class CommitComparisonCache(Cache):
             (repo_name, patch_path, sha, json.dumps(data), datetime.now().isoformat()),
         )
 
-    def get_patch_authors(self, repo_name, patch_path, sha, max_age_days=30):
+    def get_patch_authors(self, repo_name, patch_path, sha, max_age_days=180):
         results = self._execute_query(
             "SELECT data, cached_at FROM patch_authors_from_sha WHERE repo_name = ? AND patch_path = ? AND sha = ?",
             (repo_name, patch_path, sha),
@@ -599,7 +599,7 @@ class UserCommitCache(Cache):
             ),
         )
 
-    def get_user_commit(self, api_url, max_age_days=30):
+    def get_user_commit(self, api_url, max_age_days=180):
         results = self._execute_query(
             "SELECT earliest_commit_sha, author_login_in_1st_commit, author_id_in_1st_commit, cached_at FROM user_commit WHERE api_url = ?",
             (api_url,),
@@ -656,7 +656,7 @@ class DependencyExtractionCache(Cache):
             (repo_path, file_hash, json.dumps(dependencies), datetime.now().isoformat()),
         )
 
-    def get_dependencies(self, repo_path, file_hash, max_age_days=30):
+    def get_dependencies(self, repo_path, file_hash, max_age_days=180):
         results = self._execute_query(
             "SELECT dependencies, cached_at FROM extracted_dependencies WHERE repo_path = ? AND file_hash = ?",
             (repo_path, file_hash),
