@@ -43,38 +43,38 @@
 
 | package_name             | repo_link   | category           | old_version   | new_version               |
 |:-------------------------|:------------|:-------------------|:--------------|:--------------------------|
-| @ethersproject/providers |             | Downgraded package | 5.7.2         | 5.7.0                     |
-| memoize-one              |             | Downgraded package | 6.0.0         | 5.2.1                     |
-| is-plain-obj             |             | Downgraded package | 4.1.0         | 3.0.0                     |
-| @ethersproject/networks  |             | Downgraded package | 5.7.1         | 5.7.0                     |
-| balanced-match           |             | Downgraded package | 1.0.2         | 0.4.2                     |
-| keyv                     |             | Downgraded package | 4.5.0         | 3.1.0                     |
-| p-cancelable             |             | Downgraded package | 2.1.1         | 1.1.0                     |
-| path-to-regexp           |             | Downgraded package | 2.2.1         | 1.9.0                     |
-| decompress-response      |             | Downgraded package | 6.0.0         | 3.3.0                     |
-| json-buffer              |             | Downgraded package | 3.0.1         | 3.0.0                     |
-| supports-color           |             | Downgraded package | 8.1.1         | 3.2.3                     |
-| replace-ext              |             | Downgraded package | 2.0.0         | 1.0.1                     |
-| @sindresorhus/is         |             | Downgraded package | 4.6.0         | 0.14.0                    |
-| @szmarczak/http-timer    |             | Downgraded package | 4.0.6         | 1.1.2                     |
-| ip                       |             | Downgraded package | 2.0.0         | 1.1.8                     |
-| cacheable-request        |             | Downgraded package | 7.0.2         | 6.1.0                     |
-| http-errors              |             | Downgraded package | 1.8.0         | 1.6.3                     |
-| ci-info                  |             | Downgraded package | 3.3.2         | 2.0.0                     |
-| node-fetch               |             | Downgraded package | 3.3.1         | 2.7.0                     |
-| responselike             |             | Downgraded package | 2.0.1         | 1.0.2                     |
-| has-flag                 |             | Downgraded package | 4.0.0         | 1.0.0                     |
-| normalize-url            |             | Downgraded package | 6.1.0         | 4.5.1                     |
-| @ethersproject/web       |             | Downgraded package | 5.7.1         | 5.7.0                     |
-| get-stream               |             | Downgraded package | 6.0.1         | 4.1.0                     |
-| ansi-styles              |             | Downgraded package | 6.2.1         | 2.2.1                     |
 | got                      |             | Downgraded package | 11.8.6        | 9.6.0                     |
+| responselike             |             | Downgraded package | 2.0.1         | 1.0.2                     |
+| is-plain-obj             |             | Downgraded package | 4.1.0         | 3.0.0                     |
+| ci-info                  |             | Downgraded package | 3.3.2         | 2.0.0                     |
+| decompress-response      |             | Downgraded package | 6.0.0         | 3.3.0                     |
+| http-errors              |             | Downgraded package | 1.8.0         | 1.6.3                     |
+| balanced-match           |             | Downgraded package | 1.0.2         | 0.4.2                     |
+| @szmarczak/http-timer    |             | Downgraded package | 4.0.6         | 1.1.2                     |
+| has-flag                 |             | Downgraded package | 4.0.0         | 1.0.0                     |
 | defer-to-connect         |             | Downgraded package | 2.0.1         | 1.1.3                     |
-| ini                      |             | Downgraded package | 3.0.0         | 2.0.0                     |
+| memoize-one              |             | Downgraded package | 6.0.0         | 5.2.1                     |
+| node-fetch               |             | Downgraded package | 3.3.1         | 2.7.0                     |
+| ip                       |             | Downgraded package | 2.0.0         | 1.1.8                     |
 | @babel/preset-modules    |             | Downgraded package | 0.1.5         | 0.1.6-no-external-plugins |
+| @ethersproject/web       |             | Downgraded package | 5.7.1         | 5.7.0                     |
+| normalize-url            |             | Downgraded package | 6.1.0         | 4.5.1                     |
 | setprototypeof           |             | Downgraded package | 1.2.0         | 1.1.0                     |
-| portfinder               |             | Downgraded package | 1.0.32        | 1.0.28                    |
+| keyv                     |             | Downgraded package | 4.5.0         | 3.1.0                     |
+| supports-color           |             | Downgraded package | 8.1.1         | 3.2.3                     |
+| @ethersproject/networks  |             | Downgraded package | 5.7.1         | 5.7.0                     |
+| json-buffer              |             | Downgraded package | 3.0.1         | 3.0.0                     |
+| @ethersproject/providers |             | Downgraded package | 5.7.2         | 5.7.0                     |
 | js-base64                |             | Downgraded package | 3.6.1         | 2.6.4                     |
+| get-stream               |             | Downgraded package | 6.0.1         | 4.1.0                     |
+| p-cancelable             |             | Downgraded package | 2.1.1         | 1.1.0                     |
+| cacheable-request        |             | Downgraded package | 7.0.2         | 6.1.0                     |
+| portfinder               |             | Downgraded package | 1.0.32        | 1.0.28                    |
+| replace-ext              |             | Downgraded package | 2.0.0         | 1.0.1                     |
+| path-to-regexp           |             | Downgraded package | 2.2.1         | 1.9.0                     |
+| @sindresorhus/is         |             | Downgraded package | 4.6.0         | 0.14.0                    |
+| ini                      |             | Downgraded package | 3.0.0         | 2.0.0                     |
+| ansi-styles              |             | Downgraded package | 6.2.1         | 2.2.1                     |
 </details>
 
 
@@ -125,7 +125,7 @@ For commits made by new authors:
 
 Report created by [dirty-waters](https://github.com/chains-project/dirty-waters/).
 
-Report created on 2025-02-21 10:36:29
-- Tool version: 3712a094
+Report created on 2025-03-01 21:29:57
+- Tool version: 7e806c5d
 - Project Name: MetaMask/metamask-extension
 - Compared project versions: v11.1.0 & v12.9.0

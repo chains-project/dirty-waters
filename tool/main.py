@@ -9,6 +9,7 @@ import os
 import sys
 import requests
 from git import Repo
+from pathlib import Path
 
 # Allows for tool to be recognized as a package to import from
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -92,10 +93,21 @@ def get_args():
         action="store_true",
         help="Enable debug mode.",
     )
-    parser.add_argument(
+
+    # Gradual report group -- mutually exclusive, preserves backward compatibility for --no-gradual-report
+    gradual_report_group = parser.add_mutually_exclusive_group()
+    gradual_report_group.add_argument(
+        "--gradual-report",
+        dest="gradual_report",
+        type=lambda x: str(x).lower() in ["true", "1", "yes", "y"],
+        default=True,
+        help="Enable/disable gradual reporting (default: True)",
+    )
+    gradual_report_group.add_argument(
         "--no-gradual-report",
-        action="store_true",
-        help="Disable gradual report generation -- instead of one smell type per report, gradually descending by severity, report all.",
+        dest="gradual_report",
+        action="store_false",
+        help="Disable gradual reporting (deprecated, use --gradual-report=false instead)",
     )
 
     # Add new smell check arguments
@@ -381,7 +393,7 @@ def setup_project_info(args, any_check_specified):
         "package_manager": args.package_manager,
         "pnpm_scope": args.pnpm_scope,
         "debug": args.debug,
-        "gradual_report": False if args.no_gradual_report or any_check_specified else True,
+        "gradual_report": args.gradual_report and not any_check_specified,
     }
 
 
