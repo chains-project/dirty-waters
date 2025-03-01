@@ -411,11 +411,13 @@ class PackageAnalysisCache(Cache):
             )
             count = c.fetchone()[0]
             if count == 0:
+                print(f"No cached data found for {package_name} {version}")
                 logging.info(f"No cached data found for {package_name} {version}")
                 return
 
             c.execute("DELETE FROM package_analysis WHERE package_name = ? AND version = ?", (package_name, version))
             conn.commit()
+            print(f"Cleared cached data for {package_name} {version}")
             logging.info(f"Cleared cached data for {package_name} {version}")
 
         finally:
@@ -830,7 +832,7 @@ def make_github_request(
 
                 # Get rate limit reset time and wait
                 reset_time = int(e.response.headers.get("X-RateLimit-Reset", 0))
-                wait_time = max(reset_time - int(time.time()), 0)
+                wait_time = max(reset_time - int(time.time()), 0) + 1
                 if not silent:
                     logging.warning(f"Rate limit exceeded. Waiting {wait_time} seconds...")
                 time.sleep(wait_time)

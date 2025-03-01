@@ -34,13 +34,13 @@ The following checks were specifically requested:
  ### Total packages in the supply chain: 3303
 
 
-:heavy_exclamation_mark: Packages with no source code URL (⚠️⚠️⚠️): 42
+:heavy_exclamation_mark: Packages with no source code URL (⚠️⚠️⚠️): 43
 
 :no_entry: Packages with repo URL that is 404 (⚠️⚠️⚠️): 18
 
-:wrench: Packages with inaccessible GitHub tag (⚠️⚠️): 413
+:wrench: Packages with inaccessible GitHub tag (⚠️⚠️): 418
 
-:x: Packages that are deprecated (⚠️⚠️): 83
+:x: Packages that are deprecated (⚠️⚠️): 85
 
 :cactus: Packages that are forks (⚠️⚠️): 59
 
@@ -52,19 +52,69 @@ The following checks were specifically requested:
 <details>
     <summary>Other info:</summary>
     
-- Source code repo is not hosted on GitHub:  2
+- Source code repo is not hosted on GitHub:  45
 
-    This could be due to the package being hosted on a different platform or the package not having a source code repo.
+    This could be due, for example, to the package being hosted on a different platform.
 
+    This does not mean that the source code URL is invalid.
+
+    However, for non-GitHub repositories, not all checks can currently be performed.
+
+|   index | package_name                                          |
+|--------:|:------------------------------------------------------|
+|       1 | @blockaid/ppom_release@npm:1.4.1                      |
+|       2 | @chainsafe/ssz@npm:0.9.4                              |
+|       3 | @fal-works/esbuild-plugin-global-externals@npm:2.1.2  |
+|       4 | @keystonehq/bc-ur-registry-eth@npm:0.19.1             |
+|       5 | @lavamoat/aa@npm:4.0.1                                |
+|       6 | @nicolo-ribaudo/eslint-scope-5-internals@npm:5.1.1-v1 |
+|       7 | @nodelib/fs.scandir@npm:2.1.5                         |
+|       8 | @nodelib/fs.stat@npm:2.0.5                            |
+|       9 | @nodelib/fs.walk@npm:1.2.8                            |
+|      10 | @segment/loosely-validate-event@npm:2.0.0             |
+|      11 | @trezor/analytics@npm:1.0.3                           |
+|      12 | @trezor/blockchain-link-types@npm:1.0.2               |
+|      13 | @trezor/blockchain-link-utils@npm:1.0.3               |
+|      14 | @trezor/connect-analytics@npm:1.0.2                   |
+|      15 | @types/cacheable-request@npm:6.0.2                    |
+|      16 | @types/expect@npm:1.20.4                              |
+|      17 | @types/find-cache-dir@npm:3.2.1                       |
+|      18 | @types/history@npm:4.7.11                             |
+|      19 | @types/json5@npm:0.0.29                               |
+|      20 | @types/keyv@npm:3.1.4                                 |
+|      21 | @types/keyv@npm:4.2.0                                 |
+|      22 | @types/long@npm:4.0.2                                 |
+|      23 | @types/lru-cache@npm:5.1.1                            |
+|      24 | @types/mime@npm:1.3.2                                 |
+|      25 | @types/mime@npm:3.0.1                                 |
+|      26 | @types/parse-json@npm:4.0.0                           |
+|      27 | @types/prettier@npm:2.7.2                             |
+|      28 | @types/sass@npm:1.43.1                                |
+|      29 | @types/testing-library__jest-dom@npm:5.9.5            |
+|      30 | async-eventemitter@npm:0.2.4                          |
+|      31 | atob@npm:2.1.2                                        |
+|      32 | babel-plugin-named-exports-order@npm:0.0.2            |
+|      33 | boolbase@npm:1.0.0                                    |
+|      34 | btoa@npm:1.2.1                                        |
+|      35 | esbuild-register@npm:3.5.0                            |
+|      36 | join-component@npm:1.1.0                              |
+|      37 | metamask-crx@workspace:.                              |
+|      38 | minipass-pipeline@npm:1.2.4                           |
+|      39 | obj-multiplex@npm:1.0.0                               |
+|      40 | pinkie@npm:2.0.4                                      |
+|      41 | polyfill-crypto.getrandomvalues@npm:1.0.0             |
+|      42 | rework-visit@npm:1.0.0                                |
+|      43 | single-call-balance-checker-abi@npm:1.0.0             |
+|      44 | unicode-confusables@npm:0.1.1                         |
+|      45 | web-encoding@npm:1.1.5                                |
 </details>
-                            
-                            
+
 ### Fine grained information
 
 :dolphin: For further information about software supply chain smells in your project, take a look at the following tables.
 
 <details>
-<summary>Source code links that could not be found(60)</summary>
+<summary>Source code links that could not be found(61)</summary>
     
 
 
@@ -95,47 +145,48 @@ The following checks were specifically requested:
 |      23 | @types/lru-cache@npm:5.1.1                            |
 |      24 | @types/mime@npm:1.3.2                                 |
 |      25 | @types/mime@npm:3.0.1                                 |
-|      26 | @types/prettier@npm:2.7.2                             |
-|      27 | @types/sass@npm:1.43.1                                |
-|      28 | @types/testing-library__jest-dom@npm:5.9.5            |
-|      29 | async-eventemitter@npm:0.2.4                          |
-|      30 | babel-plugin-named-exports-order@npm:0.0.2            |
-|      31 | boolbase@npm:1.0.0                                    |
-|      32 | esbuild-register@npm:3.5.0                            |
-|      33 | join-component@npm:1.1.0                              |
-|      34 | metamask-crx@workspace:.                              |
-|      35 | minipass-pipeline@npm:1.2.4                           |
-|      36 | obj-multiplex@npm:1.0.0                               |
-|      37 | pinkie@npm:2.0.4                                      |
-|      38 | polyfill-crypto.getrandomvalues@npm:1.0.0             |
-|      39 | rework-visit@npm:1.0.0                                |
-|      40 | single-call-balance-checker-abi@npm:1.0.0             |
-|      41 | unicode-confusables@npm:0.1.1                         |
-|      42 | web-encoding@npm:1.1.5                                |
-|      43 | @multiformats/base-x@npm:4.0.1                        |
-|      44 | archy@npm:1.0.0                                       |
-|      45 | boolean@npm:3.0.2                                     |
-|      46 | commondir@npm:1.0.1                                   |
-|      47 | copy-props@npm:2.0.5                                  |
-|      48 | esbuild-plugin-alias@npm:0.2.1                        |
-|      49 | https-browserify@npm:1.0.0                            |
-|      50 | outpipe@npm:1.1.1                                     |
-|      51 | parents@npm:1.0.1                                     |
-|      52 | qr.js@npm:0.0.0                                       |
-|      53 | quote-stream@npm:1.0.2                                |
-|      54 | read-only-stream@npm:2.0.0                            |
-|      55 | semver-compare@npm:1.0.0                              |
-|      56 | shallow-copy@npm:0.0.1                                |
-|      57 | stream-combiner2@npm:1.1.1                            |
-|      58 | subarg@npm:1.0.0                                      |
-|      59 | text-table@npm:0.2.0                                  |
-|      60 | wordwrap@npm:1.0.0                                    |
+|      26 | @types/parse-json@npm:4.0.0                           |
+|      27 | @types/prettier@npm:2.7.2                             |
+|      28 | @types/sass@npm:1.43.1                                |
+|      29 | @types/testing-library__jest-dom@npm:5.9.5            |
+|      30 | async-eventemitter@npm:0.2.4                          |
+|      31 | babel-plugin-named-exports-order@npm:0.0.2            |
+|      32 | boolbase@npm:1.0.0                                    |
+|      33 | esbuild-register@npm:3.5.0                            |
+|      34 | join-component@npm:1.1.0                              |
+|      35 | metamask-crx@workspace:.                              |
+|      36 | minipass-pipeline@npm:1.2.4                           |
+|      37 | obj-multiplex@npm:1.0.0                               |
+|      38 | pinkie@npm:2.0.4                                      |
+|      39 | polyfill-crypto.getrandomvalues@npm:1.0.0             |
+|      40 | rework-visit@npm:1.0.0                                |
+|      41 | single-call-balance-checker-abi@npm:1.0.0             |
+|      42 | unicode-confusables@npm:0.1.1                         |
+|      43 | web-encoding@npm:1.1.5                                |
+|      44 | @multiformats/base-x@npm:4.0.1                        |
+|      45 | archy@npm:1.0.0                                       |
+|      46 | boolean@npm:3.0.2                                     |
+|      47 | commondir@npm:1.0.1                                   |
+|      48 | copy-props@npm:2.0.5                                  |
+|      49 | esbuild-plugin-alias@npm:0.2.1                        |
+|      50 | https-browserify@npm:1.0.0                            |
+|      51 | outpipe@npm:1.1.1                                     |
+|      52 | parents@npm:1.0.1                                     |
+|      53 | qr.js@npm:0.0.0                                       |
+|      54 | quote-stream@npm:1.0.2                                |
+|      55 | read-only-stream@npm:2.0.0                            |
+|      56 | semver-compare@npm:1.0.0                              |
+|      57 | shallow-copy@npm:0.0.1                                |
+|      58 | stream-combiner2@npm:1.1.1                            |
+|      59 | subarg@npm:1.0.0                                      |
+|      60 | text-table@npm:0.2.0                                  |
+|      61 | wordwrap@npm:1.0.0                                    |
 </details>
 
 All packages have accessible tags.
 
 <details>
-<summary>List of deprecated packages(83)</summary>
+<summary>List of deprecated packages(85)</summary>
     
 
 
@@ -154,6 +205,7 @@ All packages have accessible tags.
 | @playwright/test@npm:1.39.0                                   | True                    | False            |
 | @stylelint/postcss-css-in-js@npm:0.37.2                       | True                    | True             |
 | @stylelint/postcss-markdown@npm:0.36.1                        | True                    | True             |
+| @trezor/connect-web@npm:9.0.11                                | True                    | False            |
 | @types/keyv@npm:4.2.0                                         | True                    | False            |
 | abab@npm:2.0.6                                                | True                    | True             |
 | abstract-leveldown@npm:7.2.0                                  | True                    | True             |
@@ -188,6 +240,7 @@ All packages have accessible tags.
 | is-data-descriptor@npm:1.0.0                                  | True                    | False            |
 | level-concat-iterator@npm:3.1.0                               | True                    | True             |
 | leveldown@npm:6.1.0                                           | True                    | True             |
+| lodash.get@npm:4.4.2                                          | True                    | True             |
 | mini-create-react-context@npm:0.3.2                           | True                    | True             |
 | multibase@npm:2.0.0                                           | True                    | True             |
 | multibase@npm:3.1.2                                           | True                    | True             |
@@ -3550,7 +3603,7 @@ For packages with invalid code signature:
 
 Report created by [dirty-waters](https://github.com/chains-project/dirty-waters/).
 
-Report created on 2025-02-20 14:57:50
-- Tool version: 3712a094
+Report created on 2025-03-01 21:13:25
+- Tool version: 7e806c5d
 - Project Name: MetaMask/metamask-extension
 - Project Version: v11.10.0
