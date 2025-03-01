@@ -8,12 +8,15 @@ By using `dirty-waters`, you identify the shady areas of your supply chain, whic
 
 `dirty-waters`'s static analyses report the following smells:
 
-- Dependencies with no/invalid link to source code repositories (high severity)
+- Dependencies with no/invalid\* link to source code repositories (high severity)
 - Dependencies with no tag/commit SHA for release, impossible to have reproducible builds (medium severity)
 - Deprecated Dependencies (medium severity)
 - Depends on a fork (medium severity)
 - Dependencies without/with invalid code signature (medium severity)
 - Dependencies with no build attestation (low severity)
+
+\* We consider invalid links to be links which do not return a 200 status code.
+Furthermore, if the dependencies are not hosted on GitHub, not all checks will be possible to be made (e.g., code signature).
 
 As for its differential analyses, `dirty-waters` reports the following smells:
 
