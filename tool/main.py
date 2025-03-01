@@ -9,7 +9,6 @@ import os
 import sys
 import requests
 from git import Repo
-from pathlib import Path
 
 # Allows for tool to be recognized as a package to import from
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
