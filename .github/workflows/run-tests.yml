@@ -42,7 +42,7 @@ jobs:
       - name: Restore cache
         uses: actions/cache/restore@v4.2.1
         id: restore-cache
-        if: 0 == 1
+        if: inputs.ignore_cache != 'true'
         with:
           path: cache/
           key: dirty-waters-cache-${{ runner.os }}-${{ github.event.before }}
