@@ -100,7 +100,7 @@ def get_args():
         dest="gradual_report",
         type=lambda x: str(x).lower() in ["true", "1", "yes", "y"],
         default=True,
-        help="Enable/disable gradual reporting (default: True)",
+        help="Enable/disable gradual reporting (default: true)",
     )
     gradual_report_group.add_argument(
         "--no-gradual-report",
