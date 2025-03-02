@@ -1,6 +1,6 @@
 [project]
 name = "dirty-waters"
-version = "0.52.0"
+version = "0.53.0"
 description = "Automatically detect software supply chain smells and issues"
 readme = "README.md"
 requires-python = ">=3.12"
