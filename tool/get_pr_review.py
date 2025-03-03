@@ -18,61 +18,111 @@ headers = {
 
 url = "https://api.github.com/graphql"
 
-
-def get_first_pr_info(repo_name, review_author_login):
-    query = """
-    query($query: String!, $type: SearchType!, $last: Int!)
-    {search(query: $query, type: $type, last: $last)
-        {
-        nodes {
-        ... on PullRequest {
-            mergedAt
-            merged
-            mergedBy {
-            login
-            }
-            authorAssociation
-            reviews(first:1, states:APPROVED){
-            edges{
-                node{
-                id
-                author{
-                    login
-                    __typename
-                    url
-                }
-                authorAssociation
-                createdAt
-                publishedAt
-                submittedAt
-                state
-                repository{
-                owner{
-                  login
-                }
-                name
-                }
-            }
-            }
-            }
-        }
-        }
-    }
-    }
+def get_multiple_pr_info(repo_name, review_author_logins):
+    # Build dynamic query with aliases
+    query_fragments = []
+    variables = {}
     
+    for i, login in enumerate(review_author_logins):
+        alias = f"search_{i}"
+        query_fragments.append(f"""
+        {alias}: search(query: $query_{i}, type: ISSUE, last: 1) {{
+            nodes {{
+                ... on PullRequest {{
+                    mergedAt
+                    merged
+                    mergedBy {{
+                        login
+                    }}
+                    authorAssociation
+                    reviews(first:1, states:APPROVED) {{
+                        edges {{
+                            node {{
+                                id
+                                author {{
+                                    login
+                                    __typename
+                                    url
+                                }}
+                                authorAssociation
+                                createdAt
+                                publishedAt
+                                submittedAt
+                                state
+                                repository {{
+                                    owner {{
+                                        login
+                                    }}
+                                    name
+                                }}
+                            }}
+                        }}
+                    }}
+                }}
+            }}
+        }}
+        """)
+        variables[f"query_{i}"] = f"repo:{repo_name} is:pr reviewed-by:{login} sort:author-date-asc"
 
-    """
+    # Combine all query fragments
+    complete_query = """
+    query({}) {{
+        {}
+    }}
+    """.format(
+        ", ".join(f"$query_{i}: String!" for i in range(len(review_author_logins))),
+        "\n".join(query_fragments)
+    )
 
-    search_string = f"repo:{repo_name} is:pr reviewed-by:{review_author_login} sort:author-date-asc"
-    variables = {"query": f"{search_string}", "last": 1, "type": "ISSUE"}
-    body = {"query": query, "variables": variables}
-    return make_github_request(url, method="POST", json_data=body, headers=headers)
+    body = {"query": complete_query, "variables": variables}
+    response = make_github_request(url, method="POST", json_data=body, headers=headers)
+    
+    # Restructure response to match expected format
+    if "data" in response:
+        queries = []
+        for i in range(len(review_author_logins)):
+            search_data = response["data"].get(f"search_{i}")
+            if search_data:
+                queries.append(search_data)
+        return {"data": {"queries": queries}}
+    return response
 
 
 def get_pr_review_info(data):
     logging.info("Getting PR review info...")
     pr_data = copy.deepcopy(data)
 
+    # Collect all uncached reviewer lookups needed
+    uncached_lookups = []
+    for package, info in pr_data.items():
+        for author in info.get("authors", []):
+            for merge_info in author.get("commit_merged_info", []):
+                if merge_info.get("state") != "MERGED":
+                    continue
+                    
+                repo_name = merge_info.get("repo")
+                for reviewer in merge_info.get("reviews", []):
+                    review_author_login = reviewer.get("review_author")
+                    if not review_author_login:
+                        continue
+                        
+                    if not cache_manager.github_cache.get_pr_review(repo_name, review_author_login):
+                        uncached_lookups.append((repo_name, review_author_login))
+
+    # Batch fetch uncached reviewers by repository
+    by_repo = {}
+    for repo_name, login in uncached_lookups:
+        by_repo.setdefault(repo_name, set()).add(login)
+        
+    for repo_name, logins in by_repo.items():
+        response = get_multiple_pr_info(repo_name, list(logins))
+        # Cache individual results
+        for login, result in zip(logins, response.get("data", {}).get("queries", [])):
+            cache_manager.github_cache.cache_pr_review(
+                package, repo_name, login, {"data": {"search": result}}
+            )
+
+    # Process the data using cached results
     for package, info in pr_data.items():
         authors = info.get("authors", [])
         if authors:
@@ -93,12 +143,6 @@ def get_pr_review_info(data):
                         review_author_login = reviewer.get("review_author")
                         review_id = reviewer.get("review_id")
                         first_pr_info = cache_manager.github_cache.get_pr_review(repo_name, review_author_login)
-                        if not first_pr_info:
-                            if review_author_login:
-                                first_pr_info = get_first_pr_info(repo_name, review_author_login)
-                                cache_manager.github_cache.cache_pr_review(
-                                    package, repo_name, review_author_login, first_pr_info
-                                )
                         useful_info = first_pr_info.get("data", {}).get("search", {}).get("nodes", [])
                         first_review_info = useful_info[0] if useful_info else {}
                         all_useful_first_prr_info = first_review_info.get("reviews", {}).get("edges", [])
@@ -144,5 +188,4 @@ def get_pr_review_info(data):
             info["prr_data"] = None
 
     logging.info("PR review info processed.")
-
     return pr_data
