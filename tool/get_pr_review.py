@@ -18,14 +18,16 @@ headers = {
 
 url = "https://api.github.com/graphql"
 
+
 def get_multiple_pr_info(repo_name, review_author_logins):
     # Build dynamic query with aliases
     query_fragments = []
     variables = {}
-    
+
     for i, login in enumerate(review_author_logins):
         alias = f"search_{i}"
-        query_fragments.append(f"""
+        query_fragments.append(
+            f"""
         {alias}: search(query: $query_{i}, type: ISSUE, last: 1) {{
             nodes {{
                 ... on PullRequest {{
@@ -61,7 +63,8 @@ def get_multiple_pr_info(repo_name, review_author_logins):
                 }}
             }}
         }}
-        """)
+        """
+        )
         variables[f"query_{i}"] = f"repo:{repo_name} is:pr reviewed-by:{login} sort:author-date-asc"
 
     # Combine all query fragments
@@ -70,13 +73,12 @@ def get_multiple_pr_info(repo_name, review_author_logins):
         {}
     }}
     """.format(
-        ", ".join(f"$query_{i}: String!" for i in range(len(review_author_logins))),
-        "\n".join(query_fragments)
+        ", ".join(f"$query_{i}: String!" for i in range(len(review_author_logins))), "\n".join(query_fragments)
     )
 
     body = {"query": complete_query, "variables": variables}
     response = make_github_request(url, method="POST", json_data=body, headers=headers)
-    
+
     # Restructure response to match expected format
     if "data" in response:
         queries = []
@@ -99,13 +101,13 @@ def get_pr_review_info(data):
             for merge_info in author.get("commit_merged_info", []):
                 if merge_info.get("state") != "MERGED":
                     continue
-                    
+
                 repo_name = merge_info.get("repo")
                 for reviewer in merge_info.get("reviews", []):
                     review_author_login = reviewer.get("review_author")
                     if not review_author_login:
                         continue
-                        
+
                     if not cache_manager.github_cache.get_pr_review(repo_name, review_author_login):
                         uncached_lookups.append((repo_name, review_author_login))
 
@@ -113,14 +115,12 @@ def get_pr_review_info(data):
     by_repo = {}
     for repo_name, login in uncached_lookups:
         by_repo.setdefault(repo_name, set()).add(login)
-        
+
     for repo_name, logins in by_repo.items():
         response = get_multiple_pr_info(repo_name, list(logins))
         # Cache individual results
         for login, result in zip(logins, response.get("data", {}).get("queries", [])):
-            cache_manager.github_cache.cache_pr_review(
-                package, repo_name, login, {"data": {"search": result}}
-            )
+            cache_manager.github_cache.cache_pr_review(package, repo_name, login, {"data": {"search": result}})
 
     # Process the data using cached results
     for package, info in pr_data.items():

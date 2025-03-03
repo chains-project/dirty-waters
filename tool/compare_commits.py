@@ -168,7 +168,7 @@ def get_authors_from_tags(tag1, tag2, package, package_info):
     for old_tag, new_tag in zip(existing_tag_format_old, existing_tag_format_new):
         logging.info(f"Old tag: {old_tag}, New tag: {new_tag}")
         compare_url = f"https://api.github.com/repos/{repo_name}/compare/{old_tag}...{new_tag}"
-        response = make_github_request(compare_url, max_retries=2)  
+        response = make_github_request(compare_url, max_retries=2)
         if response:
             logging.info(f"Found response for {old_tag}...{new_tag}")
             break
