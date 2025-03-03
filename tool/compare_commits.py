@@ -50,13 +50,30 @@ def tag_format(tag, package_name, repo_name):
     return tag_formats
 
 
-def find_existing_tags(tag_formats, repo_name):
+def find_existing_tags_batch(tag_formats, repo_name):
+    # Get all tags in one request; MAY FAIL if the repo has too many tags
+    tags_url = f"https://api.github.com/repos/{repo_name}/git/refs/tags"
+    response = make_github_request(tags_url)
+
+    if not response:
+        return []
+    elif response == 504:
+        for tag_format in tag_formats:
+            response = make_github_request(f"{tags_url}/{tag_format}")
+            if response:
+                return [tag_format]
+        return []
+
+    # Create a map of all tags
+    all_tags = {ref["ref"].replace("refs/tags/", ""): ref for ref in response}
+
+    # Find the matching tag formats
+    matching_tags = []
     for tag_format in tag_formats:
-        tag_url = f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_format}"
-        response = make_github_request(tag_url, silent=True)
-        if response:
-            return tag_format
-    return None
+        if tag_format in all_tags:
+            matching_tags.append(tag_format)
+
+    return matching_tags if matching_tags else []
 
 
 def get_commit_info(commit):
@@ -136,47 +153,33 @@ def get_authors_from_response(url, data, package_info):
 def get_authors_from_tags(tag1, tag2, package, package_info):
     repo_name = package_info.get("repo_name")
     tag_formats_old = tag_format(tag1, package, repo_name)
-    existing_tag_format_old = find_existing_tags(tag_formats_old, repo_name)
+    existing_tag_format_old = find_existing_tags_batch(tag_formats_old, repo_name)
+    logging.info(f"Existing tag format old: {existing_tag_format_old}")
     tag_formats_new = tag_format(tag2, package, repo_name)
-    existing_tag_format_new = find_existing_tags(tag_formats_new, repo_name)
-    category = package_info.get("message")
+    existing_tag_format_new = find_existing_tags_batch(tag_formats_new, repo_name)
+    logging.info(f"Existing tag format new: {existing_tag_format_new}")
 
-    compare_url = (
-        f"https://api.github.com/repos/{repo_name}/compare/{existing_tag_format_old}...{existing_tag_format_new}"
-    )
-    response = (
-        make_github_request(compare_url, max_retries=2)
-        if existing_tag_format_old and existing_tag_format_new
-        else None
-    )
+    if not existing_tag_format_old:
+        status_old = "GitHub old tag not found"
+    if not existing_tag_format_new:
+        status_new = "GitHub new tag not found"
+
+    response = None
+    for old_tag, new_tag in zip(existing_tag_format_old, existing_tag_format_new):
+        logging.info(f"Old tag: {old_tag}, New tag: {new_tag}")
+        compare_url = f"https://api.github.com/repos/{repo_name}/compare/{old_tag}...{new_tag}"
+        response = make_github_request(compare_url, max_retries=2)  
+        if response:
+            logging.info(f"Found response for {old_tag}...{new_tag}")
+            break
 
     if not response:
-        status_old = "GitHub old tag not found"
-        status_new = "GitHub new tag not found"
-        old_tag_found, new_tag_found = False, False
-        if existing_tag_format_old:
-            status_old = existing_tag_format_old
-            old_tag_found = True
-        for tag_old in tag_formats_old:
-            old_tag_url = f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_old}"
-            response = requests.get(old_tag_url)
-            if response.status_code == 200:
-                status_old = tag_old
-                old_tag_found = True
-                break
-
-        if not old_tag_found:
-            for tag_new in tag_formats_new:
-                new_tag_url = f"https://api.github.com/repos/{repo_name}/git/ref/tags/{tag_new}"
-                response = requests.get(new_tag_url)
-                if response.status_code == 200:
-                    status_new = tag_new
-                    new_tag_found = True
-                    break
+        status_old = "GitHub old tag not found" if not existing_tag_format_old else existing_tag_format_old[0]
+        status_new = "GitHub new tag not found" if not existing_tag_format_new else existing_tag_format_new[0]
 
         return {
-            "tag1": existing_tag_format_old if existing_tag_format_old else list(tag_formats_old)[-1],
-            "tag2": existing_tag_format_new if existing_tag_format_new else list(tag_formats_new)[-1],
+            "tag1": existing_tag_format_old[0] if existing_tag_format_old else list(tag_formats_old)[0],
+            "tag2": existing_tag_format_new[0] if existing_tag_format_new else list(tag_formats_new)[0],
             "status_old": status_old,
             "status_new": status_new,
             "category": "Upgraded package",
