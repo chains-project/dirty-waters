@@ -365,7 +365,7 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, repo_path, pnpm_scope)
         logging.error("No lockfile found in %s", repo_path)
         return {"resolutions": [], "patches": []}
 
-    cached_deps = cache_manager.extracted_deps_cache.get_dependencies(project_repo_name, lockfile_hash)
+    cached_deps = cache_manager.extracted_deps_cache.get_dependencies(repo_path, lockfile_hash)
     if cached_deps:
         logging.info(f"Using cached dependencies for {repo_path}")
         return cached_deps
