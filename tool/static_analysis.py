@@ -10,7 +10,7 @@ import subprocess
 import re
 
 from tool.tool_config import get_cache_manager, make_github_request
-from tool.compare_commits import tag_format as construct_tag_format
+from tool.compare_commits import tag_format as construct_tag_format, find_existing_tags_batch
 import logging
 import xmltodict
 
@@ -171,7 +171,9 @@ def check_code_signature(package_name, package_version, pm):
         # Regular expression to extract the PGP signature section
         pgp_signature_pattern = re.compile(r"PGP signature:\n(?:[ \t]*.+\n)*?[ \t]*status:\s*(\w+)", re.MULTILINE)
         match = pgp_signature_pattern.search(output.stdout)
+        logging.info(f"Code Signature match: {match}")
         if match:
+            logging.info(f"Matched, signature match: {match.group(1)}")
             # Extract the status
             status = match.group(1).strip().lower()
             return {"signature_present": True, "signature_valid": status == "valid"}
@@ -385,25 +387,24 @@ def check_existence(package_name, repository, extract_message, package_manager):
         have_no_tags_data = have_no_tags_response.json()
 
         if len(have_no_tags_data) == 0:
+            logging.info(f"No tags found for {package_name} in {repo_api}")
             release_tag_url = None
             tag_related_info = "No tag was found in the repo"
             status_code_release_tag = have_no_tags_response_status_code
         else:
             tag_possible_formats = construct_tag_format(version, package_full_name, repo_name=simplified_path)
-            # Making the default case not finding the tag
-            tag_related_info = "The given tag was not found in the repo"
-            if tag_possible_formats:
-                for tag_format in tag_possible_formats:
-                    tag_url = f"{repo_api}/git/ref/tags/{tag_format}"
-                    response = make_github_request(tag_url, silent=True)
-                    if response:
-                        release_tag_exists = True
-                        release_tag_url = tag_url
-                        tag_related_info = f"Tag {tag_format} is found in the repo"
-                        status_code_release_tag = 200
-                        break
-            if not release_tag_exists:
-                logging.info(f"No tags found for {package_name} in {repo_api}")
+            existing_tag_format = find_existing_tags_batch(tag_possible_formats, simplified_path)
+            logging.info(f"Existing tag format: {existing_tag_format}")
+            if existing_tag_format:
+                existing_tag_format = existing_tag_format[0]
+                release_tag_exists = True
+                release_tag_url = f"{repo_api}/git/ref/tags/{existing_tag_format}"
+                tag_related_info = f"Tag {existing_tag_format} is found in the repo"
+                status_code_release_tag = 200
+            else:
+                release_tag_url = None
+                tag_related_info = "The given tag was not found in the repo"
+                status_code_release_tag = 404
 
     github_info = {
         "is_github": True,

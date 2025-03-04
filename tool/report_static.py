@@ -265,16 +265,16 @@ def write_summary(
 
     no_source_code_repo_df = df.loc[
         df["github_url"] == "No_repo_info_found",
-        ["github_url", "github_exists"] + ["command"] if package_manager == "maven" else [],
+        ["github_url", "github_exists"] + (["command"] if package_manager == "maven" else []),
     ]
     github_repo_404_df = df.loc[
         df["github_exists"] == False,
-        ["github_url", "github_exists"] + ["command"] if package_manager == "maven" else [],
+        ["github_url", "github_exists"] + (["command"] if package_manager == "maven" else []),
     ]
     not_on_github_df = (
         df.loc[
             df["is_github"] == False,
-            ["github_url"] + ["command"] if package_manager == "maven" else [],
+            ["github_url"] + (["command"] if package_manager == "maven" else []),
         ]
         .reset_index(drop=False)
         .drop_duplicates(subset=["package_name"])
@@ -297,9 +297,7 @@ def write_summary(
                 "tag_related_info",
                 "status_code_for_release_tag",
             ]
-            + ["command"]
-            if package_manager == "maven"
-            else []
+            + (["command"] if package_manager == "maven" else [])
         ),
     ]
     # all_deprecated_df = df[df["all_deprecated"] is True]
@@ -318,9 +316,7 @@ def write_summary(
                 "github_url",
                 "parent_repo_link",
             ]
-            + ["command"]
-            if package_manager == "maven"
-            else []
+            + (["command"] if package_manager == "maven" else [])
         ),
     ]
     provenance_df = df.loc[

@@ -841,6 +841,11 @@ def make_github_request(
                 if not silent:
                     logging.warning(f"Request failed: {e}")
                 if attempt == max_retries - 1:
+                    if e.response.status_code in [
+                        502,
+                        504,
+                    ]:  # timeout, sometimes happens when the request is too large (e.g., too many tags)
+                        return 504
                     return None
                 time.sleep(retry_delay * (attempt + 1))
 
