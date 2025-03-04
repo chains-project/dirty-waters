@@ -127,11 +127,7 @@ def fetch_and_cache_batch(commit_batch: List[Tuple[str, str, str, str]]) -> List
                 and response["data"][node_key] is not None
                 and "associatedPullRequests" in response["data"][node_key]
             ):
-                pr_info = {
-                    "data": {
-                        "node": response["data"][node_key]
-                    }
-                }
+                pr_info = {"data": {"node": response["data"][node_key]}}
 
             # Cache immediately after processing each item
             cache_manager.github_cache.cache_pr_info(
@@ -260,7 +256,13 @@ def get_useful_pr_info(commits_data):
             commit_sha = pr_info.get("commit_sha")
             commit_node_id = pr_info.get("commit_node_id")
             repo_name = pr_info.get("repo_name")
-            associated_prs = pr_info.get("pr_info", {}).get("data", {}).get("node", {}).get("associatedPullRequests", {}).get("edges", [])
+            associated_prs = (
+                pr_info.get("pr_info", {})
+                .get("data", {})
+                .get("node", {})
+                .get("associatedPullRequests", {})
+                .get("edges", [])
+            )
             for author in commits_data[package].get("authors", []):
                 if author.get("node_id") == commit_node_id:
                     author["commit_merged_info"] = []
