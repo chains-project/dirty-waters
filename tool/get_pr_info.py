@@ -1,8 +1,4 @@
-import requests
-import sqlite3
 import os
-import json
-import copy
 import logging
 from typing import List, Dict, Tuple
 from tool.tool_config import get_cache_manager, make_github_request
@@ -125,14 +121,17 @@ def fetch_and_cache_batch(commit_batch: List[Tuple[str, str, str, str]]) -> List
         # Process and cache each result immediately
         for i, (node_id, commit_sha, package, repo_name) in enumerate(commit_batch):
             node_key = f"node{i}"
-            pr_info = []
-
+            pr_info = {}
             if (
                 node_key in response["data"]
                 and response["data"][node_key] is not None
                 and "associatedPullRequests" in response["data"][node_key]
             ):
-                pr_info = response["data"][node_key]["associatedPullRequests"]["edges"]
+                pr_info = {
+                    "data": {
+                        "node": response["data"][node_key]
+                    }
+                }
 
             # Cache immediately after processing each item
             cache_manager.github_cache.cache_pr_info(
@@ -155,7 +154,7 @@ def fetch_and_cache_batch(commit_batch: List[Tuple[str, str, str, str]]) -> List
                 }
             )
 
-            logging.debug(f"Processed and cached PR info for commit {commit_sha} in {package}")
+            logging.info(f"Processed and cached PR info for commit {commit_sha} in {package}")
     else:
         # Handle error case
         logging.error(f"Failed to fetch PR information for batch of size {len(commit_batch)}")
@@ -167,7 +166,7 @@ def fetch_and_cache_batch(commit_batch: List[Tuple[str, str, str, str]]) -> List
                     "package": package,
                     "commit_sha": commit_sha,
                     "commit_node_id": node_id,
-                    "pr_info": [],
+                    "pr_info": {},
                 }
             )
             batch_results.append(
@@ -175,7 +174,7 @@ def fetch_and_cache_batch(commit_batch: List[Tuple[str, str, str, str]]) -> List
                     "package": package,
                     "commit_sha": commit_sha,
                     "commit_node_id": node_id,
-                    "pr_info": [],
+                    "pr_info": {},
                     "repo_name": repo_name,
                 }
             )
@@ -261,8 +260,7 @@ def get_useful_pr_info(commits_data):
             commit_sha = pr_info.get("commit_sha")
             commit_node_id = pr_info.get("commit_node_id")
             repo_name = pr_info.get("repo_name")
-            associated_prs = pr_info.get("pr_info", [])
-
+            associated_prs = pr_info.get("pr_info", {}).get("data", {}).get("node", {}).get("associatedPullRequests", {}).get("edges", [])
             for author in commits_data[package].get("authors", []):
                 if author.get("node_id") == commit_node_id:
                     author["commit_merged_info"] = []
