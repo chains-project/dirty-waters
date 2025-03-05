@@ -138,7 +138,7 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
             deps_list_data = {
                 "resolutions": list({"info": info} for info in sorted(pkg_name_with_resolution)),
                 "patches": patches,
-                "aliased_packages": aliased_packages
+                "aliased_packages": aliased_packages,
             }
 
             cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)

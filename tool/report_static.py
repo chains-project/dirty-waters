@@ -20,6 +20,7 @@ SUPPORTED_SMELLS = {
     "aliased_package": ["npm"],
 }
 
+
 def load_data(filename):
     """Load data from a JSON file got from static analysis."""
 
@@ -257,6 +258,7 @@ def invalid_code_signature(invalid_code_signature_df, md_file, amount, package_m
         return False
 
     return True
+
 
 def aliased_package(aliased_package_df, md_file, amount, package_manager):
     """

@@ -387,7 +387,7 @@ def write_to_file(filename, directory, data):
 
 def setup_project_info(args, any_check_specified):
     """Set up project information based on command-line arguments."""
-    
+
     return {
         "repo_name": args.project_repo_name,
         "old_version": args.release_version_old,
@@ -456,8 +456,8 @@ def generate_static_report(analysis_results, project_info, is_old_version):
 
     logging.info("Generating static analysis report for %s", version_name)
     report_static.get_s_summary(
-        analysis_results[0], # static analysis results
-        analysis_results[1], # deps_list
+        analysis_results[0],  # static analysis results
+        analysis_results[1],  # deps_list
         project_info["repo_name"],
         version,
         project_info["package_manager"],
