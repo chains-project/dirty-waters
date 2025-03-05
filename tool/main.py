@@ -92,6 +92,12 @@ def get_args():
         action="store_true",
         help="Enable debug mode.",
     )
+    parser.add_argument(
+        "--config",
+        help="Path to configuration file (JSON)",
+        type=str,
+        required=False,
+    )
 
     # Gradual report group -- mutually exclusive, preserves backward compatibility for --no-gradual-report
     gradual_report_group = parser.add_mutually_exclusive_group()
@@ -273,7 +279,7 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
 
 
 def static_analysis_all(
-    folder_path, project_repo_name, release_version, package_manager, check_match=False, enabled_checks=None
+    folder_path, project_repo_name, release_version, package_manager, check_match=False, enabled_checks=None, config=None
 ):
     """
     Perform static analysis on the given project and release version.
@@ -285,6 +291,7 @@ def static_analysis_all(
         package_manager (str): The package manager used in the project.
         check_match (bool): Whether to check for package name matches.
         enabled_checks (dict): Dictionary of enabled smell checks.
+        config (dict): Configuration dictionary
     """
     deps_list, dep_with_many_versions, patches_info = get_deps(
         folder_path, project_repo_name, release_version, package_manager
@@ -292,7 +299,7 @@ def static_analysis_all(
     repo_url_info = github_repo.get_github_repo_url(folder_path, deps_list, package_manager)
 
     static_results, errors = static_analysis.get_static_data(
-        folder_path, repo_url_info, package_manager, check_match=check_match, enabled_checks=enabled_checks
+        folder_path, repo_url_info, package_manager, check_match=check_match, enabled_checks=enabled_checks, config=config
     )
     logging.info("Errors: %s", errors)
 
@@ -436,6 +443,7 @@ def perform_static_analysis(project_info, is_old_version):
         project_info["package_manager"],
         project_info["check_match"],
         project_info["enabled_checks"],
+        project_info["config"],
     )
 
     write_to_file(
@@ -558,6 +566,7 @@ def main():
 
     project_info = setup_project_info(dw_args, any_check_specified)
     setup_directories_and_logging(project_info)
+    project_info["config"] = tool_config.load_config(dw_args.config)
 
     logging.info(
         f"Software supply chain smells analysis for {project_info['repo_name']} for version {project_info['old_version']}..."
