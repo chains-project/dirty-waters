@@ -22,7 +22,7 @@ def process_data(data):
         if not commits:
             record.append(
                 {
-                    "package_name": package_name,
+                    "package_name": f"`{package_name}`",
                     "repo_name": repo_name,
                     "repo_link": repo_link,
                     "category": pkg_category,
