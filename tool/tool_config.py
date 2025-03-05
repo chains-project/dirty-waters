@@ -734,32 +734,30 @@ def clone_repo(project_repo_name, release_version=None, blobless=False):
     return f"/tmp/{project_repo_name}"
 
 
-DEFAULT_CONFIG_PATH = '.dirty-waters.json'
-DEFAULT_CONFIG = {
-    "ignore": []
-}
+DEFAULT_CONFIG_PATH = ".dirty-waters.json"
+DEFAULT_CONFIG = {"ignore": []}
 
 
 def load_config(config_path=None):
     """
     Load configuration from a JSON file.
-    
+
     Args:
         config_path (str): Path to config file. If None, looks for .dirty-waters.json in current directory
-        
+
     Returns:
         dict: Configuration dictionary
-    """    
+    """
     if not config_path:
         logging.info(f"No config file provided, using default config path: {DEFAULT_CONFIG_PATH}")
         config_path = DEFAULT_CONFIG_PATH
-    
+
     if not os.path.exists(config_path):
         logging.warning(f"Config file not found at {config_path}, using default config")
         return DEFAULT_CONFIG
-        
+
     try:
-        with open(config_path, 'r') as f:
+        with open(config_path, "r") as f:
             config = json.load(f)
             return {**DEFAULT_CONFIG, **config}
     except Exception as e:
