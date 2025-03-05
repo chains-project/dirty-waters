@@ -97,9 +97,7 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
 
     Returns:
         dict: A dictionary containing the extracted dependencies and patches.
-
     """
-
     lock_file_json = json.loads(npm_lock_file)
     lockfile_hash = get_lockfile_hash(lock_file_json)
     if not lockfile_hash:
@@ -113,11 +111,11 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
     try:
         patches = []
         pkg_name_with_resolution = set()
+        aliased_packages = {}
         deps_list_data = {}
 
         packages = {}
 
-        # Extract packages from the "packages" object
         if lock_file_json.get("packages") and isinstance(lock_file_json["packages"], dict):
             for package_path, package_info in lock_file_json["packages"].items():
                 if package_path.startswith("node_modules/"):
@@ -126,12 +124,21 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
                         package_name = package_name.split("node_modules/")[-1]
 
                     if package_info.get("version"):
-                        packages[package_name] = package_info["version"]
-                        pkg_name_with_resolution.add(f"{package_name}@{package_info['version']}")
+                        version = package_info["version"]
+                        # Handle npm aliases
+                        original_name = package_info.get("name")
+                        if original_name:
+                            logging.warning(f"Found npm alias for {original_name}@{version}")
+                            aliased_packages[f"{original_name}@{version}"] = package_name
+                            package_name = original_name
+
+                        packages[package_name] = version
+                        pkg_name_with_resolution.add(f"{package_name}@{version}")
 
             deps_list_data = {
                 "resolutions": list({"info": info} for info in sorted(pkg_name_with_resolution)),
                 "patches": patches,
+                "aliased_packages": aliased_packages
             }
 
             cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
@@ -144,7 +151,7 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
             str(e),
         )
 
-    return {"resolutions": [], "patches": []}
+    return {"resolutions": [], "patches": [], "aliased_packages": []}
 
 
 def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):

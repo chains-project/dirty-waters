@@ -141,6 +141,11 @@ def get_args():
         action="store_true",
         help="Check for dependencies with missing/invalid code signature",
     )
+    smell_group.add_argument(
+        "--check-aliased-packages",
+        action="store_true",
+        help="Check for aliased packages",
+    )
 
     arguments = parser.parse_args()
 
@@ -254,6 +259,7 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
 
     logging.info("Number of dependencies: %d", len(deps_list_all.get("resolutions", {})))
     logging.info("Number of patches: %d", len(deps_list_all.get("patches", {})))
+    logging.info("Number of aliased packages: %d", len(deps_list_all.get("aliased_packages", {})))
     logging.info("Number of workspace dependencies: %d", len(deps_list_all.get("workspace", {})))
 
     # dep with different resolutions for further analysis
@@ -381,7 +387,7 @@ def write_to_file(filename, directory, data):
 
 def setup_project_info(args, any_check_specified):
     """Set up project information based on command-line arguments."""
-
+    
     return {
         "repo_name": args.project_repo_name,
         "old_version": args.release_version_old,
@@ -450,7 +456,8 @@ def generate_static_report(analysis_results, project_info, is_old_version):
 
     logging.info("Generating static analysis report for %s", version_name)
     report_static.get_s_summary(
-        analysis_results[0],
+        analysis_results[0], # static analysis results
+        analysis_results[1], # deps_list
         project_info["repo_name"],
         version,
         project_info["package_manager"],
@@ -516,6 +523,7 @@ def main():
             dw_args.check_forks,
             dw_args.check_provenance,
             dw_args.check_code_signature,
+            dw_args.check_aliased_packages,
         ]
     )
 
@@ -534,6 +542,7 @@ def main():
             "forks": dw_args.check_forks,
             "provenance": dw_args.check_provenance,
             "code_signature": dw_args.check_code_signature,
+            "aliased_package": dw_args.check_aliased_packages,
         }
     else:
         # If no checks specified, enable all by default
@@ -544,6 +553,7 @@ def main():
             "forks": True,
             "provenance": True,
             "code_signature": True,
+            "aliased_package": True,
         }
 
     project_info = setup_project_info(dw_args, any_check_specified)

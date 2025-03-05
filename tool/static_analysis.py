@@ -33,6 +33,7 @@ DEFAULT_ENABLED_CHECKS = {
     "forks": True,
     "provenance": True,
     "code_signature": True,
+    "aliased_package": True,
 }
 
 SCHEMAS_FOR_CACHE_ANALYSIS = {
@@ -633,6 +634,8 @@ def analyze_package_data(
                         check = "source_code"
                     elif check in ["deprecated", "provenance"]:
                         check = "package_info"
+                    elif check == "aliased_package":
+                        continue
                     missing_checks[check] = not cached_analysis_matches_schema(
                         cached_analysis.get(check, {}), SCHEMAS_FOR_CACHE_ANALYSIS[check]
                     )
@@ -646,7 +649,7 @@ def analyze_package_data(
         else:
             logging.info(f"No cached analysis for {package}, analyzing all enabled checks")
             for check, enabled in enabled_checks.items():
-                if check in ["release_tags", "forks"]:
+                if check in ["release_tags", "forks", "aliased_package"]:
                     continue
                 elif check in ["deprecated", "provenance"]:
                     check = "package_info"
@@ -707,7 +710,8 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
             extract_repo_url_message = repo_urls.get("message", "")
             command = repo_urls.get("command", None)
             analyzed_data = analyze_package_data(
-                package, repo_url, extract_repo_url_message, pm, check_match=check_match, enabled_checks=enabled_checks
+                package, repo_url, extract_repo_url_message, pm, 
+                check_match=check_match, enabled_checks=enabled_checks
             )
             error = analyzed_data.get("error", None)
             pbar.update(1)

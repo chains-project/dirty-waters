@@ -17,8 +17,8 @@ SUPPORTED_SMELLS = {
     "provenance": ["yarn-classic", "yarn-berry", "pnpm", "npm"],
     "code_signature": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
     "invalid_code_signature": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
+    "aliased_package": ["npm"],
 }
-
 
 def load_data(filename):
     """Load data from a JSON file got from static analysis."""
@@ -27,22 +27,23 @@ def load_data(filename):
         return json.load(f)
 
 
-def create_dataframe(data):
+def create_dataframe(data, deps_list):
     """
     Create a dataframe from the data got from static analysis.
+    Aliased packages are added to the dataframe from the deps_list.
 
     """
 
+    aliased_packages = deps_list.get("aliased_packages", {})
     rows = []
 
     for package_name, package_data in data.items():
         source_code_data = package_data.get("source_code", {}) or {}
-
         match_data = package_data.get("match_info", {}) or {}
         release_tag_exists_info = source_code_data.get("release_tag", {}) or {}
+        aliased_package_name = aliased_packages.get(package_name, None)
 
         # Create a row for each package
-
         row = {
             "package_name": package_name,
             "deprecated_in_version": package_data.get("package_info", {}).get("deprecated_in_version"),
@@ -60,6 +61,8 @@ def create_dataframe(data):
             "parent_repo_link": source_code_data.get("parent_repo_link", None),
             "forked_from": source_code_data.get("parent_repo_link", "-"),
             "open_issues_count": source_code_data.get("open_issues_count", "-"),
+            "is_aliased": aliased_package_name is not None,
+            "aliased_package_name": aliased_package_name,
             "is_match": match_data.get("match", None),
             # "release_tag_exists_info": source_code_data.get("release_tag", {}),
             "release_tag_exists": release_tag_exists_info.get("exists", "-"),
@@ -255,6 +258,30 @@ def invalid_code_signature(invalid_code_signature_df, md_file, amount, package_m
 
     return True
 
+def aliased_package(aliased_package_df, md_file, amount, package_manager):
+    """
+    Create a section for aliased packages.
+    """
+
+    if not aliased_package_df.empty:
+        md_file.write(
+            f"""
+<details>
+<summary>List of aliased packages({amount})</summary>
+    """
+        )
+        md_file.write("\n\n\n")
+        markdown_text = aliased_package_df.reset_index().to_markdown(index=False)
+        md_file.write(markdown_text)
+        md_file.write("\n</details>\n")
+    elif package_manager not in SUPPORTED_SMELLS["aliased_package"]:
+        md_file.write(f"\nThe package manager ({package_manager}) does not support checking for aliased packages.\n")
+    else:
+        md_file.write("\nNo aliased package found.\n")
+        return False
+
+    return True
+
 
 def write_summary(
     df, project_name, release_version, package_manager, filename, enabled_checks, gradual_report, mode="w"
@@ -333,6 +360,13 @@ def write_summary(
         (df["signature_present"] == True) & (df["signature_valid"] == False),
         (["command"] if package_manager == "maven" else []),
     ]
+    aliased_package_df = df.loc[
+        df["is_aliased"] == True,
+        [
+            "aliased_package_name",
+        ]
+        + (["command"] if package_manager == "maven" else []),
+    ]
 
     common_counts = {
         "### Total packages in the supply chain": len(df),
@@ -366,6 +400,9 @@ def write_summary(
         warning_counts["provenance"] = (
             f":black_square_button: Packages without build attestation (⚠️): {provenance_df.shape[0]}"
         )
+
+    if enabled_checks.get("aliased_package"):
+        warning_counts["aliased_package"] = f":alien: Packages that are aliased (⚠️): {aliased_package_df.shape[0]}"
 
     source_sus = no_source_code_repo_df.shape[0] + github_repo_404_df.shape[0]
 
@@ -481,6 +518,12 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                     provenance_df, md_file, (df["provenance_in_version"] == False).sum(), package_manager
                 ),
             },
+            "aliased_package": {
+                "enabled": enabled_checks.get("aliased_package"),
+                "function": lambda: aliased_package(
+                    aliased_package_df, md_file, aliased_package_df.shape[0], package_manager
+                ),
+            },
         }
 
         printed = False
@@ -510,6 +553,8 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         Open an issue in the dependency’s repository to request the inclusion of code signature in the CI/CD pipeline. \n
         \nFor packages with invalid code signature:\n
         It's recommended to verify the code signature and contact the maintainer to fix the issue. \n
+        \nFor packages that are aliased:\n
+        Check the aliased package and its repository to verify the alias is not malicious. \n
 </details>
 
 
@@ -529,13 +574,13 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 
 
 def get_s_summary(
-    data, project_name, release_version, package_manager, enabled_checks, gradual_report, summary_filename
+    data, deps_list, project_name, release_version, package_manager, enabled_checks, gradual_report, summary_filename
 ):
     """
     Get a summary of the static analysis results.
     """
 
-    df = create_dataframe(data)
+    df = create_dataframe(data, deps_list)
     write_summary(
         df,
         project_name,
