@@ -46,7 +46,7 @@ def create_dataframe(data, deps_list):
 
         # Create a row for each package
         row = {
-            "package_name": package_name,
+            "package_name": f"`{package_name}`",
             "deprecated_in_version": package_data.get("package_info", {}).get("deprecated_in_version"),
             "provenance_in_version": package_data.get("package_info", {}).get("provenance_in_version"),
             "all_deprecated": package_data.get("package_info", {}).get("all_deprecated", None),
@@ -67,7 +67,7 @@ def create_dataframe(data, deps_list):
             "is_match": match_data.get("match", None),
             # "release_tag_exists_info": source_code_data.get("release_tag", {}),
             "release_tag_exists": release_tag_exists_info.get("exists", "-"),
-            "tag_version": release_tag_exists_info.get("tag_version", "-"),
+            "tag_version": f"`{release_tag_exists_info.get("tag_version", "-")}`",
             "tag_url": release_tag_exists_info.get("url", "-"),
             "tag_related_info": release_tag_exists_info.get("tag_related_info", "-"),
             "status_code_for_release_tag": release_tag_exists_info.get("status_code", "-"),
