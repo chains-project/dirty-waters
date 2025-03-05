@@ -65,7 +65,7 @@ All configuration options
 usage: main.py [-h] -p PROJECT_REPO_NAME [-v RELEASE_VERSION_OLD]
                [-vn RELEASE_VERSION_NEW] [-d] [-n] -pm
                {yarn-classic,yarn-berry,pnpm,npm,maven}
-               [--pnpm-scope PNPM_SCOPE] [--debug]
+               [--pnpm-scope PNPM_SCOPE] [--debug] [--config CONFIG]
                [--gradual-report GRADUAL_REPORT | --no-gradual-report]
                [--check-source-code] [--check-release-tags]
                [--check-deprecated] [--check-forks] [--check-provenance]
@@ -95,8 +95,9 @@ options:
                         using 'pnpm list --filter <scope> --depth Infinity'
                         command. Configure the scope in tool_config.py file.
   --debug               Enable debug mode.
+  --config CONFIG       Path to configuration file (JSON)
   --gradual-report GRADUAL_REPORT
-                        Enable/disable gradual reporting (default: True)
+                        Enable/disable gradual reporting (default: true)
   --no-gradual-report   Disable gradual reporting (deprecated, use --gradual-
                         report=false instead)
 
@@ -170,6 +171,22 @@ In alternative to virtual environments, you may also use the Nix flake present i
 ```bash
 export GITHUB_API_TOKEN=<your_token>
 ```
+
+### Configuration
+
+You can set the tool's configuration through a JSON file, which can be then passed to the tool using the `--config` flag.
+At the moment, we have configuration support to ignore specific packages from the analysis.
+
+An example configuration file:
+
+```json
+{
+  "ignore": ["package_name_1@versionx.y.z", "package_name_2@versiona.b.c"]
+}
+```
+
+Note that for cases where a package is aliased, we check for the original package name, not the aliased one:
+i.e., if we alias the package `string-width` to `string-width-cjs`, we will check for `string-width@versionx.y.z`, not `string-width-cjs@versionx.y.z`.
 
 ### Continuous integration
 
