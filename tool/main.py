@@ -279,7 +279,13 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
 
 
 def static_analysis_all(
-    folder_path, project_repo_name, release_version, package_manager, check_match=False, enabled_checks=None, config=None
+    folder_path,
+    project_repo_name,
+    release_version,
+    package_manager,
+    check_match=False,
+    enabled_checks=None,
+    config=None,
 ):
     """
     Perform static analysis on the given project and release version.
@@ -299,7 +305,12 @@ def static_analysis_all(
     repo_url_info = github_repo.get_github_repo_url(folder_path, deps_list, package_manager)
 
     static_results, errors = static_analysis.get_static_data(
-        folder_path, repo_url_info, package_manager, check_match=check_match, enabled_checks=enabled_checks, config=config
+        folder_path,
+        repo_url_info,
+        package_manager,
+        check_match=check_match,
+        enabled_checks=enabled_checks,
+        config=config,
     )
     logging.info("Errors: %s", errors)
 

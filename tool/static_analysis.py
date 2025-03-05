@@ -702,11 +702,11 @@ def analyze_package_data(
 def should_ignore_package(package_name, config):
     """
     Check if a package should be ignored based on config.
-    
+
     Args:
         package_name (str): Name of the package
         config (dict): Configuration dictionary
-        
+
     Returns:
         bool: True if package should be ignored
     """
@@ -723,13 +723,13 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
     with tqdm(total=len(packages_data), desc="Analyzing packages") as pbar:
         for package, repo_urls in packages_data.items():
             logging.info(f"Currently analyzing {package}")
-            
+
             # Check if package should be ignored
             if should_ignore_package(package, config):
                 logging.warning(f"Skipping ignored package: {package}")
                 pbar.update(1)
                 continue
-                
+
             repo_url = repo_urls.get("url", "")
             extract_repo_url_message = repo_urls.get("message", "")
             command = repo_urls.get("command", None)
