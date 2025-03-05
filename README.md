@@ -69,7 +69,7 @@ usage: main.py [-h] -p PROJECT_REPO_NAME [-v RELEASE_VERSION_OLD]
                [--gradual-report GRADUAL_REPORT | --no-gradual-report]
                [--check-source-code] [--check-release-tags]
                [--check-deprecated] [--check-forks] [--check-provenance]
-               [--check-code-signature]
+               [--check-code-signature] [--check-aliased-packages]
 
 options:
   -h, --help            show this help message and exit
@@ -112,6 +112,8 @@ smell checks:
   --check-code-signature
                         Check for dependencies with missing/invalid code
                         signature
+  --check-aliased-packages
+                        Check for aliased packages
 ```
 
 Reports are gradual by default: that is, only the highest severity smell type with issues found within this project is reported. You can disable this feature, and get a full report,
