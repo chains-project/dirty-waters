@@ -67,12 +67,9 @@ jobs:
           pytest tests/ -v -s | tee output.log
           echo "::set-output name=static_output_file::$(grep 'Static Analysis Output file path:' output.log | awk '{print $NF}')"
           echo "::set-output name=differential_output_file::$(grep 'Differential Analysis Output file path:' output.log | awk '{print $NF}')"
-          # status will be 'success' if the tests pass, 'failure' otherwise (checking for FAILURE in the log)
           if grep -q 'FAILURE' output.log; then
-            echo "FAILURE found in output.log"
             echo "::set-output name=status::failure"
           else
-            echo "FAILURE not found in output.log"
             echo "::set-output name=status::success"
           fi
 
@@ -86,9 +83,6 @@ jobs:
       - name: Copy new reports to example_reports
         if: github.ref == 'refs/heads/main' && steps.analysis.outputs.status == 'success'
         run: |
-          # first, echo to debug
-          echo ${{ steps.analysis.outputs.static_output_file }}
-          echo ${{ steps.analysis.outputs.differential_output_file }}
           cp ${{ steps.analysis.outputs.static_output_file }} example_reports/static_analysis_report_example.md
           cp ${{ steps.analysis.outputs.differential_output_file }} example_reports/differential_analysis_report_example.md
 
