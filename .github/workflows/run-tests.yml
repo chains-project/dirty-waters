@@ -68,10 +68,11 @@ jobs:
           echo "::set-output name=static_output_file::$(grep 'Static Analysis Output file path:' output.log | awk '{print $NF}')"
           echo "::set-output name=differential_output_file::$(grep 'Differential Analysis Output file path:' output.log | awk '{print $NF}')"
           # status will be 'success' if the tests pass, 'failure' otherwise (checking for FAILURE in the log)
-          cat output.log
           if grep -q 'FAILURE' output.log; then
+            echo "FAILURE found in output.log"
             echo "::set-output name=status::failure"
           else
+            echo "FAILURE not found in output.log"
             echo "::set-output name=status::success"
           fi
 
