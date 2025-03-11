@@ -70,7 +70,7 @@ jobs:
           key: dirty-waters-cache-${{ runner.os }}-${{ steps.set-sha.outputs.commit_sha }}
 
       - name: Copy new reports to example_reports
-        if: ${{ job.status }} == 'success' && github.ref == 'refs/heads/main'
+        if: ${{ job.status }} == 'success' && (github.ref == 'refs/heads/main' or github.event_name == 'pull_request')
         run: |
           cp ${{ steps.analysis.outputs.static_output_file }} example_reports/static_analysis_report_example.txt
           cp ${{ steps.analysis.outputs.differential_output_file }} example_reports/differential_analysis_report_example.txt
