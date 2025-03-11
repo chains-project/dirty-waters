@@ -545,34 +545,41 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         if enabled_checks.get("source_code") or enabled_checks.get("release_tags"):
             md_file.write("""
 \nFor packages **without source code & accessible release tags**:\n
+- **Why?** Missing or inaccessible source code makes it impossible to audit the package for security vulnerabilities or malicious code.\n
 1. Pull Request to the maintainer of dependency, requesting correct repository metadata and proper tagging. \n""")
 
         if enabled_checks.get("deprecated"):
             md_file.write("""
 \nFor **deprecated** packages:\n
+- **Why?** Deprecated packages may contain known security issues and are no longer maintained, putting your project at risk.\n
 1. Confirm the maintainer's deprecation intention 
 2. Check for not deprecated versions""")
 
         if enabled_checks.get("provenance"):
             md_file.write("""
 \nFor packages **without provenance**:\n
+- **Why?** Without provenance, there's no way to verify that the package was built from the claimed source code, making supply chain attacks possible.\n
 1. Open an issue in the dependency's repository to request the inclusion of provenance and build attestation in the CI/CD pipeline.""")
 
         if enabled_checks.get("forks"):
             md_file.write("""
 \nFor packages **that are forks**:\n
+- **Why?** Forked packages may contain malicious code not present in the original repository, and may not receive security updates.\n
 1. Inspect the package and its GitHub repository to verify the fork is not malicious.""")
 
         if enabled_checks.get("code_signature"):
             md_file.write("""
 \nFor packages **without code signature**:\n
+- **Why?** Code signatures help verify the authenticity and integrity of the package, ensuring it hasn't been tampered with.\n
 1. Open an issue in the dependency's repository to request the inclusion of code signature in the CI/CD pipeline. \n
 \nFor packages **with invalid code signature**:\n
+- **Why?** Invalid signatures could indicate tampering or compromised build processes.\n
 1. It's recommended to verify the code signature and contact the maintainer to fix the issue.""")
 
         if enabled_checks.get("aliased_package"):
             md_file.write("""
 \nFor packages that are **aliased**:\n
+- **Why?** Aliased packages may hide malicious dependencies under seemingly legitimate names.\n
 1. Check the aliased package and its repository to verify the alias is not malicious.""")
 
         md_file.write("\n</details>\n\n\n")
