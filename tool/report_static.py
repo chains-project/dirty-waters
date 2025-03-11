@@ -392,11 +392,11 @@ def write_summary(
     if enabled_checks.get("deprecated"):
         warning_counts["deprecated"] = f":x: Packages that are deprecated (⚠️⚠️): {version_deprecated_df.shape[0]}"
 
-    if enabled_checks.get("forks"):
-        warning_counts["forked_package"] = f":cactus: Packages that are forks (⚠️⚠️): {(forked_package_df.shape[0])}"
-
     if enabled_checks.get("code_signature"):
         warning_counts["code_signature"] = f":lock: Packages without code signature (⚠️⚠️): {code_signature_df.shape[0]}"
+
+    if enabled_checks.get("forks"):
+        warning_counts["forked_package"] = f":cactus: Packages that are forks (⚠️): {(forked_package_df.shape[0])}"
 
     if enabled_checks.get("provenance"):
         warning_counts["provenance"] = (
@@ -496,12 +496,6 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                     version_deprecated_df, md_file, (df["deprecated_in_version"] == True).sum(), package_manager
                 ),
             },
-            "forked_package": {
-                "enabled": enabled_checks.get("forks"),
-                "function": lambda: forked_package(
-                    forked_package_df, md_file, (df["is_fork"] == True).sum(), package_manager
-                ),
-            },
             "code_signature": {
                 "enabled": enabled_checks.get("code_signature"),
                 "function": lambda: code_signature(
@@ -512,6 +506,12 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                 "enabled": enabled_checks.get("code_signature"),
                 "function": lambda: invalid_code_signature(
                     invalid_code_signature_df, md_file, invalid_code_signature_df.shape[0], package_manager
+                ),
+            },
+            "forked_package": {
+                "enabled": enabled_checks.get("forks"),
+                "function": lambda: forked_package(
+                    forked_package_df, md_file, (df["is_fork"] == True).sum(), package_manager
                 ),
             },
             "provenance": {
