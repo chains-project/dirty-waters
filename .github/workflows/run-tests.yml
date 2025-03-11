@@ -67,6 +67,12 @@ jobs:
           pytest tests/ -v -s | tee output.log
           echo "::set-output name=static_output_file::$(grep 'Static Analysis Output file path:' output.log | awk '{print $NF}')"
           echo "::set-output name=differential_output_file::$(grep 'Differential Analysis Output file path:' output.log | awk '{print $NF}')"
+          # status will be 'success' if the tests pass, 'failure' otherwise (checking for FAILURE in the log)
+          if grep -q 'FAILURE' output.log; then
+            echo "::set-output name=status::failure"
+          else
+            echo "::set-output name=status::success"
+          fi
 
       - name: Save cache
         uses: actions/cache/save@v4.2.2
@@ -76,7 +82,7 @@ jobs:
           key: dirty-waters-cache-${{ runner.os }}-${{ steps.set-sha.outputs.commit_sha }}
 
       - name: Copy new reports to example_reports
-        if: ${{ job.status }} == 'success' && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && steps.analysis.outputs.status == 'success'
         run: |
           # first, echo to debug
           echo ${{ steps.analysis.outputs.static_output_file }}
@@ -85,8 +91,12 @@ jobs:
           cp ${{ steps.analysis.outputs.differential_output_file }} example_reports/differential_analysis_report_example.md
 
       - name: Commit reports
-        if: ${{ job.status }} == 'success' && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && steps.analysis.outputs.status == 'success'
         uses: stefanzweifel/git-auto-commit-action@v5.1.0
         with:
           commit_message: "chore: update example reports"
           branch: ${{ github.head_ref }}
+
+      - name: Break the build if tests fail
+        if: ${{ steps.analysis.outputs.status }} == 'failure'
+        run: exit 1
