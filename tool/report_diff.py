@@ -292,23 +292,22 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
             """
                       
 <details>
-    <summary>👻What do I do now? </summary>
-        For packages with signature changes:  \n
-        This means that a dependency either had code signature and now does not, or that the signature was valid and now it's not.
-        This could be a security risk, and you should halt the project until you can verify the changes. \n
-        \nFor downgraded dependencies:  \n
-        1. Check the release notes of the new version to see if the downgrade is intentional. If the new version is more than one release ahead, verify whether any breaking changes in between apply to your project.
-        2. If the downgrade is unintentional, consider updating the package to a version that is compatible with your project.
-        \nFor commits made by both new authors and reviewers:  \n
-        1. Verify, as best as you can, that the new authors and reviewers are not malicious actors.
-        2. If you are unsure, consider reverting the changes.
-        \nFor commits approved by new reviewers:  \n
-        Verify, as best as you can, that the new reviewers are not malicious actors.
-        \nFor commits made by new authors:  \n
-        Verify, as best as you can, that the new authors are not malicious actors.
-        The fact that the reviewers are not new to the repository is a good sign.
+<summary>👻What do I do now? </summary>
+For packages with signature changes:\n
+1. This means that a dependency either had code signature and now does not, or that the signature was valid and now it's not.
+2. This could be a security risk, and you should halt the project until you can verify the changes. \n
+\nFor downgraded dependencies:\n
+1. Check the release notes of the new version to see if the downgrade is intentional. If the new version is more than one release ahead, verify whether any breaking changes in between apply to your project.
+2. If the downgrade is unintentional, consider updating the package to a version that is compatible with your project.
+\nFor commits made by both new authors and reviewers:\n
+1. Verify, as best as you can, that the new authors and reviewers are not malicious actors.
+2. If you are unsure, consider reverting the changes.
+\nFor commits approved by new reviewers:\n
+1. Verify, as best as you can, that the new reviewers are not malicious actors.
+\nFor commits made by new authors:\n
+1. Verify, as best as you can, that the new authors are not malicious actors.
+2. The fact that the reviewers are not new to the repository is a good sign.
 </details>
-
 
 
 """
