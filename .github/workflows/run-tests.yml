@@ -72,5 +72,15 @@ jobs:
       - name: Copy new reports to example_reports
         if: ${{ job.status }} == 'success' && (github.ref == 'refs/heads/main' or github.event_name == 'pull_request')
         run: |
-          cp ${{ steps.analysis.outputs.static_output_file }} example_reports/static_analysis_report_example.txt
-          cp ${{ steps.analysis.outputs.differential_output_file }} example_reports/differential_analysis_report_example.txt
+          # first, echo to debug
+          echo ${{ steps.analysis.outputs.static_output_file }}
+          echo ${{ steps.analysis.outputs.differential_output_file }}
+          cp ${{ steps.analysis.outputs.static_output_file }} example_reports/static_analysis_report_example.md
+          cp ${{ steps.analysis.outputs.differential_output_file }} example_reports/differential_analysis_report_example.md
+
+      - name: Commit reports
+        if: ${{ job.status }} == 'success' && (github.ref == 'refs/heads/main' or github.event_name == 'pull_request')
+        uses: stefanzweifel/git-auto-commit-action@v5.1.0
+        with:
+          commit_message: "chore: update example reports"
+          branch: ${{ github.ref }}
