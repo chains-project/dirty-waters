@@ -130,7 +130,9 @@ class TestSmellDetection:
     def test_static_maven_sbom_exe(self, expected_outputs):
         """Test outputs coming from static analysis, for Maven, for sbom.exe."""
         # Run tool
-        actual_output, output_file = run_tool_cli(project="chains-project/sbom.exe", version="v0.14.1", package_manager="maven")
+        actual_output, output_file = run_tool_cli(
+            project="chains-project/sbom.exe", version="v0.14.1", package_manager="maven"
+        )
 
         # Parse smells
         parser = SmellParser()
@@ -162,7 +164,9 @@ class TestSmellDetection:
     def test_static_yarn_classic(self, expected_outputs):
         """Test outputs coming from static analysis, for Yarn Classic."""
         # Run tool
-        actual_output, output_file = run_tool_cli(project="webpack/webpack", version="v5.98.0", package_manager="yarn-classic")
+        actual_output, output_file = run_tool_cli(
+            project="webpack/webpack", version="v5.98.0", package_manager="yarn-classic"
+        )
 
         # Parse smells
         parser = SmellParser()
