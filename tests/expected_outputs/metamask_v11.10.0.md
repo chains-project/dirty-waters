@@ -42,8 +42,6 @@ The following checks were specifically requested:
 
 :x: Packages that are deprecated (⚠️⚠️): 85
 
-:cactus: Packages that are forks (⚠️⚠️): 59
-
 :lock: Packages without code signature (⚠️⚠️): 1
 
 :black_square_button: Packages without build attestation (⚠️): 3268

@@ -30,7 +30,7 @@ DEFAULT_ENABLED_CHECKS = {
     "source_code": True,
     "release_tags": True,
     "deprecated": True,
-    "forks": True,
+    "forks": False,
     "provenance": True,
     "code_signature": True,
     "aliased_package": True,

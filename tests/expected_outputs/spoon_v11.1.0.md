@@ -36,8 +36,6 @@ All available checks were performed.
 
 :wrench: Packages with inaccessible GitHub tag (⚠️⚠️): 55
 
-:cactus: Packages that are forks (⚠️⚠️): 3
-
 :lock: Packages without code signature (⚠️⚠️): 14
 
 

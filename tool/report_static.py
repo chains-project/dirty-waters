@@ -392,11 +392,11 @@ def write_summary(
     if enabled_checks.get("deprecated"):
         warning_counts["deprecated"] = f":x: Packages that are deprecated (⚠️⚠️): {version_deprecated_df.shape[0]}"
 
-    if enabled_checks.get("forks"):
-        warning_counts["forked_package"] = f":cactus: Packages that are forks (⚠️⚠️): {(forked_package_df.shape[0])}"
-
     if enabled_checks.get("code_signature"):
         warning_counts["code_signature"] = f":lock: Packages without code signature (⚠️⚠️): {code_signature_df.shape[0]}"
+
+    if enabled_checks.get("forks"):
+        warning_counts["forked_package"] = f":cactus: Packages that are forks (⚠️): {(forked_package_df.shape[0])}"
 
     if enabled_checks.get("provenance"):
         warning_counts["provenance"] = (
@@ -496,12 +496,6 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                     version_deprecated_df, md_file, (df["deprecated_in_version"] == True).sum(), package_manager
                 ),
             },
-            "forked_package": {
-                "enabled": enabled_checks.get("forks"),
-                "function": lambda: forked_package(
-                    forked_package_df, md_file, (df["is_fork"] == True).sum(), package_manager
-                ),
-            },
             "code_signature": {
                 "enabled": enabled_checks.get("code_signature"),
                 "function": lambda: code_signature(
@@ -512,6 +506,12 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                 "enabled": enabled_checks.get("code_signature"),
                 "function": lambda: invalid_code_signature(
                     invalid_code_signature_df, md_file, invalid_code_signature_df.shape[0], package_manager
+                ),
+            },
+            "forked_package": {
+                "enabled": enabled_checks.get("forks"),
+                "function": lambda: forked_package(
+                    forked_package_df, md_file, (df["is_fork"] == True).sum(), package_manager
                 ),
             },
             "provenance": {
@@ -539,30 +539,64 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         md_file.write("\n### Call to Action:\n")
         md_file.write(
             """
-                      
 <details>
-    <summary>👻What do I do now? </summary>
-        For packages without source code & accessible release tags:  \n
-        Pull Request to the maintainer of dependency, requesting correct repository metadata and proper tagging. \n
-        \nFor deprecated packages:\n
-        1. Confirm the maintainer’s deprecation intention 
-        2. Check for not deprecated versions
-        \nFor packages without provenance:\n
-        Open an issue in the dependency’s repository to request the inclusion of provenance and build attestation in the CI/CD pipeline. 
-        \nFor packages that are forks\n
-        Inspect the package and its GitHub repository to verify the fork is not malicious. \n
-        \nFor packages without code signature:\n
-        Open an issue in the dependency’s repository to request the inclusion of code signature in the CI/CD pipeline. \n
-        \nFor packages with invalid code signature:\n
-        It's recommended to verify the code signature and contact the maintainer to fix the issue. \n
-        \nFor packages that are aliased:\n
-        Check the aliased package and its repository to verify the alias is not malicious. \n
-</details>
-
-
-
+<summary>👻What do I do now? </summary>
 """
         )
+
+        if enabled_checks.get("source_code") or enabled_checks.get("release_tags"):
+            md_file.write(
+                """
+\nFor packages **without source code & accessible release tags**:\n
+- **Why?** Missing or inaccessible source code makes it impossible to audit the package for security vulnerabilities or malicious code.\n
+1. Pull Request to the maintainer of dependency, requesting correct repository metadata and proper tagging. \n"""
+            )
+
+        if enabled_checks.get("deprecated"):
+            md_file.write(
+                """
+\nFor **deprecated** packages:\n
+- **Why?** Deprecated packages may contain known security issues and are no longer maintained, putting your project at risk.\n
+1. Confirm the maintainer's deprecation intention 
+2. Check for not deprecated versions"""
+            )
+
+        if enabled_checks.get("provenance"):
+            md_file.write(
+                """
+\nFor packages **without provenance**:\n
+- **Why?** Without provenance, there's no way to verify that the package was built from the claimed source code, making supply chain attacks possible.\n
+1. Open an issue in the dependency's repository to request the inclusion of provenance and build attestation in the CI/CD pipeline."""
+            )
+
+        if enabled_checks.get("forks"):
+            md_file.write(
+                """
+\nFor packages **that are forks**:\n
+- **Why?** Forked packages may contain malicious code not present in the original repository, and may not receive security updates.\n
+1. Inspect the package and its GitHub repository to verify the fork is not malicious."""
+            )
+
+        if enabled_checks.get("code_signature"):
+            md_file.write(
+                """
+\nFor packages **without code signature**:\n
+- **Why?** Code signatures help verify the authenticity and integrity of the package, ensuring it hasn't been tampered with.\n
+1. Open an issue in the dependency's repository to request the inclusion of code signature in the CI/CD pipeline. \n
+\nFor packages **with invalid code signature**:\n
+- **Why?** Invalid signatures could indicate tampering or compromised build processes.\n
+1. It's recommended to verify the code signature and contact the maintainer to fix the issue."""
+            )
+
+        if enabled_checks.get("aliased_package"):
+            md_file.write(
+                """
+\nFor packages that are **aliased**:\n
+- **Why?** Aliased packages may hide malicious dependencies under seemingly legitimate names.\n
+1. Check the aliased package and its repository to verify the alias is not malicious."""
+            )
+
+        md_file.write("\n</details>\n\n\n")
         md_file.write("---\n")
         md_file.write("\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/).\n")
         md_file.write(f"\nReport created on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
