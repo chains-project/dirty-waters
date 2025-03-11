@@ -30,9 +30,10 @@ DEFAULT_ENABLED_CHECKS = {
     "source_code": True,
     "release_tags": True,
     "deprecated": True,
-    "forks": True,
+    "forks": False,
     "provenance": True,
     "code_signature": True,
+    "aliased_package": True,
 }
 
 SCHEMAS_FOR_CACHE_ANALYSIS = {
@@ -633,6 +634,8 @@ def analyze_package_data(
                         check = "source_code"
                     elif check in ["deprecated", "provenance"]:
                         check = "package_info"
+                    elif check == "aliased_package":
+                        continue
                     missing_checks[check] = not cached_analysis_matches_schema(
                         cached_analysis.get(check, {}), SCHEMAS_FOR_CACHE_ANALYSIS[check]
                     )
@@ -646,7 +649,7 @@ def analyze_package_data(
         else:
             logging.info(f"No cached analysis for {package}, analyzing all enabled checks")
             for check, enabled in enabled_checks.items():
-                if check in ["release_tags", "forks"]:
+                if check in ["release_tags", "forks", "aliased_package"]:
                     continue
                 elif check in ["deprecated", "provenance"]:
                     check = "package_info"
@@ -696,13 +699,37 @@ def analyze_package_data(
     return package_info
 
 
-def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS):
+def should_ignore_package(package_name, config):
+    """
+    Check if a package should be ignored based on config.
+
+    Args:
+        package_name (str): Name of the package
+        config (dict): Configuration dictionary
+
+    Returns:
+        bool: True if package should be ignored
+    """
+    if not config or "ignore" not in config:
+        logging.warning("No config file provided, using default config")
+        return False
+    return package_name in config["ignore"]
+
+
+def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS, config=None):
     logging.info("Analyzing package static data...")
     package_all = {}
     errors = {}
     with tqdm(total=len(packages_data), desc="Analyzing packages") as pbar:
         for package, repo_urls in packages_data.items():
             logging.info(f"Currently analyzing {package}")
+
+            # Check if package should be ignored
+            if should_ignore_package(package, config):
+                logging.warning(f"Skipping ignored package: {package}")
+                pbar.update(1)
+                continue
+
             repo_url = repo_urls.get("url", "")
             extract_repo_url_message = repo_urls.get("message", "")
             command = repo_urls.get("command", None)

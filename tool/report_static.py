@@ -17,6 +17,7 @@ SUPPORTED_SMELLS = {
     "provenance": ["yarn-classic", "yarn-berry", "pnpm", "npm"],
     "code_signature": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
     "invalid_code_signature": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
+    "aliased_package": ["npm"],
 }
 
 
@@ -27,24 +28,25 @@ def load_data(filename):
         return json.load(f)
 
 
-def create_dataframe(data):
+def create_dataframe(data, deps_list):
     """
     Create a dataframe from the data got from static analysis.
+    Aliased packages are added to the dataframe from the deps_list.
 
     """
 
+    aliased_packages = deps_list.get("aliased_packages", {})
     rows = []
 
     for package_name, package_data in data.items():
         source_code_data = package_data.get("source_code", {}) or {}
-
         match_data = package_data.get("match_info", {}) or {}
         release_tag_exists_info = source_code_data.get("release_tag", {}) or {}
+        aliased_package_name = aliased_packages.get(package_name, None)
 
         # Create a row for each package
-
         row = {
-            "package_name": package_name,
+            "package_name": f"`{package_name}`",
             "deprecated_in_version": package_data.get("package_info", {}).get("deprecated_in_version"),
             "provenance_in_version": package_data.get("package_info", {}).get("provenance_in_version"),
             "all_deprecated": package_data.get("package_info", {}).get("all_deprecated", None),
@@ -60,10 +62,12 @@ def create_dataframe(data):
             "parent_repo_link": source_code_data.get("parent_repo_link", None),
             "forked_from": source_code_data.get("parent_repo_link", "-"),
             "open_issues_count": source_code_data.get("open_issues_count", "-"),
+            "is_aliased": aliased_package_name is not None,
+            "aliased_package_name": aliased_package_name,
             "is_match": match_data.get("match", None),
             # "release_tag_exists_info": source_code_data.get("release_tag", {}),
             "release_tag_exists": release_tag_exists_info.get("exists", "-"),
-            "tag_version": release_tag_exists_info.get("tag_version", "-"),
+            "tag_version": f"`{release_tag_exists_info.get("tag_version", "-")}`",
             "tag_url": release_tag_exists_info.get("url", "-"),
             "tag_related_info": release_tag_exists_info.get("tag_related_info", "-"),
             "status_code_for_release_tag": release_tag_exists_info.get("status_code", "-"),
@@ -256,6 +260,31 @@ def invalid_code_signature(invalid_code_signature_df, md_file, amount, package_m
     return True
 
 
+def aliased_package(aliased_package_df, md_file, amount, package_manager):
+    """
+    Create a section for aliased packages.
+    """
+
+    if not aliased_package_df.empty:
+        md_file.write(
+            f"""
+<details>
+<summary>List of aliased packages({amount})</summary>
+    """
+        )
+        md_file.write("\n\n\n")
+        markdown_text = aliased_package_df.reset_index().to_markdown(index=False)
+        md_file.write(markdown_text)
+        md_file.write("\n</details>\n")
+    elif package_manager not in SUPPORTED_SMELLS["aliased_package"]:
+        md_file.write(f"\nThe package manager ({package_manager}) does not support checking for aliased packages.\n")
+    else:
+        md_file.write("\nNo aliased package found.\n")
+        return False
+
+    return True
+
+
 def write_summary(
     df, project_name, release_version, package_manager, filename, enabled_checks, gradual_report, mode="w"
 ):
@@ -333,6 +362,13 @@ def write_summary(
         (df["signature_present"] == True) & (df["signature_valid"] == False),
         (["command"] if package_manager == "maven" else []),
     ]
+    aliased_package_df = df.loc[
+        df["is_aliased"] == True,
+        [
+            "aliased_package_name",
+        ]
+        + (["command"] if package_manager == "maven" else []),
+    ]
 
     common_counts = {
         "### Total packages in the supply chain": len(df),
@@ -356,16 +392,19 @@ def write_summary(
     if enabled_checks.get("deprecated"):
         warning_counts["deprecated"] = f":x: Packages that are deprecated (⚠️⚠️): {version_deprecated_df.shape[0]}"
 
-    if enabled_checks.get("forks"):
-        warning_counts["forked_package"] = f":cactus: Packages that are forks (⚠️⚠️): {(forked_package_df.shape[0])}"
-
     if enabled_checks.get("code_signature"):
         warning_counts["code_signature"] = f":lock: Packages without code signature (⚠️⚠️): {code_signature_df.shape[0]}"
+
+    if enabled_checks.get("forks"):
+        warning_counts["forked_package"] = f":cactus: Packages that are forks (⚠️): {(forked_package_df.shape[0])}"
 
     if enabled_checks.get("provenance"):
         warning_counts["provenance"] = (
             f":black_square_button: Packages without build attestation (⚠️): {provenance_df.shape[0]}"
         )
+
+    if enabled_checks.get("aliased_package"):
+        warning_counts["aliased_package"] = f":alien: Packages that are aliased (⚠️): {aliased_package_df.shape[0]}"
 
     source_sus = no_source_code_repo_df.shape[0] + github_repo_404_df.shape[0]
 
@@ -457,12 +496,6 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                     version_deprecated_df, md_file, (df["deprecated_in_version"] == True).sum(), package_manager
                 ),
             },
-            "forked_package": {
-                "enabled": enabled_checks.get("forks"),
-                "function": lambda: forked_package(
-                    forked_package_df, md_file, (df["is_fork"] == True).sum(), package_manager
-                ),
-            },
             "code_signature": {
                 "enabled": enabled_checks.get("code_signature"),
                 "function": lambda: code_signature(
@@ -475,10 +508,22 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                     invalid_code_signature_df, md_file, invalid_code_signature_df.shape[0], package_manager
                 ),
             },
+            "forked_package": {
+                "enabled": enabled_checks.get("forks"),
+                "function": lambda: forked_package(
+                    forked_package_df, md_file, (df["is_fork"] == True).sum(), package_manager
+                ),
+            },
             "provenance": {
                 "enabled": enabled_checks.get("provenance"),
                 "function": lambda: provenance(
                     provenance_df, md_file, (df["provenance_in_version"] == False).sum(), package_manager
+                ),
+            },
+            "aliased_package": {
+                "enabled": enabled_checks.get("aliased_package"),
+                "function": lambda: aliased_package(
+                    aliased_package_df, md_file, aliased_package_df.shape[0], package_manager
                 ),
             },
         }
@@ -494,28 +539,64 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         md_file.write("\n### Call to Action:\n")
         md_file.write(
             """
-                      
 <details>
-    <summary>👻What do I do now? </summary>
-        For packages without source code & accessible release tags:  \n
-        Pull Request to the maintainer of dependency, requesting correct repository metadata and proper tagging. \n
-        \nFor deprecated packages:\n
-        1. Confirm the maintainer’s deprecation intention 
-        2. Check for not deprecated versions
-        \nFor packages without provenance:\n
-        Open an issue in the dependency’s repository to request the inclusion of provenance and build attestation in the CI/CD pipeline. 
-        \nFor packages that are forks\n
-        Inspect the package and its GitHub repository to verify the fork is not malicious. \n
-        \nFor packages without code signature:\n
-        Open an issue in the dependency’s repository to request the inclusion of code signature in the CI/CD pipeline. \n
-        \nFor packages with invalid code signature:\n
-        It's recommended to verify the code signature and contact the maintainer to fix the issue. \n
-</details>
-
-
-
+<summary>👻What do I do now? </summary>
 """
         )
+
+        if enabled_checks.get("source_code") or enabled_checks.get("release_tags"):
+            md_file.write(
+                """
+\nFor packages **without source code & accessible release tags**:\n
+- **Why?** Missing or inaccessible source code makes it impossible to audit the package for security vulnerabilities or malicious code.\n
+1. Pull Request to the maintainer of dependency, requesting correct repository metadata and proper tagging. \n"""
+            )
+
+        if enabled_checks.get("deprecated"):
+            md_file.write(
+                """
+\nFor **deprecated** packages:\n
+- **Why?** Deprecated packages may contain known security issues and are no longer maintained, putting your project at risk.\n
+1. Confirm the maintainer's deprecation intention 
+2. Check for not deprecated versions"""
+            )
+
+        if enabled_checks.get("provenance"):
+            md_file.write(
+                """
+\nFor packages **without provenance**:\n
+- **Why?** Without provenance, there's no way to verify that the package was built from the claimed source code, making supply chain attacks possible.\n
+1. Open an issue in the dependency's repository to request the inclusion of provenance and build attestation in the CI/CD pipeline."""
+            )
+
+        if enabled_checks.get("forks"):
+            md_file.write(
+                """
+\nFor packages **that are forks**:\n
+- **Why?** Forked packages may contain malicious code not present in the original repository, and may not receive security updates.\n
+1. Inspect the package and its GitHub repository to verify the fork is not malicious."""
+            )
+
+        if enabled_checks.get("code_signature"):
+            md_file.write(
+                """
+\nFor packages **without code signature**:\n
+- **Why?** Code signatures help verify the authenticity and integrity of the package, ensuring it hasn't been tampered with.\n
+1. Open an issue in the dependency's repository to request the inclusion of code signature in the CI/CD pipeline. \n
+\nFor packages **with invalid code signature**:\n
+- **Why?** Invalid signatures could indicate tampering or compromised build processes.\n
+1. It's recommended to verify the code signature and contact the maintainer to fix the issue."""
+            )
+
+        if enabled_checks.get("aliased_package"):
+            md_file.write(
+                """
+\nFor packages that are **aliased**:\n
+- **Why?** Aliased packages may hide malicious dependencies under seemingly legitimate names.\n
+1. Check the aliased package and its repository to verify the alias is not malicious."""
+            )
+
+        md_file.write("\n</details>\n\n\n")
         md_file.write("---\n")
         md_file.write("\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/).\n")
         md_file.write(f"\nReport created on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
@@ -529,13 +610,13 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 
 
 def get_s_summary(
-    data, project_name, release_version, package_manager, enabled_checks, gradual_report, summary_filename
+    data, deps_list, project_name, release_version, package_manager, enabled_checks, gradual_report, summary_filename
 ):
     """
     Get a summary of the static analysis results.
     """
 
-    df = create_dataframe(data)
+    df = create_dataframe(data, deps_list)
     write_summary(
         df,
         project_name,
