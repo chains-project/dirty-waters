@@ -537,32 +537,45 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                 break
 
         md_file.write("\n### Call to Action:\n")
-        md_file.write(
-            """
-                      
+        md_file.write("""
 <details>
 <summary>👻What do I do now? </summary>
+""")
+
+        if enabled_checks.get("source_code") or enabled_checks.get("release_tags"):
+            md_file.write("""
 \nFor packages **without source code & accessible release tags**:\n
-1. Pull Request to the maintainer of dependency, requesting correct repository metadata and proper tagging. \n
+1. Pull Request to the maintainer of dependency, requesting correct repository metadata and proper tagging. \n""")
+
+        if enabled_checks.get("deprecated"):
+            md_file.write("""
 \nFor **deprecated** packages:\n
-1. Confirm the maintainer’s deprecation intention 
-2. Check for not deprecated versions
+1. Confirm the maintainer's deprecation intention 
+2. Check for not deprecated versions""")
+
+        if enabled_checks.get("provenance"):
+            md_file.write("""
 \nFor packages **without provenance**:\n
-1. Open an issue in the dependency’s repository to request the inclusion of provenance and build attestation in the CI/CD pipeline. 
+1. Open an issue in the dependency's repository to request the inclusion of provenance and build attestation in the CI/CD pipeline.""")
+
+        if enabled_checks.get("forks"):
+            md_file.write("""
 \nFor packages **that are forks**:\n
-1. Inspect the package and its GitHub repository to verify the fork is not malicious. \n
+1. Inspect the package and its GitHub repository to verify the fork is not malicious.""")
+
+        if enabled_checks.get("code_signature"):
+            md_file.write("""
 \nFor packages **without code signature**:\n
-1. Open an issue in the dependency’s repository to request the inclusion of code signature in the CI/CD pipeline. \n
+1. Open an issue in the dependency's repository to request the inclusion of code signature in the CI/CD pipeline. \n
 \nFor packages **with invalid code signature**:\n
-1. It's recommended to verify the code signature and contact the maintainer to fix the issue. \n
+1. It's recommended to verify the code signature and contact the maintainer to fix the issue.""")
+
+        if enabled_checks.get("aliased_package"):
+            md_file.write("""
 \nFor packages that are **aliased**:\n
-1. Check the aliased package and its repository to verify the alias is not malicious. \n
-</details>
+1. Check the aliased package and its repository to verify the alias is not malicious.""")
 
-
-
-"""
-        )
+        md_file.write("\n</details>\n\n\n")
         md_file.write("---\n")
         md_file.write("\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/).\n")
         md_file.write(f"\nReport created on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
