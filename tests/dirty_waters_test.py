@@ -120,11 +120,12 @@ class TestSmellDetection:
         actual_smells = parser.extract_smells(actual_output)
         expected_smells = parser.extract_smells(expected_outputs["single_maven_spoon"])
 
+        print(f"Static Analysis Output file path: {output_file}")
+
+        # Compare smells
         assert (
             actual_smells == expected_smells
         ), f"Output mismatch for Spoon v11.1.0:\nExpected: {expected_smells}\nGot: {actual_smells}"
-
-        print(f"Static Analysis Output file path: {output_file}")
 
     @pytest.mark.skip(reason="Expected output not acquired yet")
     def test_static_maven_sbom_exe(self, expected_outputs):
@@ -229,11 +230,10 @@ class TestSmellDetection:
         expected_smells = parser.extract_smells(expected_outputs["diff_maven_spoon"], diff_analysis=True)
 
         # Compare smells
+        print(f"Differential Analysis Output file path: {output_file}")
         assert (
             actual_smells == expected_smells
         ), f"Output mismatch for Spoon v11.1.1-beta-2 vs v11.1.1-beta-9:\nExpected: {expected_smells}\nGot: {actual_smells}"
-
-        print(f"Differential Analysis Output file path: {output_file}")
 
     @pytest.mark.skip(reason="Expected output not acquired yet")
     def test_diff_maven_sbom_exe(self, expected_outputs):
