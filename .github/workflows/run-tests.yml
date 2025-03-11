@@ -100,5 +100,5 @@ jobs:
           branch: ${{ github.head_ref }}
 
       - name: Break the build if tests fail
-        if: ${{ steps.analysis.outputs.status }} == 'failure'
+        if: steps.analysis.outputs.status == 'failure'
         run: exit 1
