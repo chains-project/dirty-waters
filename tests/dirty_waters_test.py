@@ -78,7 +78,7 @@ def run_tool_cli(
             output_file = re.search(r"Report from differential analysis generated at (.+)", result.stdout).group(1)
         else:
             output_file = re.search(r"Report from static analysis generated at (.+)", result.stdout).group(1)
-        return Path(output_file).read_text()
+        return Path(output_file).read_text(), output_file
     except subprocess.CalledProcessError as e:
         print(f"Error: {e.stdout}\n{e.stderr}")
         return f"Error: {e.stdout}\n{e.stderr}"
@@ -113,13 +113,16 @@ class TestSmellDetection:
     def test_static_maven_spoon(self, expected_outputs):
         """Test outputs coming from static analysis, for Maven, for Spoon."""
         # Run tool
-        actual_output = run_tool_cli(project="INRIA/spoon", version="v11.1.0", package_manager="maven")
+        actual_output, output_file = run_tool_cli(project="INRIA/spoon", version="v11.1.0", package_manager="maven")
 
         # Parse smells
         parser = SmellParser()
         actual_smells = parser.extract_smells(actual_output)
         expected_smells = parser.extract_smells(expected_outputs["single_maven_spoon"])
 
+        print(f"Static Analysis Output file path: {output_file}")
+
+        # Compare smells
         assert (
             actual_smells == expected_smells
         ), f"Output mismatch for Spoon v11.1.0:\nExpected: {expected_smells}\nGot: {actual_smells}"
@@ -128,7 +131,9 @@ class TestSmellDetection:
     def test_static_maven_sbom_exe(self, expected_outputs):
         """Test outputs coming from static analysis, for Maven, for sbom.exe."""
         # Run tool
-        actual_output = run_tool_cli(project="chains-project/sbom.exe", version="v0.14.1", package_manager="maven")
+        actual_output, output_file = run_tool_cli(
+            project="chains-project/sbom.exe", version="v0.14.1", package_manager="maven"
+        )
 
         # Parse smells
         parser = SmellParser()
@@ -144,7 +149,7 @@ class TestSmellDetection:
     def test_static_npm(self, expected_outputs):
         """Test outputs coming from static analysis, for NPM."""
         # Run tool
-        actual_output = run_tool_cli(project="gatsbyjs/gatsby", version="v5.14.0", package_manager="npm")
+        actual_output, output_file = run_tool_cli(project="gatsbyjs/gatsby", version="v5.14.0", package_manager="npm")
 
         # Parse smells
         parser = SmellParser()
@@ -160,7 +165,9 @@ class TestSmellDetection:
     def test_static_yarn_classic(self, expected_outputs):
         """Test outputs coming from static analysis, for Yarn Classic."""
         # Run tool
-        actual_output = run_tool_cli(project="webpack/webpack", version="v5.98.0", package_manager="yarn-classic")
+        actual_output, output_file = run_tool_cli(
+            project="webpack/webpack", version="v5.98.0", package_manager="yarn-classic"
+        )
 
         # Parse smells
         parser = SmellParser()
@@ -175,7 +182,7 @@ class TestSmellDetection:
     def test_static_yarn_berry(self, expected_outputs):
         """Test outputs coming from static analysis, for Yarn Berry."""
         # Run tool
-        actual_output = run_tool_cli(
+        actual_output, output_file = run_tool_cli(
             project="MetaMask/metamask-extension", version="v11.10.0", package_manager="yarn-berry"
         )
 
@@ -193,7 +200,7 @@ class TestSmellDetection:
     def test_static_pnpm(self, expected_outputs):
         """Test outputs coming from static analysis, for PNPM."""
         # Run tool
-        actual_output = run_tool_cli(
+        actual_output, output_file = run_tool_cli(
             project="LedgerHQ/ledger-live",
             version="@ledgerhq/live-desktop@2.100.0",
             package_manager="pnpm",
@@ -213,7 +220,7 @@ class TestSmellDetection:
     def test_diff_maven_spoon(self, expected_outputs):
         """Test outputs coming from diff analysis, for Maven, for Spoon."""
         # Run tool
-        actual_output = run_tool_cli(
+        actual_output, output_file = run_tool_cli(
             project="INRIA/spoon", version="v11.1.1-beta-2", diff_version="v11.1.1-beta-9", package_manager="maven"
         )
 
@@ -223,6 +230,7 @@ class TestSmellDetection:
         expected_smells = parser.extract_smells(expected_outputs["diff_maven_spoon"], diff_analysis=True)
 
         # Compare smells
+        print(f"Differential Analysis Output file path: {output_file}")
         assert (
             actual_smells == expected_smells
         ), f"Output mismatch for Spoon v11.1.1-beta-2 vs v11.1.1-beta-9:\nExpected: {expected_smells}\nGot: {actual_smells}"
@@ -231,7 +239,7 @@ class TestSmellDetection:
     def test_diff_maven_sbom_exe(self, expected_outputs):
         """Test outputs coming from diff analysis, for Maven, for sbom.exe."""
         # Run tool
-        actual_output = run_tool_cli(
+        actual_output, output_file = run_tool_cli(
             project="chains-project/sbom.exe", version="v0.13.0", diff_version="v0.14.1", package_manager="maven"
         )
 
@@ -249,7 +257,7 @@ class TestSmellDetection:
     def test_diff_npm(self, expected_outputs):
         """Test outputs coming from diff analysis, for NPM."""
         # Run tool
-        actual_output = run_tool_cli(
+        actual_output, output_file = run_tool_cli(
             project="gatsbyjs/gatsby", version="v5.1.0", diff_version="v5.14.0", package_manager="npm"
         )
 
@@ -267,7 +275,7 @@ class TestSmellDetection:
     def test_diff_yarn_classic(self, expected_outputs):
         """Test outputs coming from diff analysis, for Yarn Classic."""
         # Run tool
-        actual_output = run_tool_cli(
+        actual_output, output_file = run_tool_cli(
             project="webpack/webpack", version="v5.50.0", diff_version="v5.98.0", package_manager="yarn-classic"
         )
 
@@ -284,7 +292,7 @@ class TestSmellDetection:
     def test_diff_yarn_berry(self, expected_outputs):
         """Test outputs coming from diff analysis, for Yarn Berry."""
         # Run tool
-        actual_output = run_tool_cli(
+        actual_output, output_file = run_tool_cli(
             project="MetaMask/metamask-extension",
             version="v11.1.0",
             diff_version="v12.9.0",
@@ -305,7 +313,7 @@ class TestSmellDetection:
     def test_diff_pnpm(self, expected_outputs):
         """Test outputs coming from diff analysis, for PNPM."""
         # Run tool
-        actual_output = run_tool_cli(
+        actual_output, output_file = run_tool_cli(
             project="LedgerHQ/ledger-live",
             version="@ledgerhq/live-desktop@2.99.0",
             diff_version="@ledgerhq/live-desktop@2.100.0",
