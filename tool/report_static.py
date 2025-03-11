@@ -561,12 +561,15 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 2. Check for not deprecated versions"""
             )
 
-        if enabled_checks.get("provenance"):
+        if enabled_checks.get("code_signature"):
             md_file.write(
                 """
-\nFor packages **without provenance**:\n
-- **Why?** Without provenance, there's no way to verify that the package was built from the claimed source code, making supply chain attacks possible.\n
-1. Open an issue in the dependency's repository to request the inclusion of provenance and build attestation in the CI/CD pipeline."""
+\nFor packages **without code signature**:\n
+- **Why?** Code signatures help verify the authenticity and integrity of the package, ensuring it hasn't been tampered with.\n
+1. Open an issue in the dependency's repository to request the inclusion of code signature in the CI/CD pipeline. \n
+\nFor packages **with invalid code signature**:\n
+- **Why?** Invalid signatures could indicate tampering or compromised build processes.\n
+1. It's recommended to verify the code signature and contact the maintainer to fix the issue."""
             )
 
         if enabled_checks.get("forks"):
@@ -577,15 +580,12 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. Inspect the package and its GitHub repository to verify the fork is not malicious."""
             )
 
-        if enabled_checks.get("code_signature"):
+        if enabled_checks.get("provenance"):
             md_file.write(
                 """
-\nFor packages **without code signature**:\n
-- **Why?** Code signatures help verify the authenticity and integrity of the package, ensuring it hasn't been tampered with.\n
-1. Open an issue in the dependency's repository to request the inclusion of code signature in the CI/CD pipeline. \n
-\nFor packages **with invalid code signature**:\n
-- **Why?** Invalid signatures could indicate tampering or compromised build processes.\n
-1. It's recommended to verify the code signature and contact the maintainer to fix the issue."""
+\nFor packages **without provenance**:\n
+- **Why?** Without provenance, there's no way to verify that the package was built from the claimed source code, making supply chain attacks possible.\n
+1. Open an issue in the dependency's repository to request the inclusion of provenance and build attestation in the CI/CD pipeline."""
             )
 
         if enabled_checks.get("aliased_package"):
