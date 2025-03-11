@@ -541,22 +541,22 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
             """
                       
 <details>
-    <summary>👻What do I do now? </summary>
-        For packages without source code & accessible release tags:  \n
-        Pull Request to the maintainer of dependency, requesting correct repository metadata and proper tagging. \n
-        \nFor deprecated packages:\n
-        1. Confirm the maintainer’s deprecation intention 
-        2. Check for not deprecated versions
-        \nFor packages without provenance:\n
-        Open an issue in the dependency’s repository to request the inclusion of provenance and build attestation in the CI/CD pipeline. 
-        \nFor packages that are forks\n
-        Inspect the package and its GitHub repository to verify the fork is not malicious. \n
-        \nFor packages without code signature:\n
-        Open an issue in the dependency’s repository to request the inclusion of code signature in the CI/CD pipeline. \n
-        \nFor packages with invalid code signature:\n
-        It's recommended to verify the code signature and contact the maintainer to fix the issue. \n
-        \nFor packages that are aliased:\n
-        Check the aliased package and its repository to verify the alias is not malicious. \n
+<summary>👻What do I do now? </summary>
+\nFor packages **without source code & accessible release tags**:\n
+1. Pull Request to the maintainer of dependency, requesting correct repository metadata and proper tagging. \n
+\nFor **deprecated** packages:\n
+1. Confirm the maintainer’s deprecation intention 
+2. Check for not deprecated versions
+\nFor packages **without provenance**:\n
+1. Open an issue in the dependency’s repository to request the inclusion of provenance and build attestation in the CI/CD pipeline. 
+\nFor packages **that are forks**:\n
+1. Inspect the package and its GitHub repository to verify the fork is not malicious. \n
+\nFor packages **without code signature**:\n
+1. Open an issue in the dependency’s repository to request the inclusion of code signature in the CI/CD pipeline. \n
+\nFor packages **with invalid code signature**:\n
+1. It's recommended to verify the code signature and contact the maintainer to fix the issue. \n
+\nFor packages that are **aliased**:\n
+1. Check the aliased package and its repository to verify the alias is not malicious. \n
 </details>
 
 
