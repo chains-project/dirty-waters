@@ -11,7 +11,7 @@ By using `dirty-waters`, you identify the shady areas of your supply chain, whic
 - Dependencies with no/invalid\* link to source code repositories (high severity)
 - Dependencies with no tag/commit SHA for release, impossible to have reproducible builds (medium severity)
 - Deprecated Dependencies (medium severity)
-- Depends on a fork (medium severity)
+- Depends on a fork (low severity), **disabled by default**
 - Dependencies without/with invalid code signature (medium severity)
 - Dependencies with no build attestation (low severity)
 

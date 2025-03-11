@@ -569,7 +569,6 @@ def main():
             "source_code": True,
             "release_tags": True,
             "deprecated": True,
-            "forks": True,
             "provenance": True,
             "code_signature": True,
             "aliased_package": True,
