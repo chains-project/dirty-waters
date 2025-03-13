@@ -376,7 +376,7 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
     have_no_tags_response = requests.get(have_no_tags_check_api, headers=headers)
     have_no_tags_response_status_code = have_no_tags_response.status_code
     have_no_tags_data = have_no_tags_response.json()
-    
+
     release_tag_exists = False
     if len(have_no_tags_data) == 0:
         logging.warning(f"No tags found for {package_name} in {repo_api}")
@@ -481,7 +481,9 @@ def check_existence(package_name, repository, extract_message, package_manager):
         else:
             now_repo_url = None
 
-        source_code_info = check_source_code_by_version(package_full_name, version, repo_api, repo_link, simplified_path, package_manager)
+        source_code_info = check_source_code_by_version(
+            package_full_name, version, repo_api, repo_link, simplified_path, package_manager
+        )
 
     github_info = {
         "is_github": True,
@@ -785,7 +787,7 @@ def should_ignore_package(package_name, config):
     if not config or "ignore" not in config:
         logging.warning("No config file provided, using default config (no packages ignored)")
         return False
-    
+
     ignore_patterns = config["ignore"]
     for pattern in ignore_patterns:
         if re.match(pattern, package_name):

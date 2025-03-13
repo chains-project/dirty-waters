@@ -126,7 +126,9 @@ def sha_not_found(sha_not_found_df, md_file, amount, package_manager):
         md_file.write(markdown_text)
         md_file.write("\n</details>\n")
     elif package_manager not in SUPPORTED_SMELLS["sha_not_found"]:
-        md_file.write(f"\nThe package manager ({package_manager}) does not support checking for inaccessible commit SHAs/tags.\n")
+        md_file.write(
+            f"\nThe package manager ({package_manager}) does not support checking for inaccessible commit SHAs/tags.\n"
+        )
     else:
         md_file.write("\nAll packages have accessible tags.\n")
         return False
