@@ -34,7 +34,7 @@ All available checks were performed.
 
 :no_entry: Packages with repo URL that is 404 (⚠️⚠️⚠️): 1
 
-:wrench: Packages with inaccessible GitHub tag (⚠️⚠️): 55
+:wrench: Packages with inaccessible commit SHA/tag (⚠️⚠️): 55
 
 :lock: Packages without code signature (⚠️⚠️): 14
 

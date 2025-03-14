@@ -38,7 +38,7 @@ The following checks were specifically requested:
 
 :no_entry: Packages with repo URL that is 404 (⚠️⚠️⚠️): 18
 
-:wrench: Packages with inaccessible GitHub tag (⚠️⚠️): 418
+:wrench: Packages with inaccessible commit SHA/tag (⚠️⚠️): 418
 
 :x: Packages that are deprecated (⚠️⚠️): 85
 
