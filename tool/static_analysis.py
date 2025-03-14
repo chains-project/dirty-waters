@@ -380,7 +380,9 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
         else:
             logging.warning(f"gitHead not found in {package_name} {version} metadata")
     else:
-        logging.warning(f"Package manager {package_manager} not supported for gitHead checking, will proceed with tags")
+        logging.warning(
+            f"Package manager {package_manager} not supported for gitHead checking, will proceed with tags"
+        )
 
     have_no_tags_check_api = f"{repo_api}/tags"
     have_no_tags_response = requests.get(have_no_tags_check_api, headers=headers)
