@@ -22,7 +22,9 @@ class SmellParser:
                     r":heavy_exclamation_mark: Packages with no source code URL \(⚠️⚠️⚠️\): (\d+)", output
                 ),
                 "not_found": re.search(r":no_entry: Packages with repo URL that is 404 \(⚠️⚠️⚠️\): (\d+)", output),
-                "inaccessible_tag": re.search(r":wrench: Packages with inaccessible commit SHA/tag \(⚠️⚠️\): (\d+)", output),
+                "inaccessible_tag": re.search(
+                    r":wrench: Packages with inaccessible commit SHA/tag \(⚠️⚠️\): (\d+)", output
+                ),
                 "forked_project": re.search(r":cactus: Packages that are forks \(⚠️⚠️\): (\d+)", output),
                 "no_code_signature": re.search(r":lock: Packages without code signature \(⚠️⚠️\): (\d+)", output),
                 "deprecated": re.search(r":x: Packages that are deprecated \(⚠️⚠️\): (\d+)", output),
