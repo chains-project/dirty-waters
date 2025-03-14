@@ -338,7 +338,15 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
             logging.error(f"Error checking gitHead presence: {str(e)}")
             return False
 
-    source_code_info = {}
+    source_code_info = {
+        "exists": False,
+        "tag_version": version,
+        "is_sha": False,
+        "sha": None,
+        "url": None,
+        "message": "No tags found in the repo",
+        "status_code": 404,
+    }
     if package_manager in ["yarn-berry", "yarn-classic", "pnpm", "npm"]:
         if git_head := check_git_head_presence(package_name, version):
             # we check if the git_head is present in the git repo, using gitpython
@@ -371,6 +379,8 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
                 logging.error(f"Error checking gitHead in repo: {str(e)}")
         else:
             logging.warning(f"gitHead not found in {package_name} {version} metadata")
+    else:
+        logging.warning(f"Package manager {package_manager} not supported for gitHead checking, will proceed with tags")
 
     have_no_tags_check_api = f"{repo_api}/tags"
     have_no_tags_response = requests.get(have_no_tags_check_api, headers=headers)
