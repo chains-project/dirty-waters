@@ -783,28 +783,40 @@ def analyze_package_data(
     return package_info
 
 
-def should_ignore_package(package_name, config):
+def disable_checks_from_config(package_name, config, enabled_checks):
     """
-    Check if a package should be ignored based on config.
-    config["ignore"] includes a series of entries (regex patterns) that should be ignored.
+    Returns the enabled_checks dictionary for the package, based on the configuration file.
+    config["ignore"] includes a series of entries (regex patterns) which specify which packages to ignore/do less checks on.
     We compare the package name against these patterns.
+    If there are conflicting patterns, the first one that matches is used.
 
     Args:
         package_name (str): Name of the package
         config (dict): Configuration dictionary
+        enabled_checks (dict): Dictionary of enabled checks
 
     Returns:
-        bool: True if package should be ignored
+        dict: Package-specific enabled checks
     """
     if not config or "ignore" not in config:
         logging.warning("No config file provided, using default config (no packages ignored)")
-        return False
+        return enabled_checks
 
     ignore_patterns = config["ignore"]
     for pattern in ignore_patterns:
         if re.match(pattern, package_name):
-            return True
-    return False
+            if isinstance(ignore_patterns[pattern], str):
+                if ignore_patterns[pattern] == "all":
+                    logging.info(f"Ignoring all checks for {package_name}")
+                    return {}
+            elif isinstance(ignore_patterns[pattern], list):
+                for check in ignore_patterns[pattern]:
+                    logging.info(f"Ignoring check {check} for {package_name}")
+                    enabled_checks[check] = False
+            else:
+                logging.warning(f"Invalid ignore pattern for {package_name}: {ignore_patterns[pattern]}")
+            break
+    return enabled_checks
 
 
 def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS, config=None):
@@ -815,9 +827,9 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
         for package, repo_urls in packages_data.items():
             logging.info(f"Currently analyzing {package}")
 
-            # Check if package should be ignored
-            if should_ignore_package(package, config):
-                logging.warning(f"Skipping ignored package: {package}")
+            enabled_checks = disable_checks_from_config(package, config, enabled_checks)
+            if not enabled_checks:
+                logging.warning(f"Package {package} will be skipped, no checks enabled for it")
                 pbar.update(1)
                 continue
 
