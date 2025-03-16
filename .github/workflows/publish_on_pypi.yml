@@ -2,7 +2,8 @@ name: Upload Python Package to PyPi
 
 on:
   workflow_run:
-    workflows: ["Run Tests", "Run Formatter"]
+    # workflows: ["Run Tests", "Run Formatter"]
+    workflows: ["Run Formatter"]
     types:
       - completed
     branches:
