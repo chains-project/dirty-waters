@@ -227,12 +227,12 @@ is passed, instead of all checks being performed, only the flagged ones will be)
 - `--check-provenance`: Check for dependencies with no build attestation
 - `--check-code-signature`: Check for dependencies with no/invalid code signature
 
-**Note**: The `--check-release-tags` and `--check-forks` flags require `--check-source-code` to be enabled, as release tags can only be checked if we can first verify the source code repository.
+**Note**: The `--check-source-code-sha` and `--check-forks` flags require `--check-source-code` to be enabled, as release tags can only be checked if we can first verify the source code repository.
 
 As an example of running specific checks:
 
 ```bash
-dirty-waters -p MetaMask/metamask-extension -v v11.11.0 -pm yarn-berry --check-source-code --check-release-tags
+dirty-waters -p MetaMask/metamask-extension -v v11.11.0 -pm yarn-berry --check-source-code --check-source-code-sha
 ```
 
 This run will only check for dependencies with no link to source code repositories and dependencies with no tag/commit sha for release.
