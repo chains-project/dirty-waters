@@ -1,9 +1,9 @@
 name: Run Tests
 
 on:
-  push:
-    branches: [main]
-  pull_request:
+  # push:
+  #   branches: [main]
+  # pull_request:
   workflow_dispatch:
     inputs:
       ignore_cache:
@@ -64,7 +64,7 @@ jobs:
         env:
           GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pytest tests/ -v -s | tee output.log
+          pytest tests/ -vv -s | tee output.log
           echo "::set-output name=static_output_file::$(grep 'Static Analysis Output file path:' output.log | awk '{print $NF}')"
           echo "::set-output name=differential_output_file::$(grep 'Differential Analysis Output file path:' output.log | awk '{print $NF}')"
           if grep -q 'FAILURE' output.log; then

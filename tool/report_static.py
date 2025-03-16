@@ -11,13 +11,13 @@ import pandas as pd
 SUPPORTED_SMELLS = {
     "no_source_code": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
     "github_404": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
-    "release_tag_not_found": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
+    "sha_not_found": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
     "deprecated": ["yarn-classic", "yarn-berry", "pnpm", "npm"],
     "forked_package": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
     "provenance": ["yarn-classic", "yarn-berry", "pnpm", "npm"],
     "code_signature": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
     "invalid_code_signature": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
-    "aliased_package": ["npm"],
+    "aliased_packages": ["npm"],
 }
 
 
@@ -41,7 +41,7 @@ def create_dataframe(data, deps_list):
     for package_name, package_data in data.items():
         source_code_data = package_data.get("source_code", {}) or {}
         match_data = package_data.get("match_info", {}) or {}
-        release_tag_exists_info = source_code_data.get("release_tag", {}) or {}
+        sha_exists_info = source_code_data.get("source_code_version", {}) or {}
         aliased_package_name = aliased_packages.get(package_name, None)
 
         # Create a row for each package
@@ -65,12 +65,13 @@ def create_dataframe(data, deps_list):
             "is_aliased": aliased_package_name is not None,
             "aliased_package_name": aliased_package_name,
             "is_match": match_data.get("match", None),
-            # "release_tag_exists_info": source_code_data.get("release_tag", {}),
-            "release_tag_exists": release_tag_exists_info.get("exists", "-"),
-            "tag_version": f"`{release_tag_exists_info.get("tag_version", "-")}`",
-            "tag_url": release_tag_exists_info.get("url", "-"),
-            "tag_related_info": release_tag_exists_info.get("tag_related_info", "-"),
-            "status_code_for_release_tag": release_tag_exists_info.get("status_code", "-"),
+            "sha_exists": sha_exists_info.get("exists", "-"),
+            "tag_version": f"`{sha_exists_info.get("tag_version", "-")}`",
+            "is_sha": sha_exists_info.get("is_sha", "-"),
+            "sha": sha_exists_info.get("sha", "-"),
+            "tag_url": sha_exists_info.get("url", "-"),
+            "message": sha_exists_info.get("message", "-"),
+            "status_code_for_sha": sha_exists_info.get("status_code", "-"),
         }
         rows.append(row)
 
@@ -107,25 +108,27 @@ def no_source_code(combined_repo_problems_df, md_file, amount, package_manager):
     return True
 
 
-def release_tag_not_found(release_tag_not_found_df, md_file, amount, package_manager):
+def sha_not_found(sha_not_found_df, md_file, amount, package_manager):
     """
-    Create a section for packages with inaccessible release tags.
+    Create a section for packages with inaccessible commit SHAs/release tags.
     """
 
-    if not release_tag_not_found_df.empty:
+    if not sha_not_found_df.empty:
         md_file.write(
             f"""
 <details>
-<summary>List of packages with available source code repos but with inaccessible tags({amount})</summary>
+<summary>List of packages with available source code repos but with inaccessible commit SHAs/tags({amount})</summary>
     """
         )
 
         md_file.write("\n\n\n")
-        markdown_text = release_tag_not_found_df.reset_index().to_markdown(index=False)
+        markdown_text = sha_not_found_df.reset_index().to_markdown(index=False)
         md_file.write(markdown_text)
         md_file.write("\n</details>\n")
-    elif package_manager not in SUPPORTED_SMELLS["release_tag_not_found"]:
-        md_file.write(f"\nThe package manager ({package_manager}) does not support checking for inaccessible tags.\n")
+    elif package_manager not in SUPPORTED_SMELLS["sha_not_found"]:
+        md_file.write(
+            f"\nThe package manager ({package_manager}) does not support checking for inaccessible commit SHAs/tags.\n"
+        )
     else:
         md_file.write("\nAll packages have accessible tags.\n")
         return False
@@ -276,7 +279,7 @@ def aliased_package(aliased_package_df, md_file, amount, package_manager):
         markdown_text = aliased_package_df.reset_index().to_markdown(index=False)
         md_file.write(markdown_text)
         md_file.write("\n</details>\n")
-    elif package_manager not in SUPPORTED_SMELLS["aliased_package"]:
+    elif package_manager not in SUPPORTED_SMELLS["aliased_packages"]:
         md_file.write(f"\nThe package manager ({package_manager}) does not support checking for aliased packages.\n")
     else:
         md_file.write("\nNo aliased package found.\n")
@@ -315,16 +318,18 @@ def write_summary(
         .reset_index(drop=False)
         .drop_duplicates(subset=["package_name"])
     )
-    # could not find release tag while github exists
-    release_tag_not_found_df = df.loc[
-        (df["release_tag_exists"] == False) & (df["github_exists"] == True),
+    # could not find SHA/release tag while github exists
+    sha_not_found_df = df.loc[
+        (df["sha_exists"] == False) & (df["github_exists"] == True),
         (
             [
-                "release_tag_exists",
+                "sha_exists",
                 "tag_version",
-                "github_url",
-                "tag_related_info",
-                "status_code_for_release_tag",
+                "is_sha",
+                "sha",
+                "tag_url",
+                "message",
+                "status_code_for_sha",
             ]
             + (["command"] if package_manager == "maven" else [])
         ),
@@ -384,9 +389,9 @@ def write_summary(
             f":no_entry: Packages with repo URL that is 404 (⚠️⚠️⚠️): {github_repo_404_df.shape[0]}"
         )
 
-    if enabled_checks.get("release_tags"):
-        warning_counts["release_tag_not_found"] = (
-            f":wrench: Packages with inaccessible GitHub tag (⚠️⚠️): {release_tag_not_found_df.shape[0]}"
+    if enabled_checks.get("source_code_sha"):
+        warning_counts["sha_not_found"] = (
+            f":wrench: Packages with inaccessible commit SHA/tag (⚠️⚠️): {sha_not_found_df.shape[0]}"
         )
 
     if enabled_checks.get("deprecated"):
@@ -403,8 +408,8 @@ def write_summary(
             f":black_square_button: Packages without build attestation (⚠️): {provenance_df.shape[0]}"
         )
 
-    if enabled_checks.get("aliased_package"):
-        warning_counts["aliased_package"] = f":alien: Packages that are aliased (⚠️): {aliased_package_df.shape[0]}"
+    if enabled_checks.get("aliased_packages"):
+        warning_counts["aliased_packages"] = f":alien: Packages that are aliased (⚠️): {aliased_package_df.shape[0]}"
 
     source_sus = no_source_code_repo_df.shape[0] + github_repo_404_df.shape[0]
 
@@ -484,10 +489,10 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                 "enabled": enabled_checks.get("source_code"),
                 "function": lambda: no_source_code(combined_repo_problems_df, md_file, source_sus, package_manager),
             },
-            "release_tag_not_found": {
-                "enabled": enabled_checks.get("release_tags"),
-                "function": lambda: release_tag_not_found(
-                    release_tag_not_found_df, md_file, release_tag_not_found_df.shape[0], package_manager
+            "sha_not_found": {
+                "enabled": enabled_checks.get("source_code_sha"),
+                "function": lambda: sha_not_found(
+                    sha_not_found_df, md_file, sha_not_found_df.shape[0], package_manager
                 ),
             },
             "deprecated": {
@@ -520,8 +525,8 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                     provenance_df, md_file, (df["provenance_in_version"] == False).sum(), package_manager
                 ),
             },
-            "aliased_package": {
-                "enabled": enabled_checks.get("aliased_package"),
+            "aliased_packages": {
+                "enabled": enabled_checks.get("aliased_packages"),
                 "function": lambda: aliased_package(
                     aliased_package_df, md_file, aliased_package_df.shape[0], package_manager
                 ),
@@ -544,12 +549,12 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 """
         )
 
-        if enabled_checks.get("source_code") or enabled_checks.get("release_tags"):
+        if enabled_checks.get("source_code") or enabled_checks.get("source_code_sha"):
             md_file.write(
                 """
-\nFor packages **without source code & accessible release tags**:\n
+\nFor packages **without source code & accessible SHA/release tags**:\n
 - **Why?** Missing or inaccessible source code makes it impossible to audit the package for security vulnerabilities or malicious code.\n
-1. Pull Request to the maintainer of dependency, requesting correct repository metadata and proper tagging. \n"""
+1. Pull Request to the maintainer of dependency, requesting correct repository metadata and proper versioning/tagging. \n"""
             )
 
         if enabled_checks.get("deprecated"):
@@ -588,7 +593,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. Open an issue in the dependency's repository to request the inclusion of provenance and build attestation in the CI/CD pipeline."""
             )
 
-        if enabled_checks.get("aliased_package"):
+        if enabled_checks.get("aliased_packages"):
             md_file.write(
                 """
 \nFor packages that are **aliased**:\n

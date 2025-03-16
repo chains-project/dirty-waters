@@ -67,7 +67,7 @@ usage: main.py [-h] -p PROJECT_REPO_NAME [-v RELEASE_VERSION_OLD]
                {yarn-classic,yarn-berry,pnpm,npm,maven}
                [--pnpm-scope PNPM_SCOPE] [--debug] [--config CONFIG]
                [--gradual-report GRADUAL_REPORT | --no-gradual-report]
-               [--check-source-code] [--check-release-tags]
+               [--check-source-code] [--check-source-code-sha]
                [--check-deprecated] [--check-forks] [--check-provenance]
                [--check-code-signature] [--check-aliased-packages]
 
@@ -104,7 +104,8 @@ options:
 smell checks:
   --check-source-code   Check for dependencies with no link to source code
                         repositories
-  --check-release-tags  Check for dependencies with no tag/commit sha for
+  --check-source-code-sha
+                        Check for dependencies with no commit sha/tag for
                         release
   --check-deprecated    Check for deprecated dependencies
   --check-forks         Check for dependencies that are forks
@@ -177,13 +178,18 @@ export GITHUB_API_TOKEN=<your_token>
 ### Configuration
 
 You can set the tool's configuration through a JSON file, which can be then passed to the tool using the `--config` flag.
-At the moment, we have configuration support to ignore specific packages from the analysis.
+At the moment, we have configuration support to ignore smells for specific dependencies.
+The dependencies can be set either as an exact match or as a regex pattern.
+You can either set "all" to ignore every check for the dependency or specify the checks you want to ignore.
 
 An example configuration file:
 
 ```json
 {
-  "ignore": ["package_name_1@versionx.y.z", "package_name_2@versiona.b.c"]
+  "ignore": {
+    "shescape@2.1.0": "all",
+    "@types*": ["forks"]
+  }
 }
 ```
 
@@ -198,13 +204,13 @@ See Github action at <https://github.com/chains-project/dirty-waters-action>
 
 `dirty-waters` currently supports package managers within the JavaScript and Java ecosystems. However, due to some constraints associated with the nature of the package managers, the tool may not be able to detect all the smells in the project. The following table shows the supported package managers and their associated smells, for static analysis:
 
-| Package Manager | No Source Code Repository | Invalid Source Code Repository URL | No Release Tag | Deprecated Dependency | Depends on a Fork | No Build Attestation | No/Invalid Code Signature |
-| --------------- | ------------------------- | ---------------------------------- | -------------- | --------------------- | ----------------- | -------------------- | ------------------------- |
-| Yarn Classic    | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  | Yes                       |
-| Yarn Berry      | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  | Yes                       |
-| Pnpm            | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  | Yes                       |
-| Npm             | Yes                       | Yes                                | Yes            | Yes                   | Yes               | Yes                  | Yes                       |
-| Maven           | Yes                       | Yes                                | Yes            | No                    | Yes               | No                   | Yes                       |
+| Package Manager | No Source Code Repository | Invalid Source Code Repository URL | No SHA/Release Tag | Deprecated Dependency | Depends on a Fork | No Build Attestation | No/Invalid Code Signature | Aliased Packages |
+| --------------- | ------------------------- | ---------------------------------- | ------------------ | --------------------- | ----------------- | -------------------- | ------------------------- | ---------------- |
+| Yarn Classic    | Yes                       | Yes                                | Yes                | Yes                   | Yes               | Yes                  | Yes                       | Yes              |
+| Yarn Berry      | Yes                       | Yes                                | Yes                | Yes                   | Yes               | Yes                  | Yes                       | Yes              |
+| Pnpm            | Yes                       | Yes                                | Yes                | Yes                   | Yes               | Yes                  | Yes                       | Yes              |
+| Npm             | Yes                       | Yes                                | Yes                | Yes                   | Yes               | Yes                  | Yes                       | Yes              |
+| Maven           | Yes                       | Yes                                | Yes                | No                    | Yes               | No                   | Yes                       | No               |
 
 All package managers support every smell in the differential analysis scenario.
 
@@ -215,7 +221,7 @@ You can specify individual checks using the following flags (note that if at lea
 is passed, instead of all checks being performed, only the flagged ones will be):
 
 - `--check-source-code`: Check for dependencies with no link to source code repositories
-- `--check-release-tags`: Check for dependencies with no tag/commit sha for release
+- `--check-source-code-sha`: Check for dependencies with no tag/commit sha for release
 - `--check-deprecated`: Check for deprecated dependencies
 - `--check-forks`: Check for dependencies that are forks
 - `--check-provenance`: Check for dependencies with no build attestation

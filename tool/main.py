@@ -123,9 +123,9 @@ def get_args():
         help="Check for dependencies with no link to source code repositories",
     )
     smell_group.add_argument(
-        "--check-release-tags",
+        "--check-source-code-sha",
         action="store_true",
-        help="Check for dependencies with no tag/commit sha for release",
+        help="Check for dependencies with no commit sha/tag for release",
     )
     smell_group.add_argument(
         "--check-deprecated",
@@ -537,7 +537,7 @@ def main():
     any_check_specified = any(
         [
             dw_args.check_source_code,
-            dw_args.check_release_tags,
+            dw_args.check_source_code_sha,
             dw_args.check_deprecated,
             dw_args.check_forks,
             dw_args.check_provenance,
@@ -547,31 +547,31 @@ def main():
     )
 
     if any_check_specified:
-        # Check if release tags is enabled without source code
-        if any([dw_args.check_release_tags, dw_args.check_forks]) and not dw_args.check_source_code:
+        # Check if source code SHA or fork checks are enabled without source code
+        if any([dw_args.check_source_code_sha, dw_args.check_forks]) and not dw_args.check_source_code:
             raise ValueError(
-                "The --check-release-tags and --check-forks flags require --check-source-code to be enabled. "
-                "Release tags can only be checked if we can first verify the source code repository."
+                "The --check-source-code-sha and --check-forks flags require --check-source-code to be enabled. "
+                "These can only be checked if we can first verify the source code repository."
             )
 
         enabled_checks = {
             "source_code": dw_args.check_source_code,
-            "release_tags": dw_args.check_release_tags,
+            "source_code_sha": dw_args.check_source_code_sha,
             "deprecated": dw_args.check_deprecated,
             "forks": dw_args.check_forks,
             "provenance": dw_args.check_provenance,
             "code_signature": dw_args.check_code_signature,
-            "aliased_package": dw_args.check_aliased_packages,
+            "aliased_packages": dw_args.check_aliased_packages,
         }
     else:
         # If no checks specified, enable all by default
         enabled_checks = {
             "source_code": True,
-            "release_tags": True,
+            "source_code_sha": True,
             "deprecated": True,
             "provenance": True,
             "code_signature": True,
-            "aliased_package": True,
+            "aliased_packages": True,
         }
 
     project_info = setup_project_info(dw_args, any_check_specified)

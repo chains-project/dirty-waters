@@ -4,6 +4,7 @@ import base64
 import time
 import urllib.parse
 from tqdm import tqdm
+import git
 
 import requests
 import subprocess
@@ -28,12 +29,12 @@ MAX_WAIT_TIME = 15 * 60
 
 DEFAULT_ENABLED_CHECKS = {
     "source_code": True,
-    "release_tags": True,
+    "source_code_sha": True,
     "deprecated": True,
     "forks": False,
     "provenance": True,
     "code_signature": True,
-    "aliased_package": True,
+    "aliased_packages": True,
 }
 
 SCHEMAS_FOR_CACHE_ANALYSIS = {
@@ -47,11 +48,13 @@ SCHEMAS_FOR_CACHE_ANALYSIS = {
         "status_code": 200,
         "archived": None,
         "is_fork": None,
-        "release_tag": {
+        "source_code_version": {
             "exists": None,
             "tag_version": "",
+            "is_sha": None,
+            "sha": "",
             "url": "",
-            "tag_related_info": "",
+            "message": "",
             "status_code": 404,
         },
         "parent_repo_link": "",
@@ -320,6 +323,107 @@ def check_parent_scm(package):
     }
 
 
+def check_source_code_by_version(package_name, version, repo_api, repo_link, simplified_path, package_manager):
+    def check_git_head_presence(package_name, version):
+        # In NPM-based packages, the registry may contain a gitHead field in the package's metadata
+        # Although it's not mandatory to have it, if it's present, it's the best way to check
+        # the package's source code for the specific version
+        try:
+            response = requests.get(f"https://registry.npmjs.org/{package_name}/{version}", timeout=20)
+            response.raise_for_status()
+            data = response.json()
+            git_head = data.get("gitHead", "")
+            return git_head
+        except requests.RequestException as e:
+            logging.error(f"Error checking gitHead presence: {str(e)}")
+            return False
+
+    source_code_info = {
+        "exists": False,
+        "tag_version": version,
+        "is_sha": False,
+        "sha": None,
+        "url": None,
+        "message": "No tags found in the repo",
+        "status_code": 404,
+    }
+    if package_manager in ["yarn-berry", "yarn-classic", "pnpm", "npm"]:
+        if git_head := check_git_head_presence(package_name, version):
+            # we check if the git_head is present in the git repo, using gitpython
+            try:
+                remote_refs = git.cmd.Git().ls_remote(repo_link)
+                git_refs = [ref.split("\t")[0] for ref in remote_refs.split("\n") if ref]
+                if git_head in git_refs:
+                    logging.info(f"gitHead {git_head} found in {repo_link}")
+                    return {
+                        "exists": True,
+                        "tag_version": version,
+                        "is_sha": True,
+                        "sha": git_head,
+                        "url": None,
+                        "message": "gitHead found in package metadata",
+                        "status_code": 200,
+                    }
+                else:
+                    logging.warning(f"gitHead {git_head} not found in {repo_link}, checking tags")
+                    source_code_info = {
+                        "exists": False,
+                        "tag_version": version,
+                        "is_sha": True,
+                        "sha": git_head,
+                        "url": None,
+                        "message": f"gitHead {git_head} not found in {repo_link}",
+                        "status_code": 404,
+                    }
+            except Exception as e:
+                logging.error(f"Error checking gitHead in repo: {str(e)}")
+        else:
+            logging.warning(f"gitHead not found in {package_name} {version} metadata")
+    else:
+        logging.warning(
+            f"Package manager {package_manager} not supported for gitHead checking, will proceed with tags"
+        )
+
+    have_no_tags_check_api = f"{repo_api}/tags"
+    have_no_tags_response = requests.get(have_no_tags_check_api, headers=headers)
+    have_no_tags_response_status_code = have_no_tags_response.status_code
+    have_no_tags_data = have_no_tags_response.json()
+
+    release_tag_exists = False
+    if len(have_no_tags_data) == 0:
+        logging.warning(f"No tags found for {package_name} in {repo_api}")
+        release_tag_url = None
+        message = "No tags found in the repo"
+        status_code_release_tag = have_no_tags_response_status_code
+    else:
+        tag_possible_formats = construct_tag_format(version, package_name, repo_name=simplified_path)
+        existing_tag_format = find_existing_tags_batch(tag_possible_formats, simplified_path)
+        logging.info(f"Existing tag format: {existing_tag_format}")
+        if existing_tag_format:
+            existing_tag_format = existing_tag_format[0]
+            release_tag_exists = True
+            release_tag_url = f"{repo_api}/git/ref/tags/{existing_tag_format}"
+            message = f"Tag {existing_tag_format} is found in the repo"
+            status_code_release_tag = 200
+        else:
+            logging.warning(f"Tag {version} not found in {repo_api}")
+            release_tag_url = None
+            message = f"Tag {version} not found in the repo"
+            status_code_release_tag = 404
+
+    source_code_info.update(
+        {
+            "exists": release_tag_exists,
+            "tag_version": version,
+            "url": release_tag_url,
+            "message": message,
+            "status_code": status_code_release_tag,
+        }
+    )
+
+    return source_code_info
+
+
 def check_existence(package_name, repository, extract_message, package_manager):
     """Check if the package exists in the repository."""
     if "Could not find repository" in extract_message:
@@ -335,7 +439,7 @@ def check_existence(package_name, repository, extract_message, package_manager):
     is_fork = False
     release_tag_exists = False
     release_tag_url = None
-    tag_related_info = None
+    message = None
     status_code_release_tag = None
     github_redirected = False
     now_repo_url = None
@@ -344,6 +448,7 @@ def check_existence(package_name, repository, extract_message, package_manager):
 
     data = make_github_request(repo_api, max_retries=3)
     parent_scm_result = {}
+    source_code_info = None
     if not data:
         if package_manager == "maven":
             # There's the possibility of, in maven's case, assembly inheritance not having worked well;
@@ -357,6 +462,13 @@ def check_existence(package_name, repository, extract_message, package_manager):
         archived = None
         is_fork = None
         repo_link = f"https://github.com/{simplified_path}".lower()
+        source_code_info = {
+            "exists": release_tag_exists,
+            "tag_version": version,
+            "url": release_tag_url,
+            "message": message,
+            "status_code": status_code_release_tag,
+        }
     else:
         data = data or parent_scm_result["data"]
         simplified_path = parent_scm_result.get("simplified_path", simplified_path)
@@ -381,31 +493,9 @@ def check_existence(package_name, repository, extract_message, package_manager):
         else:
             now_repo_url = None
 
-        # check if the repo has any tags(to reduce the number of API requests)
-        have_no_tags_check_api = f"{repo_api}/tags"
-        have_no_tags_response = requests.get(have_no_tags_check_api, headers=headers)
-        have_no_tags_response_status_code = have_no_tags_response.status_code
-        have_no_tags_data = have_no_tags_response.json()
-
-        if len(have_no_tags_data) == 0:
-            logging.info(f"No tags found for {package_name} in {repo_api}")
-            release_tag_url = None
-            tag_related_info = "No tag was found in the repo"
-            status_code_release_tag = have_no_tags_response_status_code
-        else:
-            tag_possible_formats = construct_tag_format(version, package_full_name, repo_name=simplified_path)
-            existing_tag_format = find_existing_tags_batch(tag_possible_formats, simplified_path)
-            logging.info(f"Existing tag format: {existing_tag_format}")
-            if existing_tag_format:
-                existing_tag_format = existing_tag_format[0]
-                release_tag_exists = True
-                release_tag_url = f"{repo_api}/git/ref/tags/{existing_tag_format}"
-                tag_related_info = f"Tag {existing_tag_format} is found in the repo"
-                status_code_release_tag = 200
-            else:
-                release_tag_url = None
-                tag_related_info = "The given tag was not found in the repo"
-                status_code_release_tag = 404
+        source_code_info = check_source_code_by_version(
+            package_full_name, version, repo_api, repo_link, simplified_path, package_manager
+        )
 
     github_info = {
         "is_github": True,
@@ -417,13 +507,7 @@ def check_existence(package_name, repository, extract_message, package_manager):
         "status_code": status_code,
         "archived": archived,
         "is_fork": is_fork,
-        "release_tag": {
-            "exists": release_tag_exists,
-            "tag_version": version,
-            "url": release_tag_url,
-            "tag_related_info": tag_related_info,
-            "status_code": status_code_release_tag,
-        },
+        "source_code_version": source_code_info,
         "parent_repo_link": parent_repo_link if is_fork else None,
         "open_issues_count": open_issues_count,
         "error": error_message if error_message else "No error message.",
@@ -630,11 +714,11 @@ def analyze_package_data(
             # Check which enabled checks are missing from cache
             for check, enabled in enabled_checks.items():
                 if enabled:
-                    if check in ["release_tags", "forks"]:
+                    if check in ["source_code_sha", "forks"]:
                         check = "source_code"
                     elif check in ["deprecated", "provenance"]:
                         check = "package_info"
-                    elif check == "aliased_package":
+                    elif check == "aliased_packages":
                         continue
                     missing_checks[check] = not cached_analysis_matches_schema(
                         cached_analysis.get(check, {}), SCHEMAS_FOR_CACHE_ANALYSIS[check]
@@ -649,7 +733,7 @@ def analyze_package_data(
         else:
             logging.info(f"No cached analysis for {package}, analyzing all enabled checks")
             for check, enabled in enabled_checks.items():
-                if check in ["release_tags", "forks", "aliased_package"]:
+                if check in ["source_code_sha", "forks", "aliased_packages"]:
                     continue
                 elif check in ["deprecated", "provenance"]:
                     check = "package_info"
@@ -699,21 +783,40 @@ def analyze_package_data(
     return package_info
 
 
-def should_ignore_package(package_name, config):
+def disable_checks_from_config(package_name, config, enabled_checks):
     """
-    Check if a package should be ignored based on config.
+    Returns the enabled_checks dictionary for the package, based on the configuration file.
+    config["ignore"] includes a series of entries (regex patterns) which specify which packages to ignore/do less checks on.
+    We compare the package name against these patterns.
+    If there are conflicting patterns, the first one that matches is used.
 
     Args:
         package_name (str): Name of the package
         config (dict): Configuration dictionary
+        enabled_checks (dict): Dictionary of enabled checks
 
     Returns:
-        bool: True if package should be ignored
+        dict: Package-specific enabled checks
     """
     if not config or "ignore" not in config:
-        logging.warning("No config file provided, using default config")
-        return False
-    return package_name in config["ignore"]
+        logging.warning("No config file provided, using default config (no packages ignored)")
+        return enabled_checks
+
+    ignore_patterns = config["ignore"]
+    for pattern in ignore_patterns:
+        if re.match(pattern, package_name):
+            if isinstance(ignore_patterns[pattern], str):
+                if ignore_patterns[pattern] == "all":
+                    logging.info(f"Ignoring all checks for {package_name}")
+                    return {}
+            elif isinstance(ignore_patterns[pattern], list):
+                for check in ignore_patterns[pattern]:
+                    logging.info(f"Ignoring check {check} for {package_name}")
+                    enabled_checks[check] = False
+            else:
+                logging.warning(f"Invalid ignore pattern for {package_name}: {ignore_patterns[pattern]}")
+            break
+    return enabled_checks
 
 
 def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS, config=None):
@@ -724,9 +827,9 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
         for package, repo_urls in packages_data.items():
             logging.info(f"Currently analyzing {package}")
 
-            # Check if package should be ignored
-            if should_ignore_package(package, config):
-                logging.warning(f"Skipping ignored package: {package}")
+            enabled_checks = disable_checks_from_config(package, config, enabled_checks)
+            if not enabled_checks:
+                logging.warning(f"Package {package} will be skipped, no checks enabled for it")
                 pbar.update(1)
                 continue
 
