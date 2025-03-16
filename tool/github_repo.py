@@ -125,7 +125,6 @@ def process_package(
                     timeout=TIMEOUT,
                 )
                 if result.stdout:
-                    logging.warning(f"Command {scm_command} succeeded for package {package}, output: {result.stdout}")
                     repo_info = result.stdout
                     valid_repo_info = check_if_valid_repo_info(repo_info)
                     if valid_repo_info:
