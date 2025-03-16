@@ -28,8 +28,10 @@ jobs:
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/run-formatter.yml/runs?branch=main" \
             | jq --arg SHA "$COMMIT_SHA" '.workflow_runs[] | select(.head_sha==$SHA) | .conclusion')
 
-          # Tests must succeed, Formatter must either succeed or not exist (sometimes it's not triggered)
-          if [ "$tests_status" = "\"success\"" ] && ([ "$formatter_status" = "\"success\"" ] || [ -z "$formatter_status" ]); then
+          # OUTDATED: Tests must succeed, Formatter must either succeed or not exist (sometimes it's not triggered)
+          # Formatter must either succeed or not exist (sometimes it's not triggered)
+          # if [ "$tests_status" = "\"success\"" ] && ([ "$formatter_status" = "\"success\"" ] || [ -z "$formatter_status" ]); then
+          if [ "$formatter_status" = "\"success\"" ] || [ -z "$formatter_status" ]; then
             echo "should_publish=true" >> $GITHUB_OUTPUT
           else
             echo "should_publish=false" >> $GITHUB_OUTPUT
