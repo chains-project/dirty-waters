@@ -25,7 +25,7 @@ headers = {
 cache_manager = get_cache_manager()
 
 
-MAX_WAIT_TIME = 15 * 60
+MAX_WAIT_TIME = 15 *60
 
 DEFAULT_ENABLED_CHECKS = {
     "source_code": True,
