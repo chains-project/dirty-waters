@@ -17,7 +17,7 @@ SUPPORTED_SMELLS = {
     "provenance": ["yarn-classic", "yarn-berry", "pnpm", "npm"],
     "code_signature": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
     "invalid_code_signature": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
-    "aliased_package": ["npm"],
+    "aliased_packages": ["npm"],
 }
 
 
@@ -279,7 +279,7 @@ def aliased_package(aliased_package_df, md_file, amount, package_manager):
         markdown_text = aliased_package_df.reset_index().to_markdown(index=False)
         md_file.write(markdown_text)
         md_file.write("\n</details>\n")
-    elif package_manager not in SUPPORTED_SMELLS["aliased_package"]:
+    elif package_manager not in SUPPORTED_SMELLS["aliased_packages"]:
         md_file.write(f"\nThe package manager ({package_manager}) does not support checking for aliased packages.\n")
     else:
         md_file.write("\nNo aliased package found.\n")
@@ -408,8 +408,8 @@ def write_summary(
             f":black_square_button: Packages without build attestation (⚠️): {provenance_df.shape[0]}"
         )
 
-    if enabled_checks.get("aliased_package"):
-        warning_counts["aliased_package"] = f":alien: Packages that are aliased (⚠️): {aliased_package_df.shape[0]}"
+    if enabled_checks.get("aliased_packages"):
+        warning_counts["aliased_packages"] = f":alien: Packages that are aliased (⚠️): {aliased_package_df.shape[0]}"
 
     source_sus = no_source_code_repo_df.shape[0] + github_repo_404_df.shape[0]
 
@@ -525,8 +525,8 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                     provenance_df, md_file, (df["provenance_in_version"] == False).sum(), package_manager
                 ),
             },
-            "aliased_package": {
-                "enabled": enabled_checks.get("aliased_package"),
+            "aliased_packages": {
+                "enabled": enabled_checks.get("aliased_packages"),
                 "function": lambda: aliased_package(
                     aliased_package_df, md_file, aliased_package_df.shape[0], package_manager
                 ),
@@ -593,7 +593,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. Open an issue in the dependency's repository to request the inclusion of provenance and build attestation in the CI/CD pipeline."""
             )
 
-        if enabled_checks.get("aliased_package"):
+        if enabled_checks.get("aliased_packages"):
             md_file.write(
                 """
 \nFor packages that are **aliased**:\n

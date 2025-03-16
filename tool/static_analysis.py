@@ -34,7 +34,7 @@ DEFAULT_ENABLED_CHECKS = {
     "forks": False,
     "provenance": True,
     "code_signature": True,
-    "aliased_package": True,
+    "aliased_packages": True,
 }
 
 SCHEMAS_FOR_CACHE_ANALYSIS = {
@@ -718,7 +718,7 @@ def analyze_package_data(
                         check = "source_code"
                     elif check in ["deprecated", "provenance"]:
                         check = "package_info"
-                    elif check == "aliased_package":
+                    elif check == "aliased_packages":
                         continue
                     missing_checks[check] = not cached_analysis_matches_schema(
                         cached_analysis.get(check, {}), SCHEMAS_FOR_CACHE_ANALYSIS[check]
@@ -733,7 +733,7 @@ def analyze_package_data(
         else:
             logging.info(f"No cached analysis for {package}, analyzing all enabled checks")
             for check, enabled in enabled_checks.items():
-                if check in ["source_code_sha", "forks", "aliased_package"]:
+                if check in ["source_code_sha", "forks", "aliased_packages"]:
                     continue
                 elif check in ["deprecated", "provenance"]:
                     check = "package_info"

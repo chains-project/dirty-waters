@@ -561,7 +561,7 @@ def main():
             "forks": dw_args.check_forks,
             "provenance": dw_args.check_provenance,
             "code_signature": dw_args.check_code_signature,
-            "aliased_package": dw_args.check_aliased_packages,
+            "aliased_packages": dw_args.check_aliased_packages,
         }
     else:
         # If no checks specified, enable all by default
@@ -571,7 +571,7 @@ def main():
             "deprecated": True,
             "provenance": True,
             "code_signature": True,
-            "aliased_package": True,
+            "aliased_packages": True,
         }
 
     project_info = setup_project_info(dw_args, any_check_specified)

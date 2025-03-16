@@ -55,11 +55,11 @@ def extract_repo_url(repo_info: str) -> str:
 def get_scm_commands(pm: str, package: str) -> List[str]:
     """Get the appropriate command to find a package's source code locations for the package manager."""
     if pm == "yarn-berry" or pm == "yarn-classic":
-        return [["yarn", "info", package, "repository.url"]]
+        return [["yarn", "info", package.replace("@npm:", "@"), "repository.url", "--silent"]]
     elif pm == "pnpm":
-        return [["pnpm", "info", package, "repository.url"]]
+        return [["pnpm", "info", package.replace("@npm:", "@"), "repository.url"]]
     elif pm == "npm":
-        return [["npm", "info", package, "repository.url"]]
+        return [["npm", "info", package.replace("@npm:", "@"), "repository.url"]]
     elif pm == "maven":
         name, version = package.split("@")
         group_id, artifact_id = name.split(":")
@@ -125,6 +125,7 @@ def process_package(
                     timeout=TIMEOUT,
                 )
                 if result.stdout:
+                    logging.warning(f"Command {scm_command} succeeded for package {package}, output: {result.stdout}")
                     repo_info = result.stdout
                     valid_repo_info = check_if_valid_repo_info(repo_info)
                     if valid_repo_info:
@@ -144,6 +145,7 @@ def process_package(
         if repo_info:
             # Must still run the check if all cases were errors
             check_if_valid_repo_info(repo_info)
+        logging.info(f"Package {package} repository info: {repo_info}")
         cache_manager.github_cache.cache_github_url(package, repo_info)
     else:
         check_if_valid_repo_info(repo_info)
