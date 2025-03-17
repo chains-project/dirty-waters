@@ -17,7 +17,6 @@ import yaml
 
 from tool.tool_config import PNPM_LIST_COMMAND, get_cache_manager
 
-logger = logging.getLogger(__name__)
 cache_manager = get_cache_manager()
 
 MVN_DEPENDENCY_PLUGIN = "org.apache.maven.plugins:maven-dependency-plugin:3.8.1"
@@ -179,6 +178,7 @@ def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):
     try:
         patches = []
         pkg_name_with_resolution = []
+        aliased_packages = {}
 
         for line in yarn_lock_file.splitlines():
             match = re.match(r"^\s+resolution:\s+(.+)$", line)
@@ -188,11 +188,26 @@ def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):
                     line = line.replace('resolution: "', "").strip('"').lstrip()
                     patches.append(line)
                 else:
-                    pkg_name_with_resolution.append(match.group(1).strip('"'))
+                    line = match.group(1).strip('"')
+                    # aliases will show up as something like my-foo@npm:foo@x.y.z
+                    alias_pattern = r"(.+?)@npm:(.+?)@(.+)"
+                    alias_match = re.match(alias_pattern, line)
+                    if alias_match:
+                        # if it is an alias, we add the original name to the list
+                        logging.info(f"Found yarn alias for {alias_match.group(2)}@{alias_match.group(3)}")
+                        logging.info(f"Aliased to {alias_match.group(1)}@{alias_match.group(3)}")
+                        aliased_packages[f"{alias_match.group(2)}@{alias_match.group(3)}"] = (
+                            f"{alias_match.group(1)}@{alias_match.group(3)}"
+                        )
+                        pkg_name_with_resolution.append(f"{alias_match.group(2)}@{alias_match.group(3)}")
+                    else:
+                        # if it is not an alias, we add the package to the list
+                        pkg_name_with_resolution.append(line)
 
         deps_list_data = {
             "resolutions": list({"info": info} for info in sorted(pkg_name_with_resolution)),
             "patches": list({"info": info} for info in sorted(patches)),
+            "aliased_packages": aliased_packages,
         }
 
         cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
@@ -204,7 +219,7 @@ def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):
             "An error occurred while extracting dependencies from yarn.lock file(Yarn Berry): %s",
             str(e),
         )
-        return {"resolutions": [], "patches": []}
+        return {"resolutions": [], "patches": [], "aliased_packages": []}
 
 
 def extract_deps_from_v1_yarn(repo_path, yarn_lock_file):
@@ -232,6 +247,7 @@ def extract_deps_from_v1_yarn(repo_path, yarn_lock_file):
     try:
         extracted_info = []
         patches = []
+        aliased_packages = {}
 
         pattern = r'^\s*$\n\"?(\@?([^\s]+))@.*?:\n\s*version\s+"([^\s]+)"'
 
@@ -240,12 +256,22 @@ def extract_deps_from_v1_yarn(repo_path, yarn_lock_file):
         extracted_info = [f"{match[0]}@{match[2]}" for match in matches]
         for item in extracted_info:
             if len(item.split("@npm:")) > 1:
+                logging.warning(f"Found yarn alias for {item}")
+                logging.warning(f"Original name: {item.split('@npm:')[1]}")
+                logging.warning(f"Aliased to: {item.split('@npm:')[0]}@{item.split('@npm:')[1].split('@')[1]}")
                 extracted_info.remove(item)
                 extracted_info.append(item.split("@npm:")[1])
+                aliased_packages[item.split("@npm:")[1]] = (
+                    f"{item.split('@npm:')[0]}@{item.split('@npm:')[1].split('@')[1]}"
+                )
 
         extracted_info = sorted(extracted_info)
 
-        deps_list_data = {"resolutions": list({"info": info} for info in extracted_info), "patches": patches}
+        deps_list_data = {
+            "resolutions": list({"info": info} for info in extracted_info),
+            "patches": patches,
+            "aliased_packages": aliased_packages,
+        }
 
         cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
 
@@ -256,7 +282,7 @@ def extract_deps_from_v1_yarn(repo_path, yarn_lock_file):
             "An error occurred while extracting dependencies from yarn.lock file(Yarn Classic): %s",
             str(e),
         )
-        return {"resolutions": [], "patches": []}
+        return {"resolutions": [], "patches": [], "aliased_packages": []}
 
 
 def get_pnpm_dep_tree(folder_path, version_tag, repo_path, pnpm_scope):
