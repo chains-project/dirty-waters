@@ -15,6 +15,11 @@ jobs:
     outputs:
       should_publish: ${{ steps.check.outputs.should_publish }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
       - name: Check workflow conclusions
         id: check
         env:
