@@ -333,6 +333,28 @@ class GitHubCache(Cache):
         finally:
             conn.close()
 
+    def clear_github_urls_from_package(self, package):
+        """Clear cached GitHub URLs for a package"""
+        conn = sqlite3.connect(self.db_path)
+        c = conn.cursor()
+
+        try:
+            # first get count of rows with the package name
+            c.execute("SELECT COUNT(*) FROM github_urls WHERE package = ?", (package,))
+            count = c.fetchone()[0]
+            if count == 0:
+                print(f"No cached data found for {package}")
+                logging.info(f"No cached data found for {package}")
+                return
+
+            # delete rows with the package name
+            print(f"Deleting cached data for {package}")
+            logging.info(f"Deleting cached data for {package}")
+            c.execute("DELETE FROM github_urls WHERE package = ?", (package,))
+            conn.commit()
+        finally:
+            conn.close()
+
 
 class PackageAnalysisCache(Cache):
     def __init__(self, cache_dir="cache/packages"):
