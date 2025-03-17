@@ -17,7 +17,7 @@ SUPPORTED_SMELLS = {
     "provenance": ["yarn-classic", "yarn-berry", "pnpm", "npm"],
     "code_signature": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
     "invalid_code_signature": ["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
-    "aliased_packages": ["npm"],
+    "aliased_packages": ["yarn-classic", "yarn-berry", "npm"],
 }
 
 
