@@ -81,7 +81,7 @@ jobs:
         id: bump_version_patch
         with:
           file_to_bump: "./pyproject.toml"
-          bump_type: "patch"
+          bump_type: "micro"
       - name: Get new version
         id: get_version
         run: |
