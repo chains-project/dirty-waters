@@ -196,7 +196,9 @@ def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):
                         # if it is an alias, we add the original name to the list
                         logging.info(f"Found yarn alias for {alias_match.group(2)}@{alias_match.group(3)}")
                         logging.info(f"Aliased to {alias_match.group(1)}@{alias_match.group(3)}")
-                        aliased_packages[f"{alias_match.group(2)}@{alias_match.group(3)}"] = f"{alias_match.group(1)}@{alias_match.group(3)}"
+                        aliased_packages[f"{alias_match.group(2)}@{alias_match.group(3)}"] = (
+                            f"{alias_match.group(1)}@{alias_match.group(3)}"
+                        )
                         pkg_name_with_resolution.append(f"{alias_match.group(2)}@{alias_match.group(3)}")
                     else:
                         # if it is not an alias, we add the package to the list
@@ -259,11 +261,17 @@ def extract_deps_from_v1_yarn(repo_path, yarn_lock_file):
                 logging.warning(f"Aliased to: {item.split('@npm:')[0]}@{item.split('@npm:')[1].split('@')[1]}")
                 extracted_info.remove(item)
                 extracted_info.append(item.split("@npm:")[1])
-                aliased_packages[item.split("@npm:")[1]] = f"{item.split('@npm:')[0]}@{item.split('@npm:')[1].split('@')[1]}"
+                aliased_packages[item.split("@npm:")[1]] = (
+                    f"{item.split('@npm:')[0]}@{item.split('@npm:')[1].split('@')[1]}"
+                )
 
         extracted_info = sorted(extracted_info)
 
-        deps_list_data = {"resolutions": list({"info": info} for info in extracted_info), "patches": patches, "aliased_packages": aliased_packages}
+        deps_list_data = {
+            "resolutions": list({"info": info} for info in extracted_info),
+            "patches": patches,
+            "aliased_packages": aliased_packages,
+        }
 
         cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
 
