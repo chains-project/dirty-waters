@@ -349,11 +349,9 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
     }
     if package_manager in ["yarn-berry", "yarn-classic", "pnpm", "npm"]:
         if git_head := check_git_head_presence(package_name, version):
-            # we check if the git_head is present in the git repo, using gitpython
             try:
-                remote_refs = git.cmd.Git().ls_remote(repo_link)
-                git_refs = [ref.split("\t")[0] for ref in remote_refs.split("\n") if ref]
-                if git_head in git_refs:
+                response = make_github_request(f"{repo_api}/commits/{git_head}", max_retries=2)
+                if response:
                     logging.info(f"gitHead {git_head} found in {repo_link}")
                     return {
                         "exists": True,
