@@ -208,7 +208,7 @@ See Github action at <https://github.com/chains-project/dirty-waters-action>
 | --------------- | ------------------------- | ---------------------------------- | ------------------ | --------------------- | ----------------- | -------------------- | ------------------------- | ---------------- |
 | Yarn Classic    | Yes                       | Yes                                | Yes                | Yes                   | Yes               | Yes                  | Yes                       | Yes              |
 | Yarn Berry      | Yes                       | Yes                                | Yes                | Yes                   | Yes               | Yes                  | Yes                       | Yes              |
-| Pnpm            | Yes                       | Yes                                | Yes                | Yes                   | Yes               | Yes                  | Yes                       | Yes              |
+| Pnpm            | Yes                       | Yes                                | Yes                | Yes                   | Yes               | Yes                  | Yes                       | No               |
 | Npm             | Yes                       | Yes                                | Yes                | Yes                   | Yes               | Yes                  | Yes                       | Yes              |
 | Maven           | Yes                       | Yes                                | Yes                | No                    | Yes               | No                   | Yes                       | No               |
 
