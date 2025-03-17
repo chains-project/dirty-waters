@@ -33,7 +33,6 @@ headers = {
     "Accept": "application/vnd.github.v3+json",
 }
 
-
 class PathManager:
     """
     Manage the paths for the results.
