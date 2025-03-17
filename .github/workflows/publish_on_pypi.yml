@@ -39,6 +39,16 @@ jobs:
             echo "Formatter status for commit $COMMIT_SHA: $formatter_status"
           fi
 
+          # We also want to check if the last commit was made by renovate bot
+          last_commit_author=$(git log -1 --pretty=format:'%an')
+          if [ "$last_commit_author" = "renovate[bot]" ]; then
+            echo "patch_version=true" >> $GITHUB_OUTPUT
+            echo "Last commit was made by renovate bot"
+          else
+            echo "patch_version=false" >> $GITHUB_OUTPUT
+            echo "Last commit was not made by renovate bot"
+          fi
+
   deploy:
     needs: check-workflows
     if: needs.check-workflows.outputs.should_publish == 'true'
@@ -51,12 +61,20 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
-      - name: Version bump
+      - name: Version bump - minor
+        if: needs.check-workflows.outputs.patch_version == 'false'
         uses: monperrus/pyproject-bump-pypi@main
-        id: bump_version
+        id: bump_version_minor
         with:
           file_to_bump: "./pyproject.toml"
           bump_type: "minor"
+      - name: Version bump - patch
+        if: needs.check-workflows.outputs.patch_version == 'true'
+        uses: monperrus/pyproject-bump-pypi@main
+        id: bump_version_patch
+        with:
+          file_to_bump: "./pyproject.toml"
+          bump_type: "patch"
       - name: Get new version
         id: get_version
         run: |
