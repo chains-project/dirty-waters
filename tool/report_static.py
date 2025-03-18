@@ -383,7 +383,7 @@ def write_summary(
         [
             "aliased_package_name",
         ]
-        + (["parent", "command"] if package_manager == "maven" else [])
+        + (["parent", "command"] if package_manager == "maven" else []),
     ]
 
     common_counts = {
