@@ -627,7 +627,7 @@ def extract_deps_from_maven(repo_path):
             {
                 "info": f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}",
                 "parent": dep["parent"],
-                "command": "resolve",
+                "command": "tree",
             }
             for dep in retrieved_deps
         ]
