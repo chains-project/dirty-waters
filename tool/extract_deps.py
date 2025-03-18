@@ -599,7 +599,6 @@ def extract_deps_from_maven(repo_path):
             "mvn",
             TREE_GOAL,
             "-DoutputType=json",
-            "-Dverbose=true",
             f"-DoutputFile={TREE_LOG}",
         ],
         "plugins": [
