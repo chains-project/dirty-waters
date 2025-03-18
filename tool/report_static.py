@@ -378,6 +378,13 @@ def write_summary(
             + (["parent", "command"] if package_manager == "maven" else [])
         ),
     ]
+    aliased_package_df = df.loc[
+        df["is_aliased"] == True,
+        [
+            "aliased_package_name",
+        ]
+        + (["parent", "command"] if package_manager == "maven" else [])
+    ]
 
     common_counts = {
         "### Total packages in the supply chain": len(df),
