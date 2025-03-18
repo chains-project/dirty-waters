@@ -223,13 +223,12 @@ def api_constructor(package_name, repository):
     repo_url = repository.replace("https://", "").replace("http://", "").replace("/issues", "")
 
     # simplified_path = repo_url.replace("github.com/", "").split('#')[0].split('tree/master')[0].rstrip('/')
-    simplified_path = (
-        repo_url.replace("github.com:", "github.com/")
-        .replace("github.com/", "")
-        .split("#")[0]
-        .split("/tree")[0]
-        .rstrip("/")
-    )
+    repo_url = repo_url.split('#')[0]
+    match = re.search(r"github\.com[:/](.*?)/(.*?)(?:/|$)", repo_url)
+    if match:
+        simplified_path = f"{match.group(1)}/{match.group(2)}"
+    else:
+        simplified_path = ""
 
     if simplified_path.endswith(".git"):
         simplified_path = simplified_path[:-4]
