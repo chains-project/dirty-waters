@@ -32,13 +32,14 @@ def write_output(folder_path, filename, data):
 
 def extract_repo_url(repo_info: str) -> str:
     """Extract GitHub repository URL from repository information."""
+    url = repo_info
     if "https" not in repo_info:
         # cases such as git@github:apache/maven-scm, we just remove the :
-        repo_info = repo_info.replace(":/", "/")
-    repo_info = repo_info.replace(":", "/")
-    match = GITHUB_URL_PATTERN.search(repo_info)
+        url = url.replace(":/", "/")
+    url = url.replace(":", "/")
+    match = GITHUB_URL_PATTERN.search(url)
     if not match:
-        return "not github"
+        return repo_info, "Not a GitHub repository"
 
     # if there is a match, there's still the possibility of the scm url having been
     # put in a different form, e.g.,
@@ -48,17 +49,17 @@ def extract_repo_url(repo_info: str) -> str:
     parts = url.split("/")
     joined = "/".join(parts[:3]) if len(parts) > 3 else url
     joined = joined if not joined.endswith(".git") else joined[:-4]
-    return joined
+    return joined, "GitHub repository"
 
 
 def get_scm_commands(pm: str, package: str) -> List[str]:
     """Get the appropriate command to find a package's source code locations for the package manager."""
     if pm == "yarn-berry" or pm == "yarn-classic":
-        return [["yarn", "info", package, "repository.url"]]
+        return [["yarn", "info", package.replace("@npm:", "@"), "repository.url", "--silent"]]
     elif pm == "pnpm":
-        return [["pnpm", "info", package, "repository.url"]]
+        return [["pnpm", "info", package.replace("@npm:", "@"), "repository.url"]]
     elif pm == "npm":
-        return [["npm", "info", package, "repository.url"]]
+        return [["npm", "info", package.replace("@npm:", "@"), "repository.url"]]
     elif pm == "maven":
         name, version = package.split("@")
         group_id, artifact_id = name.split(":")
@@ -94,12 +95,17 @@ def process_package(
 ):
     def check_if_valid_repo_info(repo_info):
         if repo_info is None or "Undefined" in repo_info or "undefined" in repo_info or "ERR!" in repo_info:
-            repos_output_json[package] = {"github": "Could not find", "parent": parent, "command": command}
+            repos_output_json[package] = {
+                "url": "Could not find",
+                "parent": parent,
+                "message": "Could not find repository",
+                "command": command,
+            }
             undefined.append(f"Undefined for {package}, {repo_info}")
             return False
 
-        url = extract_repo_url(repo_info)
-        repos_output_json[package] = {"github": url, "parent": parent, "command": command}
+        url, message = extract_repo_url(repo_info)
+        repos_output_json[package] = {"url": url, "parent": parent, "message": message, "command": command}
         if url:
             repos_output.append(url)
             same_repos_deps.get("url", []).append(package)
@@ -140,6 +146,7 @@ def process_package(
         if repo_info:
             # Must still run the check if all cases were errors
             check_if_valid_repo_info(repo_info)
+        logging.info(f"Package {package} repository info: {repo_info}")
         cache_manager.github_cache.cache_github_url(package, repo_info)
     else:
         check_if_valid_repo_info(repo_info)

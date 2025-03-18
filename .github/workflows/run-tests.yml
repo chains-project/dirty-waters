@@ -1,0 +1,98 @@
+name: Run Tests
+
+on:
+  # push:
+  #   branches: [main]
+  # pull_request:
+  workflow_dispatch:
+    inputs:
+      ignore_cache:
+        description: "Ignore the repository cache for this run"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5.4.0
+        with:
+          python-version: "3.12.8"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+          pip install -r requirements.txt
+
+      - name: Set commit SHA
+        # Required because of isolation issues in PRs
+        id: set-sha
+        shell: bash
+        run: |
+          if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+            echo "commit_sha=$(jq -r .pull_request.head.sha $GITHUB_EVENT_PATH)" >> $GITHUB_OUTPUT
+          else
+            echo "commit_sha=$GITHUB_SHA" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Restore cache
+        uses: actions/cache/restore@v4.2.2
+        id: restore-cache
+        if: inputs.ignore_cache != 'true'
+        with:
+          path: cache/
+          key: dirty-waters-cache-${{ runner.os }}-${{ github.event.before }}
+
+      - name: Create cache directory
+        if: steps.restore-cache.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          cp -r .github/workflows/test_cache cache/
+
+      - name: Run tests
+        id: analysis
+        env:
+          GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pytest tests/ -vv -s | tee output.log
+          echo "::set-output name=static_output_file::$(grep 'Static Analysis Output file path:' output.log | awk '{print $NF}')"
+          echo "::set-output name=differential_output_file::$(grep 'Differential Analysis Output file path:' output.log | awk '{print $NF}')"
+          if grep -q 'FAILURE' output.log; then
+            echo "::set-output name=status::failure"
+          else
+            echo "::set-output name=status::success"
+          fi
+
+      - name: Save cache
+        uses: actions/cache/save@v4.2.2
+        if: always()
+        with:
+          path: cache/
+          key: dirty-waters-cache-${{ runner.os }}-${{ steps.set-sha.outputs.commit_sha }}
+
+      - name: Copy new reports to example_reports
+        if: github.ref == 'refs/heads/main' && steps.analysis.outputs.status == 'success'
+        run: |
+          cp ${{ steps.analysis.outputs.static_output_file }} example_reports/static_analysis_report_example.md
+          cp ${{ steps.analysis.outputs.differential_output_file }} example_reports/differential_analysis_report_example.md
+
+      - name: Commit reports
+        if: github.ref == 'refs/heads/main' && steps.analysis.outputs.status == 'success'
+        uses: stefanzweifel/git-auto-commit-action@v5.1.0
+        with:
+          commit_message: "chore: update example reports"
+          branch: ${{ github.head_ref }}
+
+      - name: Break the build if tests fail
+        if: steps.analysis.outputs.status == 'failure'
+        run: exit 1

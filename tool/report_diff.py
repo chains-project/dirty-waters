@@ -22,7 +22,7 @@ def process_data(data):
         if not commits:
             record.append(
                 {
-                    "package_name": package_name,
+                    "package_name": f"`{package_name}`",
                     "repo_name": repo_name,
                     "repo_link": repo_link,
                     "category": pkg_category,
@@ -210,6 +210,10 @@ def generate_diff_report(
     signature_changes_df = signature_changes[["package_name", "old_version", "new_version", "signature_changes"]]
     signature_changes_number = signature_changes["package_name"].nunique()
 
+    common_counts = {
+        "### Total packages in the supply chain": len(data),
+    }
+
     reports = {
         "signature_changes": {
             "amount": signature_changes_number,
@@ -246,13 +250,30 @@ def generate_diff_report(
         if gradual_report:
             preamble += """
 \nThis report is a gradual report: that is, only the highest severity smell type with issues found within this project is reported.
-Gradual reports are enabled by default. You can disable this feature, and get a full report, by using the `--no-gradual-report` flag.
+Gradual reports are enabled by default. You can disable this feature, and get a full report, by using the `--gradual-report=false` flag.
 """
         preamble += "\n"
         f.write(preamble)
 
+        f.write(
+            """
+<details>
+    <summary>How to read the results :book: </summary>
+    \n Dirty-waters has analyzed your project dependencies and found different categories for each of them:\n
+    \n - ⚠️⚠️⚠️ : high severity \n
+    \n - ⚠️⚠️: medium severity \n
+    \n - ⚠️: low severity \n
+</details>
+        """
+        )
+
+        f.write("\n")
+
+        for key, value in common_counts.items():
+            f.write(f"\n {key}: {value}\n")
+
         for info in reports.values():
-            f.write(f"\n {info['summary']}: ({info['amount']})\n")
+            f.write(f"\n {info['summary']}: {info['amount']}\n")
 
         f.write("\n")
         f.write("### Fine grained information\n")
@@ -271,25 +292,32 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
             """
                       
 <details>
-    <summary>👻What do I do now? </summary>
-        For packages with signature changes:  \n
-        This means that a dependency either had code signature and now does not, or that the signature was valid and now it's not.
-        This could be a security risk, and you should halt the project until you can verify the changes. \n
-        \nFor downgraded dependencies:  \n
-        1. Check the release notes of the new version to see if the downgrade is intentional. If the new version is more than one release ahead, verify whether any breaking changes in between apply to your project.
-        2. If the downgrade is unintentional, consider updating the package to a version that is compatible with your project.
-        \nFor commits made by both new authors and reviewers:  \n
-        1. Verify, as best as you can, that the new authors and reviewers are not malicious actors.
-        2. If you are unsure, consider reverting the changes.
-        \nFor commits approved by new reviewers:  \n
-        Verify, as best as you can, that the new reviewers are not malicious actors.
-        \nFor commits made by new authors:  \n
-        Verify, as best as you can, that the new authors are not malicious actors.
-        The fact that the reviewers are not new to the repository is a good sign.
+<summary>👻What do I do now? </summary>
+
+For packages **with signature changes**:\n
+- **Why?** Changes in code signatures could indicate tampering with the package or compromised build processes, potentially introducing malicious code.\n
+1. This means that a dependency either had code signature and now does not, or that the signature was valid and now it's not.
+2. This could be a security risk, and you should halt the project until you can verify the changes. \n
+
+For **downgraded dependencies**:\n
+- **Why?** Downgrading packages may reintroduce known security vulnerabilities that were fixed in newer versions.\n
+1. Check the release notes of the new version to see if the downgrade is intentional. If the new version is more than one release ahead, verify whether any breaking changes in between apply to your project.
+2. If the downgrade is unintentional, consider updating the package to a version that is compatible with your project.
+
+For commits made by **both new authors and reviewers**:\n
+- **Why?** When both authors and reviewers are new to a project, there's a higher risk of malicious code being introduced due to lack of established trust and project knowledge.\n
+1. Verify, as best as you can, that the new authors and reviewers are not malicious actors.
+2. If you are unsure, consider reverting the changes.
+
+For commits approved by **new reviewers**:\n
+- **Why?** New reviewers may not be familiar with the project's security requirements or may not have the expertise to identify malicious code.\n
+1. Verify, as best as you can, that the new reviewers are not malicious actors.
+
+For commits made by **new authors**:\n
+- **Why?** New contributors could potentially introduce security vulnerabilities, either accidentally or intentionally.\n
+1. Verify, as best as you can, that the new authors are not malicious actors.
+2. The fact that the reviewers are not new to the repository is a good sign.
 </details>
-
-
-
 """
         )
 

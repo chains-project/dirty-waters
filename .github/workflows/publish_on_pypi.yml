@@ -1,39 +1,94 @@
 name: Upload Python Package to PyPi
 
 on:
-  push:
-    branches:
-      - main
   workflow_run:
-    workflows: ["Run Black Formatter throughout the codebase", "Ruff Linter"]
-    branches: [main]
+    # workflows: ["Run Tests", "Run Formatter"]
+    workflows: ["Run Formatter"]
     types:
       - completed
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
+  check-workflows:
+    runs-on: ubuntu-latest
+    outputs:
+      should_publish: ${{ steps.check.outputs.should_publish }}
+      patch_version: ${{ steps.check.outputs.patch_version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - name: Check workflow conclusions
+        id: check
+        env:
+          COMMIT_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          tests_status=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/run-tests.yml/runs?branch=main" \
+            | jq --arg SHA "$COMMIT_SHA" '.workflow_runs[] | select(.head_sha==$SHA) | .conclusion')
+
+          formatter_status=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/run-formatter.yml/runs?branch=main" \
+            | jq --arg SHA "$COMMIT_SHA" '.workflow_runs[] | select(.head_sha==$SHA) | .conclusion')
+
+          # OUTDATED: Tests must succeed, Formatter must either succeed or not exist (sometimes it's not triggered)
+          # Formatter must either succeed or not exist (sometimes it's not triggered)
+          # if [ "$tests_status" = "\"success\"" ] && ([ "$formatter_status" = "\"success\"" ] || [ -z "$formatter_status" ]); then
+          if [ "$formatter_status" = "\"success\"" ] || [ -z "$formatter_status" ]; then
+            echo "should_publish=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_publish=false" >> $GITHUB_OUTPUT
+            echo "Tests status for commit $COMMIT_SHA: $tests_status"
+            echo "Formatter status for commit $COMMIT_SHA: $formatter_status"
+          fi
+
+          # We also want to check if the last commit was made by renovate bot
+          last_commit_author=$(git log -1 --pretty=format:'%an')
+          if [ "$last_commit_author" = "renovate[bot]" ]; then
+            echo "patch_version=true" >> $GITHUB_OUTPUT
+            echo "Last commit was made by renovate bot"
+          else
+            echo "patch_version=false" >> $GITHUB_OUTPUT
+            echo "Last commit was not made by renovate bot"
+          fi
+
   deploy:
+    needs: check-workflows
+    if: needs.check-workflows.outputs.should_publish == 'true'
     runs-on: ubuntu-latest
     permissions:
       id-token: write
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
-      - name: Version bump
+      - name: Version bump - minor
+        if: needs.check-workflows.outputs.patch_version == 'false'
         uses: monperrus/pyproject-bump-pypi@main
-        id: bump_version
+        id: bump_version_minor
         with:
           file_to_bump: "./pyproject.toml"
           bump_type: "minor"
+      - name: Version bump - patch
+        if: needs.check-workflows.outputs.patch_version == 'true'
+        uses: monperrus/pyproject-bump-pypi@main
+        id: bump_version_patch
+        with:
+          file_to_bump: "./pyproject.toml"
+          bump_type: "micro"
       - name: Get new version
         id: get_version
         run: |
           VERSION=$(grep -m1 'version = ' pyproject.toml | cut -d '"' -f2)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v5.1.0
         with:
           commit_message: "Bump version to ${{ steps.get_version.outputs.version }}"
           branch: ${{ github.head_ref }}

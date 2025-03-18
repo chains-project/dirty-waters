@@ -54,20 +54,14 @@ def get_args():
     parser.add_argument(
         "-v",
         "--release-version-old",
-        required=True,
-        help="The old release tag of the project repository. Example: v10.0.0",
+        required=False,
+        default="HEAD",
+        help="The old release tag of the project repository. Defaults to HEAD. Example: v10.0.0",
     )
     parser.add_argument(
         "-vn",
         "--release-version-new",
         help="The new release version of the project repository.",
-    )
-    parser.add_argument(
-        "-s",
-        "--static-analysis",
-        required=True,
-        action="store_true",
-        help="Run static analysis and generate a markdown report of the project",
     )
     parser.add_argument(
         "-d",
@@ -99,9 +93,26 @@ def get_args():
         help="Enable debug mode.",
     )
     parser.add_argument(
+        "--config",
+        help="Path to configuration file (JSON)",
+        type=str,
+        required=False,
+    )
+
+    # Gradual report group -- mutually exclusive, preserves backward compatibility for --no-gradual-report
+    gradual_report_group = parser.add_mutually_exclusive_group()
+    gradual_report_group.add_argument(
+        "--gradual-report",
+        dest="gradual_report",
+        type=lambda x: str(x).lower() in ["true", "1", "yes", "y"],
+        default=True,
+        help="Enable/disable gradual reporting (default: true)",
+    )
+    gradual_report_group.add_argument(
         "--no-gradual-report",
-        action="store_true",
-        help="Disable gradual report generation -- instead of one smell type per report, gradually descending by severity, report all.",
+        dest="gradual_report",
+        action="store_false",
+        help="Disable gradual reporting (deprecated, use --gradual-report=false instead)",
     )
 
     # Add new smell check arguments
@@ -112,9 +123,9 @@ def get_args():
         help="Check for dependencies with no link to source code repositories",
     )
     smell_group.add_argument(
-        "--check-release-tags",
+        "--check-source-code-sha",
         action="store_true",
-        help="Check for dependencies with no tag/commit sha for release",
+        help="Check for dependencies with no commit sha/tag for release",
     )
     smell_group.add_argument(
         "--check-deprecated",
@@ -135,6 +146,11 @@ def get_args():
         "--check-code-signature",
         action="store_true",
         help="Check for dependencies with missing/invalid code signature",
+    )
+    smell_group.add_argument(
+        "--check-aliased-packages",
+        action="store_true",
+        help="Check for aliased packages",
     )
 
     arguments = parser.parse_args()
@@ -249,6 +265,7 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
 
     logging.info("Number of dependencies: %d", len(deps_list_all.get("resolutions", {})))
     logging.info("Number of patches: %d", len(deps_list_all.get("patches", {})))
+    logging.info("Number of aliased packages: %d", len(deps_list_all.get("aliased_packages", {})))
     logging.info("Number of workspace dependencies: %d", len(deps_list_all.get("workspace", {})))
 
     # dep with different resolutions for further analysis
@@ -262,7 +279,13 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
 
 
 def static_analysis_all(
-    folder_path, project_repo_name, release_version, package_manager, check_match=False, enabled_checks=None
+    folder_path,
+    project_repo_name,
+    release_version,
+    package_manager,
+    check_match=False,
+    enabled_checks=None,
+    config=None,
 ):
     """
     Perform static analysis on the given project and release version.
@@ -274,6 +297,7 @@ def static_analysis_all(
         package_manager (str): The package manager used in the project.
         check_match (bool): Whether to check for package name matches.
         enabled_checks (dict): Dictionary of enabled smell checks.
+        config (dict): Configuration dictionary
     """
     deps_list, dep_with_many_versions, patches_info = get_deps(
         folder_path, project_repo_name, release_version, package_manager
@@ -281,7 +305,12 @@ def static_analysis_all(
     repo_url_info = github_repo.get_github_repo_url(folder_path, deps_list, package_manager)
 
     static_results, errors = static_analysis.get_static_data(
-        folder_path, repo_url_info, package_manager, check_match=check_match, enabled_checks=enabled_checks
+        folder_path,
+        repo_url_info,
+        package_manager,
+        check_match=check_match,
+        enabled_checks=enabled_checks,
+        config=config,
     )
     logging.info("Errors: %s", errors)
 
@@ -387,7 +416,7 @@ def setup_project_info(args, any_check_specified):
         "package_manager": args.package_manager,
         "pnpm_scope": args.pnpm_scope,
         "debug": args.debug,
-        "gradual_report": False if args.no_gradual_report or any_check_specified else True,
+        "gradual_report": args.gradual_report and not any_check_specified,
     }
 
 
@@ -425,6 +454,7 @@ def perform_static_analysis(project_info, is_old_version):
         project_info["package_manager"],
         project_info["check_match"],
         project_info["enabled_checks"],
+        project_info["config"],
     )
 
     write_to_file(
@@ -445,7 +475,8 @@ def generate_static_report(analysis_results, project_info, is_old_version):
 
     logging.info("Generating static analysis report for %s", version_name)
     report_static.get_s_summary(
-        analysis_results[0],
+        analysis_results[0],  # static analysis results
+        analysis_results[1],  # deps_list
         project_info["repo_name"],
         version,
         project_info["package_manager"],
@@ -506,43 +537,46 @@ def main():
     any_check_specified = any(
         [
             dw_args.check_source_code,
-            dw_args.check_release_tags,
+            dw_args.check_source_code_sha,
             dw_args.check_deprecated,
             dw_args.check_forks,
             dw_args.check_provenance,
             dw_args.check_code_signature,
+            dw_args.check_aliased_packages,
         ]
     )
 
     if any_check_specified:
-        # Check if release tags is enabled without source code
-        if any([dw_args.check_release_tags, dw_args.check_forks]) and not dw_args.check_source_code:
+        # Check if source code SHA or fork checks are enabled without source code
+        if any([dw_args.check_source_code_sha, dw_args.check_forks]) and not dw_args.check_source_code:
             raise ValueError(
-                "The --check-release-tags and --check-forks flags require --check-source-code to be enabled. "
-                "Release tags can only be checked if we can first verify the source code repository."
+                "The --check-source-code-sha and --check-forks flags require --check-source-code to be enabled. "
+                "These can only be checked if we can first verify the source code repository."
             )
 
         enabled_checks = {
             "source_code": dw_args.check_source_code,
-            "release_tags": dw_args.check_release_tags,
+            "source_code_sha": dw_args.check_source_code_sha,
             "deprecated": dw_args.check_deprecated,
             "forks": dw_args.check_forks,
             "provenance": dw_args.check_provenance,
             "code_signature": dw_args.check_code_signature,
+            "aliased_packages": dw_args.check_aliased_packages,
         }
     else:
         # If no checks specified, enable all by default
         enabled_checks = {
             "source_code": True,
-            "release_tags": True,
+            "source_code_sha": True,
             "deprecated": True,
-            "forks": True,
             "provenance": True,
             "code_signature": True,
+            "aliased_packages": True,
         }
 
     project_info = setup_project_info(dw_args, any_check_specified)
     setup_directories_and_logging(project_info)
+    project_info["config"] = tool_config.load_config(dw_args.config)
 
     logging.info(
         f"Software supply chain smells analysis for {project_info['repo_name']} for version {project_info['old_version']}..."

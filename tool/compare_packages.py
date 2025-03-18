@@ -188,18 +188,18 @@ def get_repo_from_SA(dep_file_1, dep_file_2, SA_old, SA_new):
             dep_name_version_new = f"{dep}@{versions['chosen_v2']}"
 
             dep_old_repo_url_accessibility = (
-                SA_old.get(dep_name_version_old, {}).get("github_exists", {}).get("github_exists", None)
+                SA_old.get(dep_name_version_old, {}).get("source_code", {}).get("github_exists", None)
             )
             dep_new_repo_url_accessibility = (
-                SA_new.get(dep_name_version_new, {}).get("github_exists", {}).get("github_exists", None)
+                SA_new.get(dep_name_version_new, {}).get("source_code", {}).get("github_exists", None)
             )
 
             if dep_old_repo_url_accessibility is True and dep_new_repo_url_accessibility is True:
                 dep_old_repo_url = (
-                    SA_old.get(dep_name_version_old, {}).get("github_exists", {}).get("github_url", "Error")
+                    SA_old.get(dep_name_version_old, {}).get("source_code", {}).get("github_url", "Error")
                 )
                 dep_new_repo_url = (
-                    SA_new.get(dep_name_version_new, {}).get("github_exists", {}).get("github_url", "Error")
+                    SA_new.get(dep_name_version_new, {}).get("source_code", {}).get("github_url", "Error")
                 )
 
                 differences[dep]["v1_repo_accessibility"] = dep_old_repo_url_accessibility
@@ -213,10 +213,10 @@ def get_repo_from_SA(dep_file_1, dep_file_2, SA_old, SA_new):
                     differences[dep]["compare_message"] = "DO NOT COMPARE"
 
                     check_directed_old = (
-                        SA_old.get(dep_name_version_old, {}).get("github_exists", {}).get("github_redirected", None)
+                        SA_old.get(dep_name_version_old, {}).get("source_code", {}).get("github_redirected", None)
                     )
                     check_directed_new = (
-                        SA_new.get(dep_name_version_new, {}).get("github_exists", {}).get("github_redirected", None)
+                        SA_new.get(dep_name_version_new, {}).get("source_code", {}).get("github_redirected", None)
                     )
 
                     differences[dep]["v1_repo_directed"] = check_directed_old
@@ -270,8 +270,8 @@ def get_repo_from_SA(dep_file_1, dep_file_2, SA_old, SA_new):
             differences[dep]["compare_message"] = "DO NOT COMPARE"
             dep_name_version_old = f"{dep}@{versions['chosen_v1']}"
             dep_name_version_new = f"{dep}@{versions['chosen_v2']}"
-            repo_1 = SA_old.get(dep_name_version_old, {}).get("github_exists", {}).get("github_url", "Error")
-            repo_2 = SA_old.get(dep_name_version_old, {}).get("github_exists", {}).get("github_url", "Error")
+            repo_1 = SA_old.get(dep_name_version_old, {}).get("source_code", {}).get("github_url", "Error")
+            repo_2 = SA_old.get(dep_name_version_old, {}).get("source_code", {}).get("github_url", "Error")
             if repo_1 == repo_2 and repo_1 != "Error" and repo_2 != "Error":
                 differences[dep]["repo_message"] = "Repo - ok"
                 differences[dep]["repo"] = repo_1

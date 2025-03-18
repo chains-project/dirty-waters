@@ -86,7 +86,7 @@ class CacheManager:
         self.package_cache.clear_cache(older_than_days)
         self.commit_comparison_cache.clear_cache(older_than_days)
         self.user_commit_cache.clear_cache(older_than_days)
-        self.maven_cache.clear_cache(older_than_days)
+        self.extracted_deps_cache.clear_cache(older_than_days)
 
 
 class Cache:
@@ -196,8 +196,8 @@ class GitHubCache(Cache):
                 review_data, cached_at = result
                 cached_at = datetime.fromisoformat(cached_at)
 
-                # Return cached data if it's less than 7 days old
-                if datetime.now() - cached_at < timedelta(days=7):
+                # Return cached data if it's less than 30 days old
+                if datetime.now() - cached_at < timedelta(days=30):
                     return json.loads(review_data)
             return None
         finally:
@@ -234,8 +234,8 @@ class GitHubCache(Cache):
                 repo_url, cached_at = result
                 cached_at = datetime.fromisoformat(cached_at)
 
-                # URLs don't change often, so we can cache them for longer (30 days)
-                if datetime.now() - cached_at < timedelta(days=30):
+                # URLs don't change often, so we can cache them for longer (180 days)
+                if datetime.now() - cached_at < timedelta(days=180):
                     return repo_url
 
             return None
@@ -307,7 +307,7 @@ class GitHubCache(Cache):
             if result:
                 sha, cached_at = result
                 cached_at = datetime.fromisoformat(cached_at)
-                if datetime.now() - cached_at < timedelta(days=30):
+                if datetime.now() - cached_at < timedelta(days=180):
                     return sha
         return None
 
@@ -319,17 +319,39 @@ class GitHubCache(Cache):
         try:
             if older_than_days:
                 cutoff = (datetime.now() - timedelta(days=older_than_days)).isoformat()
-                c.execute("DELETE FROM pr_reviews WHERE cached_at < ?", (cutoff,))
-                c.execute("DELETE FROM repo_info WHERE cached_at < ?", (cutoff,))
                 c.execute("DELETE FROM github_urls WHERE cached_at < ?", (cutoff,))
                 c.execute("DELETE FROM pr_info WHERE cached_at < ?", (cutoff,))
+                c.execute("DELETE FROM pr_reviews WHERE cached_at < ?", (cutoff,))
+                c.execute("DELETE FROM tag_to_sha WHERE cached_at < ?", (cutoff,))
             else:
-                c.execute("DELETE FROM pr_reviews")
-                c.execute("DELETE FROM repo_info")
                 c.execute("DELETE FROM github_urls")
                 c.execute("DELETE FROM pr_info")
+                c.execute("DELETE FROM pr_reviews")
+                c.execute("DELETE FROM tag_to_sha")
             conn.commit()
 
+        finally:
+            conn.close()
+
+    def clear_github_urls_from_package(self, package):
+        """Clear cached GitHub URLs for a package"""
+        conn = sqlite3.connect(self.db_path)
+        c = conn.cursor()
+
+        try:
+            # first get count of rows with the package name
+            c.execute("SELECT COUNT(*) FROM github_urls WHERE package = ?", (package,))
+            count = c.fetchone()[0]
+            if count == 0:
+                print(f"No cached data found for {package}")
+                logging.info(f"No cached data found for {package}")
+                return
+
+            # delete rows with the package name
+            print(f"Deleting cached data for {package}")
+            logging.info(f"Deleting cached data for {package}")
+            c.execute("DELETE FROM github_urls WHERE package = ?", (package,))
+            conn.commit()
         finally:
             conn.close()
 
@@ -364,7 +386,7 @@ class PackageAnalysisCache(Cache):
             (package_name, version, package_manager, json.dumps(analysis_data), datetime.now().isoformat()),
         )
 
-    def get_package_analysis(self, package_name, version, package_manager, max_age_days=30):
+    def get_package_analysis(self, package_name, version, package_manager, max_age_days=180):
         """Get cached package analysis results"""
         results = self._execute_query(
             """SELECT analysis_data, cached_at 
@@ -395,6 +417,30 @@ class PackageAnalysisCache(Cache):
                 c.execute("DELETE FROM package_analysis")
 
             conn.commit()
+
+        finally:
+            conn.close()
+
+    def clear_package_by_version(self, package_name, version):
+        """Clear cached data for a specific package version"""
+        conn = sqlite3.connect(self.db_path)
+        c = conn.cursor()
+
+        try:
+            c.execute(
+                "SELECT COUNT(*) FROM package_analysis WHERE package_name = ? AND version = ?",
+                (package_name, version),
+            )
+            count = c.fetchone()[0]
+            if count == 0:
+                print(f"No cached data found for {package_name} {version}")
+                logging.info(f"No cached data found for {package_name} {version}")
+                return
+
+            c.execute("DELETE FROM package_analysis WHERE package_name = ? AND version = ?", (package_name, version))
+            conn.commit()
+            print(f"Cleared cached data for {package_name} {version}")
+            logging.info(f"Cleared cached data for {package_name} {version}")
 
         finally:
             conn.close()
@@ -449,7 +495,7 @@ class CommitComparisonCache(Cache):
             (package, tag1, tag2, json.dumps(data), datetime.now().isoformat()),
         )
 
-    def get_authors_from_tags(self, package, tag1, tag2, max_age_days=30):
+    def get_authors_from_tags(self, package, tag1, tag2, max_age_days=180):
         results = self._execute_query(
             "SELECT data, cached_at FROM commit_authors_from_tags WHERE package = ? AND tag1 = ? AND tag2 = ?",
             (package, tag1, tag2),
@@ -471,7 +517,7 @@ class CommitComparisonCache(Cache):
             (commit_url, json.dumps(data), datetime.now().isoformat()),
         )
 
-    def get_authors_from_url(self, commit_url, max_age_days=30):
+    def get_authors_from_url(self, commit_url, max_age_days=180):
         results = self._execute_query(
             "SELECT data, cached_at FROM commit_authors_from_url WHERE commit_url = ?", (commit_url,)
         )
@@ -492,7 +538,7 @@ class CommitComparisonCache(Cache):
             (repo_name, patch_path, sha, json.dumps(data), datetime.now().isoformat()),
         )
 
-    def get_patch_authors(self, repo_name, patch_path, sha, max_age_days=30):
+    def get_patch_authors(self, repo_name, patch_path, sha, max_age_days=180):
         results = self._execute_query(
             "SELECT data, cached_at FROM patch_authors_from_sha WHERE repo_name = ? AND patch_path = ? AND sha = ?",
             (repo_name, patch_path, sha),
@@ -577,7 +623,7 @@ class UserCommitCache(Cache):
             ),
         )
 
-    def get_user_commit(self, api_url, max_age_days=30):
+    def get_user_commit(self, api_url, max_age_days=180):
         results = self._execute_query(
             "SELECT earliest_commit_sha, author_login_in_1st_commit, author_id_in_1st_commit, cached_at FROM user_commit WHERE api_url = ?",
             (api_url,),
@@ -634,7 +680,7 @@ class DependencyExtractionCache(Cache):
             (repo_path, file_hash, json.dumps(dependencies), datetime.now().isoformat()),
         )
 
-    def get_dependencies(self, repo_path, file_hash, max_age_days=30):
+    def get_dependencies(self, repo_path, file_hash, max_age_days=180):
         results = self._execute_query(
             "SELECT dependencies, cached_at FROM extracted_dependencies WHERE repo_path = ? AND file_hash = ?",
             (repo_path, file_hash),
@@ -708,6 +754,37 @@ def clone_repo(project_repo_name, release_version=None, blobless=False):
         repo.git.checkout(release_version)
 
     return f"/tmp/{project_repo_name}"
+
+
+DEFAULT_CONFIG_PATH = ".dirty-waters.json"
+DEFAULT_CONFIG = {"ignore": []}
+
+
+def load_config(config_path=None):
+    """
+    Load configuration from a JSON file.
+
+    Args:
+        config_path (str): Path to config file. If None, looks for .dirty-waters.json in current directory
+
+    Returns:
+        dict: Configuration dictionary
+    """
+    if not config_path:
+        logging.info(f"No config file provided, using default config path: {DEFAULT_CONFIG_PATH}")
+        config_path = DEFAULT_CONFIG_PATH
+
+    if not os.path.exists(config_path):
+        logging.warning(f"Config file not found at {config_path}, using default config")
+        return DEFAULT_CONFIG
+
+    try:
+        with open(config_path, "r") as f:
+            config = json.load(f)
+            return {**DEFAULT_CONFIG, **config}
+    except Exception as e:
+        logging.warning(f"Error loading config file: {str(e)}")
+        return DEFAULT_CONFIG
 
 
 def setup_logger(log_file_path, debug=False):
@@ -808,7 +885,7 @@ def make_github_request(
 
                 # Get rate limit reset time and wait
                 reset_time = int(e.response.headers.get("X-RateLimit-Reset", 0))
-                wait_time = max(reset_time - int(time.time()), 0)
+                wait_time = max(reset_time - int(time.time()), 0) + 1
                 if not silent:
                     logging.warning(f"Rate limit exceeded. Waiting {wait_time} seconds...")
                 time.sleep(wait_time)
@@ -817,6 +894,11 @@ def make_github_request(
                 if not silent:
                     logging.warning(f"Request failed: {e}")
                 if attempt == max_retries - 1:
+                    if e.response.status_code in [
+                        502,
+                        504,
+                    ]:  # timeout, sometimes happens when the request is too large (e.g., too many tags)
+                        return 504
                     return None
                 time.sleep(retry_delay * (attempt + 1))
 
