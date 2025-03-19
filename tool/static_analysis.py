@@ -170,8 +170,8 @@ def check_code_signature(package_name, package_version, pm):
 
         # Run the command
         output = subprocess.run(command, shell=True, capture_output=True, text=True)
-        ansi_escape = re.compile(r'\x1b\[[0-9;]*[a-zA-Z]')
-        escaped_output = ansi_escape.sub('', output.stdout)
+        ansi_escape = re.compile(r"\x1b\[[0-9;]*[a-zA-Z]")
+        escaped_output = ansi_escape.sub("", output.stdout)
 
         # Regular expression to extract the PGP signature section
         pgp_signature_pattern = re.compile(r"PGP signature:\n(?:[ \t]*.+\n)*?[ \t]*status:\s*(\w+)", re.MULTILINE)
