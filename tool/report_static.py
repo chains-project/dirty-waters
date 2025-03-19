@@ -399,6 +399,9 @@ def write_summary(
 
     if enabled_checks.get("code_signature"):
         warning_counts["code_signature"] = f":lock: Packages without code signature (⚠️⚠️): {code_signature_df.shape[0]}"
+        warning_counts["invalid_code_signature"] = (
+            f":unlocked: Packages with invalid code signature (⚠️⚠️): {invalid_code_signature_df.shape[0]}"
+        )
 
     if enabled_checks.get("forks"):
         warning_counts["forked_package"] = f":cactus: Packages that are forks (⚠️): {(forked_package_df.shape[0])}"
