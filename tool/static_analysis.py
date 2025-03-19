@@ -177,14 +177,13 @@ def check_code_signature(package_name, package_version, pm):
         match = pgp_signature_pattern.search(output.stdout)
         logging.info(f"Code Signature match: {match}")
         if match:
-            logging.warning(f"Matched, signature match: {match.group(1)}")
+            logging.info(f"Matched, signature match: {match.group(1)}")
             # Extract the status
             status = match.group(1).strip().lower()
             return {"signature_present": True, "signature_valid": status == "valid"}
 
         # If no match is found, return no PGP signature present
-        logging.warning(f"No match, {match}")
-        logging.warning(f"Command output was {output.stdout}")
+        logging.warning(f"No match. Command output was\n{output.stdout}")
         return {"signature_present": False, "signature_valid": False}
 
     def check_npm_signature(package, package_version):
