@@ -170,11 +170,13 @@ def check_code_signature(package_name, package_version, pm):
 
         # Run the command
         output = subprocess.run(command, shell=True, capture_output=True, text=True)
+        output_stdout = output.stdout.encode("utf-8")
 
         # Regular expression to extract the PGP signature section
         pgp_signature_pattern = re.compile(r"PGP signature:\n(?:[ \t]*.+\n)*?[ \t]*status:\s*(\w+)", re.MULTILINE)
-        match = pgp_signature_pattern.search(output.stdout)
+        match = pgp_signature_pattern.search(output_stdout)
         logging.info(f"Code Signature match: {match}")
+        logging.info(f"Output\n{output_stdout!r}")
         if match:
             logging.info(f"Matched, signature match: {match.group(1)}")
             # Extract the status
@@ -182,7 +184,7 @@ def check_code_signature(package_name, package_version, pm):
             return {"signature_present": True, "signature_valid": status == "valid"}
 
         # If no match is found, return no PGP signature present
-        logging.warning(f"No match. Command output was\n{output.stdout!r}")
+        logging.warning(f"No match. Command output was\n{output_stdout!r}")
         return {"signature_present": False, "signature_valid": False}
 
     def check_npm_signature(package, package_version):
