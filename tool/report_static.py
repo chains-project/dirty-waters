@@ -463,26 +463,6 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                 md_file.write(f"\n{val}\n")
         md_file.write("\n")
 
-        # md_file.write(f"#### Other info")
-
-        if enabled_checks.get("source_code") and package_manager in SUPPORTED_SMELLS["no_source_code"]:
-            if not_on_github_counts > 0:
-                md_file.write(
-                    f"""
-<details>
-    <summary>Other info:</summary>
-    \n- Source code repo is not hosted on GitHub:  {not_on_github_counts}\n
-    This could be due, for example, to the package being hosted on a different platform.\n
-    This does not mean that the source code URL is invalid.\n
-    However, for non-GitHub repositories, not all checks can currently be performed.\n
-"""
-                )
-
-                not_on_github_df.index = range(1, len(not_on_github_df) + 1)
-                markdown_text = not_on_github_df.reset_index().to_markdown(index=False)
-                md_file.write(markdown_text)
-                md_file.write("\n</details>\n")
-
         md_file.write("\n### Fine grained information\n")
         md_file.write(
             "\n:dolphin: For further information about software supply chain smells in your project, take a look at the following tables.\n"
@@ -604,7 +584,27 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. Check the aliased package and its repository to verify the alias is not malicious."""
             )
 
-        md_file.write("\n</details>\n\n\n")
+        md_file.write("\n</details>\n")
+
+        if enabled_checks.get("source_code") and package_manager in SUPPORTED_SMELLS["no_source_code"]:
+            if not_on_github_counts > 0:
+                md_file.write("\n### Notes\n")
+                md_file.write(
+                    f"""
+<details>
+    <summary>Other info:</summary>
+    \n- Source code repo is not hosted on GitHub:  {not_on_github_counts}\n
+    This could be due, for example, to the package being hosted on a different platform.\n
+    This does not mean that the source code URL is invalid.\n
+    However, for non-GitHub repositories, not all checks can currently be performed.\n
+"""
+                )
+
+                not_on_github_df.index = range(1, len(not_on_github_df) + 1)
+                markdown_text = not_on_github_df.reset_index().to_markdown(index=False)
+                md_file.write(markdown_text)
+                md_file.write("\n</details>\n\n\n")
+
         md_file.write("---\n")
         md_file.write("\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/).\n")
         md_file.write(f"\nReport created on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
