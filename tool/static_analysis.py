@@ -164,7 +164,6 @@ def check_deprecated_and_provenance(package, package_version, pm):
 
 
 def check_code_signature(package_name, package_version, pm):
-    # TODO: find a package where we can check this, because with spoon everything is fine
     def check_maven_signature(package_name, package_version):
         # Construct the command
         command = f"mvn org.simplify4u.plugins:pgpverify-maven-plugin:1.18.2:show -Dartifact={package_name}:{package_version}"
@@ -183,7 +182,7 @@ def check_code_signature(package_name, package_version, pm):
             return {"signature_present": True, "signature_valid": status == "valid"}
 
         # If no match is found, return no PGP signature present
-        logging.warning(f"No match. Command output was\n{output.stdout}")
+        logging.warning(f"No match. Command output was\n{output.stdout!r}")
         return {"signature_present": False, "signature_valid": False}
 
     def check_npm_signature(package, package_version):
