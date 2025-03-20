@@ -196,6 +196,11 @@ An example configuration file:
 Note that for cases where a package is aliased, we check for the original package name, not the aliased one:
 i.e., if we alias the package `string-width` to `string-width-cjs`, we will check for `string-width@versionx.y.z`, not `string-width-cjs@versionx.y.z`.
 
+#### Package Name Formatting
+
+The packages present in the configuration file should be set with a specific formatting: `<package_name>@<version>`.
+In the case of Maven packages, you should use the format `<group_id>:<artifact_id>@<version>`.
+
 ### Continuous integration
 
 See Github action at <https://github.com/chains-project/dirty-waters-action>
