@@ -1,0 +1,34 @@
+name: Run Type Enforcer
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**.py"
+  pull_request:
+    paths:
+      - "**.py"
+
+permissions:
+  contents: read
+
+jobs:
+  black:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5.4.0
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Type checker
+        run: mypy . --strict
