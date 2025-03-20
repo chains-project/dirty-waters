@@ -9,7 +9,8 @@
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin"],
-      "automerge": false
+      "automerge": true
     }
-  ]
+  ],
+  "minimumReleaseAge": "14 days"
 }
