@@ -39,11 +39,15 @@ def extract_repo_url(repo_info: str) -> str:
         url = url.replace(":/", "/")
     else:
         # could be a redirect, so we'll make a request to the URL to get the final URL
-        url = requests.head(url, allow_redirects=True).url
+        match = GITHUB_URL_PATTERN.search(url)
+        if not match:
+            try:
+                url = requests.head(url, allow_redirects=True).url
+            except requests.exceptions.RequestException:
+                logging.warning(f"Could not check for redirections, was using {url}")
     url = url.replace(":", "/")
     match = GITHUB_URL_PATTERN.search(url)
     if not match:
-        logging.warning(f"Could not find GitHub URL for {repo_info}")
         return repo_info, "Not a GitHub repository"
 
     # if there is a match, there's still the possibility of the scm url having been
@@ -98,28 +102,41 @@ def process_package(
     repos_output_json,
 ):
     def check_if_valid_repo_info(repo_info):
-        if repo_info is None or "Undefined" in repo_info or "undefined" in repo_info or "ERR!" in repo_info:
-            repos_output_json[package] = {
+        retrieved_info = {
+            "url": "",
+            "message": "",
+            "command": "",
+        }
+        if repo_info is None or "Undefined" in repo_info or "undefined" in repo_info or "ERR!" in repo_info or "null object" in repo_info:
+            retrieved_info.update({
                 "url": "Could not find",
                 "message": "Could not find repository",
                 "command": command,
-            }
+            })
+            repos_output_json[package] = retrieved_info
             undefined.append(f"Undefined for {package}, {repo_info}")
-            return False
+            return False, retrieved_info
 
         url, message = extract_repo_url(repo_info)
-        repos_output_json[package] = {"url": url, "message": message, "command": command}
+        retrieved_info.update({
+            "url": url,
+            "message": message,
+            "command": command,
+        })
+        repos_output_json[package] = retrieved_info
         if message == "GitHub repository":
+            logging.info(f"Found GitHub URL for {package}: {url}")
             repos_output.append(url)
             same_repos_deps.get("url", []).append(package)
-            return True
+            return True, retrieved_info
         else:
+            logging.info(f"Found non-GitHub URL for {package}: {url}")
             some_errors.append(f"No GitHub URL for {package}\n{repo_info}")
-            return False
+            return False, retrieved_info
 
-    repo_info = cache_manager.github_cache.get_github_url(package)
-    valid_repo_info = False
-    if not repo_info:
+    retrieved_info = cache_manager.github_cache.get_github_url(package)
+    if not retrieved_info:
+        valid_repo_info = False
         for scm_command in get_scm_commands(pm, package):
             try:
                 result = subprocess.run(
@@ -130,28 +147,38 @@ def process_package(
                     timeout=TIMEOUT,
                 )
                 if result.stdout:
-                    repo_info = result.stdout
-                    valid_repo_info = check_if_valid_repo_info(repo_info)
+                    valid_repo_info, retrieved_info = check_if_valid_repo_info(result.stdout)
                     if valid_repo_info:
                         break
-                    repo_info = None
                 else:
-                    repo_info = result.stderr
+                    retrieved_info = {}
             except subprocess.TimeoutExpired:
                 logging.warning(
                     f"Command {scm_command} timed out after {TIMEOUT} seconds for package {package}",
                 )
-                repo_info = None
+                retrieved_info = {
+                    "url": "Could not find",
+                    "message": "Could not find repository",
+                    "command": command
+                }
             except subprocess.CalledProcessError as e:
                 logging.warning(f"Command {scm_command} failed for package {package}: {e}")
-                repo_info = "ERR!"
+                retrieved_info = {
+                    "url": "Could not find",
+                    "message": "Could not find repository",
+                    "command": command
+                }
 
-        if repo_info:
-            # Must still run the check if all cases were errors
-            check_if_valid_repo_info(repo_info)
-        cache_manager.github_cache.cache_github_url(package, repo_info)
+        cache_manager.github_cache.cache_github_url(package, retrieved_info)
     else:
-        check_if_valid_repo_info(repo_info)
+        logging.info(f"Found cached GitHub URL for {package}: {retrieved_info['url']}")
+        valid_repo_info = ("GitHub repository" == retrieved_info["message"])
+        repos_output_json[package] = retrieved_info
+        if valid_repo_info:
+            repos_output.append(retrieved_info["url"])
+            same_repos_deps.get("url", []).append(package)
+        else:
+            some_errors.append(f"No GitHub URL for {package}\n{retrieved_info['url']}")
 
 
 def get_github_repo_url(folder, dep_list, pm):
