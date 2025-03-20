@@ -16,7 +16,7 @@ By using `dirty-waters`, you identify the shady areas of your supply chain, whic
 - Dependencies with no build attestation (low severity)
 
 \* We consider invalid links to be links which do not return a 200 status code.
-Furthermore, if the dependencies are not hosted on GitHub, not all checks will be possible to be made (e.g., code signature).
+Furthermore, if the dependencies are not hosted on GitHub, not all checks will be possible to be made (e.g., release tag/commit SHA).
 
 As for its differential analyses, `dirty-waters` reports the following smells:
 
