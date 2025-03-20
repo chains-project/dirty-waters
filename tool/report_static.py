@@ -60,10 +60,9 @@ def create_dataframe(data, deps_list):
             "archived": source_code_data.get("archived", None),
             "is_fork": source_code_data.get("is_fork", None),
             "parent_repo_link": source_code_data.get("parent_repo_link", None),
-            "forked_from": source_code_data.get("parent_repo_link", "-"),
             "open_issues_count": source_code_data.get("open_issues_count", "-"),
             "is_aliased": aliased_package_name is not None,
-            "aliased_package_name": aliased_package_name,
+            "aliased_package_name": f"`{aliased_package_name}`" if aliased_package_name else "-",
             "is_match": match_data.get("match", None),
             "sha_exists": sha_exists_info.get("exists", "-"),
             "tag_version": f"`{sha_exists_info.get("tag_version", "-")}`",
@@ -305,7 +304,7 @@ def write_summary(
     ]
     not_on_github_df = (
         df.loc[
-            df["is_github"] == False,
+            (df["is_github"] == False) & (df["github_url"] != "No_repo_info_found"),
             ["github_url"] + (["command"] if package_manager == "maven" else []),
         ]
         .reset_index(drop=False)
