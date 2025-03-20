@@ -203,7 +203,7 @@ class GitHubCache(Cache):
         finally:
             conn.close()
 
-    def cache_github_url(self, package, repo_url):
+    def cache_github_url(self, package, repo_info):
         """Cache GitHub URL for a package"""
         conn = sqlite3.connect(self.db_path)
         c = conn.cursor()
@@ -215,7 +215,7 @@ class GitHubCache(Cache):
                 (package, repo_url, cached_at)
                 VALUES (?, ?, ?)
             """,
-                (package, repo_url, datetime.now().isoformat()),
+                (package, json.dumps(repo_info), datetime.now().isoformat()),
             )
             conn.commit()
         finally:
@@ -231,12 +231,12 @@ class GitHubCache(Cache):
             result = c.fetchone()
 
             if result:
-                repo_url, cached_at = result
+                repo_info, cached_at = result
                 cached_at = datetime.fromisoformat(cached_at)
 
                 # URLs don't change often, so we can cache them for longer (180 days)
                 if datetime.now() - cached_at < timedelta(days=180):
-                    return repo_url
+                    return json.loads(repo_info)
 
             return None
         finally:
