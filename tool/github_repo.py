@@ -109,7 +109,7 @@ def process_package(
 
         url, message = extract_repo_url(repo_info)
         repos_output_json[package] = {"url": url, "message": message, "command": command}
-        if url:
+        if message == "GitHub repository":
             repos_output.append(url)
             same_repos_deps.get("url", []).append(package)
             return True
