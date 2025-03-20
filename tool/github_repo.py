@@ -4,6 +4,7 @@ import re
 import json
 import sqlite3
 import logging
+import requests
 from pathlib import Path
 from tqdm import tqdm
 from tool.tool_config import get_cache_manager
@@ -36,9 +37,13 @@ def extract_repo_url(repo_info: str) -> str:
     if "https" not in repo_info:
         # cases such as git@github:apache/maven-scm, we just remove the :
         url = url.replace(":/", "/")
+    else:
+        # could be a redirect, so we'll make a request to the URL to get the final URL
+        url = requests.head(url, allow_redirects=True).url
     url = url.replace(":", "/")
     match = GITHUB_URL_PATTERN.search(url)
     if not match:
+        logging.warning(f"Could not find GitHub URL for {repo_info}")
         return repo_info, "Not a GitHub repository"
 
     # if there is a match, there's still the possibility of the scm url having been
@@ -144,7 +149,6 @@ def process_package(
         if repo_info:
             # Must still run the check if all cases were errors
             check_if_valid_repo_info(repo_info)
-        logging.info(f"Package {package} repository info: {repo_info}")
         cache_manager.github_cache.cache_github_url(package, repo_info)
     else:
         check_if_valid_repo_info(repo_info)
