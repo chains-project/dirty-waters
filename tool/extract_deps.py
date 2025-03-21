@@ -113,14 +113,17 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
         aliased_packages = {}
         deps_list_data = {}
 
-        packages = {}
-
+        parent_packages = {}
         if lock_file_json.get("packages") and isinstance(lock_file_json["packages"], dict):
             for package_path, package_info in lock_file_json["packages"].items():
                 if package_path.startswith("node_modules/"):
                     package_name = package_path.split("/", 1)[1]
                     if "node_modules" in package_name:
                         package_name = package_name.split("node_modules/")[-1]
+                    
+                    if package_info.get("dependencies"):
+                        for dep_name in package_info["dependencies"]:
+                            parent_packages.setdefault(dep_name, set()).add(package_name)
 
                     if package_info.get("version"):
                         version = package_info["version"]
@@ -131,11 +134,16 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
                             aliased_packages[f"{original_name}@{version}"] = package_name
                             package_name = original_name
 
-                        packages[package_name] = version
                         pkg_name_with_resolution.add(f"{package_name}@{version}")
 
             deps_list_data = {
-                "resolutions": list({"info": info} for info in sorted(pkg_name_with_resolution)),
+                "resolutions": list(
+                    {
+                        "info": info,
+                        "parent": list(parent_packages.get(info.split("@")[0], set())),
+                    }
+                    for info in sorted(pkg_name_with_resolution)
+                ), 
                 "patches": patches,
                 "aliased_packages": aliased_packages,
             }

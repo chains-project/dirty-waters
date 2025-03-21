@@ -298,16 +298,16 @@ def write_summary(
 
     no_source_code_repo_df = df.loc[
         df["github_url"] == "No_repo_info_found",
-        ["github_url", "github_exists"] + (["parent", "command"] if package_manager == "maven" else []),
+        ["github_url", "github_exists", "parent"] + (["command"] if package_manager == "maven" else []),
     ]
     github_repo_404_df = df.loc[
         df["github_exists"] == False,
-        ["github_url", "github_exists"] + (["parent", "command"] if package_manager == "maven" else []),
+        ["github_url", "github_exists", "parent"] + (["command"] if package_manager == "maven" else []),
     ]
     not_on_github_df = (
         df.loc[
             df["is_github"] == False,
-            ["github_url"] + (["parent", "command"] if package_manager == "maven" else []),
+            ["github_url", "parent"] + (["command"] if package_manager == "maven" else []),
         ]
         .reset_index(drop=False)
         .drop_duplicates(subset=["package_name"])
@@ -331,8 +331,9 @@ def write_summary(
                 "tag_url",
                 "message",
                 "status_code_for_sha",
+                "parent",
             ]
-            + (["parent", "command"] if package_manager == "maven" else [])
+            + (["command"] if package_manager == "maven" else [])
         ),
     ]
     # all_deprecated_df = df[df["all_deprecated"] is True]
@@ -341,6 +342,7 @@ def write_summary(
         [
             "deprecated_in_version",
             "all_deprecated",
+            "parent",
         ],
     ]
     forked_package_df = df.loc[
@@ -350,14 +352,16 @@ def write_summary(
                 "is_fork",
                 "github_url",
                 "parent_repo_link",
+                "parent",
             ]
-            + (["parent", "command"] if package_manager == "maven" else [])
+            + (["command"] if package_manager == "maven" else [])
         ),
     ]
     provenance_df = df.loc[
         df["provenance_in_version"] == False,
         [
             "provenance_in_version",
+            "parent",
         ],
     ]
     code_signature_df = df.loc[
@@ -365,8 +369,9 @@ def write_summary(
         (
             [
                 "signature_present",
+                "parent",
             ]
-            + (["parent", "command"] if package_manager == "maven" else [])
+            + (["command"] if package_manager == "maven" else [])
         ),
     ]
     invalid_code_signature_df = df.loc[
@@ -374,16 +379,18 @@ def write_summary(
         (
             [
                 "signature_valid",
+                "parent",
             ]
-            + (["parent", "command"] if package_manager == "maven" else [])
+            + (["command"] if package_manager == "maven" else [])
         ),
     ]
     aliased_package_df = df.loc[
         df["is_aliased"] == True,
         [
             "aliased_package_name",
+            "parent",
         ]
-        + (["parent", "command"] if package_manager == "maven" else []),
+        + (["command"] if package_manager == "maven" else []),
     ]
 
     common_counts = {
