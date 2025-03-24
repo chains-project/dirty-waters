@@ -83,6 +83,7 @@ def get_scm_command(pm: str, package: str) -> List[str]:
         ]
     raise ValueError(f"Unsupported package manager: {pm}")
 
+
 def run_scm_command(pm, command):
     def run_npm_command(command):
         try:
@@ -137,6 +138,7 @@ def run_scm_command(pm, command):
     elif pm == "maven":
         return run_maven_command(command)
     raise ValueError(f"Unsupported package manager: {pm}")
+
 
 def process_package(
     package,
