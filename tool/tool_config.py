@@ -95,13 +95,15 @@ class Cache:
         self.cache_dir = Path(cache_dir)
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         self.db_path = self.cache_dir / db_name
-        self._execute_query("""
+        self._execute_query(
+            """
             CREATE TABLE IF NOT EXISTS schema_signatures (
                 table_name TEXT PRIMARY KEY,
                 signature TEXT,
                 last_updated TIMESTAMP
             )
-        """)
+        """
+        )
         self.setup_db()
 
     def setup_db(self):
@@ -125,14 +127,14 @@ class Cache:
     def _generate_schema_signature(self, schema):
         """Generate a unique signature for a schema definition"""
         # Removing whitespace and convert to lowercase to ignore formatting differences
-        normalized_schema = ' '.join(schema.lower().split())
+        normalized_schema = " ".join(schema.lower().split())
         return hashlib.md5(normalized_schema.encode()).hexdigest()
 
     def _check_and_update_table(self, table_name, schema):
         """Check if table exists with correct schema, otherwise recreate it"""
         new_signature = self._generate_schema_signature(schema)
         current_signature = self._get_table_signature(table_name)
-        
+
         if current_signature is None:
             # Table doesn't exist or isn't versioned yet
             print(f"Creating new table: {table_name}")
@@ -147,10 +149,7 @@ class Cache:
     def _get_table_signature(self, table_name):
         """Get the current signature of a table from schema_signatures"""
         try:
-            result = self._execute_query(
-                "SELECT signature FROM schema_signatures WHERE table_name = ?", 
-                (table_name,)
-            )
+            result = self._execute_query("SELECT signature FROM schema_signatures WHERE table_name = ?", (table_name,))
             return result[0] if result else None
         except:
             # Table might not exist yet
@@ -160,7 +159,7 @@ class Cache:
         """Create a new table and record its signature"""
         # Check if table exists already (but isn't tracked)
         table_exists = self._check_table_exists(table_name)
-        
+
         if table_exists:
             self._execute_query(f"DROP TABLE {table_name}")
         self._execute_query(schema)
@@ -169,7 +168,7 @@ class Cache:
             INSERT INTO schema_signatures (table_name, signature, last_updated)
             VALUES (?, ?, CURRENT_TIMESTAMP)
             """,
-            (table_name, signature)
+            (table_name, signature),
         )
 
     def _update_table(self, table_name, schema, new_signature):
@@ -182,7 +181,7 @@ class Cache:
             SET signature = ?, last_updated = CURRENT_TIMESTAMP
             WHERE table_name = ?
             """,
-            (new_signature, table_name)
+            (new_signature, table_name),
         )
 
     def _check_table_exists(self, table_name):
@@ -192,8 +191,8 @@ class Cache:
                 """
                 SELECT name FROM sqlite_master 
                 WHERE type='table' AND name=?
-                """, 
-                (table_name,)
+                """,
+                (table_name,),
             )
             return result is not None
         except:
@@ -250,9 +249,9 @@ class GitHubCache(Cache):
                     cached_at TIMESTAMP,
                     PRIMARY KEY (repo_name, tag)
                 )
-            """
+            """,
         }
-        
+
         for table_name, schema in table_schemas.items():
             self._check_and_update_table(table_name, schema)
 
@@ -471,7 +470,6 @@ class PackageAnalysisCache(Cache):
         for table_name, schema in table_schemas.items():
             self._check_and_update_table(table_name, schema)
 
-
     def cache_package_analysis(self, package_name, version, package_manager, analysis_data):
         """Cache package analysis results"""
         self._execute_query(
@@ -576,7 +574,7 @@ class CommitComparisonCache(Cache):
                     cached_at TIMESTAMP,
                     PRIMARY KEY (repo_name, patch_path, sha)
                 )
-            """
+            """,
         }
 
         for table_name, schema in table_schemas.items():
