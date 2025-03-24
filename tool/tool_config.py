@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Dict, Optional
 import time
 from git import Repo
+import hashlib
 
 # change this to the install command for your project
 PNPM_LIST_COMMAND = lambda scope: [
@@ -94,6 +95,15 @@ class Cache:
         self.cache_dir = Path(cache_dir)
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         self.db_path = self.cache_dir / db_name
+        self._execute_query(
+            """
+            CREATE TABLE IF NOT EXISTS schema_signatures (
+                table_name TEXT PRIMARY KEY,
+                signature TEXT,
+                last_updated TIMESTAMP
+            )
+        """
+        )
         self.setup_db()
 
     def setup_db(self):
@@ -114,6 +124,80 @@ class Cache:
         finally:
             conn.close()
 
+    def _generate_schema_signature(self, schema):
+        """Generate a unique signature for a schema definition"""
+        # Removing whitespace and convert to lowercase to ignore formatting differences
+        normalized_schema = " ".join(schema.lower().split())
+        return hashlib.md5(normalized_schema.encode()).hexdigest()
+
+    def _check_and_update_table(self, table_name, schema):
+        """Check if table exists with correct schema, otherwise recreate it"""
+        new_signature = self._generate_schema_signature(schema)
+        current_signature = self._get_table_signature(table_name)
+
+        if current_signature is None:
+            # Table doesn't exist or isn't versioned yet
+            print(f"Creating new table: {table_name}")
+            self._create_new_table(table_name, schema, new_signature)
+        elif current_signature[0] != new_signature:
+            # Table exists but schema has changed
+            print(f"Updating table: {table_name}")
+            self._update_table(table_name, schema, new_signature)
+        else:
+            print(f"Table {table_name} is up to date")
+
+    def _get_table_signature(self, table_name):
+        """Get the current signature of a table from schema_signatures"""
+        try:
+            result = self._execute_query("SELECT signature FROM schema_signatures WHERE table_name = ?", (table_name,))
+            return result[0] if result else None
+        except:
+            # Table might not exist yet
+            return None
+
+    def _create_new_table(self, table_name, schema, signature):
+        """Create a new table and record its signature"""
+        # Check if table exists already (but isn't tracked)
+        table_exists = self._check_table_exists(table_name)
+
+        if table_exists:
+            self._execute_query(f"DROP TABLE {table_name}")
+        self._execute_query(schema)
+        self._execute_query(
+            """
+            INSERT INTO schema_signatures (table_name, signature, last_updated)
+            VALUES (?, ?, CURRENT_TIMESTAMP)
+            """,
+            (table_name, signature),
+        )
+
+    def _update_table(self, table_name, schema, new_signature):
+        """Update an existing table to a new schema"""
+        self._execute_query(f"DROP TABLE {table_name}")
+        self._execute_query(schema)
+        self._execute_query(
+            """
+            UPDATE schema_signatures 
+            SET signature = ?, last_updated = CURRENT_TIMESTAMP
+            WHERE table_name = ?
+            """,
+            (new_signature, table_name),
+        )
+
+    def _check_table_exists(self, table_name):
+        """Check if a table exists in the database"""
+        try:
+            result = self._execute_query(
+                """
+                SELECT name FROM sqlite_master 
+                WHERE type='table' AND name=?
+                """,
+                (table_name,),
+            )
+            return result is not None
+        except:
+            return False
+
     def clear_cache(self, older_than_days=None):
         """Clear cached data older than specified days"""
         if older_than_days:
@@ -129,39 +213,47 @@ class GitHubCache(Cache):
         self.repo_cache = {}  # In-memory LRU cache
 
     def setup_db(self):
-        """Initialize GitHub-specific cache tables"""
-        queries = [
-            """CREATE TABLE IF NOT EXISTS github_urls (
-                package TEXT PRIMARY KEY,
-                repo_url TEXT,
-                cached_at TIMESTAMP
-            )""",
-            """CREATE TABLE IF NOT EXISTS pr_info (
-                package TEXT,
-                commit_sha TEXT,
-                commit_node_id TEXT PRIMARY KEY,
-                pr_info TEXT,
-                cached_at TIMESTAMP
-            )""",
-            """CREATE TABLE IF NOT EXISTS pr_reviews (
-                package TEXT,
-                repo_name TEXT,
-                author TEXT,
-                first_review_data TEXT,
-                cached_at TIMESTAMP,
-                PRIMARY KEY (repo_name, author)
-            )""",
-            """CREATE TABLE IF NOT EXISTS tag_to_sha (
-                repo_name TEXT,
-                tag TEXT,
-                sha TEXT,
-                cached_at TIMESTAMP,
-                PRIMARY KEY (repo_name, tag)
-            )""",
-        ]
+        """Initialize GitHub-specific cache tables with automatic schema versioning"""
+        table_schemas = {
+            "github_urls": """
+                CREATE TABLE github_urls (
+                    package TEXT PRIMARY KEY,
+                    repo_url TEXT,
+                    cached_at TIMESTAMP
+                )
+            """,
+            "pr_info": """
+                CREATE TABLE pr_info (
+                    package TEXT,
+                    commit_sha TEXT,
+                    commit_node_id TEXT PRIMARY KEY,
+                    pr_info TEXT,
+                    cached_at TIMESTAMP
+                )
+            """,
+            "pr_reviews": """
+                CREATE TABLE pr_reviews (
+                    package TEXT,
+                    repo_name TEXT,
+                    author TEXT,
+                    first_review_data TEXT,
+                    cached_at TIMESTAMP,
+                    PRIMARY KEY (repo_name, author)
+                )
+            """,
+            "tag_to_sha": """
+                CREATE TABLE tag_to_sha (
+                    repo_name TEXT,
+                    tag TEXT,
+                    sha TEXT,
+                    cached_at TIMESTAMP,
+                    PRIMARY KEY (repo_name, tag)
+                )
+            """,
+        }
 
-        for query in queries:
-            self._execute_query(query)
+        for table_name, schema in table_schemas.items():
+            self._check_and_update_table(table_name, schema)
 
     def cache_pr_review(self, package, repo_name, author, first_review_data):
         """Cache PR review information"""
@@ -361,19 +453,22 @@ class PackageAnalysisCache(Cache):
         super().__init__(cache_dir, "package_analysis.db")
 
     def setup_db(self):
-        """Initialize package analysis cache tables"""
-        self._execute_query(
+        """Initialize package analysis cache tables with automatic schema versioning"""
+        table_schemas = {
+            "package_analysis": """
+                CREATE TABLE package_analysis (
+                    package_name TEXT,
+                    version TEXT,
+                    package_manager TEXT,
+                    analysis_data TEXT,
+                    cached_at TIMESTAMP,
+                    PRIMARY KEY (package_name, version, package_manager)
+                )
             """
-            CREATE TABLE IF NOT EXISTS package_analysis (
-                package_name TEXT,
-                version TEXT,
-                package_manager TEXT,
-                analysis_data TEXT,
-                cached_at TIMESTAMP,
-                PRIMARY KEY (package_name, version, package_manager)
-            )
-        """
-        )
+        }
+
+        for table_name, schema in table_schemas.items():
+            self._check_and_update_table(table_name, schema)
 
     def cache_package_analysis(self, package_name, version, package_manager, analysis_data):
         """Cache package analysis results"""
@@ -451,39 +546,39 @@ class CommitComparisonCache(Cache):
         super().__init__(cache_dir, "commit_comparison_cache.db")
 
     def setup_db(self):
-        """Initialize commit comparison cache tables"""
-        queries = [
-            """
-            CREATE TABLE IF NOT EXISTS commit_authors_from_tags (
-                package TEXT,
-                tag1 TEXT,
-                tag2 TEXT,
-                data TEXT,
-                cached_at TIMESTAMP,
-                PRIMARY KEY (package, tag1, tag2)
-            )
-        """,
-            """
-            CREATE TABLE IF NOT EXISTS commit_authors_from_url (
-                commit_url TEXT PRIMARY KEY,
-                data TEXT,
-                cached_at TIMESTAMP
-            )
-        """,
-            """
-            CREATE TABLE IF NOT EXISTS patch_authors_from_sha (
-                repo_name TEXT,
-                patch_path TEXT,
-                sha TEXT,
-                data TEXT,
-                cached_at TIMESTAMP,
-                PRIMARY KEY (repo_name, patch_path, sha)
-            )
-        """,
-        ]
+        """Initialize commit comparison cache tables with automatic schema versioning"""
+        table_schemas = {
+            "commit_authors_from_tags": """
+                CREATE TABLE commit_authors_from_tags (
+                    package TEXT,
+                    tag1 TEXT,
+                    tag2 TEXT,
+                    data TEXT,
+                    cached_at TIMESTAMP,
+                    PRIMARY KEY (package, tag1, tag2)
+                )
+            """,
+            "commit_authors_from_url": """
+                CREATE TABLE commit_authors_from_url (
+                    commit_url TEXT PRIMARY KEY,
+                    data TEXT,
+                    cached_at TIMESTAMP
+                )
+            """,
+            "patch_authors_from_sha": """
+                CREATE TABLE patch_authors_from_sha (
+                    repo_name TEXT,
+                    patch_path TEXT,
+                    sha TEXT,
+                    data TEXT,
+                    cached_at TIMESTAMP,
+                    PRIMARY KEY (repo_name, patch_path, sha)
+                )
+            """,
+        }
 
-        for query in queries:
-            self._execute_query(query)
+        for table_name, schema in table_schemas.items():
+            self._check_and_update_table(table_name, schema)
 
     def cache_authors_from_tags(self, package, tag1, tag2, data):
         self._execute_query(
@@ -577,21 +672,25 @@ class UserCommitCache(Cache):
         super().__init__(cache_dir, "user_commits.db")
 
     def setup_db(self):
-        self._execute_query(
+        """Initialize user commit cache tables with automatic schema versioning"""
+        table_schemas = {
+            "user_commit": """
+                CREATE TABLE user_commit (
+                    api_url TEXT PRIMARY KEY,
+                    earliest_commit_sha TEXT,
+                    repo_name TEXT,
+                    package TEXT,
+                    author_login TEXT,
+                    author_commit_sha TEXT,
+                    author_login_in_1st_commit TEXT,
+                    author_id_in_1st_commit TEXT,
+                    cached_at TIMESTAMP
+                )
             """
-            CREATE TABLE IF NOT EXISTS user_commit (
-                api_url TEXT PRIMARY KEY,
-                earliest_commit_sha TEXT,
-                repo_name TEXT,
-                package TEXT,
-                author_login TEXT,
-                author_commit_sha TEXT,
-                author_login_in_1st_commit TEXT,
-                author_id_in_1st_commit TEXT,
-                cached_at TIMESTAMP
-            )
-        """
-        )
+        }
+
+        for table_name, schema in table_schemas.items():
+            self._check_and_update_table(table_name, schema)
 
     def cache_user_commit(
         self,
@@ -658,17 +757,21 @@ class DependencyExtractionCache(Cache):
         super().__init__(cache_dir, "maven_deps.db")
 
     def setup_db(self):
-        self._execute_query(
+        """Initialize dependency extraction cache tables with automatic schema versioning"""
+        table_schemas = {
+            "extracted_dependencies": """
+                CREATE TABLE extracted_dependencies (
+                    repo_path TEXT,
+                    file_hash TEXT,
+                    dependencies TEXT,
+                    cached_at TIMESTAMP,
+                    PRIMARY KEY (repo_path, file_hash)
+                )
             """
-            CREATE TABLE IF NOT EXISTS extracted_dependencies (
-                repo_path TEXT,
-                file_hash TEXT,
-                dependencies TEXT,
-                cached_at TIMESTAMP,
-                PRIMARY KEY (repo_path, file_hash)
-            )
-        """
-        )
+        }
+
+        for table_name, schema in table_schemas.items():
+            self._check_and_update_table(table_name, schema)
 
     def cache_dependencies(self, repo_path, file_hash, dependencies):
         self._execute_query(
