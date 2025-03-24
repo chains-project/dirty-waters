@@ -194,7 +194,7 @@ class Cache:
                 """,
                 (table_name,),
             )
-            return result is not None
+            return result not in [None, []]
         except:
             return False
 

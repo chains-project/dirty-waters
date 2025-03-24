@@ -5,6 +5,7 @@ import json
 import sqlite3
 import logging
 import requests
+import xmltodict
 from pathlib import Path
 from tqdm import tqdm
 from tool.tool_config import get_cache_manager
@@ -61,35 +62,81 @@ def extract_repo_url(repo_info: str) -> str:
     return joined, "GitHub repository"
 
 
-def get_scm_commands(pm: str, package: str) -> List[str]:
+def get_scm_command(pm: str, package: str) -> List[str]:
     """Get the appropriate command to find a package's source code locations for the package manager."""
     if pm == "yarn-berry" or pm == "yarn-classic":
-        return [["yarn", "info", package.replace("@npm:", "@"), "repository.url", "--silent"]]
+        return ["yarn", "info", package.replace("@npm:", "@"), "repository.url", "--silent"]
     elif pm == "pnpm":
-        return [["pnpm", "info", package.replace("@npm:", "@"), "repository.url"]]
+        return ["pnpm", "info", package.replace("@npm:", "@"), "repository.url"]
     elif pm == "npm":
-        return [["npm", "info", package.replace("@npm:", "@"), "repository.url"]]
+        return ["npm", "info", package.replace("@npm:", "@"), "repository.url"]
     elif pm == "maven":
         name, version = package.split("@")
         group_id, artifact_id = name.split(":")
         return [
-            [
-                "mvn",
-                "org.apache.maven.plugins:maven-help-plugin:3.5.1:evaluate",
-                f"-Dexpression={source_code_location}",
-                f"-Dartifact={group_id}:{artifact_id}:{version}",
-                "-q",
-                "-DforceStdout",
-            ]
-            for source_code_location in [
-                "project.scm.url",
-                "project.scm.connection",
-                "project.scm.developerConnection",
-                "project.url",
-            ]
+            "mvn",
+            "org.apache.maven.plugins:maven-help-plugin:3.5.1:evaluate",
+            f"-Dexpression=project",
+            f"-Dartifact={group_id}:{artifact_id}:{version}",
+            "-q",
+            "-DforceStdout",
         ]
     raise ValueError(f"Unsupported package manager: {pm}")
 
+def run_scm_command(pm, command):
+    def run_npm_command(command):
+        try:
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                check=True,
+                timeout=TIMEOUT,
+            )
+            return result.stdout
+        except subprocess.TimeoutExpired:
+            logging.warning(
+                f"Command {command} timed out after {TIMEOUT} seconds",
+            )
+            return None
+        except subprocess.CalledProcessError as e:
+            logging.warning(f"Command {command} failed: {e}")
+            return None
+
+    def run_maven_command(command):
+        try:
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                check=True,
+                timeout=TIMEOUT,
+            )
+            output = result.stdout
+            if output:
+                parsed_content = xmltodict.parse(output)
+                locations = [
+                    parsed_content.get("project", {}).get("scm", {}).get("url", ""),
+                    parsed_content.get("project", {}).get("scm", {}).get("connection", ""),
+                    parsed_content.get("project", {}).get("scm", {}).get("developerConnection", ""),
+                    parsed_content.get("project", {}).get("url", ""),
+                ]
+                return next((loc for loc in locations if loc), None)
+
+        except subprocess.TimeoutExpired:
+            logging.warning(
+                f"Command {command} timed out after {TIMEOUT} seconds",
+            )
+            return None
+        except subprocess.CalledProcessError as e:
+            logging.warning(f"Command {command} failed: {e}")
+            return None
+
+    if pm == "npm" or pm == "yarn-berry" or pm == "yarn-classic" or pm == "pnpm":
+        return run_npm_command(command)
+    elif pm == "maven":
+        return run_maven_command(command)
+    raise ValueError(f"Unsupported package manager: {pm}")
 
 def process_package(
     package,
@@ -146,30 +193,11 @@ def process_package(
 
     retrieved_info = cache_manager.github_cache.get_github_url(package)
     if not retrieved_info:
-        valid_repo_info = False
-        for scm_command in get_scm_commands(pm, package):
-            try:
-                result = subprocess.run(
-                    scm_command,
-                    capture_output=True,
-                    text=True,
-                    check=True,
-                    timeout=TIMEOUT,
-                )
-                if result.stdout:
-                    valid_repo_info, retrieved_info = check_if_valid_repo_info(result.stdout)
-                    if valid_repo_info:
-                        break
-                else:
-                    retrieved_info = {}
-            except subprocess.TimeoutExpired:
-                logging.warning(
-                    f"Command {scm_command} timed out after {TIMEOUT} seconds for package {package}",
-                )
-                retrieved_info = {"url": "Could not find", "message": "Could not find repository", "command": command}
-            except subprocess.CalledProcessError as e:
-                logging.warning(f"Command {scm_command} failed for package {package}: {e}")
-                retrieved_info = {"url": "Could not find", "message": "Could not find repository", "command": command}
+        result = run_scm_command(pm, get_scm_command(pm, package))
+        if result:
+            valid_repo_info, retrieved_info = check_if_valid_repo_info(result)
+        else:
+            retrieved_info = {"url": "Could not find", "message": "Could not find repository", "command": command}
 
         cache_manager.github_cache.cache_github_url(package, retrieved_info)
     else:
