@@ -288,7 +288,7 @@ def extract_deps_from_v1_yarn(repo_path, yarn_lock_file):
                 for dep_name, dep_version in entry_data["dependencies"].items():
                     dep_name = f"{dep_name}@{dep_version}"
                     parent_packages[dep_name].add(item)
-            
+
             pkg_name_with_resolution.append(item)
 
         deps_list_data = {
