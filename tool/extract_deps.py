@@ -121,10 +121,7 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
                     if "node_modules" in package_name:
                         package_name = package_name.split("node_modules/")[-1]
 
-                    if package_info.get("dependencies"):
-                        for dep_name in package_info["dependencies"]:
-                            parent_packages.setdefault(dep_name, set()).add(package_name)
-
+                    resolution = package_name
                     if package_info.get("version"):
                         version = package_info["version"]
                         # Handle npm aliases
@@ -134,13 +131,18 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
                             aliased_packages[f"{original_name}@{version}"] = package_name
                             package_name = original_name
 
-                        pkg_name_with_resolution.add(f"{package_name}@{version}")
+                        resolution = f"{package_name}@{version}"
+                        pkg_name_with_resolution.add(resolution)
+
+                    if package_info.get("dependencies"):
+                        for dep_name, version in package_info["dependencies"].items():
+                            parent_packages.setdefault(f"{dep_name}@{version}", set()).add(resolution)
 
             deps_list_data = {
                 "resolutions": list(
                     {
                         "info": info,
-                        "parent": list(parent_packages.get(info.split("@")[0], set())),
+                        "parent": list(parent_packages.get(info, set())),
                     }
                     for info in sorted(pkg_name_with_resolution)
                 ),
