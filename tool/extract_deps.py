@@ -218,7 +218,10 @@ def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):
                         parent_packages.setdefault(f"{dep_name}@{version}", set()).add(resolution)
 
         deps_list_data = {
-            "resolutions": list({"info": info, "parent": list(parent_packages.get(info, set()))} for info in sorted(pkg_name_with_resolution)),
+            "resolutions": list(
+                {"info": info, "parent": list(parent_packages.get(info, set()))}
+                for info in sorted(pkg_name_with_resolution)
+            ),
             "patches": list({"info": info} for info in sorted(patches)),
             "aliased_packages": aliased_packages,
         }
