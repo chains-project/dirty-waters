@@ -67,6 +67,10 @@ def get_scm_command(pm: str, package: str) -> List[str]:
     if pm == "yarn-berry" or pm == "yarn-classic":
         return ["yarn", "info", package.replace("@npm:", "@"), "repository.url", "--silent"]
     elif pm == "pnpm":
+        # for cases like @babel/helper-create-class-features-plugin@7.25.9(@babel/core@7.26.10),
+        # we look for the repository of the package inside parentheses
+        if "(" in package:
+            package = package.split("(")[1].split(")")[0]
         return ["pnpm", "info", package.replace("@npm:", "@"), "repository.url"]
     elif pm == "npm":
         return ["npm", "info", package.replace("@npm:", "@"), "repository.url"]

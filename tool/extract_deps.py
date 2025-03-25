@@ -44,40 +44,68 @@ def extract_deps_from_pnpm_lockfile(repo_path, pnpm_lockfile_yaml):
         dict: A dictionary containing the extracted dependencies and patches.
     """
 
-    yaml_data = yaml.safe_load(pnpm_lockfile_yaml)
-    yaml_version = yaml_data.get("lockfileVersion")
-    if yaml_version != "9.0":
-        logging.error("Invalid pnpm lockfile version: %s", yaml_version)
-        logging.error("The pnpm lockfile version is not supported(yet): ", yaml_version)
-        # end the process
-        sys.exit(1)
-
-    lockfile_hash = get_lockfile_hash(yaml_data)
-    if not lockfile_hash:
-        logging.error("No lockfile found in %s", repo_path)
-        return {"resolutions": [], "patches": []}
-
-    cached_deps = cache_manager.extracted_deps_cache.get_dependencies(repo_path, lockfile_hash)
-    if cached_deps:
-        logging.info(f"Using cached dependencies for {repo_path}")
-        return cached_deps
-
     try:
-        # pkg_name_with_resolution = set()
-        deps_list_data = {}
+        yaml_data = yaml.safe_load(pnpm_lockfile_yaml)
+        yaml_version = yaml_data.get("lockfileVersion")
+        if yaml_version != "9.0":
+            logging.error("Invalid pnpm lockfile version: %s", yaml_version)
+            logging.error("The pnpm lockfile version is not supported(yet): ", yaml_version)
+            # end the process
+            sys.exit(1)
 
-        package_keys = list({"info": info} for info in sorted(yaml_data.get("packages", {}).keys()))
-        patches = list({"info": info} for info in sorted(yaml_data.get("patchedDependencies", {}).keys()))
+        lockfile_hash = get_lockfile_hash(yaml_data)
+        if not lockfile_hash:
+            logging.error("No lockfile found in %s", repo_path)
+            return {"resolutions": [], "patches": []}
 
+        cached_deps = cache_manager.extracted_deps_cache.get_dependencies(repo_path, lockfile_hash)
+        if cached_deps:
+            logging.info(f"Using cached dependencies for {repo_path}")
+            return cached_deps
+
+        parent_packages = defaultdict(set)
+        pkg_name_with_resolution = []
+        patches = []
+
+        # Iterate through packages to build parent-child relationships
+        for pkg_name, pkg_info in yaml_data.get("snapshots", {}).items():
+            version_match = re.search(r'@([^@]+)$', pkg_name)
+            version = version_match.group(1) if version_match else 'unknown'
+            
+            # Clean up package name (remove version)
+            pkg_name = re.sub(r'@[^@]+$', '', pkg_name)
+            
+            # Construct resolution string
+            resolution = f"{pkg_name}@{version}"
+            pkg_name_with_resolution.append(resolution)
+
+            # Track child dependencies
+            if pkg_info.get("dependencies"):
+                for child_name, child_version in pkg_info["dependencies"].items():
+                    child_resolution = f"{child_name}@{child_version}"
+                    parent_packages[child_resolution].add(resolution)
+
+        # Convert to required format with parent information
         deps_list_data = {
-            "resolutions": package_keys,
+            "resolutions": list(
+                {
+                    "info": info,
+                    "parent": list(parent_packages.get(info, set())),
+                }
+                for info in sorted(pkg_name_with_resolution)
+            ),
             "patches": patches,
         }
 
         cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
 
         return deps_list_data
-
+    except yaml.YAMLError as e:
+        logging.error(
+            "An error occurred while parsing the pnpm-lock.yaml file: %s",
+            str(e),
+        )
+        return {"resolutions": [], "patches": []}
     except (IOError, ValueError, KeyError) as e:
         logging.error(
             "An error occurred while extracting dependencies from pnpm-lock.yaml: %s",
