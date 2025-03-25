@@ -61,10 +61,9 @@ def create_dataframe(data, deps_list):
             "archived": source_code_data.get("archived", None),
             "is_fork": source_code_data.get("is_fork", None),
             "parent_repo_link": source_code_data.get("parent_repo_link", None),
-            "forked_from": source_code_data.get("parent_repo_link", "-"),
             "open_issues_count": source_code_data.get("open_issues_count", "-"),
             "is_aliased": aliased_package_name is not None,
-            "aliased_package_name": aliased_package_name,
+            "aliased_package_name": f"`{aliased_package_name}`" if aliased_package_name else "-",
             "is_match": match_data.get("match", None),
             "sha_exists": sha_exists_info.get("exists", "-"),
             "tag_version": f"`{sha_exists_info.get("tag_version", "-")}`",
@@ -306,7 +305,7 @@ def write_summary(
     ]
     not_on_github_df = (
         df.loc[
-            df["is_github"] == False,
+            (df["is_github"] == False) & (df["github_url"] != "No_repo_info_found"),
             ["github_url", "parent"] + (["command"] if package_manager == "maven" else []),
         ]
         .reset_index(drop=False)
@@ -417,6 +416,9 @@ def write_summary(
 
     if enabled_checks.get("code_signature"):
         warning_counts["code_signature"] = f":lock: Packages without code signature (⚠️⚠️): {code_signature_df.shape[0]}"
+        warning_counts["invalid_code_signature"] = (
+            f":unlocked: Packages with invalid code signature (⚠️⚠️): {invalid_code_signature_df.shape[0]}"
+        )
 
     if enabled_checks.get("forks"):
         warning_counts["forked_package"] = f":cactus: Packages that are forks (⚠️): {(forked_package_df.shape[0])}"
@@ -477,26 +479,6 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
             if package_manager in SUPPORTED_SMELLS[key]:
                 md_file.write(f"\n{val}\n")
         md_file.write("\n")
-
-        # md_file.write(f"#### Other info")
-
-        if enabled_checks.get("source_code") and package_manager in SUPPORTED_SMELLS["no_source_code"]:
-            if not_on_github_counts > 0:
-                md_file.write(
-                    f"""
-<details>
-    <summary>Other info:</summary>
-    \n- Source code repo is not hosted on GitHub:  {not_on_github_counts}\n
-    This could be due, for example, to the package being hosted on a different platform.\n
-    This does not mean that the source code URL is invalid.\n
-    However, for non-GitHub repositories, not all checks can currently be performed.\n
-"""
-                )
-
-                not_on_github_df.index = range(1, len(not_on_github_df) + 1)
-                markdown_text = not_on_github_df.reset_index().to_markdown(index=False)
-                md_file.write(markdown_text)
-                md_file.write("\n</details>\n")
 
         md_file.write("\n### Fine grained information\n")
         md_file.write(
@@ -619,7 +601,27 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. Check the aliased package and its repository to verify the alias is not malicious."""
             )
 
-        md_file.write("\n</details>\n\n\n")
+        md_file.write("\n</details>\n")
+
+        if enabled_checks.get("source_code") and package_manager in SUPPORTED_SMELLS["no_source_code"]:
+            if not_on_github_counts > 0:
+                md_file.write("\n### Notes\n")
+                md_file.write(
+                    f"""
+<details>
+    <summary>Other info:</summary>
+    \n- Source code repo is not hosted on GitHub:  {not_on_github_counts}\n
+    This could be due, for example, to the package being hosted on a different platform.\n
+    This does not mean that the source code URL is invalid.\n
+    However, for non-GitHub repositories, not all checks can currently be performed.\n
+"""
+                )
+
+                not_on_github_df.index = range(1, len(not_on_github_df) + 1)
+                markdown_text = not_on_github_df.reset_index().to_markdown(index=False)
+                md_file.write(markdown_text)
+                md_file.write("\n</details>\n\n\n")
+
         md_file.write("---\n")
         md_file.write("\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/).\n")
         md_file.write(f"\nReport created on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")

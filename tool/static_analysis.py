@@ -164,25 +164,26 @@ def check_deprecated_and_provenance(package, package_version, pm):
 
 
 def check_code_signature(package_name, package_version, pm):
-    # TODO: find a package where we can check this, because with spoon everything is fine
     def check_maven_signature(package_name, package_version):
         # Construct the command
         command = f"mvn org.simplify4u.plugins:pgpverify-maven-plugin:1.18.2:show -Dartifact={package_name}:{package_version}"
 
         # Run the command
         output = subprocess.run(command, shell=True, capture_output=True, text=True)
+        ansi_escape = re.compile(r"\x1b\[[0-9;]*[a-zA-Z]")
+        escaped_output = ansi_escape.sub("", output.stdout)
 
         # Regular expression to extract the PGP signature section
         pgp_signature_pattern = re.compile(r"PGP signature:\n(?:[ \t]*.+\n)*?[ \t]*status:\s*(\w+)", re.MULTILINE)
-        match = pgp_signature_pattern.search(output.stdout)
+        match = pgp_signature_pattern.search(escaped_output)
         logging.info(f"Code Signature match: {match}")
         if match:
-            logging.info(f"Matched, signature match: {match.group(1)}")
             # Extract the status
             status = match.group(1).strip().lower()
             return {"signature_present": True, "signature_valid": status == "valid"}
 
         # If no match is found, return no PGP signature present
+        logging.warning(f"No match. Command output was\n{escaped_output!r}")
         return {"signature_present": False, "signature_valid": False}
 
     def check_npm_signature(package, package_version):
@@ -223,13 +224,12 @@ def api_constructor(package_name, repository):
     repo_url = repository.replace("https://", "").replace("http://", "").replace("/issues", "")
 
     # simplified_path = repo_url.replace("github.com/", "").split('#')[0].split('tree/master')[0].rstrip('/')
-    simplified_path = (
-        repo_url.replace("github.com:", "github.com/")
-        .replace("github.com/", "")
-        .split("#")[0]
-        .split("/tree")[0]
-        .rstrip("/")
-    )
+    repo_url = repo_url.split("#")[0]
+    match = re.search(r"github\.com[:/](.*?)/(.*?)(?:/|$)", repo_url)
+    if match:
+        simplified_path = f"{match.group(1)}/{match.group(2)}"
+    else:
+        simplified_path = ""
 
     if simplified_path.endswith(".git"):
         simplified_path = simplified_path[:-4]

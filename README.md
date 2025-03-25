@@ -16,7 +16,7 @@ By using `dirty-waters`, you identify the shady areas of your supply chain, whic
 - Dependencies with no build attestation (low severity)
 
 \* We consider invalid links to be links which do not return a 200 status code.
-Furthermore, if the dependencies are not hosted on GitHub, not all checks will be possible to be made (e.g., code signature).
+Furthermore, if the dependencies are not hosted on GitHub, not all checks will be possible to be made (e.g., release tag/commit SHA).
 
 As for its differential analyses, `dirty-waters` reports the following smells:
 
@@ -195,6 +195,11 @@ An example configuration file:
 
 Note that for cases where a package is aliased, we check for the original package name, not the aliased one:
 i.e., if we alias the package `string-width` to `string-width-cjs`, we will check for `string-width@versionx.y.z`, not `string-width-cjs@versionx.y.z`.
+
+#### Package Name Formatting
+
+The packages present in the configuration file should be set with a specific formatting: `<package_name>@<version>`.
+In the case of Maven packages, you should use the format `<group_id>:<artifact_id>@<version>`.
 
 ### Continuous integration
 

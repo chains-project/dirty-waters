@@ -4,6 +4,8 @@ import re
 import json
 import sqlite3
 import logging
+import requests
+import xmltodict
 from pathlib import Path
 from tqdm import tqdm
 from tool.tool_config import get_cache_manager
@@ -36,6 +38,14 @@ def extract_repo_url(repo_info: str) -> str:
     if "https" not in repo_info:
         # cases such as git@github:apache/maven-scm, we just remove the :
         url = url.replace(":/", "/")
+    else:
+        # could be a redirect, so we'll make a request to the URL to get the final URL
+        match = GITHUB_URL_PATTERN.search(url)
+        if not match:
+            try:
+                url = requests.head(url, allow_redirects=True).url
+            except requests.exceptions.RequestException:
+                logging.warning(f"Could not check for redirections, was using {url}")
     url = url.replace(":", "/")
     match = GITHUB_URL_PATTERN.search(url)
     if not match:
@@ -52,33 +62,81 @@ def extract_repo_url(repo_info: str) -> str:
     return joined, "GitHub repository"
 
 
-def get_scm_commands(pm: str, package: str) -> List[str]:
+def get_scm_command(pm: str, package: str) -> List[str]:
     """Get the appropriate command to find a package's source code locations for the package manager."""
     if pm == "yarn-berry" or pm == "yarn-classic":
-        return [["yarn", "info", package.replace("@npm:", "@"), "repository.url", "--silent"]]
+        return ["yarn", "info", package.replace("@npm:", "@"), "repository.url", "--silent"]
     elif pm == "pnpm":
-        return [["pnpm", "info", package.replace("@npm:", "@"), "repository.url"]]
+        return ["pnpm", "info", package.replace("@npm:", "@"), "repository.url"]
     elif pm == "npm":
-        return [["npm", "info", package.replace("@npm:", "@"), "repository.url"]]
+        return ["npm", "info", package.replace("@npm:", "@"), "repository.url"]
     elif pm == "maven":
         name, version = package.split("@")
         group_id, artifact_id = name.split(":")
         return [
-            [
-                "mvn",
-                "org.apache.maven.plugins:maven-help-plugin:3.5.1:evaluate",
-                f"-Dexpression={source_code_location}",
-                f"-Dartifact={group_id}:{artifact_id}:{version}",
-                "-q",
-                "-DforceStdout",
-            ]
-            for source_code_location in [
-                "project.scm.url",
-                "project.scm.connection",
-                "project.scm.developerConnection",
-                "project.url",
-            ]
+            "mvn",
+            "org.apache.maven.plugins:maven-help-plugin:3.5.1:evaluate",
+            f"-Dexpression=project",
+            f"-Dartifact={group_id}:{artifact_id}:{version}",
+            "-q",
+            "-DforceStdout",
         ]
+    raise ValueError(f"Unsupported package manager: {pm}")
+
+
+def run_scm_command(pm, command):
+    def run_npm_command(command):
+        try:
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                check=True,
+                timeout=TIMEOUT,
+            )
+            return result.stdout
+        except subprocess.TimeoutExpired:
+            logging.warning(
+                f"Command {command} timed out after {TIMEOUT} seconds",
+            )
+            return None
+        except subprocess.CalledProcessError as e:
+            logging.warning(f"Command {command} failed: {e}")
+            return None
+
+    def run_maven_command(command):
+        try:
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                check=True,
+                timeout=TIMEOUT,
+            )
+            output = result.stdout
+            if output:
+                parsed_content = xmltodict.parse(output)
+                locations = [
+                    parsed_content.get("project", {}).get("scm", {}).get("url", ""),
+                    parsed_content.get("project", {}).get("scm", {}).get("connection", ""),
+                    parsed_content.get("project", {}).get("scm", {}).get("developerConnection", ""),
+                    parsed_content.get("project", {}).get("url", ""),
+                ]
+                return next((loc for loc in locations if loc), None)
+
+        except subprocess.TimeoutExpired:
+            logging.warning(
+                f"Command {command} timed out after {TIMEOUT} seconds",
+            )
+            return None
+        except subprocess.CalledProcessError as e:
+            logging.warning(f"Command {command} failed: {e}")
+            return None
+
+    if pm == "npm" or pm == "yarn-berry" or pm == "yarn-classic" or pm == "pnpm":
+        return run_npm_command(command)
+    elif pm == "maven":
+        return run_maven_command(command)
     raise ValueError(f"Unsupported package manager: {pm}")
 
 
@@ -94,62 +152,68 @@ def process_package(
     repos_output_json,
 ):
     def check_if_valid_repo_info(repo_info):
-        if repo_info is None or "Undefined" in repo_info or "undefined" in repo_info or "ERR!" in repo_info:
-            repos_output_json[package] = {
-                "url": "Could not find",
-                "parent": parent,
-                "message": "Could not find repository",
-                "command": command,
-            }
+        retrieved_info = {
+            "url": "",
+            "parent": "",
+            "message": "",
+            "command": "",
+        }
+        if (
+            repo_info is None
+            or "Undefined" in repo_info
+            or "undefined" in repo_info
+            or "ERR!" in repo_info
+            or "null object" in repo_info
+        ):
+            retrieved_info.update(
+                {
+                    "url": "Could not find",
+                    "message": "Could not find repository",
+                    "command": command,
+                }
+            )
+            repos_output_json[package] = retrieved_info
             undefined.append(f"Undefined for {package}, {repo_info}")
-            return False
+            return False, retrieved_info
 
         url, message = extract_repo_url(repo_info)
-        repos_output_json[package] = {"url": url, "parent": parent, "message": message, "command": command}
-        if url:
+        retrieved_info.update(
+            {
+                "url": url,
+                "parent": parent,
+                "message": message,
+                "command": command,
+            }
+        )
+        repos_output_json[package] = retrieved_info
+        if message == "GitHub repository":
+            logging.info(f"Found GitHub URL for {package}: {url}")
             repos_output.append(url)
             same_repos_deps.get("url", []).append(package)
-            return True
+            return True, retrieved_info
         else:
+            logging.info(f"Found non-GitHub URL for {package}: {url}")
             some_errors.append(f"No GitHub URL for {package}\n{repo_info}")
-            return False
+            return False, retrieved_info
 
-    repo_info = cache_manager.github_cache.get_github_url(package)
-    valid_repo_info = False
-    if not repo_info:
-        for scm_command in get_scm_commands(pm, package):
-            try:
-                result = subprocess.run(
-                    scm_command,
-                    capture_output=True,
-                    text=True,
-                    check=True,
-                    timeout=TIMEOUT,
-                )
-                if result.stdout:
-                    repo_info = result.stdout
-                    valid_repo_info = check_if_valid_repo_info(repo_info)
-                    if valid_repo_info:
-                        break
-                    repo_info = None
-                else:
-                    repo_info = result.stderr
-            except subprocess.TimeoutExpired:
-                logging.warning(
-                    f"Command {scm_command} timed out after {TIMEOUT} seconds for package {package}",
-                )
-                repo_info = None
-            except subprocess.CalledProcessError as e:
-                logging.warning(f"Command {scm_command} failed for package {package}: {e}")
-                repo_info = "ERR!"
+    retrieved_info = cache_manager.github_cache.get_github_url(package)
+    if not retrieved_info:
+        result = run_scm_command(pm, get_scm_command(pm, package))
+        if result:
+            valid_repo_info, retrieved_info = check_if_valid_repo_info(result)
+        else:
+            retrieved_info = {"url": "Could not find", "message": "Could not find repository", "command": command}
 
-        if repo_info:
-            # Must still run the check if all cases were errors
-            check_if_valid_repo_info(repo_info)
-        logging.info(f"Package {package} repository info: {repo_info}")
-        cache_manager.github_cache.cache_github_url(package, repo_info)
+        cache_manager.github_cache.cache_github_url(package, retrieved_info)
     else:
-        check_if_valid_repo_info(repo_info)
+        logging.info(f"Found cached GitHub URL for {package}: {retrieved_info['url']}")
+        valid_repo_info = "GitHub repository" == retrieved_info["message"]
+        repos_output_json[package] = retrieved_info
+        if valid_repo_info:
+            repos_output.append(retrieved_info["url"])
+            same_repos_deps.get("url", []).append(package)
+        else:
+            some_errors.append(f"No GitHub URL for {package}\n{retrieved_info['url']}")
 
 
 def get_github_repo_url(folder, dep_list, pm):
