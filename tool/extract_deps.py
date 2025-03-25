@@ -452,6 +452,7 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, repo_path, pnpm_scope)
 
     tree, folder_path_for_this = get_pnpm_dep_tree(folder_path, version_tag, repo_path, pnpm_scope)
     lockfile_hash = get_lockfile_hash(tree)  # not really a lockfile, but an approximation
+    os.chdir("..")
     if not lockfile_hash:
         logging.error("No lockfile found in %s", repo_path)
         return {"resolutions": [], "patches": []}
