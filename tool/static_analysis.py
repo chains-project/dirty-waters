@@ -307,7 +307,7 @@ def check_parent_scm(package):
             for location in parent_scm_locations:
                 if location:
                     repo_api, simplified_path, package_full_name, _, _, _ = api_constructor(package, location)
-                    data = make_github_request(repo_api, max_retries=3)
+                    data = make_github_request(repo_api, max_retries=2)
                     if data:
                         stopping = True
                         existing_scm_data = data
@@ -444,7 +444,7 @@ def check_existence(package_name, repository, extract_message, package_manager):
     open_issues_count = None
     status_code = 404
 
-    data = make_github_request(repo_api, max_retries=3)
+    data = make_github_request(repo_api, max_retries=2)
     parent_scm_result = {}
     source_code_info = None
     if not data:
