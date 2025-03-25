@@ -190,18 +190,19 @@ def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):
         pkg_name_with_resolution = []
         aliased_packages = {}
 
-        for line in yarn_lock_file.splitlines():
-            match = re.match(r"^\s+resolution:\s+(.+)$", line)
-            if match:
-                if "@patch" in line:
-                    # Check if "patch" is present in the line
-                    line = line.replace('resolution: "', "").strip('"').lstrip()
-                    patches.append(line)
+        parent_packages = {}
+        parsed_lockfile = yaml.safe_load(yarn_lock_file)
+        for entry_data in parsed_lockfile.values():
+            resolution = entry_data.get("resolution", "")
+            if resolution:
+                if "@patch" in resolution:
+                    # Check if "patch" is present in the resolution
+                    resolution = resolution.replace('resolution: "', "").strip('"').lstrip()
+                    patches.append(resolution)
                 else:
-                    line = match.group(1).strip('"')
                     # aliases will show up as something like my-foo@npm:foo@x.y.z
                     alias_pattern = r"(.+?)@npm:(.+?)@(.+)"
-                    alias_match = re.match(alias_pattern, line)
+                    alias_match = re.match(alias_pattern, resolution)
                     if alias_match:
                         # if it is an alias, we add the original name to the list
                         logging.info(f"Found yarn alias for {alias_match.group(2)}@{alias_match.group(3)}")
@@ -209,13 +210,15 @@ def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):
                         aliased_packages[f"{alias_match.group(2)}@{alias_match.group(3)}"] = (
                             f"{alias_match.group(1)}@{alias_match.group(3)}"
                         )
-                        pkg_name_with_resolution.append(f"{alias_match.group(2)}@{alias_match.group(3)}")
-                    else:
-                        # if it is not an alias, we add the package to the list
-                        pkg_name_with_resolution.append(line)
+                        resolution = f"{alias_match.group(2)}@{alias_match.group(3)}"
+                    pkg_name_with_resolution.append(resolution)
+
+                if entry_data.get("dependencies"):
+                    for dep_name, version in entry_data["dependencies"].items():
+                        parent_packages.setdefault(f"{dep_name}@{version}", set()).add(resolution)
 
         deps_list_data = {
-            "resolutions": list({"info": info} for info in sorted(pkg_name_with_resolution)),
+            "resolutions": list({"info": info, "parent": list(parent_packages.get(info, set()))} for info in sorted(pkg_name_with_resolution)),
             "patches": list({"info": info} for info in sorted(patches)),
             "aliased_packages": aliased_packages,
         }
@@ -224,6 +227,12 @@ def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):
 
         return deps_list_data
 
+    except yaml.YAMLError as e:
+        logging.error(
+            "An error occurred while parsing the yarn.lock file(Yarn Berry): %s",
+            str(e),
+        )
+        return {"resolutions": [], "patches": [], "aliased_packages": []}
     except (IOError, ValueError, KeyError) as e:
         logging.error(
             "An error occurred while extracting dependencies from yarn.lock file(Yarn Berry): %s",
