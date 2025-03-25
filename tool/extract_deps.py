@@ -120,7 +120,7 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
                     package_name = package_path.split("/", 1)[1]
                     if "node_modules" in package_name:
                         package_name = package_name.split("node_modules/")[-1]
-                    
+
                     if package_info.get("dependencies"):
                         for dep_name in package_info["dependencies"]:
                             parent_packages.setdefault(dep_name, set()).add(package_name)
@@ -143,7 +143,7 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
                         "parent": list(parent_packages.get(info.split("@")[0], set())),
                     }
                     for info in sorted(pkg_name_with_resolution)
-                ), 
+                ),
                 "patches": patches,
                 "aliased_packages": aliased_packages,
             }
