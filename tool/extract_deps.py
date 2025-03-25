@@ -69,12 +69,12 @@ def extract_deps_from_pnpm_lockfile(repo_path, pnpm_lockfile_yaml):
 
         # Iterate through packages to build parent-child relationships
         for pkg_name, pkg_info in yaml_data.get("snapshots", {}).items():
-            version_match = re.search(r'@([^@]+)$', pkg_name)
-            version = version_match.group(1) if version_match else 'unknown'
-            
+            version_match = re.search(r"@([^@]+)$", pkg_name)
+            version = version_match.group(1) if version_match else "unknown"
+
             # Clean up package name (remove version)
-            pkg_name = re.sub(r'@[^@]+$', '', pkg_name)
-            
+            pkg_name = re.sub(r"@[^@]+$", "", pkg_name)
+
             # Construct resolution string
             resolution = f"{pkg_name}@{version}"
             pkg_name_with_resolution.append(resolution)
