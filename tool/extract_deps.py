@@ -15,7 +15,7 @@ import hashlib
 from pathlib import Path
 import yaml
 
-from tool.tool_config import PNPM_LIST_COMMAND, get_cache_manager
+from tool.tool_config import PNPM_LIST_COMMAND, get_cache_manager, YarnLockParser
 
 cache_manager = get_cache_manager()
 
@@ -267,30 +267,38 @@ def extract_deps_from_v1_yarn(repo_path, yarn_lock_file):
         logging.info(f"Using cached dependencies for {repo_path}")
         return cached_deps
     try:
-        extracted_info = []
+        pkg_name_with_resolution = []
         patches = []
         aliased_packages = {}
+        parent_packages = defaultdict(set)
 
-        pattern = r'^\s*$\n\"?(\@?([^\s]+))@.*?:\n\s*version\s+"([^\s]+)"'
-
-        matches = re.findall(pattern, yarn_lock_file, re.MULTILINE)
-
-        extracted_info = [f"{match[0]}@{match[2]}" for match in matches]
-        for item in extracted_info:
-            if len(item.split("@npm:")) > 1:
+        # Find all dependencies
+        parser = YarnLockParser(yarn_lock_file)
+        dependencies = parser.parse()
+        for entry_name, entry_data in dependencies.items():
+            item = f"{entry_name}@{entry_data['version_constraint']}"
+            if entry_data.get("original_name"):
                 logging.warning(f"Found yarn alias for {item}")
-                logging.warning(f"Original name: {item.split('@npm:')[1]}")
-                logging.warning(f"Aliased to: {item.split('@npm:')[0]}@{item.split('@npm:')[1].split('@')[1]}")
-                extracted_info.remove(item)
-                extracted_info.append(item.split("@npm:")[1])
-                aliased_packages[item.split("@npm:")[1]] = (
-                    f"{item.split('@npm:')[0]}@{item.split('@npm:')[1].split('@')[1]}"
-                )
+                logging.warning(f"Original name: {entry_data['original_name']}@{entry_data['version_constraint']}")
+                logging.warning(f"Aliased to: {entry_name}@{entry_data['version_constraint']}")
+                aliased_packages[item] = f"{entry_data['original_name']}@{entry_data['version_constraint']}"
 
-        extracted_info = sorted(extracted_info)
+            if entry_data.get("dependencies"):
+                logging.info("Found child dependencies for %s", item)
+                for dep_name, dep_version in entry_data["dependencies"].items():
+                    dep_name = f"{dep_name}@{dep_version}"
+                    parent_packages[dep_name].add(item)
+            
+            pkg_name_with_resolution.append(item)
 
         deps_list_data = {
-            "resolutions": list({"info": info} for info in extracted_info),
+            "resolutions": list(
+                {
+                    "info": info,
+                    "parent": list(parent_packages.get(info, set())),
+                }
+                for info in sorted(pkg_name_with_resolution)
+            ),
             "patches": patches,
             "aliased_packages": aliased_packages,
         }
