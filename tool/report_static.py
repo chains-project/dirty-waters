@@ -22,6 +22,7 @@ SUPPORTED_SMELLS = {
 
 SHOW_PARENTS = ["yarn-classic", "yarn-berry", "npm", "maven"]
 
+
 def load_data(filename):
     """Load data from a JSON file got from static analysis."""
 
@@ -349,7 +350,7 @@ def write_summary(
             "deprecated_in_version",
             "all_deprecated",
         ]
-        + (["parent"] if package_manager in SHOW_PARENTS else [])
+        + (["parent"] if package_manager in SHOW_PARENTS else []),
     ]
     forked_package_df = df.loc[
         df["is_fork"] == True,
@@ -368,7 +369,7 @@ def write_summary(
         [
             "provenance_in_version",
         ]
-        + (["parent"] if package_manager in SHOW_PARENTS else [])
+        + (["parent"] if package_manager in SHOW_PARENTS else []),
     ]
     code_signature_df = df.loc[
         df["signature_present"] == False,
