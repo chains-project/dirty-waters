@@ -46,7 +46,7 @@ jobs:
           fi
 
       - name: Restore cache
-        uses: actions/cache/restore@v4.2.2
+        uses: actions/cache/restore@v4.2.3
         id: restore-cache
         if: inputs.ignore_cache != 'true'
         with:
@@ -74,7 +74,7 @@ jobs:
           fi
 
       - name: Save cache
-        uses: actions/cache/save@v4.2.2
+        uses: actions/cache/save@v4.2.3
         if: always()
         with:
           path: cache/
