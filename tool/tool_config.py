@@ -18,7 +18,6 @@ from git import Repo
 import hashlib
 import re
 
-# change this to the install command for your project
 PNPM_LIST_COMMAND = lambda scope: [
     "pnpm",
     "list",
