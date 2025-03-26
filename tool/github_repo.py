@@ -169,9 +169,11 @@ def process_package(
             or "ERR!" in repo_info
             or "null object" in repo_info
         ):
+            logging.warning(f"Could not find repository for {package}")
             retrieved_info.update(
                 {
                     "url": "Could not find",
+                    "parent": parent,
                     "message": "Could not find repository",
                     "command": command,
                 }
@@ -206,11 +208,19 @@ def process_package(
         if result:
             valid_repo_info, retrieved_info = check_if_valid_repo_info(result)
         else:
-            retrieved_info = {"url": "Could not find", "message": "Could not find repository", "command": command}
+            logging.warning(f"SCM command failed for {package}")
+            retrieved_info = {
+                "url": "Could not find",
+                "parent": parent,
+                "message": "Could not find repository",
+                "command": command,
+            }
+            repos_output_json[package] = retrieved_info
+            undefined.append(f"Undefined for {package}, {result}")
 
         cache_manager.github_cache.cache_github_url(package, retrieved_info)
     else:
-        logging.info(f"Found cached GitHub URL for {package}: {retrieved_info['url']}")
+        logging.info(f"Found cached URL for {package}: {retrieved_info['url']}")
         valid_repo_info = "GitHub repository" == retrieved_info["message"]
         repos_output_json[package] = retrieved_info
         if valid_repo_info:
