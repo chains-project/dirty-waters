@@ -67,6 +67,10 @@ def get_scm_command(pm: str, package: str) -> List[str]:
     if pm == "yarn-berry" or pm == "yarn-classic":
         return ["yarn", "info", package.replace("@npm:", "@"), "repository.url", "--silent"]
     elif pm == "pnpm":
+        # for cases like @babel/helper-create-class-features-plugin@7.25.9(@babel/core@7.26.10),
+        # we look for the repository of the package inside parentheses
+        if "(" in package:
+            package = package.split("(")[1].split(")")[0]
         return ["pnpm", "info", package.replace("@npm:", "@"), "repository.url"]
     elif pm == "npm":
         return ["npm", "info", package.replace("@npm:", "@"), "repository.url"]
@@ -142,6 +146,7 @@ def run_scm_command(pm, command):
 
 def process_package(
     package,
+    parent,
     command,
     pm,
     repos_output,
@@ -153,6 +158,7 @@ def process_package(
     def check_if_valid_repo_info(repo_info):
         retrieved_info = {
             "url": "",
+            "parent": "",
             "message": "",
             "command": "",
         }
@@ -163,9 +169,11 @@ def process_package(
             or "ERR!" in repo_info
             or "null object" in repo_info
         ):
+            logging.warning(f"Could not find repository for {package}")
             retrieved_info.update(
                 {
                     "url": "Could not find",
+                    "parent": parent,
                     "message": "Could not find repository",
                     "command": command,
                 }
@@ -178,6 +186,7 @@ def process_package(
         retrieved_info.update(
             {
                 "url": url,
+                "parent": parent,
                 "message": message,
                 "command": command,
             }
@@ -199,11 +208,19 @@ def process_package(
         if result:
             valid_repo_info, retrieved_info = check_if_valid_repo_info(result)
         else:
-            retrieved_info = {"url": "Could not find", "message": "Could not find repository", "command": command}
+            logging.warning(f"SCM command failed for {package}")
+            retrieved_info = {
+                "url": "Could not find",
+                "parent": parent,
+                "message": "Could not find repository",
+                "command": command,
+            }
+            repos_output_json[package] = retrieved_info
+            undefined.append(f"Undefined for {package}, {result}")
 
         cache_manager.github_cache.cache_github_url(package, retrieved_info)
     else:
-        logging.info(f"Found cached GitHub URL for {package}: {retrieved_info['url']}")
+        logging.info(f"Found cached URL for {package}: {retrieved_info['url']}")
         valid_repo_info = "GitHub repository" == retrieved_info["message"]
         repos_output_json[package] = retrieved_info
         if valid_repo_info:
@@ -226,9 +243,11 @@ def get_github_repo_url(folder, dep_list, pm):
     with tqdm(total=total_packages_to_process, desc="Getting GitHub URLs") as pbar:
         for pkg_res in dep_list.get("resolutions"):
             package = pkg_res["info"]
+            parent = pkg_res.get("parent", None)
             command = pkg_res.get("command", None)
             process_package(
                 package,
+                parent,
                 command,
                 pm,
                 repos_output,

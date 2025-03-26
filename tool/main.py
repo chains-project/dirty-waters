@@ -82,11 +82,11 @@ def get_args():
         help="The package manager used in the project.",
         choices=["yarn-classic", "yarn-berry", "pnpm", "npm", "maven"],
     )
-    parser.add_argument(
-        "--pnpm-scope",
-        required=False,
-        help="Extract dependencies from pnpm with a specific scope using 'pnpm list --filter <scope> --depth Infinity' command. Configure the scope in tool_config.py file.",
-    )
+    # parser.add_argument(
+    #     "--pnpm-scope",
+    #     required=False,
+    #     help="Extract dependencies from pnpm with a specific scope using 'pnpm list --filter <scope> --depth Infinity' command.",
+    # )
     parser.add_argument(
         "--debug",
         action="store_true",
@@ -232,14 +232,14 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
 
     # if it is a pnpm monorepo
     if package_manager == "pnpm":
-        if get_args().pnpm_scope:
-            pnpm_scope = get_args().pnpm_scope
-            deps_list_all = extract_deps.extract_deps_from_pnpm_mono(
-                folder_path, release_version, project_repo_name, pnpm_scope
-            )
-        else:
-            yaml_lockfile, _, _ = get_lockfile(project_repo_name, release_version, package_manager)
-            deps_list_all = extract_deps.extract_deps_from_pnpm_lockfile(project_repo_name, yaml_lockfile)
+        # if get_args().pnpm_scope:
+        #     pnpm_scope = get_args().pnpm_scope
+        #     deps_list_all = extract_deps.extract_deps_from_pnpm_mono(
+        #         folder_path, release_version, project_repo_name, pnpm_scope
+        #     )
+        # else:
+        yaml_lockfile, _, _ = get_lockfile(project_repo_name, release_version, package_manager)
+        deps_list_all = extract_deps.extract_deps_from_pnpm_lockfile(project_repo_name, yaml_lockfile)
 
     # extract deps from lockfile
     elif package_manager == "yarn-classic" or package_manager == "yarn-berry":
@@ -414,7 +414,7 @@ def setup_project_info(args, any_check_specified):
         "new_version_name": (args.release_version_new.replace("/", "_") if args.release_version_new else None),
         "check_match": args.name_match,
         "package_manager": args.package_manager,
-        "pnpm_scope": args.pnpm_scope,
+        # "pnpm_scope": args.pnpm_scope,
         "debug": args.debug,
         "gradual_report": args.gradual_report and not any_check_specified,
     }

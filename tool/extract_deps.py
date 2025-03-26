@@ -15,15 +15,15 @@ import hashlib
 from pathlib import Path
 import yaml
 
-from tool.tool_config import PNPM_LIST_COMMAND, get_cache_manager
+from tool.tool_config import PNPM_LIST_COMMAND, get_cache_manager, YarnLockParser
 
 cache_manager = get_cache_manager()
 
 MVN_DEPENDENCY_PLUGIN = "org.apache.maven.plugins:maven-dependency-plugin:3.8.1"
 append_dependency_goal = lambda goal: f"{MVN_DEPENDENCY_PLUGIN}:{goal}"
-RESOLVE_GOAL = append_dependency_goal("resolve")
+TREE_GOAL = append_dependency_goal("tree")
 RESOLVE_PLUGINS_GOAL = append_dependency_goal("resolve-plugins")
-RESOLVE_LOG = "/tmp/deps.log"
+TREE_LOG = "/tmp/deps.json"
 RESOLVE_PLUGINS_LOG = "/tmp/plugins.log"
 
 
@@ -44,40 +44,68 @@ def extract_deps_from_pnpm_lockfile(repo_path, pnpm_lockfile_yaml):
         dict: A dictionary containing the extracted dependencies and patches.
     """
 
-    yaml_data = yaml.safe_load(pnpm_lockfile_yaml)
-    yaml_version = yaml_data.get("lockfileVersion")
-    if yaml_version != "9.0":
-        logging.error("Invalid pnpm lockfile version: %s", yaml_version)
-        logging.error("The pnpm lockfile version is not supported(yet): ", yaml_version)
-        # end the process
-        sys.exit(1)
-
-    lockfile_hash = get_lockfile_hash(yaml_data)
-    if not lockfile_hash:
-        logging.error("No lockfile found in %s", repo_path)
-        return {"resolutions": [], "patches": []}
-
-    cached_deps = cache_manager.extracted_deps_cache.get_dependencies(repo_path, lockfile_hash)
-    if cached_deps:
-        logging.info(f"Using cached dependencies for {repo_path}")
-        return cached_deps
-
     try:
-        # pkg_name_with_resolution = set()
-        deps_list_data = {}
+        yaml_data = yaml.safe_load(pnpm_lockfile_yaml)
+        yaml_version = yaml_data.get("lockfileVersion")
+        if yaml_version != "9.0":
+            logging.error("Invalid pnpm lockfile version: %s", yaml_version)
+            logging.error("The pnpm lockfile version is not supported(yet): ", yaml_version)
+            # end the process
+            sys.exit(1)
 
-        package_keys = list({"info": info} for info in sorted(yaml_data.get("packages", {}).keys()))
-        patches = list({"info": info} for info in sorted(yaml_data.get("patchedDependencies", {}).keys()))
+        lockfile_hash = get_lockfile_hash(yaml_data)
+        if not lockfile_hash:
+            logging.error("No lockfile found in %s", repo_path)
+            return {"resolutions": [], "patches": []}
 
+        cached_deps = cache_manager.extracted_deps_cache.get_dependencies(repo_path, lockfile_hash)
+        if cached_deps:
+            logging.info(f"Using cached dependencies for {repo_path}")
+            return cached_deps
+
+        parent_packages = defaultdict(set)
+        pkg_name_with_resolution = []
+        patches = []
+
+        # Iterate through packages to build parent-child relationships
+        for pkg_name, pkg_info in yaml_data.get("snapshots", {}).items():
+            version_match = re.search(r"@([^@]+)$", pkg_name)
+            version = version_match.group(1) if version_match else "unknown"
+
+            # Clean up package name (remove version)
+            pkg_name = re.sub(r"@[^@]+$", "", pkg_name)
+
+            # Construct resolution string
+            resolution = f"{pkg_name}@{version}"
+            pkg_name_with_resolution.append(resolution)
+
+            # Track child dependencies
+            if pkg_info.get("dependencies"):
+                for child_name, child_version in pkg_info["dependencies"].items():
+                    child_resolution = f"{child_name}@{child_version}"
+                    parent_packages[child_resolution].add(resolution)
+
+        # Convert to required format with parent information
         deps_list_data = {
-            "resolutions": package_keys,
+            "resolutions": list(
+                {
+                    "info": info,
+                    "parent": list(parent_packages.get(info, set())),
+                }
+                for info in sorted(pkg_name_with_resolution)
+            ),
             "patches": patches,
         }
 
         cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
 
         return deps_list_data
-
+    except yaml.YAMLError as e:
+        logging.error(
+            "An error occurred while parsing the pnpm-lock.yaml file: %s",
+            str(e),
+        )
+        return {"resolutions": [], "patches": []}
     except (IOError, ValueError, KeyError) as e:
         logging.error(
             "An error occurred while extracting dependencies from pnpm-lock.yaml: %s",
@@ -113,8 +141,7 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
         aliased_packages = {}
         deps_list_data = {}
 
-        packages = {}
-
+        parent_packages = {}
         if lock_file_json.get("packages") and isinstance(lock_file_json["packages"], dict):
             for package_path, package_info in lock_file_json["packages"].items():
                 if package_path.startswith("node_modules/"):
@@ -122,6 +149,7 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
                     if "node_modules" in package_name:
                         package_name = package_name.split("node_modules/")[-1]
 
+                    resolution = package_name
                     if package_info.get("version"):
                         version = package_info["version"]
                         # Handle npm aliases
@@ -131,11 +159,21 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
                             aliased_packages[f"{original_name}@{version}"] = package_name
                             package_name = original_name
 
-                        packages[package_name] = version
-                        pkg_name_with_resolution.add(f"{package_name}@{version}")
+                        resolution = f"{package_name}@{version}"
+                        pkg_name_with_resolution.add(resolution)
+
+                    if package_info.get("dependencies"):
+                        for dep_name, version in package_info["dependencies"].items():
+                            parent_packages.setdefault(f"{dep_name}@{version}", set()).add(resolution)
 
             deps_list_data = {
-                "resolutions": list({"info": info} for info in sorted(pkg_name_with_resolution)),
+                "resolutions": list(
+                    {
+                        "info": info,
+                        "parent": list(parent_packages.get(info, set())),
+                    }
+                    for info in sorted(pkg_name_with_resolution)
+                ),
                 "patches": patches,
                 "aliased_packages": aliased_packages,
             }
@@ -180,18 +218,19 @@ def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):
         pkg_name_with_resolution = []
         aliased_packages = {}
 
-        for line in yarn_lock_file.splitlines():
-            match = re.match(r"^\s+resolution:\s+(.+)$", line)
-            if match:
-                if "@patch" in line:
-                    # Check if "patch" is present in the line
-                    line = line.replace('resolution: "', "").strip('"').lstrip()
-                    patches.append(line)
+        parent_packages = {}
+        parsed_lockfile = yaml.safe_load(yarn_lock_file)
+        for entry_data in parsed_lockfile.values():
+            resolution = entry_data.get("resolution", "")
+            if resolution:
+                if "@patch" in resolution:
+                    # Check if "patch" is present in the resolution
+                    resolution = resolution.replace('resolution: "', "").strip('"').lstrip()
+                    patches.append(resolution)
                 else:
-                    line = match.group(1).strip('"')
                     # aliases will show up as something like my-foo@npm:foo@x.y.z
                     alias_pattern = r"(.+?)@npm:(.+?)@(.+)"
-                    alias_match = re.match(alias_pattern, line)
+                    alias_match = re.match(alias_pattern, resolution)
                     if alias_match:
                         # if it is an alias, we add the original name to the list
                         logging.info(f"Found yarn alias for {alias_match.group(2)}@{alias_match.group(3)}")
@@ -199,13 +238,18 @@ def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):
                         aliased_packages[f"{alias_match.group(2)}@{alias_match.group(3)}"] = (
                             f"{alias_match.group(1)}@{alias_match.group(3)}"
                         )
-                        pkg_name_with_resolution.append(f"{alias_match.group(2)}@{alias_match.group(3)}")
-                    else:
-                        # if it is not an alias, we add the package to the list
-                        pkg_name_with_resolution.append(line)
+                        resolution = f"{alias_match.group(2)}@{alias_match.group(3)}"
+                    pkg_name_with_resolution.append(resolution)
+
+                if entry_data.get("dependencies"):
+                    for dep_name, version in entry_data["dependencies"].items():
+                        parent_packages.setdefault(f"{dep_name}@{version}", set()).add(resolution)
 
         deps_list_data = {
-            "resolutions": list({"info": info} for info in sorted(pkg_name_with_resolution)),
+            "resolutions": list(
+                {"info": info, "parent": list(parent_packages.get(info, set()))}
+                for info in sorted(pkg_name_with_resolution)
+            ),
             "patches": list({"info": info} for info in sorted(patches)),
             "aliased_packages": aliased_packages,
         }
@@ -214,6 +258,12 @@ def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):
 
         return deps_list_data
 
+    except yaml.YAMLError as e:
+        logging.error(
+            "An error occurred while parsing the yarn.lock file(Yarn Berry): %s",
+            str(e),
+        )
+        return {"resolutions": [], "patches": [], "aliased_packages": []}
     except (IOError, ValueError, KeyError) as e:
         logging.error(
             "An error occurred while extracting dependencies from yarn.lock file(Yarn Berry): %s",
@@ -245,30 +295,38 @@ def extract_deps_from_v1_yarn(repo_path, yarn_lock_file):
         logging.info(f"Using cached dependencies for {repo_path}")
         return cached_deps
     try:
-        extracted_info = []
+        pkg_name_with_resolution = []
         patches = []
         aliased_packages = {}
+        parent_packages = defaultdict(set)
 
-        pattern = r'^\s*$\n\"?(\@?([^\s]+))@.*?:\n\s*version\s+"([^\s]+)"'
-
-        matches = re.findall(pattern, yarn_lock_file, re.MULTILINE)
-
-        extracted_info = [f"{match[0]}@{match[2]}" for match in matches]
-        for item in extracted_info:
-            if len(item.split("@npm:")) > 1:
+        # Find all dependencies
+        parser = YarnLockParser(yarn_lock_file)
+        dependencies = parser.parse()
+        for entry_name, entry_data in dependencies.items():
+            item = f"{entry_name}@{entry_data['version_constraint']}"
+            if entry_data.get("original_name"):
                 logging.warning(f"Found yarn alias for {item}")
-                logging.warning(f"Original name: {item.split('@npm:')[1]}")
-                logging.warning(f"Aliased to: {item.split('@npm:')[0]}@{item.split('@npm:')[1].split('@')[1]}")
-                extracted_info.remove(item)
-                extracted_info.append(item.split("@npm:")[1])
-                aliased_packages[item.split("@npm:")[1]] = (
-                    f"{item.split('@npm:')[0]}@{item.split('@npm:')[1].split('@')[1]}"
-                )
+                logging.warning(f"Original name: {entry_data['original_name']}@{entry_data['version_constraint']}")
+                logging.warning(f"Aliased to: {entry_name}@{entry_data['version_constraint']}")
+                aliased_packages[item] = f"{entry_data['original_name']}@{entry_data['version_constraint']}"
 
-        extracted_info = sorted(extracted_info)
+            if entry_data.get("dependencies"):
+                logging.info("Found child dependencies for %s", item)
+                for dep_name, dep_version in entry_data["dependencies"].items():
+                    dep_name = f"{dep_name}@{dep_version}"
+                    parent_packages[dep_name].add(item)
+
+            pkg_name_with_resolution.append(item)
 
         deps_list_data = {
-            "resolutions": list({"info": info} for info in extracted_info),
+            "resolutions": list(
+                {
+                    "info": info,
+                    "parent": list(parent_packages.get(info, set())),
+                }
+                for info in sorted(pkg_name_with_resolution)
+            ),
             "patches": patches,
             "aliased_packages": aliased_packages,
         }
@@ -394,6 +452,7 @@ def extract_deps_from_pnpm_mono(folder_path, version_tag, repo_path, pnpm_scope)
 
     tree, folder_path_for_this = get_pnpm_dep_tree(folder_path, version_tag, repo_path, pnpm_scope)
     lockfile_hash = get_lockfile_hash(tree)  # not really a lockfile, but an approximation
+    os.chdir("..")
     if not lockfile_hash:
         logging.error("No lockfile found in %s", repo_path)
         return {"resolutions": [], "patches": []}
@@ -492,31 +551,85 @@ def extract_deps_from_maven(repo_path):
         dict: A dictionary containing the extracted dependencies.
     """
 
-    def parse_mvn_dependency_logs(log_file, plugins=False):
+    def parse_mvn_tree_logs(log_file):
         """
-        Parse Maven dependency resolution logs to extract dependency information.
+        Parse Maven dependency tree logs to extract dependency information.
 
         Args:
-            log_file (str): Path to the Maven dependency resolution log file
-            plugins (bool): Whether we're dealing with resolve-plugin logs.
+            log_file (str): Path to the Maven dependency tree log file
 
         Returns:
             list: List of dictionaries containing dependency information
         """
         dependencies = []
 
+        def parse_dependency(dep, parent=None):
+            dep_info = {
+                "groupId": dep["groupId"],
+                "artifactId": dep["artifactId"],
+                "version": dep["version"],
+                "parent": f"{parent['groupId']}:{parent['artifactId']}@{parent['version']}" if parent else None,
+            }
+            dependencies.append(dep_info)
+            for child in dep.get("children", []):
+                parse_dependency(child, dep_info)
+
         try:
             with open(log_file, "r") as f:
-                for line in f:
-                    parts = line.strip().split(":")
-                    if len(parts) >= 3:  # Minimum required parts, [2] would be type
-                        if plugins:
-                            # Version will always be the last here, no scope
-                            dep_info = {"groupId": parts[0], "artifactId": parts[1], "version": parts[-1].split()[0]}
-                        else:
-                            # Version will be the fourth one, after type; the last one is scope
-                            dep_info = {"groupId": parts[0], "artifactId": parts[1], "version": parts[3].split()[0]}
-                        dependencies.append(dep_info)
+                data = json.load(f)
+                for dep in data["children"]:
+                    parse_dependency(dep)
+
+        except FileNotFoundError:
+            logging.error("Dependency log file not found: %s", log_file)
+        except Exception as e:
+            logging.error("Error parsing dependency log: %s", str(e))
+
+        return dependencies
+
+    def parse_mvn_plugin_logs(log_file):
+        """
+        Parse Maven dependency resolution logs to extract dependency information.
+
+        Args:
+            log_file (str): Path to the Maven dependency resolution log file
+
+        Returns:
+            list: List of dictionaries containing dependency information
+        """
+        dependencies = []
+        current_parent = None
+        base_indent_level = 3  # 3 spaces is the base indent level
+        try:
+            with open(log_file, "r") as f:
+                lines = f.readlines()
+                parsing = False
+
+                for line in lines:
+                    if "The following plugins have been resolved:" in line:
+                        parsing = True
+                        continue
+
+                    if "The following plugins have been" in line and parsing:
+                        break
+
+                    if parsing:
+                        indent_level = len(line) - len(line.lstrip(" ")) - base_indent_level
+                        parts = line.strip().split(":")
+                        if len(parts) >= 3:
+                            dep_info = {
+                                "groupId": parts[0],
+                                "artifactId": parts[1],
+                                "version": parts[-1].split()[0],
+                                "parent": None,
+                            }
+                            if indent_level == 0:
+                                current_parent = (
+                                    f"{dep_info['groupId']}:{dep_info['artifactId']}@{dep_info['version']}"
+                                )
+                            else:
+                                dep_info["parent"] = current_parent
+                                dependencies.append(dep_info)
 
         except FileNotFoundError:
             logging.error("Dependency log file not found: %s", log_file)
@@ -543,9 +656,9 @@ def extract_deps_from_maven(repo_path):
     retrieval_commands = {
         "regular": [
             "mvn",
-            RESOLVE_GOAL,
-            "-Dsort=true",
-            f"-DoutputFile={RESOLVE_LOG}",
+            TREE_GOAL,
+            "-DoutputType=json",
+            f"-DoutputFile={TREE_LOG}",
         ],
         "plugins": [
             "mvn",
@@ -561,19 +674,27 @@ def extract_deps_from_maven(repo_path):
         subprocess.run(retrieval_commands["plugins"], check=True)
 
         # Parse the dependency logs
-        retrieved_deps = parse_mvn_dependency_logs(RESOLVE_LOG)
-        retrieved_plugins = parse_mvn_dependency_logs(RESOLVE_PLUGINS_LOG, plugins=True)
+        retrieved_deps = parse_mvn_tree_logs(TREE_LOG)
+        retrieved_plugins = parse_mvn_plugin_logs(RESOLVE_PLUGINS_LOG)
 
         # Go back to original directory
         os.chdir(current_dir)
 
         # Format the dependencies
         parsed_deps = [
-            {"info": f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}", "command": "resolve"}
+            {
+                "info": f"{dep['groupId']}:{dep['artifactId']}@{dep['version']}",
+                "parent": dep["parent"],
+                "command": "tree",
+            }
             for dep in retrieved_deps
         ]
         parsed_plugins = [
-            {"info": f"{plugin['groupId']}:{plugin['artifactId']}@{plugin['version']}", "command": "resolve-plugins"}
+            {
+                "info": f"{plugin['groupId']}:{plugin['artifactId']}@{plugin['version']}",
+                "parent": plugin["parent"],
+                "command": "resolve-plugins",
+            }
             for plugin in retrieved_plugins
         ]
 

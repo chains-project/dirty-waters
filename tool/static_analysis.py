@@ -307,7 +307,7 @@ def check_parent_scm(package):
             for location in parent_scm_locations:
                 if location:
                     repo_api, simplified_path, package_full_name, _, _, _ = api_constructor(package, location)
-                    data = make_github_request(repo_api, max_retries=3)
+                    data = make_github_request(repo_api, max_retries=2)
                     if data:
                         stopping = True
                         existing_scm_data = data
@@ -444,7 +444,7 @@ def check_existence(package_name, repository, extract_message, package_manager):
     open_issues_count = None
     status_code = 404
 
-    data = make_github_request(repo_api, max_retries=3)
+    data = make_github_request(repo_api, max_retries=2)
     parent_scm_result = {}
     source_code_info = None
     if not data:
@@ -824,7 +824,6 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
     with tqdm(total=len(packages_data), desc="Analyzing packages") as pbar:
         for package, repo_urls in packages_data.items():
             logging.info(f"Currently analyzing {package}")
-
             enabled_checks = disable_checks_from_config(package, config, enabled_checks)
             if not enabled_checks:
                 logging.warning(f"Package {package} will be skipped, no checks enabled for it")
@@ -844,7 +843,8 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
                 errors[package] = error
             else:
                 package_all[package] = analyzed_data
-                package_all[package]["command"] = command
+                package_all[package]["parent"] = repo_urls.get("parent", "")
+                package_all[package]["command"] = repo_urls.get("command", None)
 
     return package_all, errors
 

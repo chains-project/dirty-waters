@@ -62,57 +62,38 @@ $ dirty-waters -p INRIA/spoon -pm maven
 All configuration options
 
 ```
-usage: main.py [-h] -p PROJECT_REPO_NAME [-v RELEASE_VERSION_OLD]
-               [-vn RELEASE_VERSION_NEW] [-d] [-n] -pm
-               {yarn-classic,yarn-berry,pnpm,npm,maven}
-               [--pnpm-scope PNPM_SCOPE] [--debug] [--config CONFIG]
-               [--gradual-report GRADUAL_REPORT | --no-gradual-report]
-               [--check-source-code] [--check-source-code-sha]
-               [--check-deprecated] [--check-forks] [--check-provenance]
-               [--check-code-signature] [--check-aliased-packages]
+usage: main.py [-h] -p PROJECT_REPO_NAME [-v RELEASE_VERSION_OLD] [-vn RELEASE_VERSION_NEW] [-d] [-n] -pm {yarn-classic,yarn-berry,pnpm,npm,maven} [--debug] [--config CONFIG]
+               [--gradual-report GRADUAL_REPORT | --no-gradual-report] [--check-source-code] [--check-source-code-sha] [--check-deprecated] [--check-forks] [--check-provenance] [--check-code-signature]
+               [--check-aliased-packages]
 
 options:
   -h, --help            show this help message and exit
   -p PROJECT_REPO_NAME, --project-repo-name PROJECT_REPO_NAME
-                        Specify the project repository name. Example:
-                        MetaMask/metamask-extension
+                        Specify the project repository name. Example: MetaMask/metamask-extension
   -v RELEASE_VERSION_OLD, --release-version-old RELEASE_VERSION_OLD
-                        The old release tag of the project repository.
-                        Defaults to HEAD. Example: v10.0.0
+                        The old release tag of the project repository. Defaults to HEAD. Example: v10.0.0
   -vn RELEASE_VERSION_NEW, --release-version-new RELEASE_VERSION_NEW
                         The new release version of the project repository.
   -d, --differential-analysis
-                        Run differential analysis and generate a markdown
-                        report of the project
-  -n, --name-match      Compare the package names with the name in the in the
-                        package.json file. This option will slow down the
-                        execution time due to the API rate limit of code
-                        search.
+                        Run differential analysis and generate a markdown report of the project
+  -n, --name-match      Compare the package names with the name in the in the package.json file. This option will slow down the execution time due to the API rate limit of code search.
   -pm {yarn-classic,yarn-berry,pnpm,npm,maven}, --package-manager {yarn-classic,yarn-berry,pnpm,npm,maven}
                         The package manager used in the project.
-  --pnpm-scope PNPM_SCOPE
-                        Extract dependencies from pnpm with a specific scope
-                        using 'pnpm list --filter <scope> --depth Infinity'
-                        command. Configure the scope in tool_config.py file.
   --debug               Enable debug mode.
   --config CONFIG       Path to configuration file (JSON)
   --gradual-report GRADUAL_REPORT
                         Enable/disable gradual reporting (default: true)
-  --no-gradual-report   Disable gradual reporting (deprecated, use --gradual-
-                        report=false instead)
+  --no-gradual-report   Disable gradual reporting (deprecated, use --gradual-report=false instead)
 
 smell checks:
-  --check-source-code   Check for dependencies with no link to source code
-                        repositories
+  --check-source-code   Check for dependencies with no link to source code repositories
   --check-source-code-sha
-                        Check for dependencies with no commit sha/tag for
-                        release
+                        Check for dependencies with no commit sha/tag for release
   --check-deprecated    Check for deprecated dependencies
   --check-forks         Check for dependencies that are forks
   --check-provenance    Check for dependencies with no build attestation
   --check-code-signature
-                        Check for dependencies with missing/invalid code
-                        signature
+                        Check for dependencies with missing/invalid code signature
   --check-aliased-packages
                         Check for aliased packages
 ```
