@@ -405,13 +405,29 @@ def write_to_file(filename, directory, data):
 
 def setup_project_info(args, any_check_specified):
     """Set up project information based on command-line arguments."""
+    version_old, version_new = args.release_version_old, args.release_version_new
+    if version_old in ["HEAD", "HEAD^", "main", "master"]:
+        api_url = f"https://api.github.com/repos/{args.project_repo_name}/commits/{version_old}"
+        data = tool_config.make_github_request(api_url)
+        version_old = data.get("sha")
+        if not version_old:
+            logging.error(f"Failed to get the commit SHA for {version_old}.")
+            raise ValueError(f"Failed to get the commit SHA for {version_old}.")
+    
+    if version_new and version_new in ["HEAD", "HEAD^", "main", "master"]:
+        api_url = f"https://api.github.com/repos/{args.project_repo_name}/commits/{version_new}"
+        data = tool_config.make_github_request(api_url)
+        version_new = data.get("sha")
+        if not version_new:
+            logging.error(f"Failed to get the commit SHA for {version_new}.")
+            raise ValueError(f"Failed to get the commit SHA for {version_new}.")
 
     return {
         "repo_name": args.project_repo_name,
-        "old_version": args.release_version_old,
-        "new_version": args.release_version_new,
-        "old_version_name": args.release_version_old.replace("/", "_"),
-        "new_version_name": (args.release_version_new.replace("/", "_") if args.release_version_new else None),
+        "old_version": version_old,
+        "new_version": version_new,
+        "old_version_name": version_old.replace("/", "_"),
+        "new_version_name": (version_new.replace("/", "_") if version_new else None),
         "check_match": args.name_match,
         "package_manager": args.package_manager,
         # "pnpm_scope": args.pnpm_scope,
