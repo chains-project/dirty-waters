@@ -224,9 +224,7 @@ def process_package(
         valid_repo_info = "GitHub repository" == retrieved_info["message"]
         if parent != retrieved_info.get("parent", None):
             # tackles scenarios where parent was cached and then removed; incoming parent should take precedence
-            retrieved_info.update({
-                "parent": parent
-            })
+            retrieved_info.update({"parent": parent})
             cache_manager.github_cache.cache_github_url(package, retrieved_info)
         repos_output_json[package] = retrieved_info
         if valid_repo_info:
