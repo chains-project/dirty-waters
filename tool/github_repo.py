@@ -220,8 +220,12 @@ def process_package(
 
         cache_manager.github_cache.cache_github_url(package, retrieved_info)
     else:
-        logging.info(f"Found cached URL for {package}: {retrieved_info['url']}")
+        logging.info(f"Found cached URL for {package}: {retrieved_info.get('url', '-')}")
         valid_repo_info = "GitHub repository" == retrieved_info["message"]
+        if parent != retrieved_info.get("parent", None):
+            # tackles scenarios where parent was cached and then removed; incoming parent should take precedence
+            retrieved_info.update({"parent": parent})
+            cache_manager.github_cache.cache_github_url(package, retrieved_info)
         repos_output_json[package] = retrieved_info
         if valid_repo_info:
             repos_output.append(retrieved_info["url"])
