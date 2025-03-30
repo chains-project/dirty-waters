@@ -222,10 +222,12 @@ def process_package(
     else:
         logging.info(f"Found cached URL for {package}: {retrieved_info['url']}")
         valid_repo_info = "GitHub repository" == retrieved_info["message"]
-        retrieved_info.update({
-            # avoids scenarios where parent was cached and then removed; incoming parent should take precedence
-            "parent": parent
-        })
+        retrieved_info.update(
+            {
+                # avoids scenarios where parent was cached and then removed; incoming parent should take precedence
+                "parent": parent
+            }
+        )
         repos_output_json[package] = retrieved_info
         if valid_repo_info:
             repos_output.append(retrieved_info["url"])
