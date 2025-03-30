@@ -413,7 +413,7 @@ def setup_project_info(args, any_check_specified):
         if not version_old:
             logging.error(f"Failed to get the commit SHA for {version_old}.")
             raise ValueError(f"Failed to get the commit SHA for {version_old}.")
-    
+
     if version_new and version_new in ["HEAD", "HEAD^", "main", "master"]:
         api_url = f"https://api.github.com/repos/{args.project_repo_name}/commits/{version_new}"
         data = tool_config.make_github_request(api_url)
