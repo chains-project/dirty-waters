@@ -159,7 +159,7 @@ export GITHUB_API_TOKEN=<your_token>
 ### Configuration
 
 You can set the tool's configuration through a JSON file, which can be then passed to the tool using the `--config` flag.
-At the moment, we have configuration support to ignore smells for specific dependencies.
+At the moment, we have configuration support to ignore smells for specific dependencies, as well as parents with specific parents.
 The dependencies can be set either as an exact match or as a regex pattern.
 You can either set "all" to ignore every check for the dependency or specify the checks you want to ignore.
 
@@ -170,6 +170,9 @@ An example configuration file:
   "ignore": {
     "shescape@2.1.0": "all",
     "@types*": ["forks"]
+  },
+  "ignore-if-parent": {
+    "org.apache.maven.plugins:maven-release-plugin*": "all"
   }
 }
 ```

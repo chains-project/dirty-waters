@@ -781,39 +781,49 @@ def analyze_package_data(
     return package_info
 
 
-def disable_checks_from_config(package_name, config, enabled_checks):
+def disable_checks_from_config(package_name, parent, config, enabled_checks):
     """
     Returns the enabled_checks dictionary for the package, based on the configuration file.
-    config["ignore"] includes a series of entries (regex patterns) which specify which packages to ignore/do less checks on.
+    config[<key>] includes a series of entries (regex patterns) which specify which packages to ignore/do less checks on.
     We compare the package name against these patterns.
     If there are conflicting patterns, the first one that matches is used.
 
     Args:
         package_name (str): Name of the package
+        parent(str): Name of the package's parent
         config (dict): Configuration dictionary
         enabled_checks (dict): Dictionary of enabled checks
 
     Returns:
         dict: Package-specific enabled checks
     """
-    if not config or "ignore" not in config:
+    possible_keys = [[package_name, "ignore"], [parent, "ignore-if-parent"]]
+    possible_keys = [info for info in possible_keys if info[1] in config]
+    if not config or not possible_keys:
+        logging.warning(f"possible_keys: {possible_keys}")
         logging.warning("No config file provided, using default config (no packages ignored)")
         return enabled_checks
 
-    ignore_patterns = config["ignore"]
-    for pattern in ignore_patterns:
-        if re.match(pattern, package_name):
-            if isinstance(ignore_patterns[pattern], str):
-                if ignore_patterns[pattern] == "all":
-                    logging.info(f"Ignoring all checks for {package_name}")
-                    return {}
-            elif isinstance(ignore_patterns[pattern], list):
-                for check in ignore_patterns[pattern]:
-                    logging.info(f"Ignoring check {check} for {package_name}")
-                    enabled_checks[check] = False
-            else:
-                logging.warning(f"Invalid ignore pattern for {package_name}: {ignore_patterns[pattern]}")
-            break
+    for name, config_type in possible_keys:
+        if not name:
+            continue
+        for pattern in config[config_type]:
+            try:
+                if re.match(pattern, name):
+                    if isinstance(config[config_type][pattern], str):
+                        if config[config_type][pattern] == "all":
+                            logging.info(f"Ignoring all checks for {package_name}")
+                            return {}
+                    elif isinstance(config[config_type][pattern], list):
+                        for check in config[config_type][pattern]:
+                            logging.info(f"Ignoring check {check} for {package_name}")
+                            enabled_checks[check] = False
+                    else:
+                        logging.warning(f"Invalid ignore pattern for {package_name}: {config[config_type][pattern]}")
+                    break
+            except Exception as e:
+                logging.error(f"Error parsing config file patterns: {e}; pattern: {pattern}, name: {name}")
+    logging.info(f"The following enabled_checks will be set for this package: {enabled_checks}")
     return enabled_checks
 
 
@@ -824,15 +834,17 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
     with tqdm(total=len(packages_data), desc="Analyzing packages") as pbar:
         for package, repo_urls in packages_data.items():
             logging.info(f"Currently analyzing {package}")
-            enabled_checks = disable_checks_from_config(package, config, enabled_checks)
-            if not enabled_checks:
+            repo_url = repo_urls.get("url", "")
+            extract_repo_url_message = repo_urls.get("message", "")
+            command = repo_urls.get("command", None)
+            parent = repo_urls.get("parent", "")
+
+            package_enabled_checks = disable_checks_from_config(package, parent, config, enabled_checks)
+            if not package_enabled_checks:
                 logging.warning(f"Package {package} will be skipped, no checks enabled for it")
                 pbar.update(1)
                 continue
 
-            repo_url = repo_urls.get("url", "")
-            extract_repo_url_message = repo_urls.get("message", "")
-            command = repo_urls.get("command", None)
             analyzed_data = analyze_package_data(
                 package, repo_url, extract_repo_url_message, pm, check_match=check_match, enabled_checks=enabled_checks
             )
@@ -843,7 +855,7 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
                 errors[package] = error
             else:
                 package_all[package] = analyzed_data
-                package_all[package]["parent"] = repo_urls.get("parent", "")
+                package_all[package]["parent"] = parent
                 package_all[package]["command"] = repo_urls.get("command", None)
 
     return package_all, errors
