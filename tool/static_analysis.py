@@ -823,7 +823,7 @@ def disable_checks_from_config(package_name, parent, config, enabled_checks):
                     break
             except Exception as e:
                 logging.error(f"Error parsing config file patterns: {e}; pattern: {pattern}, name: {name}")
-    logging.info(f"Returning the following enabled_checks: {enabled_checks}")
+    logging.info(f"The following enabled_checks will be set for this package: {enabled_checks}")
     return enabled_checks
 
 
@@ -839,7 +839,6 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
             command = repo_urls.get("command", None)
             parent = repo_urls.get("parent", "")
 
-            logging.info(f"Before, enabled_checks: {enabled_checks}")
             package_enabled_checks = disable_checks_from_config(package, parent, config, enabled_checks)
             if not package_enabled_checks:
                 logging.warning(f"Package {package} will be skipped, no checks enabled for it")
