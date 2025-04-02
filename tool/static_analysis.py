@@ -856,7 +856,12 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
                 continue
 
             analyzed_data = analyze_package_data(
-                package, repo_url, extract_repo_url_message, pm, check_match=check_match, enabled_checks=package_enabled_checks
+                package,
+                repo_url,
+                extract_repo_url_message,
+                pm,
+                check_match=check_match,
+                enabled_checks=package_enabled_checks,
             )
             error = analyzed_data.get("error", None)
             pbar.update(1)
