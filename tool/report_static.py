@@ -460,7 +460,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
             md_file.write("The following checks were specifically requested:\n\n")
             for check, enabled in enabled_checks.items():
                 if enabled:
-                    md_file.write(f"- {check.replace('_', ' ').title()}\n")
+                    md_file.write(f"- {check.replace('_', ' ').title()}: `{check}`\n")
             md_file.write("\n---\n\n")
         else:
             md_file.write("All available checks were performed.\n\n---\n\n")
