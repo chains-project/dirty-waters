@@ -797,11 +797,12 @@ def disable_checks_from_config(package_name, parent, config, enabled_checks):
     Returns:
         dict: Package-specific enabled checks
     """
+    final_enabled_checks = enabled_checks.copy()
     possible_keys = [[package_name, "ignore"], [parent, "ignore-if-parent"]]
     possible_keys = [info for info in possible_keys if info[1] in config]
     if not config or not possible_keys:
         logging.warning("No config file provided, using default config (no packages ignored)")
-        return enabled_checks
+        return final_enabled_checks
 
     for name, config_type in possible_keys:
         if not name:
@@ -816,14 +817,14 @@ def disable_checks_from_config(package_name, parent, config, enabled_checks):
                     elif isinstance(config[config_type][pattern], list):
                         for check in config[config_type][pattern]:
                             logging.info(f"Ignoring check {check} for {package_name}")
-                            enabled_checks[check] = False
+                            final_enabled_checks[check] = False
                     else:
                         logging.warning(f"Invalid ignore pattern for {package_name}: {config[config_type][pattern]}")
                     break
             except Exception as e:
                 logging.error(f"Error parsing config file patterns: {e}; pattern: {pattern}, name: {name}")
-    logging.info(f"The following enabled_checks will be set for this package: {enabled_checks}")
-    return enabled_checks
+    logging.info(f"The following enabled_checks will be set for this package: {final_enabled_checks}")
+    return final_enabled_checks
 
 
 def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS, config=None):
