@@ -469,6 +469,7 @@ def resolve_config_conflicts(config):
 
     logging.info(f"Configuration after conflict solving: {config}")
 
+
 def perform_static_analysis(project_info, is_old_version):
     """Perform static analysis for a given version."""
 
