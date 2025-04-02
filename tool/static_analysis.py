@@ -800,7 +800,6 @@ def disable_checks_from_config(package_name, parent, config, enabled_checks):
     possible_keys = [[package_name, "ignore"], [parent, "ignore-if-parent"]]
     possible_keys = [info for info in possible_keys if info[1] in config]
     if not config or not possible_keys:
-        logging.warning(f"possible_keys: {possible_keys}")
         logging.warning("No config file provided, using default config (no packages ignored)")
         return enabled_checks
 
