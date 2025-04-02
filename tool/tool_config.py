@@ -1022,6 +1022,7 @@ def load_config(config_path=None):
     try:
         with open(config_path, "r") as f:
             config = json.load(f)
+            logging.info(f"Found config file at {config_path}")
             return {**DEFAULT_CONFIG, **config}
     except Exception as e:
         logging.warning(f"Error loading config file: {str(e)}")
