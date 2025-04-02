@@ -171,7 +171,7 @@ An example configuration file:
     "shescape@2.1.0": "all",
     "@types*": ["forks"]
   },
-  "ignore-if-parent" {
+  "ignore-if-parent": {
     "org.apache.maven.plugins:maven-release-plugin*": "all"
   }
 }
