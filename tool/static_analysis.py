@@ -711,16 +711,19 @@ def analyze_package_data(
 
             # Check which enabled checks are missing from cache
             for check, enabled in enabled_checks.items():
+                if check in ["source_code_sha", "forks"]:
+                    check = "source_code"
+                elif check in ["deprecated", "provenance"]:
+                    check = "package_info"
+                elif check == "aliased_packages":
+                    continue
+
                 if enabled:
-                    if check in ["source_code_sha", "forks"]:
-                        check = "source_code"
-                    elif check in ["deprecated", "provenance"]:
-                        check = "package_info"
-                    elif check == "aliased_packages":
-                        continue
                     missing_checks[check] = not cached_analysis_matches_schema(
                         cached_analysis.get(check, {}), SCHEMAS_FOR_CACHE_ANALYSIS[check]
                     )
+                else:
+                    package_info.pop(check, None)
 
             if all(not missing for missing in missing_checks.values()):
                 logging.info(f"Using complete cached analysis for {package}")
@@ -772,7 +775,14 @@ def analyze_package_data(
                 }
 
         # Cache the updated analysis
-        cache_manager.package_cache.cache_package_analysis(package_name, package_version, pm, package_info)
+        # We first need to pass and compare cached_analysis (if it exists) with package_info;
+        # If there's an entry which exists in cached_analysis and not in package_info, it's because it was ignored
+        # However, for cache purposes, we still want to keep it
+        if cached_analysis:
+            for check, value in cached_analysis.items():
+                if check in package_info:
+                    cached_analysis[check].update(value)
+        cache_manager.package_cache.cache_package_analysis(package_name, package_version, pm, cached_analysis)
 
     except Exception as e:
         logging.error(f"Analyzing package {package}: {str(e)}")
@@ -846,7 +856,7 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
                 continue
 
             analyzed_data = analyze_package_data(
-                package, repo_url, extract_repo_url_message, pm, check_match=check_match, enabled_checks=enabled_checks
+                package, repo_url, extract_repo_url_message, pm, check_match=check_match, enabled_checks=package_enabled_checks
             )
             error = analyzed_data.get("error", None)
             pbar.update(1)
