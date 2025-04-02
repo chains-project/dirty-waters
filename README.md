@@ -163,12 +163,12 @@ At the moment, we have configuration support to ignore smells for specific depen
 The dependencies can be set either as an exact match or as a regex pattern.
 You can either set "all" to ignore every check for the dependency or specify the checks you want to ignore.
 
-The possible specific [check options](https://github.com/chains-project/dirty-waters#smell-check-options) are as follows:
+The possible specific [check options](https://github.com/chains-project/dirty-waters#smell-check-options) are as follows (note that **checks represented as "children" of another check are ignored if the parent one is**):
 
 - `"source_code"`
-- `"source_code_sha"`
+  - `"source_code_sha"`
+  - `"forks"`
 - `"deprecated"`
-- `"forks"`
 - `"provenance"`
 - `"code_signature"`
 - `"aliased_packages"`

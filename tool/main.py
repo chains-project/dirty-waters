@@ -449,22 +449,25 @@ def setup_directories_and_logging(project_info):
     tool_config.setup_logger(log_file_path, project_info["debug"])
 
 
-def verify_config(config):
-    """Check whether there are conflicting ignored checks for packages in the configuration file."""
-    for checks_per_type in (config.get("ignore", {}), config.get("ignore-if-parent", {})):
+def resolve_config_conflicts(config):
+    """Check whether there are conflicting ignored checks for packages in the configuration file. fix them."""
+    for check_type in ["ignore", "ignore-if-parent"]:
+        checks_per_type = config.get(check_type, {})
         for package, checks in checks_per_type.items():
             if isinstance(checks, str) and checks == "all":
                 continue
             elif not isinstance(checks, list):
                 raise ValueError(f"Invalid checks for package {package}: {checks}")
 
-            disallowed_if_source_code_ignored = ["source_code_sha", "forks"]
-            wrongly_unignored = [check for check in disallowed_if_source_code_ignored if check not in checks]
-            if "source_code" in checks and any(wrongly_unignored):
-                raise ValueError(
-                    f"""Conflicting checks for package {package}: source_code is asked to be ignored, yet the following depend on it and are not: {wrongly_unignored}. Please remove source_code from the ignored checks or add the aforementioned checks to the ignored checks list."""
+            if "source_code" in checks:
+                disallowed_if_source_code_ignored = ["source_code_sha", "forks"]
+                wrongly_unignored = [check for check in disallowed_if_source_code_ignored if check not in checks]
+                config[check_type][package] = checks + wrongly_unignored
+                logging.warning(
+                    f"Added {', '.join(wrongly_unignored)} to the ignored checks for package {package} after conflict solving."
                 )
 
+    logging.info(f"Configuration after conflict solving: {config}")
 
 def perform_static_analysis(project_info, is_old_version):
     """Perform static analysis for a given version."""
@@ -610,7 +613,7 @@ def main():
     project_info = setup_project_info(dw_args, any_check_specified)
     setup_directories_and_logging(project_info)
     project_info["config"] = tool_config.load_config(dw_args.config)
-    verify_config(project_info["config"])
+    resolve_config_conflicts(project_info["config"])
 
     logging.info(
         f"Software supply chain smells analysis for {project_info['repo_name']} for version {project_info['old_version']}..."
