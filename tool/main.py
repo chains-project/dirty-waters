@@ -448,6 +448,7 @@ def setup_directories_and_logging(project_info):
     log_file_path = result_folder_path / "analysis.log"
     tool_config.setup_logger(log_file_path, project_info["debug"])
 
+
 def verify_config(config):
     """Check whether there are conflicting ignored checks for packages in the configuration file."""
     for checks_per_type in (config.get("ignore", {}), config.get("ignore-if-parent", {})):
@@ -456,11 +457,14 @@ def verify_config(config):
                 continue
             elif not isinstance(checks, list):
                 raise ValueError(f"Invalid checks for package {package}: {checks}")
-            
+
             disallowed_if_source_code_ignored = ["source_code_sha", "forks"]
             wrongly_unignored = [check for check in disallowed_if_source_code_ignored if check not in checks]
             if "source_code" in checks and any(wrongly_unignored):
-                raise ValueError(f"""Conflicting checks for package {package}: source_code is asked to be ignored, yet the following depend on it and are not: {wrongly_unignored}. Please remove source_code from the ignored checks or add the aforementioned checks to the ignored checks list.""")
+                raise ValueError(
+                    f"""Conflicting checks for package {package}: source_code is asked to be ignored, yet the following depend on it and are not: {wrongly_unignored}. Please remove source_code from the ignored checks or add the aforementioned checks to the ignored checks list."""
+                )
+
 
 def perform_static_analysis(project_info, is_old_version):
     """Perform static analysis for a given version."""
