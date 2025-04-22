@@ -14,6 +14,7 @@ By using `dirty-waters`, you identify the shady areas of your supply chain, whic
 - Depends on a fork (low severity), **disabled by default**
 - Dependencies without/with invalid code signature (medium severity)
 - Dependencies with no build attestation (low severity)
+- Dependencies with alias (low severity)
 
 \* We consider invalid links to be links which do not return a 200 status code.
 Furthermore, if the dependencies are not hosted on GitHub, not all checks will be possible to be made (e.g., release tag/commit SHA).
