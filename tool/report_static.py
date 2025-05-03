@@ -639,6 +639,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         md_file.write(f"- Tool version: {tool_commit_hash}\n")
         md_file.write(f"- Project Name: {project_name}\n")
         md_file.write(f"- Project Version: {release_version}\n")
+        md_file.write(f"- Package Manager: {package_manager}\n")
     print(f"Report from static analysis generated at {filename}")
 
 
