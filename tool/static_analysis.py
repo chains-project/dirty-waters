@@ -422,7 +422,7 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
     return source_code_info
 
 
-def check_existence(package_name, repository, extract_message, package_manager):
+def check_existence(package_name, repository, extract_message, package_manager, enabled_checks):
     """Check if the package exists in the repository."""
     if "Could not find repository" in extract_message:
         return {"is_github": False, "github_url": "No_repo_info_found"}
@@ -504,12 +504,14 @@ def check_existence(package_name, repository, extract_message, package_manager):
         "redirected_repo": now_repo_url,
         "status_code": status_code,
         "archived": archived,
-        "is_fork": is_fork,
-        "source_code_version": source_code_info,
         "parent_repo_link": parent_repo_link if is_fork else None,
         "open_issues_count": open_issues_count,
         "error": error_message if error_message else "No error message.",
     }
+    if "forks" in enabled_checks:
+        github_info["is_fork"] = is_fork
+    if "source_code_sha" in enabled_checks:
+        github_info["source_code_version"] = source_code_info
 
     return github_info
 
@@ -755,7 +757,9 @@ def analyze_package_data(
             )
 
         if missing_checks.get("source_code"):
-            update_package_info(package_info, "source_code", check_existence(package, repo_url, extract_message, pm))
+            update_package_info(
+                package_info, "source_code", check_existence(package, repo_url, extract_message, pm, enabled_checks)
+            )
 
         if check_match and package_info.get("source_code") and package_info["source_code"].get("github_exists"):
             repo_url_to_use = package_info["source_code"].get("redirected_repo") or repo_url
