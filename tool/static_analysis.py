@@ -757,7 +757,9 @@ def analyze_package_data(
             )
 
         if missing_checks.get("source_code"):
-            update_package_info(package_info, "source_code", check_existence(package, repo_url, extract_message, pm, enabled_checks))
+            update_package_info(
+                package_info, "source_code", check_existence(package, repo_url, extract_message, pm, enabled_checks)
+            )
 
         if check_match and package_info.get("source_code") and package_info["source_code"].get("github_exists"):
             repo_url_to_use = package_info["source_code"].get("redirected_repo") or repo_url
