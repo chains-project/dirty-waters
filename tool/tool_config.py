@@ -1016,7 +1016,7 @@ def load_config(config_path=None):
         config_path = DEFAULT_CONFIG_PATH
 
     if not os.path.exists(config_path):
-        logging.warning(f"Config file not found at {config_path}, using default config")
+        logging.warning(f"Config file not found at {config_path}, using default config: {DEFAULT_CONFIG}")
         return DEFAULT_CONFIG
 
     try:
