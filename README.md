@@ -161,7 +161,11 @@ export GITHUB_API_TOKEN=<your_token>
 
 You can set the tool's configuration through a JSON file, which can be then passed to the tool using the `--config` flag.
 At the moment, we have configuration support to ignore smells for specific dependencies, as well as parents with specific parents.
+
 The dependencies can be set either as an exact match or as a regex pattern.
+**Note that regular expressions don't behave the same as Unix match expressions**: e.g., `@types*` will match every string starting with `@type` and 0 or more `s` following it.
+For a Unix-like behavior, the equivalent regular expression would be `^@types/.*`.
+
 You can either set "all" to ignore every check for the dependency or specify the checks you want to ignore.
 
 The possible specific [check options](https://github.com/chains-project/dirty-waters#smell-check-options) are as follows (note that **checks represented as "children" of another check are ignored if the parent one is**):
@@ -180,10 +184,10 @@ An example configuration file:
 {
   "ignore": {
     "shescape@2.1.0": "all",
-    "@types*": ["forks"]
+    "^@types/.*": ["forks"]
   },
   "ignore-if-parent": {
-    "org.apache.maven.plugins:maven-release-plugin*": "all"
+    "^org.apache.maven.plugins:maven-release-plugin.*": "all"
   }
 }
 ```
