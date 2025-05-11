@@ -998,7 +998,10 @@ def clone_repo(project_repo_name, release_version=None, blobless=False):
 
 
 DEFAULT_CONFIG_PATH = ".dirty-waters.json"
-DEFAULT_CONFIG = {"ignore": {}}
+DEFAULT_CONFIG = {
+    "ignore": {},
+    "revisions": {}
+}
 
 
 def load_config(config_path=None):
