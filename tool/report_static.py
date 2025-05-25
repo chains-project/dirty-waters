@@ -36,7 +36,7 @@ def get_printed_package_name(package_name, package_manager):
         g, a = ga.split(":")
         return f"[{package_name}](https://central.sonatype.com/artifact/{g}/{a}/{v})"
     elif package_manager in ["npm", "yarn-berry", "yarn-classic", "pnpm"]:
-        name_in_url = '/v/'.join(package_name.rsplit('@', 1)) # replaces last occurrence of @ for /v/
+        name_in_url = "/v/".join(package_name.rsplit("@", 1))  # replaces last occurrence of @ for /v/
         return f"[{package_name}](https://npmjs.com/package/{name_in_url})"
     return package_name
 
