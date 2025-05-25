@@ -367,7 +367,7 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
                         "tag_url": None,
                         "sha_url": f"{repo_api}/commits/{git_head}",
                         "message": "gitHead found in package metadata",
-                        "tag_status_code": 200,
+                        "tag_status_code": 404,
                         "sha_status_code": 200,
                     }
                 else:
@@ -379,10 +379,10 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
                         "is_sha": True,
                         "sha": git_head,
                         "tag_url": None,
-                        "sha_url": None,
+                        "sha_url": f"{repo_api}/commits/{git_head}",
                         "message": f"gitHead {git_head} not found in {repo_link}",
                         "tag_status_code": 404,
-                        "sha_status_code": 200,
+                        "sha_status_code": 404,
                     }
             except Exception as e:
                 logging.error(f"Error checking gitHead in repo: {str(e)}")
@@ -404,6 +404,7 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
         release_tag_url = f"{repo_api}/tags"
         message = "No tags found in the repo"
         status_code_release_tag = have_no_tags_response_status_code
+        existing_tag_format = None
     else:
         tag_possible_formats = construct_tag_format(version, package_name, repo_name=simplified_path)
         existing_tag_format = find_existing_tags_batch(tag_possible_formats, simplified_path)
