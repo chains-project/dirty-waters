@@ -30,15 +30,26 @@ def load_data(filename):
         return json.load(f)
 
 
-def get_printed_package_name(package_name, package_manager):
+def get_package_url(package_name, package_manager):
     if package_manager == "maven":
         ga, v = package_name.split("@")
         g, a = ga.split(":")
-        return f"[{package_name}](https://central.sonatype.com/artifact/{g}/{a}/{v})"
+        return f"https://central.sonatype.com/artifact/{g}/{a}/{v}"
     elif package_manager in ["npm", "yarn-berry", "yarn-classic", "pnpm"]:
         name_in_url = "/v/".join(package_name.rsplit("@", 1))  # replaces last occurrence of @ for /v/
-        return f"[{package_name}](https://npmjs.com/package/{name_in_url})"
-    return package_name
+        return f"https://npmjs.com/package/{name_in_url}"
+    raise ValueError("Package Manager not supported for acquiring package URL.")
+
+
+def get_registry_url(package_name, package_manager):
+    if package_manager == "maven":
+        ga, v = package_name.split("@")
+        g, a = ga.split(":")
+        return f"https://central.sonatype.com/artifact/{g}/{a}/{v}"
+    elif package_manager in ["npm", "yarn-berry", "yarn-classic", "pnpm"]:
+        name_in_url = "/".join(package_name.rsplit("@", 1))  # replaces last occurrence of @ for /v/
+        return f"https://registry.npmjs.com/{name_in_url}"
+    raise ValueError("Package Manager not supported for acquiring registry URL.")
 
 
 def create_dataframe(data, deps_list, package_manager):
@@ -54,11 +65,29 @@ def create_dataframe(data, deps_list, package_manager):
     for package_name, package_data in data.items():
         source_code_data = package_data.get("source_code", {}) or {}
         match_data = package_data.get("match_info", {}) or {}
-        sha_exists_info = source_code_data.get("source_code_version", {}) or {}
+        sc_version_info = source_code_data.get("source_code_version", {}) or {}
         aliased_package_name = aliased_packages.get(package_name, None)
 
         # Create a row for each package
-        printed_package_name = get_printed_package_name(package_name, package_manager)
+        package_url = get_package_url(package_name, package_manager)
+        registry_url = get_registry_url(package_name, package_manager)
+        printed_package_name = f"[{package_name}]({package_url})"
+
+        printed_sha_info, printed_tag_info = "", ""
+        if not sc_version_info.get("is_sha"):
+            # When package manager does not have a field for commit SHA
+            printed_sha_info = f"[Commit SHA not directly available]({registry_url})"
+        else:
+            if sc_version_info.get("sha_status_code") == 404:
+                printed_sha_info = f"[Commit SHA present but not found in repo]({sc_version_info.get('sha_url')})"
+            else:
+                printed_sha_info = f"[Commit SHA present found in repo]({sc_version_info.get('sha_url')})"
+                printed_tag_info = f"Not acquired due to SHA presence"
+        if not printed_tag_info:
+            if not sc_version_info.get("exists"):
+                printed_tag_info = f"[Release tag not found in repo]({sc_version_info.get('tag_url')})"
+            else:
+                printed_tag_info = f"[Release tag found in repo]({sc_version_info.get('tag_url')})"
         row = {
             "package_name": printed_package_name,
             "deprecated_in_version": package_data.get("package_info", {}).get("deprecated_in_version"),
@@ -79,13 +108,9 @@ def create_dataframe(data, deps_list, package_manager):
             "is_aliased": aliased_package_name is not None,
             "aliased_package_name": f"`{aliased_package_name}`" if aliased_package_name else "-",
             "is_match": match_data.get("match", None),
-            "sha_exists": sha_exists_info.get("exists", "-"),
-            "tag_version": f"`{sha_exists_info.get("tag_version", "-")}`",
-            "is_sha": sha_exists_info.get("is_sha", "-"),
-            "sha": sha_exists_info.get("sha", "-"),
-            "tag_url": sha_exists_info.get("url", "-"),
-            "message": sha_exists_info.get("message", "-"),
-            "status_code_for_sha": sha_exists_info.get("status_code", "-"),
+            "sha_exists": sc_version_info.get("exists", False),
+            "sha_info": printed_sha_info,
+            "tag_info": printed_tag_info,
         }
         rows.append(row)
 
@@ -343,13 +368,8 @@ def write_summary(
         (df["sha_exists"] == False) & (df["github_exists"] == True),
         (
             [
-                "sha_exists",
-                "tag_version",
-                "is_sha",
-                "sha",
-                "tag_url",
-                "message",
-                "status_code_for_sha",
+                "sha_info",
+                "tag_info",
             ]
             + (["parent"] if package_manager in SHOW_PARENTS else [])
             + (["command"] if package_manager == "maven" else [])
