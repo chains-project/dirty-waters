@@ -30,7 +30,18 @@ def load_data(filename):
         return json.load(f)
 
 
-def create_dataframe(data, deps_list):
+def get_printed_package_name(package_name, package_manager):
+    if package_manager == "maven":
+        ga, v = package_name.split("@")
+        g, a = ga.split(":")
+        return f"[{package_name}](https://central.sonatype.com/artifact/{g}/{a}/{v})"
+    elif package_manager in ["npm", "yarn-berry", "yarn-classic", "pnpm"]:
+        name_in_url = "/v/".join(package_name.rsplit("@", 1))  # replaces last occurrence of @ for /v/
+        return f"[{package_name}](https://npmjs.com/package/{name_in_url})"
+    return package_name
+
+
+def create_dataframe(data, deps_list, package_manager):
     """
     Create a dataframe from the data got from static analysis.
     Aliased packages are added to the dataframe from the deps_list.
@@ -47,8 +58,9 @@ def create_dataframe(data, deps_list):
         aliased_package_name = aliased_packages.get(package_name, None)
 
         # Create a row for each package
+        printed_package_name = get_printed_package_name(package_name, package_manager)
         row = {
-            "package_name": f"`{package_name}`",
+            "package_name": printed_package_name,
             "deprecated_in_version": package_data.get("package_info", {}).get("deprecated_in_version"),
             "provenance_in_version": package_data.get("package_info", {}).get("provenance_in_version"),
             "all_deprecated": package_data.get("package_info", {}).get("all_deprecated", None),
@@ -650,7 +662,7 @@ def get_s_summary(
     Get a summary of the static analysis results.
     """
 
-    df = create_dataframe(data, deps_list)
+    df = create_dataframe(data, deps_list, package_manager)
     write_summary(
         df,
         project_name,
