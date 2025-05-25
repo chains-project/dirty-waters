@@ -51,11 +51,14 @@ SCHEMAS_FOR_CACHE_ANALYSIS = {
         "source_code_version": {
             "exists": None,
             "tag_version": "",
+            "tag_format": None,
             "is_sha": None,
             "sha": "",
-            "url": "",
+            "tag_url": None,
+            "sha_url": None,
             "message": "",
-            "status_code": 404,
+            "tag_status_code": 404,
+            "sha_status_code": 404,
         },
         "parent_repo_link": "",
         "open_issues_count": 0,
@@ -341,11 +344,13 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
     source_code_info = {
         "exists": False,
         "tag_version": version,
+        "tag_format": None,
         "is_sha": False,
-        "sha": None,
-        "url": None,
+        "tag_url": None,
+        "sha_url": None,
         "message": "No tags found in the repo",
-        "status_code": 404,
+        "tag_status_code": 404,
+        "sha_status_code": 404,
     }
     if package_manager in ["yarn-berry", "yarn-classic", "pnpm", "npm"]:
         if git_head := check_git_head_presence(package_name, version):
@@ -356,22 +361,28 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
                     return {
                         "exists": True,
                         "tag_version": version,
+                        "tag_format": None,
                         "is_sha": True,
                         "sha": git_head,
-                        "url": None,
+                        "tag_url": None,
+                        "sha_url": f"{repo_api}/commits/{git_head}",
                         "message": "gitHead found in package metadata",
-                        "status_code": 200,
+                        "tag_status_code": 404,
+                        "sha_status_code": 200,
                     }
                 else:
                     logging.warning(f"gitHead {git_head} not found in {repo_link}, checking tags")
                     source_code_info = {
                         "exists": False,
                         "tag_version": version,
+                        "tag_format": None,
                         "is_sha": True,
                         "sha": git_head,
-                        "url": None,
+                        "tag_url": None,
+                        "sha_url": f"{repo_api}/commits/{git_head}",
                         "message": f"gitHead {git_head} not found in {repo_link}",
-                        "status_code": 404,
+                        "tag_status_code": 404,
+                        "sha_status_code": 404,
                     }
             except Exception as e:
                 logging.error(f"Error checking gitHead in repo: {str(e)}")
@@ -390,9 +401,10 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
     release_tag_exists = False
     if len(have_no_tags_data) == 0:
         logging.warning(f"No tags found for {package_name} in {repo_api}")
-        release_tag_url = None
+        release_tag_url = f"{repo_api}/tags"
         message = "No tags found in the repo"
         status_code_release_tag = have_no_tags_response_status_code
+        existing_tag_format = None
     else:
         tag_possible_formats = construct_tag_format(version, package_name, repo_name=simplified_path)
         existing_tag_format = find_existing_tags_batch(tag_possible_formats, simplified_path)
@@ -405,7 +417,7 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
             status_code_release_tag = 200
         else:
             logging.warning(f"Tag {version} not found in {repo_api}")
-            release_tag_url = None
+            release_tag_url = f"{repo_api}/tags"
             message = f"Tag {version} not found in the repo"
             status_code_release_tag = 404
 
@@ -413,9 +425,10 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
         {
             "exists": release_tag_exists,
             "tag_version": version,
-            "url": release_tag_url,
+            "tag_format": existing_tag_format,
+            "tag_url": release_tag_url,
             "message": message,
-            "status_code": status_code_release_tag,
+            "tag_status_code": status_code_release_tag,
         }
     )
 
