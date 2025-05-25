@@ -81,7 +81,7 @@ def create_dataframe(data, deps_list, package_manager):
             if sc_version_info.get("sha_status_code") == 404:
                 printed_sha_info = f"[Commit SHA present but not found in repo]({sc_version_info.get('sha_url')})"
             else:
-                printed_sha_info = f"[Commit SHA present found in repo]({sc_version_info.get('sha_url')})"
+                printed_sha_info = f"[Commit SHA present in repo]({sc_version_info.get('sha_url')})"
                 printed_tag_info = f"Not acquired due to SHA presence"
         if not printed_tag_info:
             if not sc_version_info.get("exists"):
