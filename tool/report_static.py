@@ -438,6 +438,11 @@ def write_summary(
 
     # Only include sections for enabled checks
     warning_counts = {}
+    if enabled_checks.get("source_code_sha"):
+        warning_counts["sha_not_found"] = (
+            f":wrench: Packages with inaccessible commit SHA/tag (⚠️⚠️⚠️⚠️): {sha_not_found_df.shape[0]}"
+        )
+
     if enabled_checks.get("source_code"):
         warning_counts["no_source_code"] = (
             f":heavy_exclamation_mark: Packages with no source code URL (⚠️⚠️⚠️): {no_source_code_repo_df.shape[0]}"
@@ -446,30 +451,25 @@ def write_summary(
             f":no_entry: Packages with repo URL that is 404 (⚠️⚠️⚠️): {github_repo_404_df.shape[0]}"
         )
 
-    if enabled_checks.get("source_code_sha"):
-        warning_counts["sha_not_found"] = (
-            f":wrench: Packages with inaccessible commit SHA/tag (⚠️⚠️): {sha_not_found_df.shape[0]}"
+    if enabled_checks.get("provenance"):
+        warning_counts["provenance"] = (
+            f":black_square_button: Packages without build attestation (⚠️⚠️⚠️): {provenance_df.shape[0]}"
         )
+
+    if enabled_checks.get("code_signature"):
+        warning_counts["invalid_code_signature"] = (
+            f":unlock: Packages with invalid code signature (⚠️⚠️⚠️): {invalid_code_signature_df.shape[0]}"
+        )
+        warning_counts["code_signature"] = f":lock: Packages without code signature (⚠️⚠️): {code_signature_df.shape[0]}"
 
     if enabled_checks.get("deprecated"):
         warning_counts["deprecated"] = f":x: Packages that are deprecated (⚠️⚠️): {version_deprecated_df.shape[0]}"
 
-    if enabled_checks.get("code_signature"):
-        warning_counts["code_signature"] = f":lock: Packages without code signature (⚠️⚠️): {code_signature_df.shape[0]}"
-        warning_counts["invalid_code_signature"] = (
-            f":unlock: Packages with invalid code signature (⚠️⚠️): {invalid_code_signature_df.shape[0]}"
-        )
-
     if enabled_checks.get("forks"):
-        warning_counts["forked_package"] = f":cactus: Packages that are forks (⚠️): {(forked_package_df.shape[0])}"
-
-    if enabled_checks.get("provenance"):
-        warning_counts["provenance"] = (
-            f":black_square_button: Packages without build attestation (⚠️): {provenance_df.shape[0]}"
-        )
+        warning_counts["forked_package"] = f":cactus: Packages that are forks (⚠️⚠️): {(forked_package_df.shape[0])}"
 
     if enabled_checks.get("aliased_packages"):
-        warning_counts["aliased_packages"] = f":alien: Packages that are aliased (⚠️): {aliased_package_df.shape[0]}"
+        warning_counts["aliased_packages"] = f":alien: Packages that are aliased (⚠️⚠️): {aliased_package_df.shape[0]}"
 
     source_sus = no_source_code_repo_df.shape[0] + github_repo_404_df.shape[0]
 
@@ -502,6 +502,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 <details>
     <summary>How to read the results :book: </summary>
     \n Dirty-waters has analyzed your project dependencies and found different categories for each of them:\n
+    \n - ⚠️⚠️⚠️⚠️ : critical severity \n
     \n - ⚠️⚠️⚠️ : high severity \n
     \n - ⚠️⚠️: medium severity \n
     \n - ⚠️: low severity \n
@@ -525,26 +526,20 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
             "\n:dolphin: For further information about software supply chain smells in your project, take a look at the following tables.\n"
         )
         reports = {
-            "no_source_code": {
-                "enabled": enabled_checks.get("source_code"),
-                "function": lambda: no_source_code(combined_repo_problems_df, md_file, source_sus, package_manager),
-            },
             "sha_not_found": {
                 "enabled": enabled_checks.get("source_code_sha"),
                 "function": lambda: sha_not_found(
                     sha_not_found_df, md_file, sha_not_found_df.shape[0], package_manager
                 ),
             },
-            "deprecated": {
-                "enabled": enabled_checks.get("deprecated"),
-                "function": lambda: deprecated(
-                    version_deprecated_df, md_file, (df["deprecated_in_version"] == True).sum(), package_manager
-                ),
+            "no_source_code": {
+                "enabled": enabled_checks.get("source_code"),
+                "function": lambda: no_source_code(combined_repo_problems_df, md_file, source_sus, package_manager),
             },
-            "code_signature": {
-                "enabled": enabled_checks.get("code_signature"),
-                "function": lambda: code_signature(
-                    code_signature_df, md_file, code_signature_df.shape[0], package_manager
+            "provenance": {
+                "enabled": enabled_checks.get("provenance"),
+                "function": lambda: provenance(
+                    provenance_df, md_file, (df["provenance_in_version"] == False).sum(), package_manager
                 ),
             },
             "invalid_code_signature": {
@@ -553,16 +548,22 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                     invalid_code_signature_df, md_file, invalid_code_signature_df.shape[0], package_manager
                 ),
             },
+            "code_signature": {
+                "enabled": enabled_checks.get("code_signature"),
+                "function": lambda: code_signature(
+                    code_signature_df, md_file, code_signature_df.shape[0], package_manager
+                ),
+            },
+            "deprecated": {
+                "enabled": enabled_checks.get("deprecated"),
+                "function": lambda: deprecated(
+                    version_deprecated_df, md_file, (df["deprecated_in_version"] == True).sum(), package_manager
+                ),
+            },
             "forked_package": {
                 "enabled": enabled_checks.get("forks"),
                 "function": lambda: forked_package(
                     forked_package_df, md_file, (df["is_fork"] == True).sum(), package_manager
-                ),
-            },
-            "provenance": {
-                "enabled": enabled_checks.get("provenance"),
-                "function": lambda: provenance(
-                    provenance_df, md_file, (df["provenance_in_version"] == False).sum(), package_manager
                 ),
             },
             "aliased_packages": {
