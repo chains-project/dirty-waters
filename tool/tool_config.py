@@ -1203,4 +1203,3 @@ def get_registry_url(package_name, package_manager):
         name_in_url = "/".join(package_name.rsplit("@", 1))  # replaces last occurrence of @ for /v/
         return f"https://registry.npmjs.com/{name_in_url}"
     raise ValueError("Package Manager not supported for acquiring registry URL.")
-
