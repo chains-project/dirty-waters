@@ -1181,3 +1181,26 @@ def get_last_page_info(
                 logging.error(f"Failed after {max_retries} attempts: {e}")
                 return None
             time.sleep(retry_delay * (attempt + 1))
+
+
+def get_package_url(package_name, package_manager):
+    if package_manager == "maven":
+        ga, v = package_name.split("@")
+        g, a = ga.split(":")
+        return f"https://central.sonatype.com/artifact/{g}/{a}/{v}"
+    elif package_manager in ["npm", "yarn-berry", "yarn-classic", "pnpm"]:
+        name_in_url = "/v/".join(package_name.rsplit("@", 1))  # replaces last occurrence of @ for /v/
+        return f"https://npmjs.com/package/{name_in_url}"
+    raise ValueError("Package Manager not supported for acquiring package URL.")
+
+
+def get_registry_url(package_name, package_manager):
+    if package_manager == "maven":
+        ga, v = package_name.split("@")
+        g, a = ga.split(":")
+        return f"https://central.sonatype.com/artifact/{g}/{a}/{v}"
+    elif package_manager in ["npm", "yarn-berry", "yarn-classic", "pnpm"]:
+        name_in_url = "/".join(package_name.rsplit("@", 1))  # replaces last occurrence of @ for /v/
+        return f"https://registry.npmjs.com/{name_in_url}"
+    raise ValueError("Package Manager not supported for acquiring registry URL.")
+
