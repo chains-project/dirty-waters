@@ -589,9 +589,8 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 """
         )
 
-        if (
-            (enabled_checks.get("source_code") and len(combined_repo_problems_df) > 0) or
-            (enabled_checks.get("source_code_sha") and len(sha_not_found_df) > 0)
+        if (enabled_checks.get("source_code") and len(combined_repo_problems_df) > 0) or (
+            enabled_checks.get("source_code_sha") and len(sha_not_found_df) > 0
         ):
             md_file.write(
                 """
