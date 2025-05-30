@@ -185,7 +185,6 @@ def get_lockfile(project_repo_name, release_version, package_manager):
     try:
         lockfile_name = LOOKING_FOR[package_manager]
         logging.info(f"Getting {lockfile_name} for {project_repo_name}@{release_version}")
-        logging.info(f"Package manager: {package_manager}")
     except KeyError:
         logging.error("Invalid package manager or lack of lockfile: %s", package_manager)
         raise ValueError("Invalid package manager or lack of lockfile.")
@@ -229,6 +228,7 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
     deps_list_all = None
 
     logging.info("Getting dependencies for %s@%s...", project_repo_name, release_version)
+    logging.info(f"Package manager: {package_manager}")
 
     # if it is a pnpm monorepo
     if package_manager == "pnpm":
@@ -251,8 +251,9 @@ def get_deps(folder_path, project_repo_name, release_version, package_manager):
             patches_info = extract_deps.get_patches_info(project_repo_name, yarn_file)
 
     elif package_manager == "npm":
+        repo_path = tool_config.clone_repo(project_repo_name, release_version)
         npm_file, _, _ = get_lockfile(project_repo_name, release_version, package_manager)
-        deps_list_all = extract_deps.extract_deps_from_npm(project_repo_name, npm_file)
+        deps_list_all = extract_deps.extract_deps_from_npm(repo_path, npm_file)
 
     elif package_manager == "maven":
         # Maven is more complex, because of child packages in the repo/pom; this requires to clone the whole repo

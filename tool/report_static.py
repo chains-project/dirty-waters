@@ -6,6 +6,7 @@ import json
 import subprocess
 from datetime import datetime
 import pandas as pd
+from tool.tool_config import get_package_url, get_registry_url
 
 # Mapping smell to package managers that support it
 SUPPORTED_SMELLS = {
@@ -28,28 +29,6 @@ def load_data(filename):
 
     with open(filename, encoding="utf-8") as f:
         return json.load(f)
-
-
-def get_package_url(package_name, package_manager):
-    if package_manager == "maven":
-        ga, v = package_name.split("@")
-        g, a = ga.split(":")
-        return f"https://central.sonatype.com/artifact/{g}/{a}/{v}"
-    elif package_manager in ["npm", "yarn-berry", "yarn-classic", "pnpm"]:
-        name_in_url = "/v/".join(package_name.rsplit("@", 1))  # replaces last occurrence of @ for /v/
-        return f"https://npmjs.com/package/{name_in_url}"
-    raise ValueError("Package Manager not supported for acquiring package URL.")
-
-
-def get_registry_url(package_name, package_manager):
-    if package_manager == "maven":
-        ga, v = package_name.split("@")
-        g, a = ga.split(":")
-        return f"https://central.sonatype.com/artifact/{g}/{a}/{v}"
-    elif package_manager in ["npm", "yarn-berry", "yarn-classic", "pnpm"]:
-        name_in_url = "/".join(package_name.rsplit("@", 1))  # replaces last occurrence of @ for /v/
-        return f"https://registry.npmjs.com/{name_in_url}"
-    raise ValueError("Package Manager not supported for acquiring registry URL.")
 
 
 def create_dataframe(data, deps_list, package_manager):
@@ -95,7 +74,7 @@ def create_dataframe(data, deps_list, package_manager):
             "all_deprecated": package_data.get("package_info", {}).get("all_deprecated", None),
             "signature_present": package_data.get("code_signature", {}).get("signature_present"),
             "signature_valid": package_data.get("code_signature", {}).get("signature_valid"),
-            "parent": f"`{package_data.get("parent", "-")}`",
+            "parent": package_data.get("parent", "-"),
             "command": f"`{package_data.get("command", "-")}`",
             "is_github": source_code_data.get("is_github", False),
             "github_url": source_code_data.get("github_url", "Could not find repo from package registry"),
