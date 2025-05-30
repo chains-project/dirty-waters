@@ -521,9 +521,9 @@ def check_existence(package_name, repository, extract_message, package_manager, 
         "open_issues_count": open_issues_count,
         "error": error_message if error_message else "No error message.",
     }
-    if "forks" in enabled_checks:
+    if enabled_checks.get("forks", False):
         github_info["is_fork"] = is_fork
-    if "source_code_sha" in enabled_checks:
+    if enabled_checks.get("source_code_sha", False):
         github_info["source_code_version"] = source_code_info
 
     return github_info
@@ -867,7 +867,7 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
             parent = repo_urls.get("parent", "")
 
             package_enabled_checks = disable_checks_from_config(package, parent, config, enabled_checks)
-            if not package_enabled_checks:
+            if not package_enabled_checks or all(not enabled for enabled in package_enabled_checks.values()):
                 logging.warning(f"Package {package} will be skipped, no checks enabled for it")
                 pbar.update(1)
                 continue
