@@ -589,7 +589,9 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 """
         )
 
-        if enabled_checks.get("source_code") or enabled_checks.get("source_code_sha"):
+        if (enabled_checks.get("source_code") and len(combined_repo_problems_df) > 0) or (
+            enabled_checks.get("source_code_sha") and len(sha_not_found_df) > 0
+        ):
             md_file.write(
                 """
 \nFor packages **without source code & accessible SHA/release tags**:\n
@@ -597,7 +599,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. Pull Request to the maintainer of dependency, requesting correct repository metadata and proper versioning/tagging. \n"""
             )
 
-        if enabled_checks.get("deprecated"):
+        if enabled_checks.get("deprecated") and len(version_deprecated_df) > 0:
             md_file.write(
                 """
 \nFor **deprecated** packages:\n
@@ -606,7 +608,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 2. Check for not deprecated versions"""
             )
 
-        if enabled_checks.get("code_signature"):
+        if enabled_checks.get("code_signature") and (len(code_signature_df) > 0 or len(invalid_code_signature_df) > 0):
             md_file.write(
                 """
 \nFor packages **without code signature**:\n
@@ -617,7 +619,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. It's recommended to verify the code signature and contact the maintainer to fix the issue."""
             )
 
-        if enabled_checks.get("forks"):
+        if enabled_checks.get("forks") and len(forked_package_df) > 0:
             md_file.write(
                 """
 \nFor packages **that are forks**:\n
@@ -625,7 +627,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. Inspect the package and its GitHub repository to verify the fork is not malicious."""
             )
 
-        if enabled_checks.get("provenance"):
+        if enabled_checks.get("provenance") and len(provenance_df) > 0:
             md_file.write(
                 """
 \nFor packages **without provenance**:\n
@@ -633,7 +635,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. Open an issue in the dependency's repository to request the inclusion of provenance and build attestation in the CI/CD pipeline."""
             )
 
-        if enabled_checks.get("aliased_packages"):
+        if enabled_checks.get("aliased_packages") and len(aliased_package_df) > 0:
             md_file.write(
                 """
 \nFor packages that are **aliased**:\n
