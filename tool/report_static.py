@@ -485,7 +485,8 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         preamble += "\n"
         md_file.write(preamble)
 
-        md_file.write("""
+        md_file.write(
+            """
 ## 📚 Table of Contents
 
 - [Enabled Checks](#enabled-checks)
@@ -495,7 +496,8 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 - [Call to Action](#call-to-action)
 - [Notes](#notes)
 - [Glossary](#glossary)
-""")
+"""
+        )
 
         # Section showing which checks were performed
         any_specific = any(enabled_checks.values())
@@ -554,7 +556,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                 md_file.write("\n</details>\n\n")
 
             md_file.write("---\n\n")
-        
+
         md_file.write("## Summary of Findings\n\n")
 
         md_file.write(
@@ -723,7 +725,8 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                 md_file.write("\n</details>\n\n\n")
 
         md_file.write("\n## Glossary\n\n")
-        md_file.write("""
+        md_file.write(
+            """
 - `source_code`: Whether a repo URL is present and valid
     - `source_code_sha`: Whether a commit SHA is available and valid
     - `forks`: Whether the repo is a fork
@@ -731,8 +734,8 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 - `provenance`: Whether build provenance/attestation is provided
 - `code_signature`: Whether a code signature is present and valid
 - `aliased_packages`: Whether a package is aliased under a different name
-""")
-
+"""
+        )
 
         md_file.write("---\n")
         md_file.write("\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/).\n")
@@ -748,7 +751,15 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 
 
 def get_s_summary(
-    data, deps_list, project_name, release_version, package_manager, enabled_checks, gradual_report, summary_filename, config={}
+    data,
+    deps_list,
+    project_name,
+    release_version,
+    package_manager,
+    enabled_checks,
+    gradual_report,
+    summary_filename,
+    config={},
 ):
     """
     Get a summary of the static analysis results.
