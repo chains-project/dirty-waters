@@ -24,6 +24,7 @@ from tool import get_pr_review
 from tool import tool_config
 from tool import report_static
 from tool import report_diff
+from tool_config import DEFAULT_ENABLED_CHECKS
 
 github_token = os.getenv("GITHUB_API_TOKEN")
 if not github_token:
@@ -310,7 +311,6 @@ def static_analysis_all(
         package_manager,
         check_match=check_match,
         enabled_checks=enabled_checks,
-        config=config,
     )
     logging.info("Errors: %s", errors)
 
@@ -519,6 +519,7 @@ def generate_static_report(analysis_results, project_info, is_old_version):
         project_info["package_manager"],
         project_info["enabled_checks"],
         project_info["gradual_report"],
+        project_info["config"],
         summary_filename=summary_file,
     )
 
@@ -601,15 +602,8 @@ def main():
             "aliased_packages": dw_args.check_aliased_packages,
         }
     else:
-        # If no checks specified, enable all by default
-        enabled_checks = {
-            "source_code": True,
-            "source_code_sha": True,
-            "deprecated": True,
-            "provenance": True,
-            "code_signature": True,
-            "aliased_packages": True,
-        }
+        # If no checks specified, enable all except forks by default
+        enabled_checks = DEFAULT_ENABLED_CHECKS
 
     project_info = setup_project_info(dw_args, any_check_specified)
     setup_directories_and_logging(project_info)
