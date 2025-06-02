@@ -973,7 +973,9 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         )
 
         md_file.write("---\n")
-        md_file.write(f"\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/) on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}.\n")
+        md_file.write(
+            f"\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/) on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}.\n"
+        )
 
         # Tool version
         tool_commit_hash = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).strip().decode("utf-8")
