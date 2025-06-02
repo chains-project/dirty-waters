@@ -521,7 +521,6 @@ def generate_static_report(analysis_results, project_info, is_old_version):
         project_info["gradual_report"],
         project_info["config"],
         summary_filename=summary_file,
-        config=project_info["config"],
     )
 
 
