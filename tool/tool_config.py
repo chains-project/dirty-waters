@@ -27,6 +27,16 @@ PNPM_LIST_COMMAND = lambda scope: [
     "Infinity",
 ]
 
+DEFAULT_ENABLED_CHECKS = {
+    "source_code": True,
+    "source_code_sha": True,
+    "deprecated": True,
+    "forks": False,
+    "provenance": True,
+    "code_signature": True,
+    "aliased_packages": True,
+}
+
 github_token = os.getenv("GITHUB_API_TOKEN")
 
 headers = {
