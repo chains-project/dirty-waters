@@ -309,6 +309,7 @@ def static_analysis_all(
         folder_path,
         repo_url_info,
         package_manager,
+        config=config,
         check_match=check_match,
         enabled_checks=enabled_checks,
     )
