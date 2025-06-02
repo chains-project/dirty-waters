@@ -520,6 +520,7 @@ def generate_static_report(analysis_results, project_info, is_old_version):
         project_info["enabled_checks"],
         project_info["gradual_report"],
         summary_filename=summary_file,
+        config=project_info["config"],
     )
 
 
