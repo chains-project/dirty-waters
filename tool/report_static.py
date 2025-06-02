@@ -293,7 +293,9 @@ def forked_package(forked_package_df, md_file, amount, package_manager, ignore=F
         md_file.write("\n</details>\n")
     elif not ignore:
         if package_manager not in SUPPORTED_SMELLS["forked_package"]:
-            md_file.write(f"\nThe package manager ({package_manager}) does not support checking for forked packages.\n")
+            md_file.write(
+                f"\nThe package manager ({package_manager}) does not support checking for forked packages.\n"
+            )
         else:
             md_file.write("\nNo package is from fork.\n")
             return False
@@ -419,7 +421,9 @@ def aliased_package(aliased_package_df, md_file, amount, package_manager, ignore
         md_file.write("\n</details>\n")
     elif not ignore:
         if package_manager not in SUPPORTED_SMELLS["aliased_packages"]:
-            md_file.write(f"\nThe package manager ({package_manager}) does not support checking for aliased packages.\n")
+            md_file.write(
+                f"\nThe package manager ({package_manager}) does not support checking for aliased packages.\n"
+            )
         else:
             md_file.write("\nNo aliased package found.\n")
             return False
@@ -634,9 +638,7 @@ def write_summary(
     non_ignored_github_repo_404, ignored_github_repo_404 = split_ignored_packages(github_repo_404_df, "source_code")
     non_ignored_combined_repo_problems_df = pd.concat([non_ignored_no_source_code, non_ignored_github_repo_404])
     ignored_combined_repo_problems_df = pd.concat([ignored_source_code, ignored_github_repo_404])
-    non_ignored_sha_not_found, ignored_sha_not_found = split_ignored_packages(
-        sha_not_found_df, "source_code_sha"
-    )
+    non_ignored_sha_not_found, ignored_sha_not_found = split_ignored_packages(sha_not_found_df, "source_code_sha")
     if enabled_checks.get("source_code"):
         warning_counts["no_source_code"] = [
             (
@@ -686,9 +688,7 @@ def write_summary(
             ),
         ]
 
-    non_ignored_code_signature, ignored_code_signature = split_ignored_packages(
-        code_signature_df, "code_signature"
-    )
+    non_ignored_code_signature, ignored_code_signature = split_ignored_packages(code_signature_df, "code_signature")
     non_ignored_invalid_code_signature, ignored_invalid_code_signature = split_ignored_packages(
         invalid_code_signature_df, "invalid_code_signature"
     )
@@ -971,7 +971,9 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 2. Check for not deprecated versions"""
             )
 
-        if enabled_checks.get("code_signature") and (len(non_ignored_code_signature) > 0 or len(non_ignored_invalid_code_signature) > 0):
+        if enabled_checks.get("code_signature") and (
+            len(non_ignored_code_signature) > 0 or len(non_ignored_invalid_code_signature) > 0
+        ):
             md_file.write(
                 """
 \nFor packages **without code signature**:\n
