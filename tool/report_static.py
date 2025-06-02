@@ -406,7 +406,7 @@ def split_ignored_packages(df, looking_for):
 
 
 def write_summary(
-    df, project_name, release_version, package_manager, filename, enabled_checks, gradual_report, mode="w"
+    df, project_name, release_version, package_manager, filename, enabled_checks, gradual_report, mode="w", config={}
 ):
     """
     Write a summary of the static analysis results to a markdown file.
@@ -661,17 +661,79 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         preamble += "\n"
         md_file.write(preamble)
 
+        md_file.write(
+            """
+## 📚 Table of Contents
+
+- [Enabled Checks](#enabled-checks)
+- [Ignore Configuration Summary](#ignore-configuration-summary)
+- [Summary of Findings](#summary-of-findings)
+- [Fine Grained Information](#fine-grained-information)
+- [Call to Action](#call-to-action)
+- [Notes](#notes)
+- [Glossary](#glossary)
+"""
+        )
+
         # Section showing which checks were performed
         any_specific = any(enabled_checks.values())
         if any_specific and not gradual_report:
-            md_file.write("## Enabled Checks\n")
-            md_file.write("The following checks were specifically requested:\n\n")
+            md_file.write("## Enabled Checks\n\n")
+            md_file.write("The following checks were requested project-wide:\n\n")
+            md_file.write("| Check | Status |\n")
+            md_file.write("|-------|--------|\n")
             for check, enabled in enabled_checks.items():
-                if enabled:
-                    md_file.write(f"- {check.replace('_', ' ').title()}: `{check}`\n")
+                status = "✅" if enabled else "❌"
+                md_file.write(f"| {check.replace('_', ' ').title()}: `{check}` | {status} |\n")
             md_file.write("\n---\n\n")
         else:
             md_file.write("All available checks were performed.\n\n---\n\n")
+
+        if config:
+            md_file.write("## Ignore Configuration Summary\n\n")
+
+            if "ignore" in config and config["ignore"]:
+                md_file.write(
+                    "<details>\n"
+                    "<summary>Ignored Checks Per Dependency 🔧</summary>\n\n"
+                    "These dependencies had specific checks excluded based on the configuration file.  \n"
+                    "**Note**: If `all` is listed, every check is ignored for that dependency.\n\n"
+                )
+                md_file.write("| Dependency Pattern | Ignored Checks |\n")
+                md_file.write("|--------------------|----------------|\n")
+
+                for dep_pattern in sorted(config["ignore"]):
+                    ignored = config["ignore"][dep_pattern]
+                    if ignored == "all":
+                        checks_str = "`all`"
+                    else:
+                        checks_str = ", ".join(f"`{chk}`" for chk in ignored)
+                    md_file.write(f"| `{dep_pattern}` | {checks_str} |\n")
+
+                md_file.write("\n</details>\n\n")
+
+            if "ignore-if-parent" in config and config["ignore-if-parent"]:
+                md_file.write(
+                    "<details>\n"
+                    "<summary>Ignored Checks If Dependency is a Parent 📦➡️👶</summary>\n\n"
+                    "Checks will be ignored **if the listed dependency is a parent of another package**.  \n"
+                )
+                md_file.write("| Parent Dependency Pattern | Ignored Checks |\n")
+                md_file.write("|---------------------------|----------------|\n")
+
+                for parent_pattern in sorted(config["ignore-if-parent"]):
+                    ignored = config["ignore-if-parent"][parent_pattern]
+                    if ignored == "all":
+                        checks_str = "`all`"
+                    else:
+                        checks_str = ", ".join(f"`{chk}`" for chk in ignored)
+                    md_file.write(f"| `{parent_pattern}` | {checks_str} |\n")
+
+                md_file.write("\n</details>\n\n")
+
+            md_file.write("---\n\n")
+
+        md_file.write("## Summary of Findings\n\n")
 
         md_file.write(
             """
@@ -709,7 +771,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 
         md_file.write("\n### Fine grained information\n")
         md_file.write(
-            "\n:dolphin: For further information about software supply chain smells in your project, take a look at the following tables.\n"
+            "\n🐬 For further information about software supply chain smells in your project, take a look at the following tables.\n"
         )
         reports = {
             "no_source_code": {
@@ -843,7 +905,9 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 """
         )
 
-        if enabled_checks.get("source_code") or enabled_checks.get("source_code_sha"):
+        if (enabled_checks.get("source_code") and len(combined_repo_problems_df) > 0) or (
+            enabled_checks.get("source_code_sha") and len(sha_not_found_df) > 0
+        ):
             md_file.write(
                 """
 \nFor packages **without source code & accessible SHA/release tags**:\n
@@ -851,7 +915,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. Pull Request to the maintainer of dependency, requesting correct repository metadata and proper versioning/tagging. \n"""
             )
 
-        if enabled_checks.get("deprecated"):
+        if enabled_checks.get("deprecated") and len(version_deprecated_df) > 0:
             md_file.write(
                 """
 \nFor **deprecated** packages:\n
@@ -860,7 +924,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 2. Check for not deprecated versions"""
             )
 
-        if enabled_checks.get("code_signature"):
+        if enabled_checks.get("code_signature") and (len(code_signature_df) > 0 or len(invalid_code_signature_df) > 0):
             md_file.write(
                 """
 \nFor packages **without code signature**:\n
@@ -871,7 +935,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. It's recommended to verify the code signature and contact the maintainer to fix the issue."""
             )
 
-        if enabled_checks.get("forks"):
+        if enabled_checks.get("forks") and len(forked_package_df) > 0:
             md_file.write(
                 """
 \nFor packages **that are forks**:\n
@@ -879,7 +943,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. Inspect the package and its GitHub repository to verify the fork is not malicious."""
             )
 
-        if enabled_checks.get("provenance"):
+        if enabled_checks.get("provenance") and len(provenance_df) > 0:
             md_file.write(
                 """
 \nFor packages **without provenance**:\n
@@ -887,7 +951,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. Open an issue in the dependency's repository to request the inclusion of provenance and build attestation in the CI/CD pipeline."""
             )
 
-        if enabled_checks.get("aliased_packages"):
+        if enabled_checks.get("aliased_packages") and len(aliased_package_df) > 0:
             md_file.write(
                 """
 \nFor packages that are **aliased**:\n
@@ -919,6 +983,19 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                 )
                 md_file.write(markdown_text)
                 md_file.write("\n</details>\n\n\n")
+
+        md_file.write("\n## Glossary\n\n")
+        md_file.write(
+            """
+- `source_code`: Whether a repo URL is present and valid
+    - `source_code_sha`: Whether a commit SHA is available and valid
+    - `forks`: Whether the repo is a fork
+- `deprecated`: Whether the package is marked deprecated
+- `provenance`: Whether build provenance/attestation is provided
+- `code_signature`: Whether a code signature is present and valid
+- `aliased_packages`: Whether a package is aliased under a different name
+"""
+        )
 
         md_file.write("---\n")
         md_file.write("\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/).\n")
@@ -958,4 +1035,5 @@ def get_s_summary(
         enabled_checks=enabled_checks,
         gradual_report=gradual_report,
         mode="w",
+        config=config,
     )
