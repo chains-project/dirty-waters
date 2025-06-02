@@ -10,7 +10,7 @@ import requests
 import subprocess
 import re
 
-from tool.tool_config import get_cache_manager, make_github_request
+from tool.tool_config import get_cache_manager, make_github_request, DEFAULT_ENABLED_CHECKS
 from tool.compare_commits import tag_format as construct_tag_format, find_existing_tags_batch
 import logging
 import xmltodict
@@ -26,16 +26,6 @@ cache_manager = get_cache_manager()
 
 
 MAX_WAIT_TIME = 15 * 60
-
-DEFAULT_ENABLED_CHECKS = {
-    "source_code": True,
-    "source_code_sha": True,
-    "deprecated": True,
-    "forks": False,
-    "provenance": True,
-    "code_signature": True,
-    "aliased_packages": True,
-}
 
 SCHEMAS_FOR_CACHE_ANALYSIS = {
     "source_code": {
@@ -326,7 +316,7 @@ def check_parent_scm(package):
     }
 
 
-def check_source_code_by_version(package_name, version, repo_api, repo_link, simplified_path, package_manager):
+def check_source_code_by_version(package_name, version, repo_api, repo_link, simplified_path, package_manager, config):
     def check_git_head_presence(package_name, version):
         # In NPM-based packages, the registry may contain a gitHead field in the package's metadata
         # Although it's not mandatory to have it, if it's present, it's the best way to check
@@ -352,6 +342,26 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
         "tag_status_code": 404,
         "sha_status_code": 404,
     }
+    if (
+        hardcoded_url := config.get("revisions", {})
+        .get(f"{package_name}@{version}", {})
+        .get("source_code_version_url", "")
+    ):
+        logging.info(f"Found hardcoded tag/SHA url {hardcoded_url} in config for package {package_name}")
+        if requests.get(hardcoded_url).status_code == requests.codes.ok:
+            logging.info(f"Hardcoded URL {hardcoded_url} exists")
+            return {
+                "exists": True,
+                "tag_version": version,
+                "is_sha": False,
+                "sha": None,
+                "url": hardcoded_url,
+                "message": "Hardcoded URL for source code revision set in config",
+                "status_code": 200,
+            }
+        else:
+            logging.warning(f"Hardcoded URL {hardcoded_url} does not exist")
+
     if package_manager in ["yarn-berry", "yarn-classic", "pnpm", "npm"]:
         if git_head := check_git_head_presence(package_name, version):
             try:
@@ -412,7 +422,7 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
         if existing_tag_format:
             existing_tag_format = existing_tag_format[0]
             release_tag_exists = True
-            release_tag_url = f"{repo_api}/git/ref/tags/{existing_tag_format}"
+            release_tag_url = f"{repo_link}/tree/{existing_tag_format}"
             message = f"Tag {existing_tag_format} is found in the repo"
             status_code_release_tag = 200
         else:
@@ -435,9 +445,14 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
     return source_code_info
 
 
-def check_existence(package_name, repository, extract_message, package_manager, enabled_checks):
+def check_existence(package_name, repository, extract_message, package_manager, config, enabled_checks):
     """Check if the package exists in the repository."""
-    if "Could not find repository" in extract_message:
+    if hardcoded_url := config.get("revisions", {}).get(package_name, {}).get("source_code_url", ""):
+        logging.info(
+            f"Found hardcoded repository URL {hardcoded_url} for package {package_name}; repository was {repository}"
+        )
+        repository = hardcoded_url
+    elif "Could not find repository" in extract_message:
         return {"is_github": False, "github_url": "No_repo_info_found"}
     elif "Not a GitHub repository" in extract_message:
         return {"is_github": False, "github_url": repository}
@@ -505,7 +520,7 @@ def check_existence(package_name, repository, extract_message, package_manager, 
             now_repo_url = None
 
         source_code_info = check_source_code_by_version(
-            package_full_name, version, repo_api, repo_link, simplified_path, package_manager
+            package_full_name, version, repo_api, repo_link, simplified_path, package_manager, config
         )
 
     github_info = {
@@ -521,9 +536,9 @@ def check_existence(package_name, repository, extract_message, package_manager, 
         "open_issues_count": open_issues_count,
         "error": error_message if error_message else "No error message.",
     }
-    if "forks" in enabled_checks:
+    if enabled_checks.get("forks", False):
         github_info["is_fork"] = is_fork
-    if "source_code_sha" in enabled_checks:
+    if enabled_checks.get("source_code_sha", False):
         github_info["source_code_version"] = source_code_info
 
     return github_info
@@ -684,7 +699,7 @@ def check_name_match(package_name, repository):
 
 
 def analyze_package_data(
-    package, repo_url, extract_message, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS
+    package, repo_url, extract_message, pm, config, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS
 ):
     """
     Analyze package data with configurable smell checks.
@@ -694,6 +709,7 @@ def analyze_package_data(
         repo_url: Repository URL
         extract_message: Message from repository URL extraction - is it or not a GitHub repository
         pm: Package manager
+        config: Config dictionary
         check_match: Whether to check name matches
         enabled_checks: Dictionary of enabled smell checks
     """
@@ -747,13 +763,13 @@ def analyze_package_data(
                 f"Found partial cached analysis for {package}, analyzing missing checks: {list(check for check, missing in missing_checks.items() if missing)}"
             )
         else:
-            logging.info(f"No cached analysis for {package}, analyzing all enabled checks")
-            for check, enabled in enabled_checks.items():
+            logging.info(f"No cached analysis for {package}, analyzing all checks")
+            for check in DEFAULT_ENABLED_CHECKS.keys():
                 if check in ["source_code_sha", "forks", "aliased_packages"]:
                     continue
                 elif check in ["deprecated", "provenance"]:
                     check = "package_info"
-                missing_checks[check] = enabled
+                missing_checks[check] = True
 
         for check in missing_checks:
             if not missing_checks[check]:
@@ -771,7 +787,9 @@ def analyze_package_data(
 
         if missing_checks.get("source_code"):
             update_package_info(
-                package_info, "source_code", check_existence(package, repo_url, extract_message, pm, enabled_checks)
+                package_info,
+                "source_code",
+                check_existence(package, repo_url, extract_message, pm, config, enabled_checks),
             )
 
         if check_match and package_info.get("source_code") and package_info["source_code"].get("github_exists"):
@@ -854,7 +872,7 @@ def disable_checks_from_config(package_name, parent, config, enabled_checks):
     return final_enabled_checks
 
 
-def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS, config=None):
+def get_static_data(folder, packages_data, pm, config, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS):
     logging.info("Analyzing package static data...")
     package_all = {}
     errors = {}
@@ -866,19 +884,14 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
             command = repo_urls.get("command", None)
             parent = repo_urls.get("parent", "")
 
-            package_enabled_checks = disable_checks_from_config(package, parent, config, enabled_checks)
-            if not package_enabled_checks:
-                logging.warning(f"Package {package} will be skipped, no checks enabled for it")
-                pbar.update(1)
-                continue
-
             analyzed_data = analyze_package_data(
                 package,
                 repo_url,
                 extract_repo_url_message,
                 pm,
+                config,
                 check_match=check_match,
-                enabled_checks=package_enabled_checks,
+                enabled_checks=enabled_checks,
             )
             error = analyzed_data.get("error", None)
             pbar.update(1)
@@ -888,7 +901,7 @@ def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks
             else:
                 package_all[package] = analyzed_data
                 package_all[package]["parent"] = parent
-                package_all[package]["command"] = repo_urls.get("command", None)
+                package_all[package]["command"] = command
 
     return package_all, errors
 

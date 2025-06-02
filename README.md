@@ -160,15 +160,17 @@ export GITHUB_API_TOKEN=<your_token>
 ### Configuration
 
 You can set the tool's configuration through a JSON file, which can be then passed to the tool using the `--config` flag.
-At the moment, we have configuration support to ignore smells for specific dependencies, as well as parents with specific parents.
+At the moment, we have configuration support to:
+- ignore smells for specific dependencies (`ignore`), as well as dependencies with specific parents (`ignore-if-parent`);
+- provide hardcoded URLs (`revisions`) for both source code repositories (`source_code_url`) and tag/SHA locations (`source_code_version_url`).
 
-The dependencies can be set either as an exact match or as a regex pattern.
+The dependencies can be set either as an exact match or as a regex pattern (this only for ignoring smells).
 **Note that regular expressions don't behave the same as Unix match expressions**: e.g., `@types*` will match every string starting with `@type` and 0 or more `s` following it.
 For a Unix-like behavior, the equivalent regular expression would be `^@types/.*`.
 
-You can either set "all" to ignore every check for the dependency or specify the checks you want to ignore.
+To ignore smells, you can either set "all" to ignore every check for the dependency or specify the checks you want to ignore.
 
-The possible specific [check options](https://github.com/chains-project/dirty-waters#smell-check-options) are as follows (note that **checks represented as "children" of another check are ignored if the parent one is**):
+The possible specific [check options](https://github.com/chains-project/dirty-waters#smell-check-options) to ignore are as follows (note that **checks represented as "children" of another check are ignored if the parent one is**):
 
 - `"source_code"`
   - `"source_code_sha"`
@@ -188,6 +190,12 @@ An example configuration file:
   },
   "ignore-if-parent": {
     "^org.apache.maven.plugins:maven-release-plugin.*": "all"
+  },
+  "revisions": {
+    "io.perfmark:perfmark-api@0.27.0": {
+      "source_code_url": "https://github.com/perfmark/perfmark",
+      "source_code_version_url": "https://github.com/perfmark/perfmark/tree/v0.27.0"
+    }
   }
 }
 ```

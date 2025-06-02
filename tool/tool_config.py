@@ -27,6 +27,16 @@ PNPM_LIST_COMMAND = lambda scope: [
     "Infinity",
 ]
 
+DEFAULT_ENABLED_CHECKS = {
+    "source_code": True,
+    "source_code_sha": True,
+    "deprecated": True,
+    "forks": False,
+    "provenance": True,
+    "code_signature": True,
+    "aliased_packages": True,
+}
+
 github_token = os.getenv("GITHUB_API_TOKEN")
 
 headers = {
@@ -998,7 +1008,7 @@ def clone_repo(project_repo_name, release_version=None, blobless=False):
 
 
 DEFAULT_CONFIG_PATH = ".dirty-waters.json"
-DEFAULT_CONFIG = {"ignore": {}}
+DEFAULT_CONFIG = {"ignore": {}, "revisions": {}}
 
 
 def load_config(config_path=None):
