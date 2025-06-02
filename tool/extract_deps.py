@@ -237,16 +237,11 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
 
                 # Handle npm aliases (like "my-lodash": "npm:lodash@4.17.21")
                 original_name = dep_name
-                if dep_info.get("resolved") and "npm:" in str(dep_info.get("resolved", "")):
-                    # This might be an alias, extract the real name
-                    resolved = str(dep_info.get("resolved", ""))
-                    if "npm:" in resolved:
-                        real_name_match = re.search(r"npm:([^@]+)@", resolved)
-                        if real_name_match:
-                            real_name = real_name_match.group(1)
-                            logging.info(f"Found npm alias: {dep_name} -> {real_name}@{dep_version}")
-                            aliased_packages[f"{real_name}@{dep_version}"] = f"{dep_name}@{dep_version}"
-                            original_name = real_name
+                if dep_name != dep_info.get("name", dep_name):
+                    real_name = dep_info.get("name", dep_name)
+                    logging.info(f"Found npm alias: {dep_name} -> {real_name}@{dep_version}")
+                    aliased_packages[f"{real_name}@{dep_version}"] = f"{dep_name}@{dep_version}"
+                    original_name = real_name
 
                 dep_resolution = f"{original_name}@{dep_version}"
                 pkg_name_with_resolution.add(dep_resolution)
