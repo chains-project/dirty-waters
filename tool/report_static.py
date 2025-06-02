@@ -170,7 +170,7 @@ def create_dataframe(data, deps_list, package_manager, enabled_checks, config):
     return df.set_index("package_name")
 
 
-def no_source_code(combined_repo_problems_df, md_file, amount, package_manager):
+def no_source_code(combined_repo_problems_df, md_file, amount, package_manager, ignore=False):
     """
     Create a section for packages with no source code.
     """
@@ -190,18 +190,21 @@ def no_source_code(combined_repo_problems_df, md_file, amount, package_manager):
         )
         md_file.write(markdown_text)
         md_file.write("\n</details>\n")
-    elif package_manager not in SUPPORTED_SMELLS["github_404"]:
-        md_file.write(
-            f"\nThe package manager ({package_manager}) does not support checking for not found source code links.\n"
-        )
+    elif not ignore:
+        if package_manager not in SUPPORTED_SMELLS["github_404"]:
+            md_file.write(
+                f"\nThe package manager ({package_manager}) does not support checking for not found source code links.\n"
+            )
+        else:
+            md_file.write("\nAll analyzed packages have a source code repo.\n")
+            return False
     else:
-        md_file.write("All analyzed packages have a source code repo.\n")
+        # If on the ignore portion, we'll just return not False because of not printing
         return False
-
     return True
 
 
-def sha_not_found(sha_not_found_df, md_file, amount, package_manager):
+def sha_not_found(sha_not_found_df, md_file, amount, package_manager, ignore=False):
     """
     Create a section for packages with inaccessible commit SHAs/release tags.
     """
@@ -220,18 +223,22 @@ def sha_not_found(sha_not_found_df, md_file, amount, package_manager):
         )
         md_file.write(markdown_text)
         md_file.write("\n</details>\n")
-    elif package_manager not in SUPPORTED_SMELLS["sha_not_found"]:
-        md_file.write(
-            f"\nThe package manager ({package_manager}) does not support checking for inaccessible commit SHAs/tags.\n"
-        )
+    elif not ignore:
+        if package_manager not in SUPPORTED_SMELLS["sha_not_found"]:
+            md_file.write(
+                f"\nThe package manager ({package_manager}) does not support checking for inaccessible commit SHAs/tags.\n"
+            )
+        else:
+            md_file.write("\nAll packages have accessible commit SHAs and/or tags.\n")
+            return False
     else:
-        md_file.write("\nAll packages have accessible tags.\n")
+        # If on the ignore portion, we'll just return not False because of not printing
         return False
 
     return True
 
 
-def deprecated(version_deprecated_df, md_file, amount, package_manager):
+def deprecated(version_deprecated_df, md_file, amount, package_manager, ignore=False):
     """
     Create a section for deprecated packages.
     """
@@ -251,18 +258,22 @@ def deprecated(version_deprecated_df, md_file, amount, package_manager):
         )
         md_file.write(markdown_text)
         md_file.write("\n</details>\n")
-    elif package_manager not in SUPPORTED_SMELLS["deprecated"]:
-        md_file.write(
-            f"\nThe package manager ({package_manager}) does not support checking for deprecated packages.\n"
-        )
+    elif not ignore:
+        if package_manager not in SUPPORTED_SMELLS["deprecated"]:
+            md_file.write(
+                f"\nThe package manager ({package_manager}) does not support checking for deprecated packages.\n"
+            )
+        else:
+            md_file.write("\nNo deprecated package found.\n")
+            return False
     else:
-        md_file.write("\nNo deprecated package found.\n")
+        # If on the ignore portion, we'll just return not False because of not printing
         return False
 
     return True
 
 
-def forked_package(forked_package_df, md_file, amount, package_manager):
+def forked_package(forked_package_df, md_file, amount, package_manager, ignore=False):
     """
     Create a section for forked packages.
     """
@@ -280,16 +291,20 @@ def forked_package(forked_package_df, md_file, amount, package_manager):
         )
         md_file.write(markdown_text)
         md_file.write("\n</details>\n")
-    elif package_manager not in SUPPORTED_SMELLS["forked_package"]:
-        md_file.write(f"\nThe package manager ({package_manager}) does not support checking for forked packages.\n")
+    elif not ignore:
+        if package_manager not in SUPPORTED_SMELLS["forked_package"]:
+            md_file.write(f"\nThe package manager ({package_manager}) does not support checking for forked packages.\n")
+        else:
+            md_file.write("\nNo package is from fork.\n")
+            return False
     else:
-        md_file.write("\nNo package is from fork.\n")
+        # If on the ignore portion, we'll just return not False because of not printing
         return False
 
     return True
 
 
-def provenance(provenance_df, md_file, amount, package_manager):
+def provenance(provenance_df, md_file, amount, package_manager, ignore=False):
     """
     Create a section for packages without provenance.
     """
@@ -307,16 +322,20 @@ def provenance(provenance_df, md_file, amount, package_manager):
         )
         md_file.write(markdown_text)
         md_file.write("\n</details>\n")
-    elif package_manager not in SUPPORTED_SMELLS["provenance"]:
-        md_file.write(f"\nThe package manager ({package_manager}) does not support checking for provenance.\n")
+    elif not ignore:
+        if package_manager not in SUPPORTED_SMELLS["provenance"]:
+            md_file.write(f"\nThe package manager ({package_manager}) does not support checking for provenance.\n")
+        else:
+            md_file.write("\nAll packages have provenance.\n")
+            return False
     else:
-        md_file.write("\nAll packages have provenance.\n")
+        # If on the ignore portion, we'll just return not False because of not printing
         return False
 
     return True
 
 
-def code_signature(code_signature_df, md_file, amount, package_manager):
+def code_signature(code_signature_df, md_file, amount, package_manager, ignore=False):
     """
     Create a section for packages without code signature.
     """
@@ -334,16 +353,20 @@ def code_signature(code_signature_df, md_file, amount, package_manager):
         )
         md_file.write(markdown_text)
         md_file.write("\n</details>\n")
-    elif package_manager not in SUPPORTED_SMELLS["code_signature"]:
-        md_file.write(f"\nThe package manager ({package_manager}) does not support checking for code signature.\n")
+    elif not ignore:
+        if package_manager not in SUPPORTED_SMELLS["code_signature"]:
+            md_file.write(f"\nThe package manager ({package_manager}) does not support checking for code signature.\n")
+        else:
+            md_file.write("\nAll packages have code signature.\n")
+            return False
     else:
-        md_file.write("\nAll packages have code signature.\n")
+        # If on the ignore portion, we'll just return not False because of not printing
         return False
 
     return True
 
 
-def invalid_code_signature(invalid_code_signature_df, md_file, amount, package_manager):
+def invalid_code_signature(invalid_code_signature_df, md_file, amount, package_manager, ignore=False):
     """
     Create a section for packages with invalid code signature.
     """
@@ -363,16 +386,20 @@ def invalid_code_signature(invalid_code_signature_df, md_file, amount, package_m
         )
         md_file.write(markdown_text)
         md_file.write("\n</details>\n")
-    elif package_manager not in SUPPORTED_SMELLS["code_signature"]:
-        md_file.write(f"\nThe package manager ({package_manager}) does not support checking for code signature.\n")
+    elif not ignore:
+        if package_manager not in SUPPORTED_SMELLS["code_signature"]:
+            md_file.write(f"\nThe package manager ({package_manager}) does not support checking for code signature.\n")
+        else:
+            md_file.write("\nAll packages have valid code signature.\n")
+            return False
     else:
-        md_file.write("\nAll packages have valid code signature.\n")
+        # If on the ignore portion, we'll just return not False because of not printing
         return False
 
     return True
 
 
-def aliased_package(aliased_package_df, md_file, amount, package_manager):
+def aliased_package(aliased_package_df, md_file, amount, package_manager, ignore=False):
     """
     Create a section for aliased packages.
     """
@@ -390,13 +417,102 @@ def aliased_package(aliased_package_df, md_file, amount, package_manager):
         )
         md_file.write(markdown_text)
         md_file.write("\n</details>\n")
-    elif package_manager not in SUPPORTED_SMELLS["aliased_packages"]:
-        md_file.write(f"\nThe package manager ({package_manager}) does not support checking for aliased packages.\n")
+    elif not ignore:
+        if package_manager not in SUPPORTED_SMELLS["aliased_packages"]:
+            md_file.write(f"\nThe package manager ({package_manager}) does not support checking for aliased packages.\n")
+        else:
+            md_file.write("\nNo aliased package found.\n")
+            return False
     else:
-        md_file.write("\nNo aliased package found.\n")
+        # If on the ignore portion, we'll just return not False because of not printing
         return False
 
     return True
+
+
+def get_reports(md_file, dataframes, enabled_checks, package_manager, ignore=False):
+    return {
+        "no_source_code": {
+            "enabled": enabled_checks.get("source_code"),
+            "function": lambda: no_source_code(
+                dataframes["combined_repo_problems_df"],
+                md_file,
+                dataframes["source_sus"],
+                package_manager,
+                ignore=ignore,
+            ),
+        },
+        "sha_not_found": {
+            "enabled": enabled_checks.get("source_code_sha"),
+            "function": lambda: sha_not_found(
+                dataframes["sha_not_found_df"],
+                md_file,
+                dataframes["sha_not_found_df"].shape[0],
+                package_manager,
+                ignore=ignore,
+            ),
+        },
+        "deprecated": {
+            "enabled": enabled_checks.get("deprecated"),
+            "function": lambda: deprecated(
+                dataframes["version_deprecated_df"],
+                md_file,
+                dataframes["version_deprecated_df"].shape[0],
+                package_manager,
+                ignore=ignore,
+            ),
+        },
+        "code_signature": {
+            "enabled": enabled_checks.get("code_signature"),
+            "function": lambda: code_signature(
+                dataframes["code_signature_df"],
+                md_file,
+                dataframes["code_signature_df"].shape[0],
+                package_manager,
+                ignore=ignore,
+            ),
+        },
+        "invalid_code_signature": {
+            "enabled": enabled_checks.get("code_signature"),
+            "function": lambda: invalid_code_signature(
+                dataframes["invalid_code_signature_df"],
+                md_file,
+                dataframes["invalid_code_signature_df"].shape[0],
+                package_manager,
+                ignore=ignore,
+            ),
+        },
+        "forked_package": {
+            "enabled": enabled_checks.get("forks"),
+            "function": lambda: forked_package(
+                dataframes["forked_package_df"],
+                md_file,
+                dataframes["forked_package_df"].shape[0],
+                package_manager,
+                ignore=ignore,
+            ),
+        },
+        "provenance": {
+            "enabled": enabled_checks.get("provenance"),
+            "function": lambda: provenance(
+                dataframes["provenance_df"],
+                md_file,
+                dataframes["provenance_df"].shape[0],
+                package_manager,
+                ignore=ignore,
+            ),
+        },
+        "aliased_packages": {
+            "enabled": enabled_checks.get("aliased_packages"),
+            "function": lambda: aliased_package(
+                dataframes["aliased_package_df"],
+                md_file,
+                dataframes["aliased_package_df"].shape[0],
+                package_manager,
+                ignore=ignore,
+            ),
+        },
+    }
 
 
 def split_ignored_packages(df, looking_for):
@@ -507,18 +623,20 @@ def write_summary(
         + (["command"] if package_manager == "maven" else []),
     ]
 
+    common_counts = {
+        "### Total packages in the supply chain": len(df),
+    }
+    # Only include sections for enabled checks
+    warning_counts = {}
+
     non_ignored_not_on_github, ignored_not_on_github = split_ignored_packages(not_on_github_df, "source_code")
     non_ignored_no_source_code, ignored_source_code = split_ignored_packages(no_source_code_repo_df, "source_code")
     non_ignored_github_repo_404, ignored_github_repo_404 = split_ignored_packages(github_repo_404_df, "source_code")
     non_ignored_combined_repo_problems_df = pd.concat([non_ignored_no_source_code, non_ignored_github_repo_404])
     ignored_combined_repo_problems_df = pd.concat([ignored_source_code, ignored_github_repo_404])
-
-    common_counts = {
-        "### Total packages in the supply chain": len(df),
-    }
-
-    # Only include sections for enabled checks
-    warning_counts = {}
+    non_ignored_sha_not_found, ignored_sha_not_found = split_ignored_packages(
+        sha_not_found_df, "source_code_sha"
+    )
     if enabled_checks.get("source_code"):
         warning_counts["no_source_code"] = [
             (
@@ -542,9 +660,6 @@ def write_summary(
         ]
 
         if enabled_checks.get("source_code_sha"):
-            non_ignored_sha_not_found, ignored_sha_not_found = split_ignored_packages(
-                sha_not_found_df, "source_code_sha"
-            )
             warning_counts["sha_not_found"] = [
                 (
                     non_ignored_sha_not_found.shape[0],
@@ -556,10 +671,10 @@ def write_summary(
                 ),
             ]
 
+    non_ignored_version_deprecated, ignored_version_deprecated = split_ignored_packages(
+        version_deprecated_df, "deprecated"
+    )
     if enabled_checks.get("deprecated"):
-        non_ignored_version_deprecated, ignored_version_deprecated = split_ignored_packages(
-            version_deprecated_df, "deprecated"
-        )
         warning_counts["deprecated"] = [
             (
                 non_ignored_version_deprecated.shape[0],
@@ -571,10 +686,13 @@ def write_summary(
             ),
         ]
 
+    non_ignored_code_signature, ignored_code_signature = split_ignored_packages(
+        code_signature_df, "code_signature"
+    )
+    non_ignored_invalid_code_signature, ignored_invalid_code_signature = split_ignored_packages(
+        invalid_code_signature_df, "invalid_code_signature"
+    )
     if enabled_checks.get("code_signature"):
-        non_ignored_code_signature, ignored_code_signature = split_ignored_packages(
-            code_signature_df, "code_signature"
-        )
         warning_counts["code_signature"] = [
             (
                 non_ignored_code_signature.shape[0],
@@ -585,9 +703,6 @@ def write_summary(
                 f"Suppressed {ignored_code_signature.shape[0]} warnings for :lock: Packages without code signature (⚠️⚠️)",
             ),
         ]
-        non_ignored_invalid_code_signature, ignored_invalid_code_signature = split_ignored_packages(
-            invalid_code_signature_df, "invalid_code_signature"
-        )
         warning_counts["invalid_code_signature"] = [
             (
                 non_ignored_invalid_code_signature.shape[0],
@@ -599,8 +714,8 @@ def write_summary(
             ),
         ]
 
+    non_ignored_forked_package, ignored_forked_package = split_ignored_packages(forked_package_df, "forks")
     if enabled_checks.get("forks"):
-        non_ignored_forked_package, ignored_forked_package = split_ignored_packages(forked_package_df, "forks")
         warning_counts["forked_package"] = [
             (
                 non_ignored_forked_package.shape[0],
@@ -612,8 +727,8 @@ def write_summary(
             ),
         ]
 
+    non_ignored_provenance, ignored_provenance = split_ignored_packages(provenance_df, "provenance")
     if enabled_checks.get("provenance"):
-        non_ignored_provenance, ignored_provenance = split_ignored_packages(provenance_df, "provenance")
         warning_counts["provenance"] = [
             (
                 non_ignored_provenance.shape[0],
@@ -625,10 +740,10 @@ def write_summary(
             ),
         ]
 
+    non_ignored_aliased_package, ignored_aliased_package = split_ignored_packages(
+        aliased_package_df, "aliased_packages"
+    )
     if enabled_checks.get("aliased_packages"):
-        non_ignored_aliased_package, ignored_aliased_package = split_ignored_packages(
-            aliased_package_df, "aliased_packages"
-        )
         warning_counts["aliased_packages"] = [
             (
                 non_ignored_aliased_package.shape[0],
@@ -669,6 +784,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 - [Ignore Configuration Summary](#ignore-configuration-summary)
 - [Summary of Findings](#summary-of-findings)
 - [Fine Grained Information](#fine-grained-information)
+- [Ignored Smells](#ignored-smells)
 - [Call to Action](#call-to-action)
 - [Notes](#notes)
 - [Glossary](#glossary)
@@ -773,123 +889,54 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         md_file.write(
             "\n🐬 For further information about software supply chain smells in your project, take a look at the following tables.\n"
         )
-        reports = {
-            "no_source_code": {
-                "enabled": enabled_checks.get("source_code"),
-                "function": lambda: no_source_code(
-                    non_ignored_combined_repo_problems_df, md_file, non_ignored_source_sus, package_manager
-                ),
+
+        non_ignored_reports = get_reports(
+            md_file,
+            {
+                "combined_repo_problems_df": non_ignored_combined_repo_problems_df,
+                "sha_not_found_df": non_ignored_sha_not_found,
+                "version_deprecated_df": non_ignored_version_deprecated,
+                "code_signature_df": non_ignored_code_signature,
+                "invalid_code_signature_df": non_ignored_invalid_code_signature,
+                "forked_package_df": non_ignored_forked_package,
+                "provenance_df": non_ignored_provenance,
+                "aliased_package_df": non_ignored_aliased_package,
+                "source_sus": non_ignored_source_sus,
             },
-            "sha_not_found": {
-                "enabled": enabled_checks.get("source_code_sha"),
-                "function": lambda: sha_not_found(
-                    non_ignored_sha_not_found, md_file, non_ignored_sha_not_found.shape[0], package_manager
-                ),
+            enabled_checks,
+            package_manager,
+        )
+        ignored_reports = get_reports(
+            md_file,
+            {
+                "combined_repo_problems_df": ignored_combined_repo_problems_df,
+                "sha_not_found_df": ignored_sha_not_found,
+                "version_deprecated_df": ignored_version_deprecated,
+                "code_signature_df": ignored_code_signature,
+                "invalid_code_signature_df": ignored_invalid_code_signature,
+                "forked_package_df": ignored_forked_package,
+                "provenance_df": ignored_provenance,
+                "aliased_package_df": ignored_aliased_package,
+                "source_sus": ignored_source_sus,
             },
-            "deprecated": {
-                "enabled": enabled_checks.get("deprecated"),
-                "function": lambda: deprecated(
-                    non_ignored_version_deprecated, md_file, non_ignored_version_deprecated.shape[0], package_manager
-                ),
-            },
-            "code_signature": {
-                "enabled": enabled_checks.get("code_signature"),
-                "function": lambda: code_signature(
-                    non_ignored_code_signature, md_file, non_ignored_code_signature.shape[0], package_manager
-                ),
-            },
-            "invalid_code_signature": {
-                "enabled": enabled_checks.get("code_signature"),
-                "function": lambda: invalid_code_signature(
-                    non_ignored_invalid_code_signature,
-                    md_file,
-                    non_ignored_invalid_code_signature.shape[0],
-                    package_manager,
-                ),
-            },
-            "forked_package": {
-                "enabled": enabled_checks.get("forks"),
-                "function": lambda: forked_package(
-                    non_ignored_forked_package, md_file, non_ignored_forked_package.shape[0], package_manager
-                ),
-            },
-            "provenance": {
-                "enabled": enabled_checks.get("provenance"),
-                "function": lambda: provenance(
-                    non_ignored_provenance, md_file, non_ignored_provenance.shape[0], package_manager
-                ),
-            },
-            "aliased_packages": {
-                "enabled": enabled_checks.get("aliased_packages"),
-                "function": lambda: aliased_package(
-                    non_ignored_aliased_package, md_file, non_ignored_aliased_package.shape[0], package_manager
-                ),
-            },
-        }
+            enabled_checks,
+            package_manager,
+            ignore=True,
+        )
 
         printed = False
-        for report in reports:
-            if reports[report]["enabled"]:
-                printed = reports[report]["function"]()
+        for report in non_ignored_reports:
+            if non_ignored_reports[report]["enabled"]:
+                printed = non_ignored_reports[report]["function"]()
             if gradual_report and printed:
                 md_file.write("\n")
                 break
 
         md_file.write("#### Ignored Smells\n\n")
-        md_file.write("\nThe following smells were ignored in this project.\n\n")
-        ignored_reports = {
-            "no_source_code": {
-                "enabled": enabled_checks.get("source_code"),
-                "function": lambda: no_source_code(
-                    ignored_combined_repo_problems_df, md_file, ignored_source_sus, package_manager
-                ),
-            },
-            "sha_not_found": {
-                "enabled": enabled_checks.get("source_code_sha"),
-                "function": lambda: sha_not_found(
-                    ignored_sha_not_found, md_file, ignored_sha_not_found.shape[0], package_manager
-                ),
-            },
-            "deprecated": {
-                "enabled": enabled_checks.get("deprecated"),
-                "function": lambda: deprecated(
-                    ignored_version_deprecated, md_file, ignored_version_deprecated.shape[0], package_manager
-                ),
-            },
-            "code_signature": {
-                "enabled": enabled_checks.get("code_signature"),
-                "function": lambda: code_signature(
-                    ignored_code_signature, md_file, ignored_code_signature.shape[0], package_manager
-                ),
-            },
-            "invalid_code_signature": {
-                "enabled": enabled_checks.get("code_signature"),
-                "function": lambda: invalid_code_signature(
-                    ignored_invalid_code_signature, md_file, ignored_invalid_code_signature.shape[0], package_manager
-                ),
-            },
-            "forked_package": {
-                "enabled": enabled_checks.get("forks"),
-                "function": lambda: forked_package(
-                    ignored_forked_package, md_file, ignored_forked_package.shape[0], package_manager
-                ),
-            },
-            "provenance": {
-                "enabled": enabled_checks.get("provenance"),
-                "function": lambda: provenance(
-                    ignored_provenance, md_file, ignored_provenance.shape[0], package_manager
-                ),
-            },
-            "aliased_packages": {
-                "enabled": enabled_checks.get("aliased_packages"),
-                "function": lambda: aliased_package(
-                    ignored_aliased_package, md_file, ignored_aliased_package.shape[0], package_manager
-                ),
-            },
-        }
+        md_file.write("\nThe following smells were configured to be ignored in this project:\n\n")
         for report in ignored_reports:
             if ignored_reports[report]["enabled"]:
-                printed = ignored_reports[report]["function"]()
+                printed = ignored_reports[report]["function"]() or printed
             if gradual_report and printed:
                 md_file.write("\n")
                 break
@@ -905,8 +952,8 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 """
         )
 
-        if (enabled_checks.get("source_code") and len(combined_repo_problems_df) > 0) or (
-            enabled_checks.get("source_code_sha") and len(sha_not_found_df) > 0
+        if (enabled_checks.get("source_code") and len(non_ignored_combined_repo_problems_df) > 0) or (
+            enabled_checks.get("source_code_sha") and len(non_ignored_sha_not_found) > 0
         ):
             md_file.write(
                 """
@@ -915,7 +962,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. Pull Request to the maintainer of dependency, requesting correct repository metadata and proper versioning/tagging. \n"""
             )
 
-        if enabled_checks.get("deprecated") and len(version_deprecated_df) > 0:
+        if enabled_checks.get("deprecated") and len(non_ignored_version_deprecated) > 0:
             md_file.write(
                 """
 \nFor **deprecated** packages:\n
@@ -924,7 +971,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 2. Check for not deprecated versions"""
             )
 
-        if enabled_checks.get("code_signature") and (len(code_signature_df) > 0 or len(invalid_code_signature_df) > 0):
+        if enabled_checks.get("code_signature") and (len(non_ignored_code_signature) > 0 or len(non_ignored_invalid_code_signature) > 0):
             md_file.write(
                 """
 \nFor packages **without code signature**:\n
@@ -935,7 +982,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. It's recommended to verify the code signature and contact the maintainer to fix the issue."""
             )
 
-        if enabled_checks.get("forks") and len(forked_package_df) > 0:
+        if enabled_checks.get("forks") and len(non_ignored_forked_package) > 0:
             md_file.write(
                 """
 \nFor packages **that are forks**:\n
@@ -943,7 +990,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. Inspect the package and its GitHub repository to verify the fork is not malicious."""
             )
 
-        if enabled_checks.get("provenance") and len(provenance_df) > 0:
+        if enabled_checks.get("provenance") and len(non_ignored_provenance) > 0:
             md_file.write(
                 """
 \nFor packages **without provenance**:\n
@@ -951,7 +998,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
 1. Open an issue in the dependency's repository to request the inclusion of provenance and build attestation in the CI/CD pipeline."""
             )
 
-        if enabled_checks.get("aliased_packages") and len(aliased_package_df) > 0:
+        if enabled_checks.get("aliased_packages") and len(non_ignored_aliased_package) > 0:
             md_file.write(
                 """
 \nFor packages that are **aliased**:\n
