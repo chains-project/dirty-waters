@@ -872,7 +872,7 @@ def disable_checks_from_config(package_name, parent, config, enabled_checks):
     return final_enabled_checks
 
 
-def get_static_data(folder, packages_data, pm, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS):
+def get_static_data(folder, packages_data, pm, config, check_match=False, enabled_checks=DEFAULT_ENABLED_CHECKS):
     logging.info("Analyzing package static data...")
     package_all = {}
     errors = {}
