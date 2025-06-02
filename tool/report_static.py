@@ -858,7 +858,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                 md_file.write("\n")
                 break
 
-        md_file.write("#### Ignored Smells\n\n")
+        md_file.write("\n#### Ignored Smells\n\n")
         md_file.write("\nThe following smells were configured to be ignored in this project:\n\n")
         for report in ignored_reports:
             if ignored_reports[report]["enabled"]:
