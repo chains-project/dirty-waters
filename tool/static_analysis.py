@@ -342,7 +342,11 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
         "tag_status_code": 404,
         "sha_status_code": 404,
     }
-    if hardcoded_url := config.get("revisions", {}).get(f"{package_name}@{version}", {}).get("source_code_version_url", ""):
+    if (
+        hardcoded_url := config.get("revisions", {})
+        .get(f"{package_name}@{version}", {})
+        .get("source_code_version_url", "")
+    ):
         logging.info(f"Found hardcoded tag/SHA url {hardcoded_url} in config for package {package_name}")
         if requests.get(hardcoded_url).status_code == requests.codes.ok:
             logging.info(f"Hardcoded URL {hardcoded_url} exists")
@@ -444,7 +448,9 @@ def check_source_code_by_version(package_name, version, repo_api, repo_link, sim
 def check_existence(package_name, repository, extract_message, package_manager, config, enabled_checks):
     """Check if the package exists in the repository."""
     if hardcoded_url := config.get("revisions", {}).get(package_name, {}).get("source_code_url", ""):
-        logging.info(f"Found hardcoded repository URL {hardcoded_url} for package {package_name}; repository was {repository}")
+        logging.info(
+            f"Found hardcoded repository URL {hardcoded_url} for package {package_name}; repository was {repository}"
+        )
         repository = hardcoded_url
     elif "Could not find repository" in extract_message:
         return {"is_github": False, "github_url": "No_repo_info_found"}
@@ -781,7 +787,9 @@ def analyze_package_data(
 
         if missing_checks.get("source_code"):
             update_package_info(
-                package_info, "source_code", check_existence(package, repo_url, extract_message, pm, config, enabled_checks)
+                package_info,
+                "source_code",
+                check_existence(package, repo_url, extract_message, pm, config, enabled_checks),
             )
 
         if check_match and package_info.get("source_code") and package_info["source_code"].get("github_exists"):
