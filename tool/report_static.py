@@ -179,7 +179,7 @@ def no_source_code(combined_repo_problems_df, md_file, amount, package_manager, 
         md_file.write(
             f"""
 <details>
-<summary>Source code links that could not be found({amount})</summary>
+<summary>Source code links that could not be found ({amount})</summary>
     """
         )
         md_file.write("\n\n\n")
@@ -213,7 +213,7 @@ def sha_not_found(sha_not_found_df, md_file, amount, package_manager, ignore=Fal
         md_file.write(
             f"""
 <details>
-<summary>List of packages with available source code repos but with inaccessible commit SHAs/tags({amount})</summary>
+<summary>List of packages with available source code repos but with inaccessible commit SHAs/tags ({amount})</summary>
     """
         )
 
@@ -247,7 +247,7 @@ def deprecated(version_deprecated_df, md_file, amount, package_manager, ignore=F
         md_file.write(
             f"""
 <details>
-<summary>List of deprecated packages({amount})</summary>
+<summary>List of deprecated packages ({amount})</summary>
     """
         )
         md_file.write("\n\n\n")
@@ -282,7 +282,7 @@ def forked_package(forked_package_df, md_file, amount, package_manager, ignore=F
         md_file.write(
             f"""
 <details>
-<summary>List of packages from fork({amount})</summary>
+<summary>List of packages from fork ({amount})</summary>
     """
         )
         md_file.write("\n\n\n")
@@ -315,7 +315,7 @@ def provenance(provenance_df, md_file, amount, package_manager, ignore=False):
         md_file.write(
             f"""
 <details>
-<summary>List of packages without provenance({amount})</summary>
+<summary>List of packages without provenance ({amount})</summary>
     """
         )
         md_file.write("\n\n\n")
@@ -346,7 +346,7 @@ def code_signature(code_signature_df, md_file, amount, package_manager, ignore=F
         md_file.write(
             f"""
 <details>
-<summary>List of packages without code signature({amount})</summary>
+<summary>List of packages without code signature ({amount})</summary>
     """
         )
         md_file.write("\n\n\n")
@@ -377,7 +377,7 @@ def invalid_code_signature(invalid_code_signature_df, md_file, amount, package_m
         md_file.write(
             f"""
 <details>
-<summary>List of packages with an existing but invalid code signature({amount})</summary>
+<summary>List of packages with an existing but invalid code signature ({amount})</summary>
     """
         )
         md_file.write("\n\n\n")
@@ -410,7 +410,7 @@ def aliased_package(aliased_package_df, md_file, amount, package_manager, ignore
         md_file.write(
             f"""
 <details>
-<summary>List of aliased packages({amount})</summary>
+<summary>List of aliased packages ({amount})</summary>
     """
         )
         md_file.write("\n\n\n")
@@ -640,120 +640,57 @@ def write_summary(
     ignored_combined_repo_problems_df = pd.concat([ignored_source_code, ignored_github_repo_404])
     non_ignored_sha_not_found, ignored_sha_not_found = split_ignored_packages(sha_not_found_df, "source_code_sha")
     if enabled_checks.get("source_code"):
-        warning_counts["no_source_code"] = [
-            (
-                non_ignored_no_source_code.shape[0],
-                f":heavy_exclamation_mark: Packages with no source code URL (⚠️⚠️⚠️): {non_ignored_no_source_code.shape[0]}",
-            ),
-            (
-                ignored_source_code.shape[0],
-                f"Suppressed {ignored_source_code.shape[0]} warnings for :heavy_exclamation_mark: Packages with no source code URL (⚠️⚠️⚠️)",
-            ),
-        ]
-        warning_counts["github_404"] = [
-            (
-                non_ignored_github_repo_404.shape[0],
-                f":no_entry: Packages with repo URL that is 404 (⚠️⚠️⚠️): {non_ignored_github_repo_404.shape[0]}",
-            ),
-            (
-                ignored_github_repo_404.shape[0],
-                f"Suppressed {ignored_github_repo_404.shape[0]} warnings for :no_entry: Packages with repo URL that is 404 (⚠️⚠️⚠️)",
-            ),
-        ]
+        warning_counts["no_source_code"] = (
+            f":heavy_exclamation_mark: Packages with no source code URL (⚠️⚠️⚠️): {non_ignored_no_source_code.shape[0]}"
+        )
+        warning_counts["github_404"] = (
+            f":no_entry: Packages with repo URL that is 404 (⚠️⚠️⚠️): {non_ignored_github_repo_404.shape[0]}"
+        )
 
         if enabled_checks.get("source_code_sha"):
-            warning_counts["sha_not_found"] = [
-                (
-                    non_ignored_sha_not_found.shape[0],
-                    f":wrench: Packages with inaccessible commit SHA/tag (⚠️⚠️): {non_ignored_sha_not_found.shape[0]}",
-                ),
-                (
-                    ignored_sha_not_found.shape[0],
-                    f"Suppressed {ignored_sha_not_found.shape[0]} warnings for :wrench: Packages with inaccessible commit SHA/tag (⚠️⚠️)",
-                ),
-            ]
+            warning_counts["sha_not_found"] = (
+                f":wrench: Packages with inaccessible commit SHA/tag (⚠️⚠️): {non_ignored_sha_not_found.shape[0]}"
+            )
 
     non_ignored_version_deprecated, ignored_version_deprecated = split_ignored_packages(
         version_deprecated_df, "deprecated"
     )
     if enabled_checks.get("deprecated"):
-        warning_counts["deprecated"] = [
-            (
-                non_ignored_version_deprecated.shape[0],
-                f":x: Packages that are deprecated (⚠️⚠️): {non_ignored_version_deprecated.shape[0]}",
-            ),
-            (
-                ignored_version_deprecated.shape[0],
-                f"Suppressed {ignored_version_deprecated.shape[0]} warnings for :x: Packages that are deprecated (⚠️⚠️)",
-            ),
-        ]
+        warning_counts["deprecated"] = (
+            f":x: Packages that are deprecated (⚠️⚠️): {non_ignored_version_deprecated.shape[0]}"
+        )
 
     non_ignored_code_signature, ignored_code_signature = split_ignored_packages(code_signature_df, "code_signature")
     non_ignored_invalid_code_signature, ignored_invalid_code_signature = split_ignored_packages(
         invalid_code_signature_df, "invalid_code_signature"
     )
     if enabled_checks.get("code_signature"):
-        warning_counts["code_signature"] = [
-            (
-                non_ignored_code_signature.shape[0],
-                f":lock: Packages without code signature (⚠️⚠️): {non_ignored_code_signature.shape[0]}",
-            ),
-            (
-                ignored_code_signature.shape[0],
-                f"Suppressed {ignored_code_signature.shape[0]} warnings for :lock: Packages without code signature (⚠️⚠️)",
-            ),
-        ]
-        warning_counts["invalid_code_signature"] = [
-            (
-                non_ignored_invalid_code_signature.shape[0],
-                f":unlock: Packages with invalid code signature (⚠️⚠️): {non_ignored_invalid_code_signature.shape[0]}",
-            ),
-            (
-                ignored_invalid_code_signature.shape[0],
-                f"Suppressed {ignored_invalid_code_signature.shape[0]} warnings for :unlock: Packages with invalid code signature (⚠️⚠️)",
-            ),
-        ]
+        warning_counts["code_signature"] = (
+            f":lock: Packages without code signature (⚠️⚠️): {non_ignored_code_signature.shape[0]}"
+        )
+        warning_counts["invalid_code_signature"] = (
+            f":unlock: Packages with invalid code signature (⚠️⚠️): {non_ignored_invalid_code_signature.shape[0]}"
+        )
 
     non_ignored_forked_package, ignored_forked_package = split_ignored_packages(forked_package_df, "forks")
     if enabled_checks.get("forks"):
-        warning_counts["forked_package"] = [
-            (
-                non_ignored_forked_package.shape[0],
-                f":cactus: Packages that are forks (⚠️): {non_ignored_forked_package.shape[0]}",
-            ),
-            (
-                ignored_forked_package.shape[0],
-                f"Suppressed {ignored_forked_package.shape[0]} warnings for :cactus: Packages that are forks (⚠️)",
-            ),
-        ]
+        warning_counts["forked_package"] = (
+            f":cactus: Packages that are forks (⚠️): {non_ignored_forked_package.shape[0]}"
+        )
 
     non_ignored_provenance, ignored_provenance = split_ignored_packages(provenance_df, "provenance")
     if enabled_checks.get("provenance"):
-        warning_counts["provenance"] = [
-            (
-                non_ignored_provenance.shape[0],
-                f":black_square_button: Packages without build attestation (⚠️): {non_ignored_provenance.shape[0]}",
-            ),
-            (
-                ignored_provenance.shape[0],
-                f"Suppressed {ignored_provenance.shape[0]} warnings for :black_square_button: Packages without build attestation (⚠️)",
-            ),
-        ]
+        warning_counts["provenance"] = (
+            f":black_square_button: Packages without build attestation (⚠️): {non_ignored_provenance.shape[0]}"
+        )
 
     non_ignored_aliased_package, ignored_aliased_package = split_ignored_packages(
         aliased_package_df, "aliased_packages"
     )
     if enabled_checks.get("aliased_packages"):
-        warning_counts["aliased_packages"] = [
-            (
-                non_ignored_aliased_package.shape[0],
-                f":alien: Packages that are aliased (⚠️): {non_ignored_aliased_package.shape[0]}",
-            ),
-            (
-                ignored_aliased_package.shape[0],
-                f"Suppressed {ignored_aliased_package.shape[0]} warnings for :alien: Packages that are aliased (⚠️)",
-            ),
-        ]
+        warning_counts["aliased_packages"] = (
+            f":alien: Packages that are aliased (⚠️): {non_ignored_aliased_package.shape[0]}"
+        )
 
     non_ignored_source_sus = (
         non_ignored_no_source_code.shape[0] + non_ignored_github_repo_404.shape[0]
@@ -869,20 +806,9 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
             md_file.write(f"\n {key}: {val}\n")
         md_file.write("\n")
 
-        supressed_footnotes = []
-        for key, [(non_supressed, non_supressed_msg), (supressed, supressed_msg)] in warning_counts.items():
+        for key, val in warning_counts.items():
             if package_manager in SUPPORTED_SMELLS[key]:
-                if supressed > 0:
-                    supressed_footnotes.append(supressed_msg)
-                    md_file.write(f"\n{non_supressed_msg} [^{len(supressed_footnotes)}]\n")
-                else:
-                    md_file.write(f"\n{non_supressed_msg}\n")
-
-        if supressed_footnotes:
-            md_file.write("\n\n")
-            for i, footnote in enumerate(supressed_footnotes, start=1):
-                md_file.write(f"[^{i}]: {footnote}\n\n")
-
+                md_file.write(f"\n{val}\n")
         md_file.write("\n")
 
         md_file.write("\n### Fine grained information\n")
@@ -1047,8 +973,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
         )
 
         md_file.write("---\n")
-        md_file.write("\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/).\n")
-        md_file.write(f"\nReport created on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        md_file.write(f"\nReport created by [dirty-waters](https://github.com/chains-project/dirty-waters/) on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}.\n")
 
         # Tool version
         tool_commit_hash = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"]).strip().decode("utf-8")
