@@ -817,7 +817,11 @@ def analyze_package_data(
             for check, value in cached_analysis.items():
                 if check in package_info:
                     cached_analysis[check].update(value)
-        cache_manager.package_cache.cache_package_analysis(package_name, package_version, pm, cached_analysis)
+            logging.info(f"Updating cache: {cached_analysis}")
+            cache_manager.package_cache.cache_package_analysis(package_name, package_version, pm, cached_analysis)
+        else:
+            logging.info(f"New cache entry: {package_info}")
+            cache_manager.package_cache.cache_package_analysis(package_name, package_version, pm, package_info)
 
     except Exception as e:
         logging.error(f"Analyzing package {package}: {str(e)}")
