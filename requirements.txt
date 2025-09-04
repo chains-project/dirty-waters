@@ -7,7 +7,7 @@ GitPython==3.1.45
 idna==3.10
 markdown-it-py==3.0.0
 numpy==2.3.2
-pandas==2.3.1
+pandas==2.3.2
 platformdirs==4.3.8
 PyGithub==2.7.0
 pytest==8.4.1
