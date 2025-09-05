@@ -2,7 +2,7 @@
 
 Dirty-waters automatically finds software supply chain issues in software projects by analyzing the available metadata of all dependencies, transitively.
 
-Reference: [Dirty-Waters: Detecting Software Supply Chain Smells](http://arxiv.org/pdf/2410.16049), Proceedings of FSE Tool Track, 2025.
+Reference: [Dirty-Waters: Detecting Software Supply Chain Smells](http://arxiv.org/pdf/2410.16049), Proceedings of FSE Tool Track, 2025 (doi: [10.1145/3696630.3728578](https://doi.org/10.1145/3696630.3728578)).
 
 By using `dirty-waters`, you identify the shady areas of your supply chain, which would be natural target for attackers to exploit.
 
