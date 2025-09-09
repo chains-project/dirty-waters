@@ -8,7 +8,7 @@ idna==3.10
 markdown-it-py==3.0.0
 numpy==2.3.2
 pandas==2.3.2
-platformdirs==4.3.8
+platformdirs==4.4.0
 PyGithub==2.7.0
 pytest==8.4.1
 python-dateutil==2.9.0.post0
