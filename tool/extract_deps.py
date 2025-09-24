@@ -15,7 +15,7 @@ import hashlib
 from pathlib import Path
 import yaml
 
-from tool.tool_config import PNPM_LIST_COMMAND, get_cache_manager, YarnLockParser
+from tool.tool_config import PNPM_LIST_COMMAND, get_cache_manager, YarnLockParser, get_package_url, get_registry_url
 
 cache_manager = get_cache_manager()
 
@@ -25,6 +25,52 @@ TREE_GOAL = append_dependency_goal("tree")
 RESOLVE_PLUGINS_GOAL = append_dependency_goal("resolve-plugins")
 TREE_LOG = "/tmp/deps.json"
 RESOLVE_PLUGINS_LOG = "/tmp/plugins.log"
+
+
+def build_tree_structure_with_links(paths, package_manager):
+    tree = {}
+    for path in paths:
+        current_level = tree
+        for node in path[:-1]:
+            label = f"[{node}]({get_package_url(node, package_manager)})"
+            if label not in current_level:
+                current_level[label] = {}
+            current_level = current_level[label]
+    return tree
+
+
+def format_tree_as_text(tree, target_package, package_manager, indent="", is_last_child=True):
+    if not tree:
+        return f"{indent}└── [{target_package}]({get_package_url(target_package, package_manager)})"
+
+    lines = []
+    items = list(tree.items())
+    for i, (label, subtree) in enumerate(items):
+        is_last = i == len(items) - 1
+        connector = "└──" if is_last else "├──"
+        lines.append(f"{indent}{connector} {label}")
+        child_indent = indent + ("    " if is_last else "│   ")
+
+        if not subtree:
+            lines.append(f"{child_indent}└── [{target_package}]({get_package_url(target_package, package_manager)})")
+        else:
+            child_lines = format_tree_as_text(subtree, target_package, package_manager, child_indent, is_last)
+            lines.extend(child_lines if isinstance(child_lines, list) else [child_lines])
+    return lines
+
+
+def format_paths_for_markdown(paths, target_package, package_manager):
+    if not paths:
+        return ""
+
+    tree = build_tree_structure_with_links(paths, package_manager)
+    if not tree:
+        return f"<details><summary>1 path</summary><pre>{target_package}</pre></details>"
+
+    tree_lines = format_tree_as_text(tree, target_package, package_manager)
+    tree_text = "<br>".join(tree_lines)
+    summary_text = f"{len(paths)} path{'s' if len(paths) != 1 else ''}"
+    return f"<details><summary>{summary_text}</summary><pre>{tree_text}</pre></details>"
 
 
 def get_lockfile_hash(lockfile_content):
@@ -116,79 +162,145 @@ def extract_deps_from_pnpm_lockfile(repo_path, pnpm_lockfile_yaml):
 
 def extract_deps_from_npm(repo_path, npm_lock_file):
     """
-    Extract dependencies from a "package-lock.json" file.
+    Extract dependencies from an npm project using npm list command.
 
     Args:
-        repo_path (str): The project's source code repository.
-        npm_lock_file (dict): The content of the npm lock file.
+        repo_path (str): The project's source code repository path.
+        npm_lock_file (str): The npm lock file path.
 
     Returns:
         dict: A dictionary containing the extracted dependencies and patches.
     """
-    lock_file_json = json.loads(npm_lock_file)
-    lockfile_hash = get_lockfile_hash(lock_file_json)
+    # Generate cache key based on repo path and project info
+    lockfile_hash = get_lockfile_hash(npm_lock_file)
     if not lockfile_hash:
         logging.error("No lockfile found in %s", repo_path)
         return {"resolutions": [], "patches": []}
-
     cached_deps = cache_manager.extracted_deps_cache.get_dependencies(repo_path, lockfile_hash)
     if cached_deps:
         logging.info(f"Using cached dependencies for {repo_path}")
         return cached_deps
+
     try:
+        # If we reach here, we need to resolve dependencies
+        current_dir = os.getcwd()
+        os.chdir(repo_path)
+        # Run npm list to get dependency tree
+        logging.info("Running npm list to extract dependencies...")
+        result = subprocess.run(
+            ["npm", "list", "--json", "--all", "--long", "--package-lock-only"],
+            cwd=repo_path,
+            capture_output=True,
+            text=True,
+            check=False,  # Don't fail on warnings/missing peer deps
+        )
+        os.chdir(current_dir)
+
+        if result.returncode != 0 and result.returncode != 1:
+            # Return code 1 is common for missing peer deps, which is OK
+            logging.error(f"npm list failed with return code {result.returncode}")
+            logging.error(f"stderr: {result.stderr}")
+            return {"resolutions": [], "patches": [], "aliased_packages": {}}
+
+        npm_data = json.loads(result.stdout)
+        # Parse project name and version from npm list output
+        project_name = npm_data.get("name")
+        project_version = npm_data.get("version")
+
         patches = []
         pkg_name_with_resolution = set()
         aliased_packages = {}
-        deps_list_data = {}
+        parent_packages = {}  # Maps package -> set of immediate parents
+        dependency_tree = {}  # Maps package -> complete dependency info
 
-        parent_packages = {}
-        if lock_file_json.get("packages") and isinstance(lock_file_json["packages"], dict):
-            for package_path, package_info in lock_file_json["packages"].items():
-                if package_path.startswith("node_modules/"):
-                    package_name = package_path.split("/", 1)[1]
-                    if "node_modules" in package_name:
-                        package_name = package_name.split("node_modules/")[-1]
+        # Add root package
+        root_name = npm_data.get("name", project_name)
+        root_version = npm_data.get("version", project_version)
+        root_resolution = f"{root_name}@{root_version}"
+        pkg_name_with_resolution.add(root_resolution)
 
-                    resolution = package_name
-                    if package_info.get("version"):
-                        version = package_info["version"]
-                        # Handle npm aliases
-                        original_name = package_info.get("name")
-                        if original_name:
-                            logging.warning(f"Found npm alias for {original_name}@{version}")
-                            aliased_packages[f"{original_name}@{version}"] = package_name
-                            package_name = original_name
+        def process_dependencies(deps_dict, parent_resolution, current_path=None):
+            """Recursively process dependencies from npm list output"""
+            if not deps_dict:
+                return
 
-                        resolution = f"{package_name}@{version}"
-                        pkg_name_with_resolution.add(resolution)
+            if current_path is None:
+                current_path = [parent_resolution]
 
-                    if package_info.get("dependencies"):
-                        for dep_name, version in package_info["dependencies"].items():
-                            parent_packages.setdefault(f"{dep_name}@{version}", set()).add(resolution)
+            for dep_name, dep_info in deps_dict.items():
+                if not isinstance(dep_info, dict):
+                    continue
 
-            deps_list_data = {
-                "resolutions": list(
-                    {
-                        "info": info,
-                        "parent": list(parent_packages.get(info, set())),
-                    }
-                    for info in sorted(pkg_name_with_resolution)
-                ),
-                "patches": patches,
-                "aliased_packages": aliased_packages,
-            }
+                dep_version = dep_info.get("version")
+                if not dep_version:
+                    continue
 
-            cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
+                # Handle npm aliases (like "my-lodash": "npm:lodash@4.17.21")
+                original_name = dep_name
+                if dep_name != dep_info.get("name", dep_name):
+                    real_name = dep_info.get("name", dep_name)
+                    logging.info(f"Found npm alias: {dep_name} -> {real_name}@{dep_version}")
+                    aliased_packages[f"{real_name}@{dep_version}"] = f"{dep_name}@{dep_version}"
+                    original_name = real_name
 
+                dep_resolution = f"{original_name}@{dep_version}"
+                pkg_name_with_resolution.add(dep_resolution)
+
+                # Map this dependency to its immediate parent
+                parent_packages.setdefault(dep_resolution, set()).add(parent_resolution)
+
+                # Build the full path to this dependency
+                full_path = current_path + [dep_resolution]
+
+                # Store all paths to this dependency
+                if dep_resolution not in dependency_tree:
+                    dependency_tree[dep_resolution] = {"paths": [], "immediate_parents": set()}
+
+                dependency_tree[dep_resolution]["paths"].append(full_path[:])
+                dependency_tree[dep_resolution]["immediate_parents"].add(parent_resolution)
+
+                # Check for patches (if using patch-package or similar)
+                if dep_info.get("patched"):
+                    patches.append({"info": dep_resolution})
+
+                # Recursively process nested dependencies
+                if dep_info.get("dependencies"):
+                    process_dependencies(dep_info["dependencies"], dep_resolution, full_path)
+
+        # Process all dependencies starting from root
+        if npm_data.get("dependencies"):
+            process_dependencies(npm_data["dependencies"], root_resolution)
+
+        deps_list_data = {
+            "resolutions": list(
+                {
+                    "info": info,
+                    "parent": format_paths_for_markdown(dependency_tree.get(info, {}).get("paths", []), info, "npm"),
+                }
+                for info in sorted(pkg_name_with_resolution)
+            ),
+            "patches": patches,
+            "aliased_packages": aliased_packages,
+        }
+
+        cache_manager.extracted_deps_cache.cache_dependencies(repo_path, lockfile_hash, deps_list_data)
+
+        logging.info(f"Extracted {len(pkg_name_with_resolution)} dependencies from npm list")
         return deps_list_data
 
-    except (IOError, ValueError, KeyError) as e:
-        logging.error(
-            "An error occurred while extracting dependencies from package-lock.json: %s",
-            str(e),
-        )
-
-    return {"resolutions": [], "patches": [], "aliased_packages": []}
+    except subprocess.CalledProcessError as e:
+        os.chdir(current_dir)
+        logging.error(f"Error running npm list: {e}")
+        logging.error(f"stderr: {e.stderr}")
+        return {"resolutions": [], "patches": [], "aliased_packages": {}}
+    except json.JSONDecodeError as e:
+        os.chdir(current_dir)
+        logging.error(f"Error parsing npm list JSON output: {e}")
+        return {"resolutions": [], "patches": [], "aliased_packages": {}}
+    except Exception as e:
+        os.chdir(current_dir)
+        logging.error(f"Unexpected error in extract_deps_from_npm: {e}")
+        return {"resolutions": [], "patches": [], "aliased_packages": {}}
 
 
 def extract_deps_from_yarn_berry(repo_path, yarn_lock_file):
@@ -698,9 +810,31 @@ def extract_deps_from_maven(repo_path):
             for plugin in retrieved_plugins
         ]
 
+        dependency_tree = defaultdict(lambda: {"paths": [], "immediate_parents": set()})
+        pkg_name_with_resolution = set()
+
+        for dep in parsed_deps + parsed_plugins:
+            child = dep["info"]
+            parent = dep["parent"]
+            pkg_name_with_resolution.add(child)
+
+            if parent:
+                dependency_tree[child]["paths"].append([parent, child])
+                dependency_tree[child]["immediate_parents"].add(parent)
+            else:
+                # Root dependency
+                dependency_tree[child]["paths"].append([child])
+
         # Create the result
         deps_list_data = {
-            "resolutions": list({item["info"]: item for item in parsed_plugins + parsed_deps}.values()),
+            "resolutions": list(
+                {
+                    "info": info,
+                    "parent": format_paths_for_markdown(dependency_tree.get(info, {}).get("paths", []), info, "maven"),
+                    "command": command,
+                }
+                for info, command in {item["info"]: item["command"] for item in parsed_deps + parsed_plugins}.items()
+            ),
             "patches": [],
         }
 

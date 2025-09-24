@@ -6,7 +6,7 @@ import json
 import subprocess
 from datetime import datetime
 import pandas as pd
-from tool.tool_config import DEFAULT_ENABLED_CHECKS
+from tool.tool_config import DEFAULT_ENABLED_CHECKS, get_package_url, get_registry_url
 import logging
 import re
 
@@ -145,7 +145,7 @@ def create_dataframe(data, deps_list, package_manager, enabled_checks, config):
             "all_deprecated": package_data.get("package_info", {}).get("all_deprecated", None),
             "signature_present": package_data.get("code_signature", {}).get("signature_present"),
             "signature_valid": package_data.get("code_signature", {}).get("signature_valid"),
-            "parent": f"`{package_data.get("parent", "-")}`",
+            "parent": package_data.get("parent", "-"),
             "command": f"`{package_data.get("command", "-")}`",
             "is_github": source_code_data.get("is_github", False),
             "github_url": source_code_data.get("github_url", "Could not find repo from package registry"),
@@ -858,7 +858,7 @@ Gradual reports are enabled by default. You can disable this feature, and get a 
                 md_file.write("\n")
                 break
 
-        md_file.write("#### Ignored Smells\n\n")
+        md_file.write("\n#### Ignored Smells\n\n")
         md_file.write("\nThe following smells were configured to be ignored in this project:\n\n")
         for report in ignored_reports:
             if ignored_reports[report]["enabled"]:
