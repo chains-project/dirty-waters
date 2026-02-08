@@ -24,7 +24,6 @@ from tool import get_pr_review
 from tool import tool_config
 from tool import report_static
 from tool import report_diff
-from tool_config import DEFAULT_ENABLED_CHECKS
 
 github_token = os.getenv("GITHUB_API_TOKEN")
 if not github_token:
@@ -605,7 +604,7 @@ def main():
         }
     else:
         # If no checks specified, enable all except forks by default
-        enabled_checks = DEFAULT_ENABLED_CHECKS
+        enabled_checks = tool_config.DEFAULT_ENABLED_CHECKS
 
     project_info = setup_project_info(dw_args, any_check_specified)
     setup_directories_and_logging(project_info)
