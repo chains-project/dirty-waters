@@ -32,7 +32,7 @@ jobs:
         continue-on-error: true
 
       - name: Commit fixes
-        uses: stefanzweifel/git-auto-commit-action@v6.0.1
+        uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7.1.0
         with:
           commit_message: "style: fix code style issues with Ruff"
           branch: ${{ github.head_ref }}
