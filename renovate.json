@@ -4,9 +4,6 @@
     ":semanticCommitTypeAll(chore)",
     "helpers:pinGitHubActionDigests"
   ],
-  "digest": {
-    "enabled": false
-  },
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin"],
