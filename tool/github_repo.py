@@ -91,12 +91,19 @@ def get_scm_command(pm: str, package: str) -> List[str]:
 def run_scm_command(pm, command):
     def run_npm_command(command):
         try:
+            # Convert list to string for shell execution on Windows
+            if isinstance(command, list):
+                command_str = " ".join(command)
+            else:
+                command_str = command
+            
             result = subprocess.run(
-                command,
+                command_str,
                 capture_output=True,
                 text=True,
                 check=True,
                 timeout=TIMEOUT,
+                shell=True,  # Use shell to handle npm.cmd on Windows
             )
             return result.stdout
         except subprocess.TimeoutExpired:
@@ -110,12 +117,19 @@ def run_scm_command(pm, command):
 
     def run_maven_command(command):
         try:
+            # Convert list to string for shell execution on Windows
+            if isinstance(command, list):
+                command_str = " ".join(command)
+            else:
+                command_str = command
+            
             result = subprocess.run(
-                command,
+                command_str,
                 capture_output=True,
                 text=True,
                 check=True,
                 timeout=TIMEOUT,
+                shell=True,  # Use shell to handle mvn.cmd on Windows
             )
             output = result.stdout
             if output:

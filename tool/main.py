@@ -25,14 +25,19 @@ from tool import tool_config
 from tool import report_static
 from tool import report_diff
 
-github_token = os.getenv("GITHUB_API_TOKEN")
-if not github_token:
-    raise ValueError("GitHub API token(GITHUB_API_TOKEN) is not set in the environment variables.")
 
-headers = {
-    "Authorization": f"Bearer {github_token}",
-    "Accept": "application/vnd.github.v3+json",
-}
+def get_github_headers():
+    """Get GitHub API headers with token validation."""
+    github_token = os.getenv("GITHUB_API_TOKEN")
+    if not github_token:
+        raise ValueError("GitHub API token(GITHUB_API_TOKEN) is not set in the environment variables.")
+    return {
+        "Authorization": f"Bearer {github_token}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+
+
+headers = None
 
 cache_manager = tool_config.get_cache_manager()
 
@@ -569,6 +574,8 @@ def perform_differential_analysis(old_results, new_results, project_info):
 
 def main():
     """Main flow to run the software supply chain smell analysis."""
+    global headers
+    headers = get_github_headers()
     dw_args = get_args()
 
     # Determine which checks are enabled

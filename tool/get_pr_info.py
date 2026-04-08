@@ -4,19 +4,34 @@ from typing import List, Dict, Tuple
 from tool.tool_config import get_cache_manager, make_github_request
 
 cache_manager = get_cache_manager()
-
-GITHUB_TOKEN = os.getenv("GITHUB_API_TOKEN")
 BATCH_SIZE = 100  # Configurable batch size
 
-headers = {
-    "Authorization": f"Bearer {GITHUB_TOKEN}",
-    "Accept": "application/vnd.github.v4+json",
-}
+
+def get_github_headers():
+    """Get GitHub API headers with token validation."""
+    github_token = os.getenv("GITHUB_API_TOKEN")
+    if not github_token:
+        raise ValueError("GitHub API token(GITHUB_API_TOKEN) is not set in the environment variables.")
+    return {
+        "Authorization": f"Bearer {github_token}",
+        "Accept": "application/vnd.github.v4+json",
+    }
+
+
+headers = None
 
 url = "https://api.github.com/graphql"
 
 
 def fetch_and_cache_batch(commit_batch: List[Tuple[str, str, str, str]]) -> List[Dict]:
+    """Fetch and cache a batch of PR info from GitHub GraphQL API.
+    
+    Note: Headers are initialized on first call to support lazy loading of GitHub token.
+    """
+    global headers
+    if headers is None:
+        headers = get_github_headers()
+    
     """
     Fetch and cache PR information for a batch of commits.
 

@@ -986,7 +986,12 @@ def clone_repo(project_repo_name, release_version=None, blobless=False):
         str: The path to the cloned repository.
     """
 
-    repo_url = f"https://github.com/{project_repo_name}.git"
+    # Use GitHub token for authentication if available
+    github_token = os.getenv("GITHUB_API_TOKEN")
+    if github_token:
+        repo_url = f"https://{github_token}@github.com/{project_repo_name}.git"
+    else:
+        repo_url = f"https://github.com/{project_repo_name}.git"
 
     # Clone to /tmp folder; if it is already cloned, an error will be raised
     try:

@@ -188,11 +188,12 @@ def extract_deps_from_npm(repo_path, npm_lock_file):
         # Run npm list to get dependency tree
         logging.info("Running npm list to extract dependencies...")
         result = subprocess.run(
-            ["npm", "list", "--json", "--all", "--long", "--package-lock-only"],
+            "npm list --json --all --long --package-lock-only",
             cwd=repo_path,
             capture_output=True,
             text=True,
             check=False,  # Don't fail on warnings/missing peer deps
+            shell=True,  # Use shell to find npm properly on Windows
         )
         os.chdir(current_dir)
 
